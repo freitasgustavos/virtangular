@@ -1,0 +1,276 @@
+<div class="modal-dialog" style="margin-top: -80px">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title modal-title-button">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                <strong>Dados</strong> do Tributo
+
+                <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarImpostoLoading" ng-click="salvarImposto()">
+                    <i class="fa fa-check"></i> &nbsp; Salvar
+                </button>
+
+                <span class="pull-right">
+                    <a class="panel-close m-r-20 btn-delete" title="Remover" ng-if="tipCs == 1 || objImposto.tri_imp_cod_imp != 1" ng-click="cancelarTributo(objImposto.$index)">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </span>
+            </h4>
+        </div>
+
+        <div class="modal-body" style="min-height: 300px;">
+            <!-- O formulário é apenas mostrado quando o modo de edição é habilitado. -->
+            <div id="box-edicao" class="sample-show-hide">
+                <form name="forms.fVendaTributo" class="form-validation" novalidate autocomplete="off">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Qual Imposto: <i class="obrigatorio">*</i></label>
+                                <ui-select name="tri_imp_cod_imp" id="tri_imp_cod_imp" class="form-control" ng-model="objImposto.tri_imp_cod_imp" theme="select2" ng-change="mudarImposto(true)" ng-disabled="params.acao != 1">
+                                    <ui-select-match placeholder="Selecione o Imposto">{{$select.selected.imp_descricao}}</ui-select-match>
+                                    <ui-select-choices repeat="imp.imp_cod_imp as imp in arrImposto |  propsFilter: {imp_descricao:$select.search}">
+                                        <span ng-bind-html="imp.imp_descricao | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8" ng-if="flgAtivoCso">
+                            <div class="form-group">
+                                <label class="label-link"><a ng-click="trocarSituacaoCs(2)">CSO</a></label>
+                                <ui-select class="form-control" ng-model="objImposto.tri_cso" theme="select2" ng-change="mudarCstCso()">
+                                    <ui-select-match placeholder="Selecione o CSO">{{$select.selected.id}} - {{$select.selected.nome}}</ui-select-match>
+                                    <ui-select-choices repeat="cso.id as cso in arrCso | filter: $select.search">
+                                        <span ng-bind-html="cso.id + ' - ' +cso.nome | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-8"  ng-if="flgAtivoCst">
+                            <div class="form-group">
+                                <label class="label-link"><a ng-click="trocarSituacaoCs(1)">CST</a></label>
+                                <ui-select class="form-control" ng-model="objImposto.tri_cst" theme="select2" ng-change="mudarCstCso()">
+                                    <ui-select-match placeholder="Selecione o CST">{{$select.selected.id}} - {{$select.selected.nome}}</ui-select-match>
+                                    <ui-select-choices repeat="cst.id as cst in arrCst | filter: $select.search">
+                                        <span ng-bind-html="cst.id + ' - ' +cst.nome | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row" ng-if="!escondePnlImp && !itemProduto.pro_eh_complemento_imposto">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Base de Cálculo</label>
+                                <div class="input-group pull-left">
+                                    <input class="form-control"  type="text" ng-model="objImposto.tri_bc_vlr_liquido_format"  ui-hide-group-sep disabled>
+                                    <span class="input-group-addon text-sm"  ng-click="abrirEditarBc()" style="cursor: pointer;" ng-if="objImposto.tri_imp_cod_imp == 1 || objImposto.tri_imp_cod_imp == 2 || objImposto.tri_imp_cod_imp == 11">Edit</span>
+                                    <span class="input-group-addon text-sm"  ng-if="objImposto.tri_imp_cod_imp != 1 && objImposto.tri_imp_cod_imp != 2  && objImposto.tri_imp_cod_imp != 11">&nbsp;</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>{{objImposto.labelAliq}}</label>
+                                <div class="input-group pull-left">
+                                    <input class="form-control clear-disabled" size="10" type="text" ng-keyup="calcularImp()" ng-model="objImposto.tri_aliq_perc" onclick="this.select()" ui-negative-number ui-number-mask="mdecimals" style="z-index:0">
+                                    <span class="input-group-addon">%</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Valor do Imposto</label>
+                                <div class="input-group pull-left">
+                                    <input class="form-control" readonly="readonly" type="text" ng-model="objImposto.tri_imp_vlr_liquido_format" >
+                                    <span class="input-group-addon text-sm" ng-click="abrirEditarImp()" style="cursor: pointer;" ng-if="objImposto.tri_imp_cod_imp == 2" >Edit</span>
+                                    <span class="input-group-addon text-sm"  ng-if="objImposto.tri_imp_cod_imp != 2">&nbsp;</span>
+                                </div>
+                            </div>
+                            <!--<span class="text-operator" style="left: 0px">=</span>-->
+                        </div>
+                    </div>
+
+                    <!-- APENAS PARA NOTAS DE COMPLEMENTO! -->
+                    <div ng-if="itemProduto.pro_eh_complemento_imposto">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Base de Cálculo</label>
+                                <input class="form-control"  type="text" ng-model="objImposto.tri_bc_vlr_liquido"  ui-hide-group-sep ui-money-mask="mdecimals">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Valor do Imposto</label>
+                                <input class="form-control" type="text" ng-model="objImposto.tri_imp_vlr_liquido" ui-money-mask="mdecimals">
+                            </div>
+                            <!--<span class="text-operator" style="left: 0px">=</span>-->
+                        </div>
+                    </div>
+            </div>
+
+            <div class="row">
+                &nbsp;
+            </div>
+
+            <div class="row  sample-show-hide" ng-show="objImposto.editarBc == 1" style="background-color: #FAFFAE;padding-top:7px">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Valor da BC Inicial</label>
+                        <input class="form-control" placeholder="Digite o valor" ng-keyup="calcularImp()" type="text" ng-model="objImposto.tri_bc_vlr_bruto" ui-money-mask="mdecimals" onclick="this.select()">
+                    </div>
+                </div>
+
+
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>Redução</label>
+                        <div class=" input-group pull-left">
+                            <input class="form-control clear-disabled" size="10" type="text" ng-keyup="calcularImp()" ng-model="objImposto.tri_bc_perc_reducao" onclick="this.select()"   ui-number-mask="mdecimals" style="z-index:0">
+                            <span class="input-group-addon">%</span>
+                        </div>
+
+                    </div>
+                    <span class="text-operator" style="left: 0">-</span>
+                </div>
+                <div class="col-md-2">
+                    <div class="form-group">
+                        <label>MVA</label>
+                        <div class=" input-group pull-left">
+                            <input class="form-control clear-disabled" size="10" type="text" ng-keyup="calcularImp()" ng-model="objImposto.tri_bc_perc_mva" onclick="this.select()"  ui-number-mask="mdecimals" style="z-index:0">
+                            <span class="input-group-addon">%</span>
+                        </div>
+
+                    </div>
+                    <span class="text-operator" style="left: 0">&nbsp;+</span>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Valor da BC FINAL</label>
+                        <input class="form-control" readonly="readonly" type="text" ng-model="objImposto.tri_bc_vlr_liquido_format" >
+                    </div>
+                    <span class="text-operator" style="left: 0px">&nbsp;=</span>
+                </div>
+
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+
+            <div class="row sample-show-hide" ng-show="objImposto.editarImp == 1 && !itemProduto.pro_eh_complemento_imposto" style="background-color: #FAFFAE;padding-top:7px">
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Valor do Imposto</label>
+                        <input class="form-control" readonly="readonly" type="text" ng-model="objImposto.tri_imp_vlr_bruto_format" >                            </div>
+                </div>
+
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Valor ICMS Interestadual</label>
+                        <div class=" input-group pull-left">
+                            <input class="form-control clear-disabled" type="text" ng-keyup="calcularImp()" ng-model="objImposto.tri_imp_vlr_diferenca" onclick="this.select()"  ui-negative-number ui-number-mask="mdecimals" style="z-index:0">
+                            <span class="input-group-addon"></span>
+                        </div>
+
+                    </div>
+                    <span class="text-operator" style="left: 0">+</span>
+                </div>
+                <div class="col-md-4">
+                    <div class="form-group">
+                        <label>Valor do Imposto</label>
+                        <input class="form-control" readonly="readonly" type="text" ng-model="objImposto.tri_imp_vlr_liquido_format" >
+                    </div>
+                    <!--<span class="text-operator" style="left: 0px">=</span>-->
+                </div>
+
+            </div>
+
+
+            <div class="row" ng-if="!itemProduto.pro_eh_complemento_imposto">
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-3">
+                </div>
+                <div class="col-md-3">
+                    <span><a href="javascript:void(0)" ng-click="abrirEditarDadosContab()" class="">Dados Contábeis</a></span>
+                </div>
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <div class="row">
+                &nbsp;
+            </div>
+            <!--<div class="row">-->
+            <!--<div class="col-md-4">-->
+            <!--<div class="form-group">-->
+            <!--<label>Valor do Imposto</label>-->
+            <!--<input class="form-control" readonly="readonly" type="text" ng-model="objImposto.tri_imp_vlr_bruto" ui-money-mask="mdecimals" >-->
+
+            <!--</div>-->
+            <!--</div>-->
+            <!--<div class="col-md-4">-->
+            <!--<div class="form-group">-->
+            <!--<label>&nbsp;</label>-->
+            <!--<input class="form-control"  placeholder="Digite o valor" type="text" ng-keyup="calcularImp()" ng-model="objImposto.tri_imp_vlr_diferenca" ui-negative-number ui-number-mask="mdecimals" onclick="this.select()">-->
+            <!--</div>-->
+            <!--<span class="text-operator" style="left: 0px">+</span>-->
+            <!--</div>-->
+
+            <!--</div>-->
+
+            <hr>
+
+            <div class="row  sample-show-hide" ng-show="objImposto.editarDadosContab == 1" style="background-color: #FAFFAE;padding-top:7px;padding-bottom: 30px;">
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Valor não Tributado</label>
+                        <input class="form-control" placeholder="Digite o valor" type="text" ng-model="objImposto.tri_naotrib_vlr" ui-money-mask="mdecimals" onclick="this.select()">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Tipo</label>
+                        <ui-select name="tri_naotrib_tip" id="tri_naotrib_tip" class="form-control" ng-model="objImposto.tri_naotrib_tip" theme="select2"  >
+                            <ui-select-match placeholder="Selecione o Tipo da Não Tributação">{{$select.selected.nome}}</ui-select-match>
+                            <ui-select-choices repeat="tip.id as tip in arrTipoNaoTributacao |  propsFilter: {nome:$select.search}">
+                                <span ng-bind-html="tip.nome | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="" style="min-height: 120px;">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Em relação ao valor contábil</label>
+                            <input class="form-control" placeholder="Digite o valor" type="text" ng-model="objImposto.tri_contabil_vlr" ui-money-mask="mdecimals" onclick="this.select()">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Somar no total da nota:</label>
+                            <label class="switch m-t-0 m-l-10">
+                                <input class="switch-input" type="checkbox" ng-model="objImposto.tri_eh_retido_aux">
+                                <span class="switch-label" data-on="Sim" data-off="Não"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            </form>
+        </div>
+    </div>
+</div>

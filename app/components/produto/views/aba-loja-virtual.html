@@ -1,0 +1,210 @@
+
+<div ng-show="getPermissaoSol('9') && !produto.pro_cod_pro && objUsuario.ident_emp != '51728'">
+    <div class="alert alert-info media fade in no-bottom">
+        <p class="alert-texto font-small">
+            <strong>Atenção:</strong> Como sua empresa possui sistema de sincronismo a opção de cadastro de novo {{objBundleTela.labels.L002}} não está disponível.
+        </p>
+    </div>
+</div>
+
+
+
+
+<div ng-show="!getPermissaoSol('9') || produto.pro_cod_pro || objUsuario.ident_emp == '51728'">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group m-b-0">
+                <label style="margin-top:8px;margin-right:12px">Disponível para a Loja Virtual?</label>
+                <label class="switch">
+                    <input class="switch-input" name="pro_eh_visivel_web" id="pro_eh_visivel_web" type="checkbox" ng-model="produto.pro_eh_visivel_web_aux">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label style="margin-top:8px;margin-right:12px">Este {{objBundleTela.labels.L002}} esta visível em sua categoria?</label>
+                <a class="c-pointer" ng-click="setVisibilidade()">
+                    <i class="fa fa-2x fa-{{eye}}"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- ng-show="produto.pro_eh_visivel_web_aux" -->
+    <div class="sample-show-hide">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>URL amigável</label>
+                    <input id="pro_url_amigavel" name="pro_url_amigavel" maxlength="255" type="text" class="form-control" placeholder="Digite a URL amigável do produto" ng-model="produto.pro_url_amigavel">
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Agrupamento</label>
+                    <lv-autocomplete
+                        ng-model="produto.agpProSelect"
+                        clear-input="false"
+                        trigger-list="true"
+                        icon-class="fa fa-book"
+                        search-limit="10"
+                        on-select="onSelectProdutoAgrupamento"
+                        add-select-item="addProdutoAgrupamento"
+                        place-holder="Pesquise por um agrupamento..."
+                        string-entity="agrupamento"
+                        string-service="agrupamento"
+                        display-property="agp_descricao"
+                        confirm-add="true"
+                        string-id="autocomplete-agrupamento"
+                        max-length="255">
+                    </lv-autocomplete>
+
+                    <input id="pro_agp_cod_agp" name="pro_agp_cod_agp" type="hidden" ng-model="produto.pro_agp_cod_agp">
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-md-5">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Modelo</label>
+                                    <input id="pro_modelo" name="pro_modelo" type="text" maxlength="40" class="form-control" placeholder="Digite o modelo" ng-model="produto.pro_modelo">
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Tamanho</label>
+                                    <input id="pro_tamanho" name="pro_tamanho" type="text" maxlength="40" class="form-control" placeholder="Digite o tamanho" ng-model="produto.pro_tamanho">
+                                </div>
+                            </div>
+
+                            <div ng-if="nomeCorEstampa == 'Cores'">
+                                <div class="col-md-12 m-b-15">
+                                    <label class="label-group">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <span>Cor 1</span>
+                                            </div>
+                                            <div class="col-md-6" style="text-align:right">
+                                                <a class="label-link" ng-click="trocarCorEstampa()">Estampa</a>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <div class="form-group">
+                                        <input id="pro_cor_1" name="pro_cor_1" type="text" class="form-control" placeholder="Cor 1" minicolors="customSettings" ng-model="produto.pro_cor_1">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 m-b-15">
+                                    <label>Cor 2</label>
+                                    <div class="form-group">
+                                        <input id="pro_cor_2" name="pro_cor_2" type="text" class="form-control" placeholder="Cor 2" minicolors="customSettings" ng-model="produto.pro_cor_2">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 m-b-15" ng-if="nomeCorEstampa == 'Estampa'">
+                                <div class="form-group m-b-0">
+                                    <label class="label-group">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <span>Estampa</span>
+                                            </div>
+                                            <div class="col-md-6" style="text-align:right">
+                                                <a class="label-link" ng-click="trocarCorEstampa()">Cores</a>
+                                            </div>
+                                        </div>
+                                    </label>
+                                    <div class="form-group m-b-0">
+                                        <div class="row">
+                                            <div ng-if="produto.arr_estampa.length" class="col-md-12">
+                                                <div class="fileinput-new thumbnail m-b-0 c-pointer">
+                                                    <img ng-src="{{imageCache}}{{produto.arr_estampa[0].mid_id}}" class="product" alt="Estampa" ng-click="getJanelaEstampa()">
+                                                </div>
+                                            </div>
+                                            <div ng-if="!produto.arr_estampa.length" class="col-md-12">
+                                                <div class="fileinput-new thumbnail m-b-0 c-pointer" ng-click="getJanelaEstampa()">
+                                                    <img ng-src="../app/images/sem-imagem.jpg" class="product" alt="Sem estampa" style="height:105px">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-7 m-t-10 box-medidas">
+                        <div class="col-sm-12 p-r-0">
+                            <div class="panel no-bottom" style="background-color:#F7F7F7">
+                                <div class="panel-header panel-contols">
+                                    <h3>
+                                        <i class="fa fa-list"></i>
+                                        <strong>Medidas</strong>
+                                    </h3>
+                                    <div class="alert alert-info media m-b-0" style="padding:5px">
+                                        <span class="font-small">
+                                            <i class="fa fa-info"></i> Úteis para o cálculo do frete.
+                                        </span>
+                                    </div>
+                                </div>
+
+                                <div class="panel-content">
+                                    <div class="form-group">
+                                        <label class="col-sm-7 control-label">Peso (kg)</label>
+                                        <div class="col-sm-5 p-r-0 m-b-10">
+                                            <input class="form-control" maxlength="15" type="text" ng-model="produto.pro_peso_bruto" ui-number-mask="3" onclick="this.select()">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-7 control-label">Comprimento (cm)</label>
+                                        <div class="col-sm-5 p-r-0 m-b-10">
+                                            <input class="form-control" maxlength="8" type="text" ng-model="produto.pro_medida_comprimento" number-range minvalue="0" maxvalue="100000">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-7 control-label">Largura (cm)</label>
+                                        <div class="col-sm-5 p-r-0 m-b-10">
+                                            <input class="form-control" maxlength="8" type="text" ng-model="produto.pro_medida_largura" number-range minvalue="0" maxvalue="100000">
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-sm-7 control-label">Altura (cm)</label>
+                                        <div class="col-sm-5 p-r-0 m-b-10">
+                                            <input class="form-control" maxlength="8" type="text" ng-model="produto.pro_medida_altura" number-range minvalue="0" maxvalue="100000">
+                                        </div>
+                                    </div>
+
+                                    <!--
+                                        <div class="form-group">
+                                            <img src="../app/images/medicao.png">
+                                        </div>
+                                    -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12">
+                <div class="form-group m-b-0">
+                    <label>Especificações</label>
+                    <textarea id="pro_especificacao" name="pro_especificacao" rows="4" cols="4" class="form-control" ng-model="produto.pro_especificacao" ckeditor="editorOptions"></textarea>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

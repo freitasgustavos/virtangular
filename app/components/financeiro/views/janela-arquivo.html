@@ -1,0 +1,92 @@
+<div class="modal-dialog">
+    <form method="POST" id="forms.formArquivoModal" name="forms.formArquivoModal" autocomplete="off" novalidate>
+        <div class="modal-content">
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button-sm">
+                    <button type="button" class="btn btn-primary btn-sm pull-left m-0" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong style="font-size:20px">Dados do Arquivo</strong>
+
+                    <span class="pull-right">
+                        <button ng-click="download()" class="btn btn-primary btn-sm m-r-0" type="button">
+                            <i class="fa fa-download"></i> &nbsp; Download
+                        </button>
+                    </span>
+                </h4>
+            </div>
+
+            <div class="modal-body p-t-10" style="overflow:inherit!important">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <hr class="m-b-10 m-t-5">
+                        </div>
+
+                        <div class="col-md-12">
+                            <table class="table table-bordered font-small m-b-0">
+                                <thead>
+                                    <tr>
+                                        <th colspan="2">
+                                            <strong>DADOS DO ARQUIVO .OFX</strong>
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <strong>CÓDIGO</strong>
+                                        </td>
+                                        <td>
+                                            <span>{{objArquivo.mid_nro}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>DESCRIÇÃO</strong>
+                                        </td>
+                                        <td>
+                                            <span>{{objArquivo.mid_descricao}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>SITUAÇÃO</strong>
+                                        </td>
+                                        <td>
+                                            <div ng-switch on="objArquivo.mid_status">
+                                                <div ng-switch-when="0">
+                                                    <span class="badge badge-success">
+                                                        <strong>
+                                                            <small>IMPORTADO</small>
+                                                        </strong>
+                                                    </span>
+                                                </div>
+                                                <div ng-switch-when="1">
+                                                    <span class="badge badge-warning">
+                                                        <strong>
+                                                            <small>NÃO IMPORTADO</small>
+                                                        </strong>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <strong>DT. CADASTRO</strong>
+                                        </td>
+                                        <td>
+                                            <span>{{objArquivo.mid_dat_cadastro}}</span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

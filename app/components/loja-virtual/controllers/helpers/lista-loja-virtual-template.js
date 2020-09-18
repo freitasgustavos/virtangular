@@ -1,0 +1,1 @@
+$('.maphilight').maphilight();

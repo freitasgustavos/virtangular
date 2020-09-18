@@ -1,0 +1,205 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group m-b-0">
+            <label>{{venda.labelTitular}} <i class="obrigatorio">*</i></label>
+            <div class="append-icon append-typeahead">
+                <lv-autocomplete
+                    ng-if="venda.tipoNatureza != 'outras-entradas' &&  venda.tipoNatureza != 'outras-saidas'"
+                    ng-model="venda.clienteSelect"
+                    clear-input="false"
+                    trigger-list="true"
+                    icon-class="fa fa-user"
+                    obj-search="objFiltroCliente"
+                    search-limit="10"
+                    on-select="onSelectCliente"
+                    add-select-item="addCliente"
+                    place-holder="Selecione o {{venda.labelTitular}}"
+                    string-entity="{{venda.labelTitular}}"
+                    string-service="cliente"
+                    display-property="cad_nome_razao"
+                    display-complement="cad_cpf_cnpj"
+                    confirm-add="true"
+                    string-id="autocomplete-cliente">
+                </lv-autocomplete>
+
+                <lv-autocomplete
+                    ng-if="venda.tipoNatureza == 'outras-entradas' ||  venda.tipoNatureza == 'outras-saidas'"
+                    ng-model="venda.clienteSelect"
+                    clear-input="false"
+                    trigger-list="true"
+                    icon-class="fa fa-user"
+                    obj-search="objFiltroPessoa"
+                    search-limit="10"
+                    on-select="onSelectCliente"
+                    add-select-item="addPessoa"
+                    place-holder="Pesquise por um cadastro..."
+                    string-entity="cliente"
+                    string-service="cliente"
+                    display-property="cad_nome_razao"
+                    display-complement="cad_cpf_cnpj"
+                    confirm-add="true"
+                    string-id="autocomplete-cliente">
+                </lv-autocomplete>
+
+                <input type="hidden" ng-model="venda.fin_cad_cod_cad">
+
+                <!-- Botão para edição dos dados do cliente. -->
+                <div ng-show="venda.clienteSelect && venda.clienteSelect != ' ' && cliente.cad_cod_cad">
+                    <small class="link-append lv-plugin" ng-click="getJanelaCliente(cliente.cad_cod_cad)">Editar</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row m-t-15" ng-show="venda.clienteSelect && venda.clienteSelect != ' '">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>Contato</label>
+            <div class="profil-info">
+                <i class="fa fa-user"></i>{{cliente.contato.cto_nome}}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>E-mail</label>
+            <div class="profil-info">
+                <i class="icon-envelope"></i>{{cliente.contato.cto_email}}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>Telefone</label>
+            <div class="profil-info">
+                <i class="fa fa-phone phone"></i>{{cliente.contato.cto_fone | telefone}}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>Celular</label>
+            <div class="profil-info">
+                <i class="fa fa-phone phone"></i>{{cliente.contato.cto_celular | telefone}}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>{{(cliente.cad_pf_pj == 1) ? 'CPF' : 'CNPJ'}}</label>
+            <div class="profil-info">
+                <i class="icon-credit-card"></i>{{cliente.cad_cpf_cnpj}}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>{{(cliente.cad_pf_pj == 1) ? 'RG' : 'IE'}}</label>
+            <div class="profil-info">
+                <i class="fa fa-eye"></i>{{cliente.cad_rg_iest}}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group m-b-0">
+            <label>Endereço de Faturamento</label>
+            <input type="text" class="form-control not-disabled-cursor" ng-value="venda.enderecoFaturamento" disabled="disabled">
+        </div>
+    </div>
+
+    <div ng-if="venda.tipoNatureza == 'venda'">
+        <div class="col-md-12">
+            <div class="form-group m-b-0 m-t-15">
+                <label>Endereço de Entrega</label>
+                <ui-select class="form-control" ng-model="cliente.enderecoEntrega" theme="select2">
+                    <ui-select-match placeholder="Selecione o endereço">{{$select.selected.nome}}</ui-select-match>
+                    <ui-select-choices repeat="end.id as end in arrEnderecoEntrega | filter: $select.search">
+                        <span ng-bind-html="end.nome | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Rastreamento apenas para compras e vendas. -->
+<div ng-show="(venda.clienteSelect && venda.clienteSelect != ' ') && (venda.codNatureza == 1 || venda.codNatureza == 2)">
+    <div class="row">
+        <div class="col-md-12 m-t-15">
+            <div class="panel-header p-0">
+                <h3 class="ng-binding">
+                    <i class="fa fa-bus"></i>
+                    <strong>Rastreamento</strong> de Mercadoria
+                </h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12" ng-if="venda.fin_tip_frete_desc">
+            <div class="form-group">
+                <label>Frete Escolhido:</label>
+                <div class="profil-info">
+                    {{venda.fin_tip_frete_desc}}
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="c-block">Código de Rastreamento</label>
+                <div class="append-icon append-typeahead">
+                    <input class="form-control" placeholder="Código de rastreamento..." maxlength="40" type="text" ng-model="venda.fin_rastreio">
+                    <small class="link-append" ng-click="getJanelaRastreamento(venda.fin_rastreio, venda.fin_nro_lan)">Rastrear</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group box-select-fase" ng-class="{'compra' : venda.op == 'compra'}">
+                <label class="c-block">Fase</label>
+                <ui-select class="form-control" ng-model="venda.fin_6025_fase" theme="select2">
+                    <ui-select-match placeholder="Selecione a fase">{{$select.selected.par_c01}}</ui-select-match>
+                    <ui-select-choices repeat="fas.par_pai as fas in arrFase | filter: $select.search">
+                        <span ng-bind-html="fas.par_c01 | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-show="(venda.clienteSelect && venda.clienteSelect != ' ') && (venda.codNatureza != 1 && venda.codNatureza != 2)">
+    <div class="row">
+        <div class="col-md-12 m-t-15">
+            <div class="panel-header p-0">
+                <h3 class="ng-binding">
+                    <i class="fa fa-bus"></i>
+                    <strong>Rastreamento</strong>
+                </h3>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group box-select-fase" ng-class="{'compra' : venda.op == 'compra'}">
+                <label class="c-block">Fase</label>
+                <ui-select class="form-control" ng-model="venda.fin_6025_fase" theme="select2">
+                    <ui-select-match placeholder="Selecione a fase">{{$select.selected.par_c01}}</ui-select-match>
+                    <ui-select-choices repeat="fas.par_i01 as fas in arrFase | filter: $select.search">
+                        <span ng-bind-html="fas.par_c01 | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+</div>

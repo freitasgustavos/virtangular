@@ -1,0 +1,51 @@
+
+<div id="box-fiscal">
+    <div class="col-md-3 p-l-0 p-r-0">
+        <div class="panel">
+            <div class="panel-header">
+                <h3>
+                    <i class="fa fa-file-text"></i>
+                    <strong>Fiscal</strong>
+                </h3>
+            </div>
+            <div class="panel-content panel-scroll p-t-0" style="min-height:798px;max-height:798px">
+                <ul class="product-tabs m-b-20">
+                    <li ng-class="{'active' : tab==1}" ng-show="::getPermissaoSol('2')">
+                        <a ng-click="tab=1">
+                            <i class="fa fa-file-text-o"></i>
+                            <span>Sintegra</span>
+                        </a>
+                    </li>
+                    <li ng-class="{'active' : tab==3}" ng-show="::getPermissaoSol('2') && (getPermissaoPlan('14') || getPermissaoPlan('15') || getPermissaoPlan('16'))">
+                        <a ng-click="tab=3">
+                            <i class="fa fa-file-text-o"></i>
+                            <span>Sped Fiscal</span>
+                        </a>
+                    </li>
+                    <li ng-class="{'active' : tab==2}" ng-show="::getPermissao('40')">
+                        <a ng-click="tab=2">
+                            <i class="fa fa-code"></i>
+                            <span>Exportar Dados</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9 p-r-0">
+        <div class="panel">
+            <div class="tabs-container">
+                <div class="product-tabs-content tab-content" id="box-sintegra" ng-show="tab == 1">
+                    <div class="panel-inner-more" ng-include="'fiscal/views/aba-fiscal-sintegra.html'"></div>
+                </div>
+                <div class="product-tabs-content tab-content" id="box-sped" ng-show="tab == 3">
+                    <div class="panel-inner-more" ng-include="'fiscal/views/aba-fiscal-sped-efd.html'"></div>
+                </div>
+                <div class="product-tabs-content tab-content" id="box-xmls" ng-show="tab == 2">
+                    <div class="panel-inner-more" ng-include="'fiscal/views/aba-exporta-xml.html'"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

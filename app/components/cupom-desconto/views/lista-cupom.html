@@ -1,0 +1,43 @@
+
+<table class="table table-hover" ng-show="arrCupom.length && !objInfiniteScroll.flagLoadingBusy">
+    <thead>
+        <tr>
+            <th>Cód.</th>
+            <th>Campanha</th>
+            <th>Cupom</th>
+            <th>Restam</th>
+            <th>Validade</th>
+        </tr>
+    </thead>
+    <tbody infinite-scroll="listarCupons()" infinite-scroll-distance="0" infinite-scroll-disabled="objInfiniteScroll.flagCupomBusy">
+        <tr ng-repeat="cupons in arrCupom" class="c-pointer" ng-click="getCupom(cupons.cup_nro_cup)" ng-class="{selected: cupons.cup_nro_cup === cupCodCupSelected}">
+            <td>
+                <span>{{cupons.cup_nro_cup}}</span>
+            </td>
+            <td>
+                <span>{{cupons.cup_descricao}}</span>
+            </td>
+            <td>
+                <span>{{cupons.cup_codigo_cupom}}</span>
+            </td>
+            <td>
+                <span>{{cupons.cup_qtd_expiracao}}</span>
+            </td>
+            <td>
+                <span>{{cupons.cup_dat_expiracao}}</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<div class="panel-content p-0">
+    <div ng-if="objInfiniteScroll.flagLoadingBusy">
+        <circle-spinner></circle-spinner>
+    </div>
+    <div ng-if="!arrCupom.length && flagMsg">
+        <div class="alert alert-warning alert-fade font-small" role="alert">
+            <strong>Atenção:</strong> Nenhum registro encontrado!
+        </div>
+    </div>
+</div>

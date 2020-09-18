@@ -1,0 +1,33 @@
+ <table class="table table-hover">
+    <thead>
+        <tr>
+            <th>Cód.</th>
+            <th>Descrição</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="agrupamento in arrAgrupamento" style="cursor:pointer" ng-click="getAgrupamento(agrupamento.agp_cod_agp)" ng-class="{selected: agrupamento.agp_cod_agp === agpCodAgpSelected}">
+            <td>
+                <div>
+                    <span>{{agrupamento.agp_cod_agp}}</span>
+                </div>
+            </td>
+            <td>
+                <div>
+                    <span>{{agrupamento.agp_descricao}}</span>
+                </div>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+<div class="panel-content">
+    <div ng-if="flagLoadingLista">
+        <circle-spinner></circle-spinner>
+    </div>
+    <div ng-if="!arrAgrupamento.length && flagMsg">
+        <div class="alert alert-warning alert-fade" role="alert">
+            <strong>Atenção:</strong> Nenhum registro encontrado.
+        </div>
+    </div>
+</div>

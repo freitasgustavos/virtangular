@@ -1,0 +1,60 @@
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <treasure-overlay-spinner active="spinnerForm.active">
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('reload')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>Dados </strong> do {{objBundleTela.labels.L002}}
+
+                    <strong ng-if="produto.pro_cod_pro" style="color:#319DB5">#{{proCodProSelected}}</strong>
+                    <strong ng-if="produto.pro_cod_pro && getPermissaoSol('9')" style="color:#5B5B5B;margin-left:10px">#{{produto.pro_cod_sinc}}</strong>
+
+                    <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right" data-dismiss="modal" ladda="salvarProdutoLoading" ng-click="triggerSalvarProduto()" id="bt-salvar-produto">
+                        <i class="fa fa-check"></i> &nbsp; Salvar
+                    </button>
+                </h4>
+            </div>
+
+            <div class="modal-body" style="overflow:inherit!important">
+                <div class="panel-content">
+                    <form role="form" name="forms.formProduto" id="forms.formProduto" class="form-validation" autocomplete="off" novalidate>
+                        <tabset class="tab-fade-in">
+                            <tab active="tabs[0].active" id="tab-produto-principal-modal">
+                                <tab-heading>Principal</tab-heading>
+                                <div id="tab-0">
+                                    <div ng-include="'produto/views/aba-produto-principal.html'"></div>
+                                </div>
+                            </tab>
+
+                            <tab active="tabs[1].active" ng-if="::getPermissaoSol('7') && pro_eh_servico === 0" ng-click="initCKeditor()" id="tab-produto-ecommerce-modal">
+                                <tab-heading>E-commerce</tab-heading>
+                                <div id="tab-1">
+                                    <div ng-include="'produto/views/aba-loja-virtual.html'"></div>
+                                </div>
+                            </tab>
+
+                            <tab active="tabs[2].active" id="tab-produto-estoque-modal">
+                                <tab-heading>{{objBundleTela.labels.L004}}</tab-heading>
+                                <div id="tab-2" class="box-modal-panels">
+                                    <div ng-include="'produto/views/aba-produto-precificacao.html'"></div>
+                                </div>
+                            </tab>
+
+                            <tab active="tabs[3].active" id="tab-produto-imposto-modal">
+                                <tab-heading>Impostos</tab-heading>
+                                <div id="tab-3" class="box-modal-produto">
+                                    <div ng-include="'produto/views/aba-produto-tributo.html'"></div>
+                                </div>
+                            </tab>
+                        </tabset>
+                    </form>
+                </div>
+            </div>
+            <div class="modal-footer text-center"></div>
+        </treasure-overlay-spinner>
+    </div>
+</div>

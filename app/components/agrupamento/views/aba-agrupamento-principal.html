@@ -1,0 +1,179 @@
+
+<div class="row">
+    <div class="panel-body p-0">
+        <div class="box-imagem-agrupamento text-center col-md-2 p-l-0">
+            <div ng-if="agrupamento.imagem_principal">
+                <img ng-src="{{imageCache}}{{agrupamento.imagem_principal.mid_id}}&thumb=2" class="img-responsive img-mw img-thumbnail" alt="{{agrupamento.agp_descricao}}" ng-click="getFormUpload(agrupamento.agp_cod_agp)">
+            </div>
+            <div ng-if="agrupamento.imagem_principal == null">
+                <img ng-src="../app/images/sem-imagem.jpg" class="img-responsive img-mw img-thumbnail" alt="Sem imagem" ng-click="getFormUpload(agrupamento.agp_cod_agp)">
+            </div>
+        </div>
+
+        <div class="col-md-8">
+            <div class="form-group">
+                <label>Descrição <i class="obrigatorio">*</i></label>
+                <input name="agp_descricao" id="agp_descricao_longa" maxlength="255" class="form-control" placeholder="Digite a descrição do agrupamento" ng-model="agrupamento.agp_descricao" ng-class="{true : 'form-error'}[submitted && forms.formAgrupamento.agp_descricao.$invalid]" required type="text" ng-blur="setUrlAmigavel()">
+            </div>
+            <div ng-show="submitted || (forms.formAgrupamento.agp_descricao.$invalid && !forms.formAgrupamento.agp_descricao.$pristine)">
+                <p class="text-danger form-error alert1" ng-show="(forms.formAgrupamento.agp_descricao.$error.required)">Digite a descrição.</p>
+            </div>
+        </div>
+
+        <div class="col-md-2 text-center">
+            <label>Visível</label>
+            <a class="c-pointer" ng-click="visibilidadeAgp()" data-toggle="tooltip" title="Define se este agrupamento estará visível ou não na loja virutal!">
+                <i class="fa fa-2x fa-{{eye}}"></i>
+            </a>
+        </div>
+
+        <div class="col-md-10 p-r-0">
+            <div class="form-group form-ui-select">
+                <label>Marcações</label>
+                <ui-select multiple tagging="tagTransform" ng-model="agrupamento.agrupamentoMarcas" theme="select2" style="width:100%" on-select="onSelectedMarca($item)">
+                    <ui-select-match placeholder="Selecione uma marcação">{{$item.name}}</ui-select-match>
+                    <ui-select-choices repeat="marca in arrMarca | propsFilter: {name: $select.search}">
+                        <div ng-if="marca.isTag" ng-bind-html="marca.name + ' (novo)' | highlight: $select.search"></div>
+                        <div ng-if="!marca.isTag" ng-bind-html="marca.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+
+        <div class="col-md-12 m-t-10 m-b-10 form-item">
+            <div class="col-md-10 p-r-0">
+                <div class="form-group m-b-0">
+                    <label class="form-label-itens">
+                        <span class="pull-left">Selecione os itens que irão compor este agrupamento</span>
+                        <small class="pull-right c-primary" ng-if="newItem.pro_cod_pro">
+                            #{{newItem.pro_cod_pro}}
+                        </small>
+                    </label>
+                    <lv-autocomplete
+                        ng-model="newItem.pro_descricao_longa"
+                        clear-input="false"
+                        trigger-list="true"
+                        icon-class="fa fa-cube"
+                        search-limit="20"
+                        obj-search="objFiltroProduto"
+                        on-select="onSelectProdutoAgp"
+                        add-select-item="addProdutoAgp"
+                        place-holder="Pesquise por um produto..."
+                        string-entity="produto"
+                        string-service="produto"
+                        confirm-add="true"
+                        display-property="pro_descricao_longa"
+                        string-id="autocomplete-produto">
+                    </lv-autocomplete>
+                </div>
+            </div>
+
+            <div class="col-md-2 p-r-0">
+                <div class="form-group">
+                    <label>Inserir</label>
+                    <br>
+                    <button class="btn btn-primary btn-sm m-0" ng-click="addItemAgp()" event-focus="click" event-focus-id="newItem.pro_cod_pro" ng-disabled="!newItem.pro_cod_pro">
+                        <i class="glyphicon glyphicon-plus-sign" style="font-size:20px"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row" ng-show="agrupamento.agrupamentoProdutos.length">
+    <table class="table table-hover">
+        <thead>
+            <tr>
+                <th>Cód.</th>
+                <th>Descrição</th>
+                <th>Modelo</th>
+                <th>Cores</th>
+                <th>Visível</th>
+                <th>Remover</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="item in agrupamento.agrupamentoProdutos" ng-class="{active: isActive($index)}" class="fadeIn">
+                <td>
+                    <div>
+                        <span>{{item.pro_cod_pro}}</span>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <span>{{item.pro_descricao_longa}}</span>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <span>{{item.pro_modelo}}</span>
+                    </div>
+                </td>
+                <td>
+                    <!--
+                    <div>
+                        <div ng-show="item.pro_cor_1">
+                            <div class="form-group">
+                                <input id="pro_cor_1" name="pro_cor_1" type="text" class="form-control" minicolors="customSettings" placeholder="Cor 1" ng-model="item.pro_cor_1">
+                            </div>
+                        </div>
+                        <div ng-show="item.pro_cor_2">
+                            <div class="form-group">
+                                <input id="pro_cor_2" name="pro_cor_2" type="text" class="form-control"  minicolors="customSettings" placeholder="Cor 2" ng-model="item.pro_cor_2">
+                            </div>
+                        </div>
+                    </div>
+                    -->
+
+                    <div ng-switch on="item.pro_estampa">
+                        <div ng-switch-when="N">
+                            <ul class="product-attr-list attr-color">
+                                <li ng-if="item.pro_cor_1">
+                                    <label>
+                                        <a href="javascript:void(0)" class="attr-name" ng-style="{'background' : item.pro_cor_1}" title="Cor">
+                                            <span ng-if="getVerificaCor(item)" class="mc">
+                                                <span ng-style="{'border-bottom-color' : item.pro_cor_2}"></span>
+                                            </span>
+                                        </a>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                        <div ng-switch-when="S">
+                            <ul class="product-attr-list attr-color">
+                                <li>
+                                    <label>
+                                        <a href="javascript:void(0)" title="Estampa">
+                                            <img alt="Estampa" class="attr-estampa" ng-src="{{imageCache}}{{item.produto_estampa.mid_id}}" img-tooltip="item">
+                                        </a>
+                                    </label>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <div class="text-center">
+                        <a style="cursor:pointer" ng-click="visibilidadeProduto(item)" data-toggle="tooltip" title="Define se este produto estará visível ou não na loja virutal!"><span ng-bind-html="item.pro_eye"></span></a>
+                    </div>
+                </td>
+                <td>
+                    <div class="text-center">
+                        <a style="cursor:pointer" ng-click="removeItem(item )" data-toggle="tooltip" title="Remove este produto deste agrupamento!"><span><i class="fa fa-times" aria-hidden="true"></i></span></a>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+
+<div class="row" ng-show="!agrupamento.agrupamentoProdutos.length && flagMsg">
+    <div class="alert alert-warning m-t-10">
+        <p class="font-small m-b-0">
+            <strong>Atenção:</strong> Este agrupamento não possui produtos vinculados a ele!
+        </p>
+    </div>
+</div>

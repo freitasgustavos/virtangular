@@ -1,0 +1,52 @@
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="panel">
+            <div class="panel-header panel-controls">
+                <h3>
+                    <i class="fa fa-table"></i>
+                    <strong>Listagem</strong> de Usuários
+                </h3>
+            </div>
+
+            <div class="panel-content" ng-if="arrUsuarios.length > 0">
+                <table class="table table-striped grid-anotacoes" style="font-size:12px">
+                    <thead>
+                        <tr>
+                            <th width="20%">Dt. Cadastro</th>
+                            <th width="40%">Nome</th>
+                            <th width="30%">E-mail</th>
+                            <th width="20%">Situação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="usuario in arrUsuarios">
+                            <td>{{usuario.usu_dat_cadastro | dateFormat}}</td>
+                            <td>{{usuario.usu_nome}}</td>
+                            <td>{{usuario.usu_email}}</td>
+                            <td ng-if="usuario.usu_status_ativo == 0 || usuario.usu_status_ativo == null">
+                                <span class="label label-danger">INATIVO</span>
+                            </td>
+                            <td ng-if="usuario.usu_status_ativo == 1">
+                                <span class="label label-success">ATIVO</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td class="t-right" colspan="4">
+                                <strong>Quantidade de registro(s) {{arrUsuarios.length}}</strong>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <div class="panel-content" ng-if="!arrUsuarios.length && spinnerForm.active === false">
+                <div class="alert alert-warning alert-fade font-small" role="alert" style="float:left;width:100%;margin-top:10px">
+                    <strong>Atenção:</strong> Nenhum usuário vinculado ao perfil {{objPerfil.prf_nome_perfil}} até o momento!
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

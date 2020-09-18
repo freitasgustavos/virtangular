@@ -1,0 +1,62 @@
+<div class="modal-dialog" style="margin-top: -80px">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title modal-title-button">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                <strong>Dados</strong> da Base de Cálculo
+
+                <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarImpostoLoading" ng-click="salvarImposto()">
+                    <i class="fa fa-check"></i> &nbsp; Salvar
+                </button>
+
+                <span class="pull-right">
+                    <a class="panel-close m-r-20 btn-delete" title="Remover" ng-if="objImposto.tri_imp_cod_imp != 1" ng-click="cancelarTributo(objImposto.$index)">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </span>
+            </h4>
+        </div>
+
+        <div class="modal-body">
+            <!-- O formulário é apenas mostrado quando o modo de edição é habilitado. -->
+            <div id="box-edicao" class="sample-show-hide">
+                <form name="forms.fVendaTributo" class="form-validation" novalidate autocomplete="off">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Valor da BC Inicial</label>
+                                <input class="form-control" placeholder="Digite o valor" ng-keyup="calcularImp()" type="text" ng-model="objModalBc./var/www/virtangular/app/components/venda/views/janela-atributo.html
+/var/www/virtangular/app/components/venda/views/janela-tributo.html
+/var/www/virtangular/app/components/venda/views/janela-tributo-bc.html" ui-money-mask="mdecimals" onclick="this.select()">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>MVA(%)</label>
+                                <div class=" input-group pull-left">
+                                    <input class="form-control clear-disabled" size="10" type="text" ng-keyup="calcularImp()" ng-model="objModalBc.tri_bc_perc_mva" onclick="this.select()"  ui-negative-number ui-number-mask="mdecimals" style="z-index:0">
+                                    <span class="input-group-addon">%</span>
+                                </div>
+
+                            </div>
+                            <span class="text-operator" style="left: 0">+</span>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Valor da BC FINAL</label>
+                                <input class="form-control" readonly="readonly" type="text" ng-model="objModalBc.tri_bc_vlr_liquido" ui-money-mask="mdecimals" >
+                            </div>
+                            <span class="text-operator" style="left: 0px">=</span>
+                        </div>
+
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

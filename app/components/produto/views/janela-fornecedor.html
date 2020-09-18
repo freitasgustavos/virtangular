@@ -1,0 +1,110 @@
+<div class="modal-dialog modal-not-footer">
+    <form id="forms.formsFornecedor" name="forms.formsFornecedor" method="POST" autocomplete="off" role="form">
+        <div class="modal-content">
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>Fornecedores</strong>
+
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarFornecedorLoading" ng-click="salvarAlteracoes()">
+                        <i class="fa fa-check"></i> &nbsp; Salvar
+                    </button>
+                </h4>
+            </div>
+
+            <div class="modal-body" style="width:100%;overflow:hidden">
+                <div class="col-md-12 form-append">
+                    <div class="row">
+                        <div class="col-md-11 p-l-0">
+                            <div class="form-group m-b-0">
+                                <label>Fornecedor</label>
+                                <div class="append-icon append-typeahead append-autocomplete">
+                                    <lv-autocomplete
+                                        ng-model="fornecedorSelect"
+                                        clear-input="false"
+                                        trigger-list="true"
+                                        icon-class="fa fa-user"
+                                        obj-search="objFiltroFornecedor"
+                                        search-limit="20"
+                                        on-select="onSelectFornecedor"
+                                        add-select-item="addFornecedor"
+                                        place-holder="Pesquise por um fornecedor..."
+                                        string-entity="Fornecedor"
+                                        string-service="cliente"
+                                        display-property="cad_nome_razao"
+                                        confirm-add="false"
+                                        string-id="autocomplete-fornecedor">
+                                    </lv-autocomplete>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1 p-r-0 p-l-0">
+                            <div class="form-group">
+                                <label>Lançar</label>
+                                <br>
+                                <button class="btn btn-primary btn-sm m-0" ng-click="incluirFornecedor()" ng-disabled="!objFornecedor.cad_cod_cad">
+                                    <i class="fa fa-plus-circle" style="font-size:20px"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div class="row" ng-show="arrFornecedor.length">
+                        <table class="table table-hover font-small">
+                            <colgroup>
+                                <col width="15%">
+                                <col width="35%">
+                                <col width="45%">
+                                <col width="5%">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>Código</th>
+                                    <th>Nome</th>
+                                    <th class="text-center">Código Equivalente</th>
+                                    <th class="text-center">Remover</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="fornecedor in arrFornecedor">
+                                <td>
+                                    <span>{{fornecedor.cad_cod_cad}}</span>
+                                </td>
+                                <td>
+                                    <span>{{fornecedor.cad_nome_razao}}</span>
+                                </td>
+                                <td class="text-center">
+                                    <input name="eqv_cod_equivalente" id="eqv_cod_equivalente" maxlength="40" class="form-control" placeholder="Informe o código equivalente..." ng-model="fornecedor.eqv_cod_equivalente" ng-class="{true : 'form-error'}[submitted && forms.formsFornecedor.eqv_cod_equivalente.$invalid]" required type="text" style="width:50%;height:28px">
+                                </td>
+                                <td class="text-center">
+                                    <a class="c-pointer" ng-click="removerFornecedor(fornecedor)" data-toggle="tooltip" title="Remover fornecedor">
+                                        <span>
+                                            <i class="fa fa-times"></i>
+                                        </span>
+                                    </a>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row" ng-show="!arrFornecedor.length">
+                        <div class="alert alert-warning m-t-10">
+                            <p class="font-small m-b-0">
+                                <strong>Atenção:</strong> O produto <strong>{{objProduto.pro_descricao_longa}}</strong> não possui fornecedores cadastrados!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer text-center"></div>
+        </div>
+    </form>
+</div>

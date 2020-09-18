@@ -1,0 +1,46 @@
+
+<div class="row">
+    <div class="panel">
+        <div class="control-btn">
+            <button type="button" data-toggle="modal" class="btn btn-primary btn-sm  pull-right " ng-click="getFormAnotacao()">
+                <i class="fa fa-plus"></i> &nbsp; Nova Anotação
+            </button>
+        </div>
+
+        <div class="panel-header panel-controls">
+            <h3 tooltip-placement="bottom" tooltip="Preencha qualquer anotação que desejar para esse cliente" style="float:left">
+                <i class="fa fa-table"></i>
+                <strong>Listagem</strong> de Anotações
+            </h3>
+        </div>
+
+        <div class="panel-content" ng-if="listaAnotacao.length > 0">
+            <table class="table table-striped grid-anotacoes" style="font-size:12px">
+                <thead>
+                    <tr>
+                        <th width="15%">Data</th>
+                        <th width="30%">Título</th>
+                        <th width="54%">Descrição</th>
+                        <th width="1%"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="anotacao in listaAnotacao" ng-click="getFormAnotacao(anotacao.ano_seq_ano)" id="anotacao-{{$index}}" style="cursor:pointer">
+                        <td>{{anotacao.ano_dat_cadastro | dateFormat}}</td>
+                        <td>
+                            <span tooltip-placement="top" tooltip="{{anotacao.ano_titulo}}">{{anotacao.ano_titulo | strLimit : 25}}</span>
+                        </td>
+                        <td>
+                            <div class="greetings">
+                                <span ng-bind-html="getHTMLAnotacao(anotacao.ano_historico)"></span>
+                            </div>
+                        </td>
+                        <td ng-click="$event.stopPropagation()">
+                            <a class="a-trigger" ng-click="mostrarAnotacao(anotacao, $index)">Mais</a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

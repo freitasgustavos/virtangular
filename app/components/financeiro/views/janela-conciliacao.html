@@ -1,0 +1,256 @@
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header p-b-0">
+            <h4 class="modal-title modal-title-button-sm">
+                <button type="button" class="btn btn-primary btn-embossed btn-sm pull-left m-0" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                <strong style="font-size:20px">Conciliar</strong>
+
+                <span class="pull-right" ng-show="!objModalOpcoes.FLAG">
+                    <button type="button" class="btn btn-primary btn-embossed btn-sm pull-right m-r-0" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-ban"></i> &nbsp; Cancelar
+                    </button>
+                </span>
+
+                <span class="pull-right" ng-show="objModalOpcoes.FLAG">
+                    <button type="button" class="btn btn-primary btn-embossed btn-sm pull-right m-r-0" ladda="salvarConciliacaoModalLoading" ng-click="salvarConciliacao()">
+                        <i class="fa fa-check"></i> &nbsp; Salvar
+                    </button>
+                </span>
+            </h4>
+        </div>
+
+        <div class="modal-body p-t-10" style="overflow:inherit!important">
+            <div class="panel-content">
+                <div class="col-md-12 form-append">
+                    <div class="row">
+                        <hr class="m-b-10 m-t-5">
+                        <div class="col-sm-4">
+                            <div class="row">
+                                <div class="box-tip">
+                                    <span>
+                                        Lançar a diferença de <br> <strong>{{objConciliacao.vlrResidual | customCurrency}}</strong> como:
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-sm-8">
+                            <div class="row">
+                                <div class="btn-group m-r-0 f-r">
+                                    <div class="grupo">
+                                        <button type="button" class="btn btn-info btn-embossed" ng-click="escolherOpcao('NOVO')">
+                                            <i class="fa fa-plus"></i>
+                                            <small>Novo</small>
+                                        </button>
+
+                                        <button type="button" class="btn btn-info btn-embossed" ng-click="calcularJurosOuDescontos()" ng-disabled="objModalOpcoes.FLAG" ladda="jurosOuDescontosLoading">
+                                            <i class="fa fa-dollar"></i>
+                                            <span desc-button="objConciliacao"></span>
+                                        </button>
+
+                                        <!-- Usar valor para mais de um item: -->
+                                        <button type="button" class="btn btn-info btn-embossed" ng-click="escolherOpcao('VALOR')" ng-if="objConciliacao.arrFinanceiro.length > 1" ng-disabled="objModalOpcoes.FLAG" style="margin-left:2px">
+                                            <i class="fa fa-gavel"></i>
+                                            <small>Usar este valor</small>
+                                        </button>
+
+                                        <!-- Usar valor para um único e determinado item: -->
+                                        <button type="button" class="btn btn-info btn-embossed" ng-click="usarValor()" ng-if="objConciliacao.arrFinanceiro.length === 1" ng-disabled="objModalOpcoes.FLAG" ladda="usarValorLoading" style="margin-left:2px">
+                                            <i class="fa fa-gavel"></i>
+                                            <small>Usar este valor</small>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 p-0" ng-show="objModalOpcoes.ACAO">
+                    <div ng-switch on="objModalOpcoes.ACAO">
+                        <!-- Formulário para opção de uma NOVA conciliação: -->
+                        <div ng-switch-when="NOVO">
+                            <form class="form-horizontal" method="POST" id="forms.formConciliacaoNovaModal" name="forms.formConciliacaoNovaModal" autocomplete="off" novalidate>
+                                <div class="row">
+                                    <div class="col-sm-12 m-t-10">
+                                        <div class="row">
+                                            <hr class="m-b-10 m-t-5">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-6 m-b-10">
+                                                <label class="control-label" for="tit_descricao">Cadastro <i class="obrigatorio">*</i></label>
+
+                                                <input id="tit_cad_cod_cad" name="tit_cad_cod_cad" type="hidden" ng-model="objFormulario.tit_cad_cod_cad" required>
+                                                <lv-autocomplete
+                                                    ng-model="objFormulario.pessoa"
+                                                    clear-input="false"
+                                                    trigger-list="true"
+                                                    icon-class="fa fa-user"
+                                                    search-limit="10"
+                                                    on-select="onSelectPessoa"
+                                                    place-holder="Pesquise por uma pessoa..."
+                                                    string-entity="cliente"
+                                                    string-service="cliente"
+                                                    display-property="cad_nome_razao"
+                                                    display-complement="cad_cpf_cnpj"
+                                                    confirm-add="false"
+                                                    trigger-blur="true"
+                                                    string-id="autocomplete-pessoa">
+                                                </lv-autocomplete>
+
+                                                <div class="m-0" ng-show="submitted || (forms.formConciliacaoNovaModal.tit_cad_cod_cad.$invalid && !forms.formConciliacaoNovaModal.tit_cad_cod_cad.$pristine)">
+                                                    <p class="text-danger form-error alert1 m-b-0 p-t-20" ng-show="(forms.formConciliacaoNovaModal.tit_cad_cod_cad.$error.required)">
+                                                        Cadastro é um campo obrigatório.
+                                                    </p>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6 m-b-10">
+                                                <label class="control-label" for="tit_descricao">Descrição <i class="obrigatorio">*</i></label>
+                                                <input class="form-control" id="tit_descricao" name="tit_descricao" placeholder="Digite a descrição..." ng-model="objFormulario.tit_descricao" type="text" required>
+
+                                                <div class="m-0" ng-show="submitted || (forms.formConciliacaoNovaModal.tit_descricao.$invalid && !forms.formConciliacaoNovaModal.tit_descricao.$pristine)">
+                                                    <p class="text-danger form-error alert1 m-b-0 p-t-20" ng-show="(forms.formConciliacaoNovaModal.tit_descricao.$error.required)">
+                                                        Descrição é um campo obrigatório.
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-6 m-b-10">
+                                                <label class="control-label">Forma de Pagamento</label>
+                                                <lv-autocomplete
+                                                    ng-model="objFormulario.formaPagamento"
+                                                    clear-input="false"
+                                                    trigger-list="true"
+                                                    icon-class="fa fa-dollar"
+                                                    search-limit="10"
+                                                    on-select="onSelectFormaPagamento"
+                                                    place-holder="Pesquise por uma forma de pagamento..."
+                                                    string-entity="forma de pagamento"
+                                                    string-service="formaPgto"
+                                                    display-property="par_c01"
+                                                    confirm-add="false"
+                                                    trigger-blur="true"
+                                                    string-id="autocomplete-pgto">
+                                                </lv-autocomplete>
+                                                <input id="tit_6060_forma_pagamento" name="tit_6060_forma_pagamento" type="hidden" ng-model="objFormulario.tit_6060_forma_pagamento">
+                                            </div>
+
+                                            <div class="col-sm-6 m-b-10">
+                                                <label class="control-label">Centro de Custo</label>
+                                                <lv-autocomplete
+                                                    ng-model="objFormulario.centroCusto"
+                                                    clear-input="false"
+                                                    trigger-list="true"
+                                                    icon-class="fa fa-tag"
+                                                    search-limit="10"
+                                                    on-select="onSelectCentroCusto"
+                                                    place-holder="Pesquise por um centro de custo..."
+                                                    string-entity="centro de custo"
+                                                    string-service="centroCusto"
+                                                    display-property="par_c01"
+                                                    confirm-add="false"
+                                                    trigger-blur="true"
+                                                    string-id="autocomplete-centro">
+                                                </lv-autocomplete>
+                                                <input id="tit_6050_cdc" name="tit_6050_cdc" type="hidden" ng-model="objFormulario.tit_6050_cdc">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-12 m-b-10">
+                                                <label class="control-label">Conta Financeira</label>
+                                                <input class="form-control" placeholder="Pesquise por uma conta financeira.." type="text" ng-model="objFormulario.contaFinanceira" readonly="readonly">
+                                                <input id="tit_5010_conta_fin" name="tit_5010_conta_fin" type="hidden" ng-model="objFormulario.tit_5010_conta_fin">
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-6 m-b-10">
+                                                <label class="control-label">Total</label>
+                                                <div class="append-icon">
+                                                    <input class="form-control" placeholder="Total..." type="text" ng-model="objFormulario.tit_doc_vlr_bruto" ui-money-mask="mdecimals" readonly="readonly">
+                                                    <i class="fa fa-money p-r-5"></i>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-sm-6 m-b-10">
+                                                <label class="control-label">Dt. de Vencimento</label>
+                                                <div class="append-icon">
+                                                    <input class="form-control" maxlength="10" placeholder="Dt. de vencimento..." type="text" ng-model="objFormulario.tit_dat_vct" data-mask="99/99/9999" datepicker1>
+                                                    <i class="fa fa-calendar p-r-5"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-12">
+                                                <label class="control-label">Observações</label>
+                                                <textarea class="form-control" placeholder="Digite alguma observação..." cols="3" rows="5" ng-model="objFormulario.tit_observacao"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-12">
+                                        <div class="row">
+                                            <div class="col-sm-12" style="text-align:right">
+                                                <span class="text-danger cancel-link" ng-click="cancelar()">
+                                                    <span>Cancelar</span>
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <!-- Formulário para opção de USAR VALOR para mais de um título financeiro selecionado: -->
+                        <div ng-switch-when="VALOR">
+                            <form class="form-horizontal" method="POST" id="forms.formConciliacaoValorModal" name="forms.formConciliacaoValorModal" autocomplete="off" novalidate>
+                                <div class="row">
+                                    <div class="col-sm-12 m-t-10">
+                                        <div class="row">
+                                            <hr class="m-b-10 m-t-5">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12">
+                                    <div class="row">
+                                        <div ng-if="objConciliacao.arrFinanceiro.length === 0">
+                                            <div class="alert alert-warning alert-fade m-t-5">
+                                                <i class="fa fa-info-circle fa-2x p-r-10"></i>
+                                                <span class="alert-texto font-small">Nenhum registro encontrado!</span>
+                                            </div>
+                                        </div>
+
+                                        <div ng-if="objConciliacao.arrFinanceiro.length > 0">
+                                            <h5>Selecione o lançamento que deseja atribuir o valor residual:</h5>
+                                            <div ng-include="'financeiro/views/grid-conciliacao-modal.html'"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,236 @@
+h1 {
+    text-transform: uppercase;
+    font-size: 8px;
+}
+
+h2 {
+    text-transform: uppercase;
+}
+
+p {
+    color: #5d5d5d;
+}
+
+table {
+    color: #5d5d5d;
+}
+
+.box-corpo {
+    font-family: Arial, sans-serif;
+    width: 100%;
+}
+
+.box-cabecalho {
+    width: 100%;
+}
+
+.box-total {
+    width: 100%
+}
+
+.box-first {
+    width: 100%;
+    margin-bottom: 5px;
+}
+
+.box-logomarca {
+    padding: 0;
+    float: left;
+    text-align: center;
+    width: 22%
+}
+
+.box-titulo {
+    float: left;
+    text-align: center;
+    width: 78%
+}
+
+.box-informacoes {
+    float: left;
+    margin-top: 10px;
+    padding: 5px 0;
+    width: 100%
+}
+
+.logomarca {
+    margin-top: 10px;
+    height: 80px;
+}
+
+.titulo {
+    font-size: 22px;
+    margin: 0;
+}
+
+.nome-empresa {
+    font-size: 15px;
+    margin: 0 0 5px 0
+}
+
+.tabela {
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    width: 100%;
+}
+
+.tabela-half-left {
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    width: 50%;
+    z-index: 1;
+}
+
+.tabela-half-right {
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    width: 50%;
+}
+
+.tabela-ficha {
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+    font-size: 11px;
+    width: 100%;
+}
+
+.box-tabela {
+    border-top: 1px solid #5d5d5d;
+    width: 100%;
+}
+
+.box-infos {
+    width: 100%;
+    margin-bottom: 8px;
+}
+
+.box-infos .box-titulo {
+    margin-top: 10px;
+}
+
+.bg-dark {
+    background: #f6f6f6;
+}
+
+.bg-white {
+    background: #fff;
+}
+
+.tp {
+    padding: 5px 5px;
+    line-height: 18px;
+}
+
+.tc {
+    padding: 4px;
+}
+
+.h1-max {
+    font-size: 19px;
+}
+
+.h5-max {
+    font-size: 9px;
+}
+
+.tf {
+    padding: 12px 4px;
+}
+
+.th {
+    vertical-align: top;
+}
+
+.tp-informacoes {
+    padding: 4px 8px;
+}
+
+.tr-foot {
+    background: #fff;
+}
+
+.f-mini {
+    font-size: 10px;
+}
+
+.f-total {
+    font-size: 12px;
+}
+
+.a-rig {
+    text-align: right;
+}
+
+.a-lef {
+    text-align: left;
+}
+
+.a-cen {
+    text-align: center;
+}
+
+.box-rodape {
+    background-color: #f6f6f6;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    padding: 10px 5px;
+    width: 100%;
+}
+
+.box-rodape-informacoes {
+    float: left;
+    width: 60%;
+}
+
+.box-rodape-logomarca {
+    float: left;
+    width: 40%;
+}
+
+.logo-virtux {
+    margin-top: 5px;
+    width: 40%;
+}
+
+.paragrafo-rodape {
+    margin: 0 0 5px;
+    padding: 0;
+}
+
+.c-red {
+    color: #c72929;
+}
+
+.img-item {
+    width: 40px;
+    height: 40px;
+}
+
+.separator {
+    height: 5px;
+}
+
+.text-right {
+    text-align: right;
+}
+
+.text-left {
+    text-align: left;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.teste {
+    margin-bottom: 20px;
+}
+
+.subtitulo {
+    color: #5d5d5d;
+    font-size: 14px;
+    margin-bottom: 5px;
+}

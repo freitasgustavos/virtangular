@@ -1,0 +1,217 @@
+
+<div id="panel-itens-producao">
+    <div class="col-md-12 p-0">
+        <div class="row">
+            <div class="col-md-9">
+                <div class="form-group">
+                    <label for="fin_comentario">Comentário</label>
+                    <input type="text" class="form-control" id="fin_comentario" name="fin_comentario" placeholder="Entre com um comentário..." ng-model="objProducao.fin_comentario" maxlength="255" ng-disabled="objProducao.fin_cod_acao === 1">
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label class="c-block">Fase</label>
+                    <ui-select class="form-control" ng-model="objProducao.fin_6025_fase" theme="select2">
+                        <ui-select-match placeholder="-- Selecione uma fase --">{{$select.selected.par_c01}}</ui-select-match>
+                        <ui-select-choices repeat="fase.par_pai as fase in arrFases | filter: $select.search">
+                            <span ng-bind-html="fase.par_c01 | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <h4 class="m-t-0">Adicionar Itens:</h4>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div ng-if="objProducao.fin_nro_lan" class="pull-right row">
+                    <h5 class="m-t-0">
+                        <strong>
+                            <span ng-if="objProducao.fin_6030_esp_doc === 115">Insumo:</span>
+                            <span ng-if="objProducao.fin_6030_esp_doc === 116">Produção própria:</span>
+                        </strong>
+                        <span>#{{objProducao.fin_doc_nro}}</span>
+                    </h5>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 form-item">
+        <div class="row">
+            <div class="col-md-2 p-r-0">
+                <div ng-if="objItem.pro_cod_pro" class="text-center">
+                    <img ng-src="{{objProduto.pro_midia}}" class="img-responsive img-mw img-thumbnail m-t-0">
+                </div>
+
+                <div ng-if="!objItem.pro_cod_pro" class="text-center box-no-image">
+                    <img ng-src="../app/images/sem-imagem.jpg" class="img-responsive img-mw img-thumbnail m-t-0">
+                </div>
+            </div>
+
+            <div class="col-md-5 p-r-0 box-autocomplete">
+                <div class="form-group m-b-0" id="box-venda-item">
+                    <label class="form-label-itens">
+                        <span class="pull-left">Item</span>
+
+                        <small class="pull-right c-primary" style="margin-top:2px" ng-if="objItem.pro_cod_pro">
+                            #{{objItem.ite_pro_cod_pro}}
+                        </small>
+                    </label>
+
+                    <lv-autocomplete
+                        ng-model="objItem.ite_pro_descricao"
+                        clear-input="false"
+                        trigger-list="true"
+                        icon-class="fa fa-cube"
+                        obj-search="objTela.filtro_produto"
+                        search-limit="30"
+                        on-select="onSelectProduto"
+                        on-enter="addItem"
+                        add-select-item="addProduto"
+                        place-holder="Pesquise por um produto..."
+                        string-entity="produto"
+                        string-service="produto"
+                        display-property="pro_descricao_longa"
+                        confirm-add="true"
+                        trigger-blur="true"
+                        string-id="autocomplete-itens">
+                    </lv-autocomplete>
+
+                    <!-- Quantidade em estoque e categoria. -->
+                    <div class="m-t-5" ng-if="objItem.pro_cod_pro && objItem.ite_pro_descricao != ''">
+                        <small class="link-append lv-plugin">
+                            <a ng-click="getJanelaProduto(objItem.ite_pro_cod_pro)">Editar</a>
+                        </small>
+                        <small class="m-r-10" ng-if="objItem.gru_descricao != ''">
+                            <i class="fa fa-tags"></i> {{objItem.gru_descricao}}
+                        </small>
+                        <div class="box-disponivel">
+                            <small ng-if="objItem.pro_estoque >= 0">
+                                <i class="fa fa-inbox"></i>Disponível: {{objItem.pro_str_etoque}}
+                            </small>
+                            <small class="c-red m-l-5" ng-if="objItem.pro_estoque <= 0">
+                                <i class="fa fa-info-circle"></i>Produto indisponível.
+                            </small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-1 p-r-0">
+                <div class="form-group">
+                    <label>Qtde.</label>
+                    <input id="qtde-itens" type="text" class="form-control" placeholder="Qtde..." ng-model="objItem.ite_pro_qtd" valid-number onclick="this.select()">
+
+                    <!-- Unidade do produto. -->
+                    <div class="m-t-5" ng-if="objItem.pro_cod_pro">
+                        <small ng-if="objItem.pro_unidade != null">
+                            <i class="fa fa-dropbox"></i> {{objItem.pro_unidade}}
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-2 p-r-0">
+                <div class="form-group">
+                    <label>Preço de Custo</label>
+                    <div class="p-r-0 input-group">
+                        <input id="vlr-bruto" name="vlr-bruto" type="text" class="form-control" placeholder="Preço de Custo..." ng-model="objItem.ite_vlr_uni_bruto" ui-money-mask="mdecimals" onclick="this.select()">
+                        <span class="input-group-addon">
+                            <i class="fa fa-money p-0"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-1 p-r-0">
+                <div class="form-group">
+                    <label>Lançar</label>
+                    <br>
+                    <button class="btn btn-primary btn-sm m-0" ng-click="addItem(objFlags.add_item)" ng-disabled="!objItem.pro_cod_pro && objFlags.lib_item">
+                        <i class="glyphicon glyphicon-plus-sign" style="font-size:20px"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12 m-b-20">
+        <div class="row">
+            <p class="m-0 text-right">
+                <small>documento em modo de {{objProducao.descAcao}} em <a href="javascript:void(0)">{{objProducao.fin_dat_lan}}</a>.</small>
+            </p>
+        </div>
+    </div>
+
+    <div ng-if="objProducao.itens.length > 0">
+        <table class="table table-striped table-hover table-mini table-total">
+            <thead>
+                <tr>
+                    <th class="p-l-0">Código</th>
+                    <th>Cód. de Barras</th>
+                    <th>Descrição</th>
+                    <th>Unidade</th>
+                    <th class="text-right">Qtde.</th>
+                    <th class="text-right">Unitário</th>
+                    <th class="text-right">Total</th>
+                    <th class="text-right">Ação</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="(k, item) in objProducao.itens" class="c-pointer">
+                    <td>{{item.ite_pro_cod_pro}}</td>
+                    <td>{{item.produto.pro_cod_bar}}</td>
+                    <td>
+                        <span tooltip-placement="bottom" tooltip="{{item.ite_pro_descricao}}">
+                            {{item.ite_pro_descricao | strLimit : 30}}
+                        </span>
+                    </td>
+                    <td>
+                        <span style="text-transform:uppercase">{{item.produto.pro_unidade}}</span>
+                    </td>
+                    <td class="text-right">{{item.ite_pro_qtd | toFloatDesc}}</td>
+                    <td class="text-right">{{item.ite_vlr_uni_bruto | customCurrency}}</td>
+                    <td class="text-right">{{item.ite_vlr_tot_bruto | customCurrency}}</td>
+                    <td class="text-right">
+                        <button type="button" class="btn btn-sm btn-danger m-0" ng-click="removerItem($index)" tooltip-placement="left" tooltip="Remover">
+                            <i class="fa fa-times" aria-hidden="true"></i>
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot>
+                <tr>
+                    <th colspan="3">&nbsp;</th>
+                    <th>
+                        <span>TOTAIS</span>
+                    </th>
+                    <th class="text-right">
+                        <span>{{objProducao.somaItens}}</span>
+                    </th>
+                    <th colspan="2" class="text-right">
+                        <span>{{objProducao.somaTotalBruto | customCurrency}}</span>
+                    </th>
+                    <th>&nbsp;</th>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <div class="col-md-12 m-b-20" ng-if="!objProducao.itens.length">
+        <div class="row">
+            <div class="alert alert-warning">
+                <p class="font-small m-b-0">
+                    <strong class="f-13">Atenção:</strong> Esta {{objTela.nome_natureza}} ainda não possui produtos vinculados até o momento!
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

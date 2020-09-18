@@ -1,0 +1,113 @@
+<div class="modal-dialog modal-not-footer">
+    <form id="forms.formsImportaXML" name="forms.formsImportaXML" method="POST" autocomplete="off" role="form" novalidate>
+        <div class="modal-content">
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    Duplicar <strong>Documento</strong>
+
+                    <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarVendaLoading" ng-click="duplicarOperacao()">
+                        <i class="fa fa-check"></i> &nbsp; Salvar
+                    </button>
+                </h4>
+            </div>
+
+            <div class="modal-body" style="width:100%;" ng-style="{'height':(alterarCadastro ? '350px':'100%')}">
+                <div class="col-md-12 form-append">
+
+                    <!-- Campo para seleção da nova operação -->
+                    <div class="row">
+                        <div class="col-md-12 p-t-10 p-r-10">
+                            <div class="row m-b-0">
+                                <div class="col-md-12" style="overflow:hidden">
+                                    <div class="form-group">
+                                        <label>Selecione a operação para a qual deseja duplicar este documento:</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12 p-r-10" style="overflow:hidden">
+                                    <div class="form-group">
+                                        <select class="form-control" ng-model="objModal.novaVenda.fin_6020_natureza_aux" ng-change="onSelectNovaOperacao()" >
+                                            <option ng-repeat="operacao in arrOperacoes" value="{{ operacao.id }}">{{ operacao.nome }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <!-- Campo para seleção do cadastro -->
+                    <div class="row" ng-if="alterarCadastro">
+                        <div class="col-md-12">
+                            <div class="form-group m-b-0">
+                                <label>{{objModal.novaVenda.labelTitular}} <i class="obrigatorio">*</i></label>
+                                <div class="append-icon append-typeahead">
+                                    <lv-autocomplete
+                                            ng-if="objModal.novaVenda.tipoNatureza != 'outras-entradas' &&  objModal.novaVenda.tipoNatureza != 'outras-saidas'"
+                                            ng-model="objModal.novaVenda.clienteSelect"
+                                            clear-input="false"
+                                            trigger-list="true"
+                                            icon-class="fa fa-user"
+                                            obj-search="objFiltroPessoa"
+                                            search-limit="10"
+                                            on-select="onSelectCliente"
+                                            add-select-item="addCliente"
+                                            place-holder="Selecione o {{objModal.novaVenda.labelTitular}}"
+                                            string-entity="{{objModal.novaVenda.labelTitular}}"
+                                            string-service="cliente"
+                                            display-property="cad_nome_razao"
+                                            trigger-blur="true"
+                                            display-complement="cad_cpf_cnpj"
+                                            confirm-add="true"
+                                            string-id="autocomplete-cliente">
+                                    </lv-autocomplete>
+
+                                    <lv-autocomplete
+                                            ng-if="objModal.novaVenda.tipoNatureza == 'outras-entradas' ||  objModal.novaVenda.tipoNatureza == 'outras-saidas'"
+                                            ng-model="objModal.novaVenda.clienteSelect"
+                                            clear-input="false"
+                                            trigger-list="true"
+                                            icon-class="fa fa-user"
+                                            obj-search="objFiltroPessoa"
+                                            search-limit="10"
+                                            on-select="onSelectCliente"
+                                            add-select-item="addPessoa"
+                                            place-holder="Pesquise por um cadastro..."
+                                            string-entity="cliente"
+                                            string-service="cliente"
+                                            display-property="cad_nome_razao"
+                                            display-complement="cad_cpf_cnpj"
+                                            trigger-blur="true"
+                                            confirm-add="true"
+                                            string-id="autocomplete-cliente">
+                                    </lv-autocomplete>
+
+                                    <input type="hidden" ng-model="objModal.novaVenda.fin_cad_cod_cad">
+
+                                    <!-- Botão para edição dos dados do objModal.novoCliente. -->
+                                    <div ng-show="objModal.novaVenda.clienteSelect && objModal.novaVenda.clienteSelect != ' ' && objModal.novoCliente.cad_cod_cad">
+                                        <small class="link-append lv-plugin" ng-click="getJanelaCliente(objModal.novoCliente.cad_cod_cad)">Editar</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Mensagem com a alteração de CFOP -->
+                    <div class="row" ng-if="alterarCfop">
+                        <div class="col-md-12 p-t-60 p-r-10">
+                            <div class="alert alert-warning text-center">
+                                <label>Atenção: o CFOP <strong>{{ objModal.novaVenda.fin_cfo_cfop }}</strong> será alterado para o CFOP <strong>{{ cfop }}</strong>.</label>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,248 @@
+<div class="row">
+    <div class="col-md-12">
+        <div class="col-md-6">
+            <div class="col-md-12">
+                <label>Produto Predominante: <i class="obrigatorio">*</i></label>
+            </div>
+            <div class="col-md-12 form-group" style="">
+                <input id="cte_carga_prod_pred" maxlength="60" type="text" class="form-control" ng-model="frete.cte_carga_prod_pred" placeholder="Tipo de produto predominante na carga." ng-change="liberarAddNFe()"/>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Previsão da entrega: <i class="obrigatorio">*</i></label>
+                <input class="form-control" maxlength="10" placeholder="Data de emissão" ng-model="frete.cte_rodo_dat_prev" onclick="this.select()" data-mask="99/99/9999" datepicker1 ng-change="liberarAddNFe()"/>
+            </div>
+        </div>
+    </div>
+</div>
+
+<tabset class="tab-fade-in">
+    <tab active="tabs[0].active">
+        <tab-heading>Notas Fiscais Eletrônicas (NFe)</tab-heading>
+
+        <div class="row">
+            <div class="col-md-12 m-b-20">
+                <div class="col-md-12">
+                    <label>Tipo de Nota: <i class="obrigatorio">*</i></label>
+                </div>
+                <div class="col-md-12">
+                    <select id="ctd_6030_esp_doc_ref" name="ctd_6030_esp_doc_ref" class="form-control" ng-model="newNotasFiscais.ctd_6030_esp_doc_ref" ng-change="liberarAddNFe()">
+                        <option ng-repeat="espDoc in arrEspDocs" value="{{ espDoc.esp }}">{{ espDoc.descricao }}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 m-b-10 form-item" style="left: 15px; padding-right: 55px;">
+                <div class="row m-b-10">
+                    <div class="col-md-8">
+                        <div class="form-group m-b-0" id="box-venda-item">
+                            <label>Chave NF-e</label>
+                            <input type="text" class="form-control" name="ctd_doc_chave" id="ctd_doc_chave" maxlength="44" ng-model="newNotasFiscais.ctd_doc_chave" number-only placeholder="Chave da NF-e." ng-change="liberarAddNFe()" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 p-r-0">
+                        <div class="form-group m-b-10">
+                            <label class="control-label p-r-0">Valor da NF-e:</label>
+                            <div class="input-group">
+                                <input type="text" class="form-control" placeholder="Valor Total da nota" ng-model="newNotasFiscais.ctd_vlr_nota" ui-money-mask="mdecimals" onclick="this.select()" ng-change="liberarAddNFe()">
+                        <span class="input-group-addon" style="background-color: #fff;">
+                            <i class="fa fa-money"></i>
+                        </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 p-r-0">
+                        <div class="form-group">
+                            <label>Peso (Kg):</label>
+                            <input class="form-control" maxlength="10" placeholder="Peso em Kg" ng-model="newNotasFiscais.ctd_vlr_peso" ui-number-mask="3" onclick="this.select()" ng-change="liberarAddNFe()">
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 p-r-0">
+                        <div class="form-group">
+                            <label>Qtd Volumes:</label>
+                            <input class="form-control" maxlength="11" placeholder="Quantidade em volume" ng-model="newNotasFiscais.ctd_qtd_volume" number-only onclick="this.select()" ng-change="liberarAddNFe()">
+                        </div>
+                    </div>
+
+                    <div class="col-md-1 col-md-offset-1 m-l-30">
+                        <div class="form-group">
+                            <label>Lançar</label>
+                            <br>
+                            <button class="btn btn-primary btn-sm m-0" ng-click="addNotaFiscal()" ng-disabled="!liberarNfe">
+                                <i class="glyphicon glyphicon-plus-sign" style="font-size:20px"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-if="frete.notas_fiscais.length > 0">
+            <div class="col-md-12">
+                <table class="table table-striped table-hover table-mini">
+                    <thead>
+                    <tr>
+                        <th class="p-l-0">Nota</th>
+                        <th>Chave de acesso</th>
+                        <th class="text-center">Volumes</th>
+                        <th class="text-center">Peso (Kg)</th>
+                        <th class="text-center">Valor</th>
+                        <th class="text-center">Remover</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="(k, nota) in frete.notas_fiscais">
+                        <td>{{nota.ctd_seq}}</td>
+                        <td>{{nota.ctd_doc_chave}}</td>
+                        <td class="text-center">{{nota.ctd_qtd_volume | toFloatDesc}}</td>
+                        <td class="text-center">{{nota.ctd_vlr_peso | toFloatDesc}}</td>
+                        <td class="text-center">{{nota.ctd_vlr_nota | currency}}</td>
+                        <td class="text-center">
+                            <a href="javascript:void(0)" ng-click="removeNota(nota)">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="row">
+                    <div class="col-md-12" style="right: 10px;">
+                        <div class="col-md-3 p-r-0">
+                            <div class="form-group">
+                                <label>Notas Lançadas:</label>
+                                <input class="form-control" readonly="readonly" placeholder="Quantidade em volume" ng-model="totalNotas.notas_lancadas" ui-number-mask="0">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 p-r-0">
+                            <div class="form-group">
+                                <label>Volume Total:</label>
+                                <input class="form-control" readonly="readonly" placeholder="Quantidade em volume" ng-model="totalNotas.volume_total" ui-number-mask="3" onclick="this.select()">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 p-r-0">
+                            <div class="form-group">
+                                <label>Peso Total:</label>
+                                <input class="form-control" readonly="readonly" placeholder="Quantidade em volume" ng-model="totalNotas.peso_total" ui-number-mask="3" onclick="this.select()">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 p-r-0">
+                            <div class="form-group m-b-10">
+                                <label class="control-label p-r-0">Total das Notas:</label>
+                                <div class="input-group">
+                                    <input type="text" class="form-control" readonly="readonly" placeholder="Valor total das notas" ng-model="totalNotas.total_notas" ui-money-mask="mdecimals" onclick="this.select()">
+                                <span class="input-group-addon">
+                                    <i class="fa fa-money"></i>
+                                </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </tab>
+
+    <tab active="tabs[1].active">
+        <tab-heading>Conhecimento de Transporte Eletrônico (CTe)</tab-heading>
+
+        <div class="row">
+            <div class="col-md-12 m-b-10 form-item" style="left: 15px; padding-right: 55px;">
+                <div class="row m-b-10">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Emitente: <i class="obrigatorio">*</i></label>
+                            <div class="append-icon append-typeahead">
+                                <lv-autocomplete
+                                        ng-model="newDocAnterior.ctd_cad_nome_emitente"
+                                        clear-input="false"
+                                        trigger-list="true"
+                                        icon-class="fa fa-user"
+                                        search-limit="10"
+                                        on-select="onSelectEmitenteDocAnterior"
+                                        add-select-item="addPessoa"
+                                        place-holder="Selecione o Emitente"
+                                        string-entity="Emitente"
+                                        string-service="cliente"
+                                        display-property="cad_nome_razao"
+                                        display-complement="cad_cpf_cnpj"
+                                        confirm-add="true"
+                                        string-id="autocomplete-remetente">
+                                </lv-autocomplete>
+
+                                <input type="hidden" ng-model="newDocAnterior.ctd_cad_cod_cad">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-10 p-r-0">
+                        <div class="form-group m-b-0" id="box-venda-item">
+                            <label>Chave CT-e</label>
+                            <input type="text" class="form-control" maxlength="44" ng-model="newDocAnterior.ctd_doc_chave" number-only placeholder="Chave do CT-e." ng-change="liberarAddDocAnterior()" />
+                        </div>
+                    </div>
+
+                    <div class="col-md-1 col-md-offset-1 m-l-30">
+                        <div class="form-group">
+                            <label>Lançar</label>
+                            <br>
+                            <button class="btn btn-primary btn-sm m-0" ng-click="addDocAnterior()" ng-disabled="!liberarDocAnterior">
+                                <i class="glyphicon glyphicon-plus-sign" style="font-size:20px"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-if="frete.doc_anteriores.length">
+            <div class="col-md-12">
+                <table class="table table-striped table-hover table-mini">
+                    <thead>
+                    <tr>
+                        <th class="p-l-0">Conhecimento</th>
+                        <th>Chave de acesso</th>
+                        <th class="text-center">Emitente</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="(k, docAnterior) in frete.doc_anteriores">
+                        <td>{{docAnterior.ctd_seq}}</td>
+                        <td>{{docAnterior.ctd_doc_chave}}</td>
+                        <td class="text-center">{{docAnterior.ctd_cad_nome_emitente}}</td>
+                        <td class="text-center">
+                            <a href="javascript:void(0)" ng-click="removeDocAnterior(docAnterior)">
+                                <i class="fa fa-times" aria-hidden="true"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+
+                <div class="row">
+                    <div class="col-md-12" style="right: 10px;">
+                        <div class="col-md-3 p-r-0 pull-right">
+                            <div class="form-group">
+                                <label>Documentos Lançados:</label>
+                                <input class="form-control" readonly="readonly" placeholder="Quantidade em volume" ng-model="frete.doc_anteriores.length" ui-number-mask="0">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </tab>
+</tabset>

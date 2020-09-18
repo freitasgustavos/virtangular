@@ -1,0 +1,131 @@
+.box-corpo {
+    width: 100%;
+}
+
+.recibo {
+    width: 80%;
+    border: 1px solid #000;
+    margin: 40px auto;
+}
+
+.assinatura {
+    width: 60%;
+    margin: 40px auto;
+}
+
+.logomarca {
+    width: 15%;
+}
+
+.nome-empresa {
+    font-size: 22px;
+    font-family: Arial, sans-serif;
+    text-transform: uppercase;
+}
+
+.td-logo {
+    width: 35%;
+    padding-top: 15px;
+    text-align: right;
+    vertical-align: middle;
+}
+
+.td-name {
+    width: 65%;
+    padding-top: 15px;
+    text-align: left;
+    vertical-align: middle;
+    padding-left: 12px;
+}
+
+.td-titulo {
+    padding: 40px 25px 0 25px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.titulo {
+    font-size: 18px;
+    font-weight: bold;
+    letter-spacing: 5px;
+}
+
+.td-paragrafo {
+    padding: 15px 25px;
+    text-align: justify;
+}
+
+.paragrafo {
+    font-size: 14px;
+    font-family: Arial, sans-serif;
+    line-height: 28px;
+}
+
+.td-rubrica {
+    padding-top: 20px;
+    text-align: center;
+}
+
+.rubrica {
+    border: 0 none;
+    border-top: 3px solid #000;
+    padding: 0;
+    margin: 0;
+}
+
+.td-assinatura {
+    font-size: 15px;
+    font-family: Arial, sans-serif;
+    text-align: center;
+}
+
+.tabela {
+    border-collapse: collapse;
+    font-family: Arial,sans-serif;
+    font-size: 11px;
+    width: 100%;
+}
+
+.box-rodape {
+    background-color: #ecedee;
+    font-family: Arial, sans-serif;
+    font-size: 10px;
+    padding: 10px 5px;
+    width: 100%;
+}
+
+.box-rodape-informacoes {
+    float: left;
+    width: 60%;
+}
+
+.box-rodape-logomarca {
+    float: left;
+    width: 40%;
+}
+
+.logo-virtux {
+    margin-top: 5px;
+    width: 40%;
+}
+
+.paragrafo-rodape {
+    margin: 0 0 5px;
+    padding: 0;
+}
+
+.a-rig {
+    text-align: right;
+}
+
+.a-lef {
+    text-align: left;
+}
+
+.a-cen {
+    text-align: center;
+}
+
+.tp-informacoes {
+    padding: 4px 8px;
+}

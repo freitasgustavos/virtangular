@@ -1,0 +1,26 @@
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="form-group">
+            <label>Descrição <i class="obrigatorio">*</i></label>
+            <input name="prf_nome_perfil" maxlength="255" id="prf_nome_perfil" class="form-control" placeholder="Digite o nome do perfil..." ng-model="objPerfil.prf_nome_perfil" ng-class="{true : 'form-error'}[submitted && forms.formPerfil.prf_nome_perfil.$invalid]" required type="text">
+        </div>
+        <div ng-show="submitted || (forms.formPerfil.prf_nome_perfil.$invalid && !forms.formPerfil.prf_nome_perfil.$pristine)">
+            <p class="text-danger form-error alert1" ng-show="(forms.formPerfil.prf_nome_perfil.$error.required)">Entre com um nome para o perfil.</p>
+        </div>
+    </div>
+
+    <div class="col-md-12">
+        <div class="form-group m-b-0">
+            <label>Módulos</label>
+        </div>
+        <div class="box-checkbox">
+            <label ng-repeat="modulo in arrModulos">
+                <input type="checkbox" data-checklist-model="objPerfil.modulos" data-checklist-value="modulo.id">
+                <span class="rotulo">{{modulo.nome}}</span>
+            </label>
+        </div>
+    </div>
+
+    <input type="hidden" name="prf_cod_prf" ng-model="objPerfil.prf_cod_prf">
+</div>

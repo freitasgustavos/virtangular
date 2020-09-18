@@ -1,0 +1,90 @@
+
+<div class="col-md-4 p-r-0 p-l-0">
+    <treasure-overlay-spinner active="spinnerList.active">
+        <div class="panel">
+            <div class="panel-header">
+                <h3>
+                    <i class="fa fa-list"></i>
+                    <strong>Listagem</strong> de Usuários
+                </h3>
+
+                <!-- Adicionar novo Usuario. -->
+                <div class="control-btn">
+                    <button type="button" class="btn btn-primary btn-sm pull-right" event-focus="click" event-focus-id="pro_descricao" ng-click="novoUsuario()" style="margin-right:2px">
+                        <i class="fa fa-plus"></i> Novo
+                    </button>
+                </div>
+
+                <!-- Pesquisar por Usuarios. -->
+                <form class="form-inverse space-down m-t-20" autocomplete="off" role="search">
+                    <div class="append-icon">
+                        <input type="text" class="form-control" placeholder="Pesquisar Usuarios" ng-model="objFiltro.texto_usuario" ng-keyup="getPesquisar($event)">
+                        <i class="icon-magnifier"></i>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Listagem dos Usuarios. -->
+            <div class="panel-content" style="padding-left:15px;padding-right:15px;margin-top:13px;min-height:794px">
+                <div ng-include="'usuario/views/lista-usuario.html'"></div>
+            </div>
+
+            <div class="panel m-b-0" ng-if="usuarios.length">
+                <div class="col-md-12 box-paginacao">
+                    <div class="t-center p-10">
+                        <a ng-click="paginarUsuarios()">
+                            <span>Listar mais...</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </treasure-overlay-spinner>
+</div>
+
+
+<!-- Painel inicial com manual: -->
+<div class="col-md-8 p-r-0" ng-class="{'animated virtux' : flagTutorial === true, 'animated oculto' : flagTutorial === false}">
+    <div ng-include="'home/views/tutorial.html'"></div>
+</div>
+
+
+<!-- Painel principal com formulário de cadastro e edição: -->
+<div class="col-md-8 p-r-0" ng-class="{'animated virtux' : flagTutorial === false, 'animated oculto' : flagTutorial === true}">
+    <div class="panel">
+        <div class="panel-header">
+            <div class="btn-reset">
+                <button type="button" class="btn btn-sm btn-primary" ng-click="voltar()">
+                    <i class="fa fa-arrow-left"></i> Voltar
+                </button>
+            </div>
+
+            <h3 class="title-header">
+                <i class="fa fa-info"></i>
+                <strong>Dados</strong> do Usuário
+            </h3>
+
+            <div class="control-btn">
+                <a class="panel-close btn-delete" ng-click="cancelarUsuario()" title="{{nomeBotao}}">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+                <button type="button" class="btn btn-primary btn-sm clickright no-right" ladda="salvarUsuarioLoading" ng-click="salvarUsuario()">
+                    <i class="fa fa-check"></i> Salvar
+                </button>
+            </div>
+        </div>
+
+        <div class="panel-content p-t-0">
+            <form role="form" name="forms.formUsuario" id="forms.formUsuario" class="form-validation" autocomplete="off" novalidate>
+                <tabset class="tab-fade-in">
+                    <tab>
+                        <tab-heading>Principal</tab-heading>
+                        <div class="panel-inner-less">
+                            <div ng-include="'usuario/views/aba-usuario-principal.html'"></div>
+                        </div>
+                    </tab>
+                </tabset>
+            </form>
+        </div>
+    </div>
+</div>

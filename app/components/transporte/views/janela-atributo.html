@@ -1,0 +1,92 @@
+<script type="text/ng-template" id="vendedorTpl.html">
+    <a tabindex="-1" style="{{((match.model.id == '1#1') ? 'background-color:#1D7777;color:#fff' : '')+';cursor:pointer;'}}">
+        <i ng-class="((match.model.id == '1#1') ? 'fa fa-plus-circle' : 'fa fa-user')"></i>
+        <span ng-bind-html="match.model.par_c01 | uibTypeaheadHighlight:query"></span>
+    </a>
+</script>
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <form role="form" name="forms.formAtributos" id="forms.formAtributos" class="form-validation" autocomplete="off" novalidate>
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>{{objModal.label}}</strong>
+
+                    <button class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" type="button" ng-click="finalizar()">
+                        <i class="fa fa-check"></i> &nbsp; Selecionar
+                    </button>
+                </h4>
+            </div>
+
+            <div class="modal-body m-b-20 m-t-20" style="min-height: 220px;">
+                <div class="panel-content">
+                    <div class="row">
+                        <div ng-if="objModal.campo === 'D'">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Data de Lançamento <i class="obrigatorio">*</i></label>
+                                    <input type="text" name="fin_dat_lan_aux" id="fin_dat_lan_aux" class="form-control" placeholder="Entre com a data de lançamento..." ng-model="objModal.valor" data-mask="99/99/9999" datepicker1 ng-class="{true : 'form-error'}[submitted && forms.formAtributos.fin_dat_lan_aux.$invalid]" required>
+                                </div>
+                                <div ng-show="submitted || (forms.formAtributos.fin_dat_lan_aux.$invalid && !forms.formAtributos.fin_dat_lan_aux.$pristine)">
+                                    <p class="text-danger form-error alert1" ng-show="(forms.formAtributos.fin_dat_lan_aux.$error.required)">Entre com uma data de lançamento.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Data de Emissão (NF-e) ou Competência <i class="obrigatorio">*</i></label>
+                                    <input type="text" name="fin_dat_emi_aux" id="fin_dat_emi_aux" class="form-control" placeholder="Entre com a data de emissão da NF-e..." ng-model="objModal.valorEmi" data-mask="99/99/9999" datepicker1 ng-class="{true : 'form-error'}[submitted && forms.formAtributos.fin_dat_emi_aux.$invalid]" required>
+                                </div>
+                                <div ng-show="submitted || (forms.formAtributos.fin_dat_emi_aux.$invalid && !forms.formAtributos.fin_dat_emi_aux.$pristine)">
+                                    <p class="text-danger form-error alert1" ng-show="(forms.formAtributos.fin_dat_emi_aux.$error.required)">Entre com uma data de Emissão da NF-e.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Data de Saída </label>
+                                    <input type="text" name="fin_dat_sai_aux" id="fin_dat_sai_aux" class="form-control" placeholder="Entre com a data de saída..." ng-model="objModal.valorSai" data-mask="99/99/9999" datepicker1 ng-class="{true : 'form-error'}[submitted && forms.formAtributos.fin_dat_sai_aux.$invalid]" >
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-if="objModal.campo === 'V'">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Vendedor</label>
+                                    <input class="form-control" placeholder="Pesquise por um vendedor..." type="text" ng-model="objVendedor.selected" typeahead-focus uib-typeahead="item for item in (listarVendedor($viewValue))" typeahead-on-select="onSelectVendedor($item, $model, $label)" typeahead-template-url="vendedorTpl.html" >
+                                    <input type="hidden" ng-model="objVendedor.par_pai">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-if="objModal.campo === 'CF'">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>CFOP</label>
+                                    <input type="text" name="cfo_descricao" id="cfo_descricao" class="form-control" ng-model="objModal.valorCfop" >
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div >
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <p>&nbsp;&nbsp;&nbsp;</p>
+                                    <p>&nbsp;&nbsp;&nbsp;</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer text-center">
+                <div class="col-sm-12"></div>
+            </div>
+        </form>
+    </div>
+</div>

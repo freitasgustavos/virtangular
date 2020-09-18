@@ -1,0 +1,52 @@
+<div class="row">
+    <div class="col-md-8 m-t-10">
+        <h3 class="m-t-0 m-b-0">
+            <i class="fa fa-list"></i>
+            <span class="p-l-10">Listagem de medicamentos</span>
+        </h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12" ng-if="arrTipoProduto.length">
+        <div class="panel-content panel-tab-content" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200">
+            <table class="table table-striped font-small m-b-0">
+                <thead>
+                <tr>
+                    <th>Número do Lote</th>
+                    <th>Qtde. (Lote)</th>
+                    <th>Qtde. (Saldo)</th>
+                    <th class="text-right">Dt. de Fabricação</th>
+                    <th class="text-right">Dt. de Validade</th>
+                    <th class="text-right">Vlr. Máximo</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="item in arrTipoProduto" class="c-pointer" ng-click="getTipoProduto(item.lot_seq)" ng-class="{'selected': item.lot_seq === objSelecionado}">
+                    <td>{{item.lot_lote_nro}}</td>
+                    <td>
+                        <span ng-if="item.lot_lote_qtd">{{item.lot_lote_qtd | toFloatDesc}}</span>
+                    </td>
+                    <td>
+                        <span ng-if="item.lot_qtd_saldo">{{item.lot_qtd_saldo | toFloatDesc}}</span>
+                    </td>
+                    <td class="text-right">{{item.lot_dat_fabricacao | dateFormat}}</td>
+                    <td class="text-right">{{item.lot_dat_validade | dateFormat}}</td>
+                    <td class="text-right">{{item.lot_vlr_max_consumidor | currency}}</td>
+                </tr>
+                </tbody>
+            </table>
+            <div class="panel-footer text-right font-small m-b-10" style="border-top:1px solid #E2E2E2">
+                <strong>Quantidade de medicamentos:</strong>
+                <span>{{arrTipoProduto.length}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-12" ng-if="!arrTipoProduto.length">
+        <div class="alert alert-warning alert-fade m-b-0 m-t-10" role="alert">
+            <i class="fa fa-info-circle fa-2x"></i>
+            <span class="alert-texto font-small">Nenhum registro encontrado!</span>
+        </div>
+    </div>
+</div>

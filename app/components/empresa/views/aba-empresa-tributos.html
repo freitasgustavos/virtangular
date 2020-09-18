@@ -1,0 +1,62 @@
+
+<form role="form" name="forms.formEmpresaTributos" class="form-validation" autocomplete="off" novalidate>
+    <div class="row">
+        <div class="col-md-12 portlets">
+            <div class="panel-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="title-header">
+                            <i class="fa fa-calculator"></i>
+                            <strong>Tributos</strong>
+                        </h3>
+
+                        <div class="control-btn">
+                            <button type="button" class="btn btn-primary btn-sm btn-tab clickright" ladda="salvarEmpresaTributosLoading" ng-click="salvarEmpresa('forms.formEmpresaTributos')">
+                                <i class="fa fa-check"></i> Salvar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 m-t-10">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group box-select-state">
+                            <label>Regime Tributário</label>
+                            <ui-select class="form-control" ng-model="empresa.emp_reg_trib" theme="select2">
+                                <ui-select-match placeholder="Selecione o regime tributário">{{$select.selected.nome}}</ui-select-match>
+                                <ui-select-choices repeat="regime.id as regime in listaRegimeTributario | filter: $select.search">
+                                    <span ng-bind-html="regime.nome | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Permite Aproveitamento de Crédito</label>
+                            <label class="switch" >
+                                <input class="switch-input"  name="permite_aprov" id="permite_aprov" type="checkbox" ng-model="empresa.permite_aprov">
+                                <span class="switch-label" data-on="Sim" data-off="Não"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6" ng-if="empresa.permite_aprov">
+                        <div class="form-group">
+                            <label>Alíquota aplicável de cálculo do crédito <i class="obrigatorio">*</i></label>
+                            <input class="form-control" name="emp_aliq_icms_aprov" id="emp_aliq_icms_aprov" maxlength="10" ui-number-mask placeholder="Alíquota..." ng-model="empresa.emp_aliq_icms_aprov" type="text" ng-required="empresa.permite_aprov" ng-class="{true : 'form-error'}[submitted && forms.formEmpresaTributos.emp_aliq_icms_aprov.$invalid]">
+                        </div>
+                        <div ng-show="submitted || (forms.formEmpresaTributos.emp_aliq_icms_aprov.$invalid && !forms.formEmpresaTributos.emp_aliq_icms_aprov.$pristine)">
+                            <p class="text-danger form-error alert1" ng-show="(forms.formEmpresaTributos.emp_aliq_icms_aprov.$error.required)">Digite a alíquota.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

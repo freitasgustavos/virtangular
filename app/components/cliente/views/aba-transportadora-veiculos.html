@@ -1,0 +1,67 @@
+<div class="row">
+    <div class="panel">
+        <div class="control-btn">
+            <button type="button" data-toggle="modal" class="btn btn-primary btn-sm  pull-right " ng-click="getFormVeiculo()">
+                <i class="fa fa-plus"></i> &nbsp; Novo Veículo
+            </button>
+        </div>
+
+        <div class="panel-header panel-controls" >
+            <h3>
+                <i class="fa fa-truck"></i>
+                <strong>Lista</strong> de Veículos
+            </h3>
+        </div>
+
+        <div class="panel-content">
+            <div class="row" ng-show="cliente.listaVeiculos.length">
+                <table class="table table-striped grid-anotacoes">
+                    <thead>
+                    <tr>
+                        <th>Cód.</th>
+                        <th>Placa</th>
+                        <th>UF</th>
+                        <th>Renavam</th>
+                        <th class="text-center">Editar</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="veiculo in cliente.listaVeiculos" ng-class="{active: isActive($index)}" class="fadeIn">
+                        <td>
+                            <div>
+                                <span>{{veiculo.vei_cod_vei}}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div class="text-uppercase">
+                                <span>{{veiculo.vei_placa}}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div>
+                                <span>{{veiculo.vei_uf_linc}}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <span>{{veiculo.vei_renavam}}</span>
+                        </td>
+                        <td class="text-center">
+                            <a class="text-center" href="javascript:void(0)" ng-click="getFormVeiculo(veiculo.vei_cod_vei)">
+                                <i class="fa fa-pencil-square-o fa-2x"></i>
+                            </a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="row" ng-show="!cliente.listaVeiculos.length">
+                <div class="alert alert-warning m-t-10">
+                    <p class="font-small m-b-0">
+                        <strong>Atenção:</strong> Essa transportadora não possui veículos cadastrados!
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

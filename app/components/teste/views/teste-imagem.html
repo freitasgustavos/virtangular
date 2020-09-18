@@ -1,0 +1,32 @@
+
+<!--ngf-select  ngf-change="upload2($file,$event)"-->
+<!--<input type="file" ng-model="arq2" ngf-select  >-->
+
+<form name="myForm">
+<input type="file" ngf-select ng-model="picFile" name="file" accept="image/*" required>
+
+    <!--<input type="hidden" ng-model="vix_tab">-->
+    <button  ng-click="upload2(picFile,$event)">Submit</button>
+    <img ngf-src="picFile" class="thumb">
+              <span class="progress" ng-show="picFile.progress >= 0">
+                  <div style="width:{{picFile.progress}}%" ng-bind="picFile.progress + '%'"></div>
+              </span>
+    <span ng-show="picFile.result">Upload Successful</span>
+
+</form>
+
+<!--<style>-->
+<!--.cropArea {-->
+<!--background: #E4E4E4;-->
+<!--overflow: hidden;-->
+<!--width:500px;-->
+<!--height:350px;-->
+<!--}-->
+<!--</style>-->
+
+<!--<div>Select an image file: <input type="file" id="fileInput" /></div>-->
+<!--<div class="cropArea">-->
+    <!--<img-crop image="myImage" result-image="myCroppedImage"></img-crop>-->
+<!--</div>-->
+<!--<div>Cropped Image:</div>-->
+<!--<div><img ng-src="{{myCroppedImage}}" /></div>-->

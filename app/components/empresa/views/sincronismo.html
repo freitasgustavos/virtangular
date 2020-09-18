@@ -1,0 +1,38 @@
+<div class="panel">
+    <div class="row">
+        <div class="col-md-12 portlets">
+            <div class="panel-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3>
+                            <i class="fa fa-refresh"></i>
+                            <strong>Sincronismo</strong>
+                        </h3>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12">
+                <input type="hidden" name="emp_cod_emp" id="emp_cod_emp" ng-model="empresa.emp_cod_emp"/>
+                <div class="row">
+                    <div class="col-md-3">
+                        <button type="button" class="btn btn-primary clickright no-right"
+                                    ladda="sincprodutoLoading" ng-click="sincProduto()" style="width: 100%;">
+                            <i class="fa fa-cube"></i> Inserir e atualizar Produtos
+                        </button>
+                        <br>
+                        <button type="button" class="btn btn-primary clickright no-right"
+                                ladda="sincprodutosaldoLoading" ng-click="sincProdutosaldo()" style="width: 100%;">
+                            <i class="fa fa-cubes"></i> Atualizar saldo de Produtos
+                        </button>
+                    </div>
+                    <div class="col-md-9 alert alert-success text-center caixaSincClass" role="alert" style="{{caixaSincAlerta('none')}}">
+
+                        <strong><span>{{sincAlerta}}</span></strong>
+
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

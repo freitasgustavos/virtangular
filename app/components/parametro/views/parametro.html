@@ -1,0 +1,75 @@
+
+<div class="col-md-4 p-l-0 p-r-0">
+    <div class="panel">
+        <div class="panel-header" style="padding-bottom:4px">
+            <h3>
+                <i class="fa fa-list"></i>
+                <strong>Listagem</strong> de Parâmetros
+            </h3>
+
+            <div class="control-btn">
+                <button type="button" class="btn btn-primary btn-sm pull-right" ng-click="novoParametro()" ng-show="parametro.assunto_pesquisar" style="margin-right:2px">
+                    <i class="fa fa-plus"></i> Novo
+                </button>
+            </div>
+
+            <form class="form-inverse space-down m-t-20" autocomplete="off" role="search">
+                <div class="append-ico box-select-param">
+                    <ui-select name="assunto_pesquisar" id="assunto_pesquisar" class="form-control" ng-model="parametro.assunto_pesquisar" theme="select2" ng-change="getBuscarAssunto()">
+                        <ui-select-match placeholder="-- SELECIONE O ASSUNTO --">
+                            {{$select.selected.desc_assunto}}&nbsp;<i class="fa fa-remove" ng-click="limparAssunto($event)"></i>
+                        </ui-select-match>
+                        <ui-select-choices repeat="assunto.cod_assunto as assunto in arrAssunto | filter: $select.search">
+                            <span ng-bind-html="assunto.desc_assunto | highlight: $select.search"></span>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </form>
+        </div>
+
+        <div class="panel-content panel-list" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200">
+            <div ng-include="'parametro/views/lista-parametro.html'"></div>
+
+            <div ng-show="!parametro.assunto_pesquisar || parametro.assunto_pesquisar == undefined">
+                <div class="alert alert-info alert-fade" role="alert">
+                    <i class="fa fa-info-circle fa-2x"></i>
+                    <span class="alert-texto font-small">Escolha um assunto no campo logo acima.</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div  class="col-md-8 p-r-0">
+    <div class="panel">
+        <div class="panel-header">
+            <h3 class="title-header">
+                <i class="fa fa-info"></i>
+                <strong>Dados</strong> do Parâmetro
+            </h3>
+
+            <div class="control-btn">
+                <a class="panel-close btn-delete" ng-show="param.combinadoPar" ng-click="cancelarParametro()" title="{{nomeBotao}}">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+                <button type="button" class="btn btn-primary btn-sm clickright no-right" ladda="salvarParametroLoading" ng-click="salvarParametro()">
+                    <i class="fa fa-check"></i> Salvar
+                </button>
+            </div>
+        </div>
+
+        <div class="panel-content p-t-0">
+            <form role="form" name="forms.formUsuario" id="forms.formUsuario" class="form-validation" novalidate>
+                <tabset class="tab-fade-in">
+                    <tab>
+                        <tab-heading>Principal</tab-heading>
+                        <div class="panel-inner-less">
+                            <div ng-include="'parametro/views/aba-parametro-principal.html'"></div>
+                        </div>
+                    </tab>
+                </tabset>
+            </form>
+        </div>
+    </div>
+</div>

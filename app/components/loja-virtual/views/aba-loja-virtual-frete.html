@@ -1,0 +1,93 @@
+
+<div  class="col-md-12 p-l-0 p-r-0">
+    <div class="panel">
+        <div class="panel-header">
+            <h3 class="m-t-0 m-b-0">
+                <i class="fa fa-truck"></i>
+                <strong>Regras</strong> de frete
+
+                <label class="switch switch-h3">
+                    <input class="switch-input" name="tem_ativo_frete" id="tem_ativo_frete" type="checkbox" ng-model="template.tem_ativo_frete_aux">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                </label>
+            </h3>
+
+            <div class="control-btn" style="margin-top:-10px">
+                <button class="btn btn-primary btn-sm clickright no-right" ng-click="addItemFrete()" id="tpl-link" ng-show="template.tem_ativo_frete_aux">
+                    <i class="fa fa-plus"></i> &nbsp; Novo
+                </button>
+
+                <button type="button" class="btn btn-sm btn-primary clickright" ng-click="salvarFrete()" ladda="salvarFreteLoading" style="margin-right:2px">
+                    <i class="fa fa-check"></i> &nbsp; Salvar
+                </button>
+            </div>
+        </div>
+
+        <div class="panel-body no-bottom p-t-10" ng-show="template.tem_ativo_frete_aux">
+            <div class="malihu-list dropdown-menu-list panel-content widget-news" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200">
+
+                <div class="alert alert-info fade in ng-scope">
+                    <p class="alert-texto font-small">Crie novas regras para o frete clicando no botão <strong>NOVO</strong>. Você poderá escolher o tipo do frete (fixo, a combinar, grátis), combinar com partes de algum CEP, e também colocar regras específicas para um determinado valor de produto.</p>
+                </div>
+
+                <table class="table table-striped font-small" id="table-editable">
+                    <thead>
+                        <tr>
+                            <th style="width:12%">Prioridade</th>
+                            <th style="width:15%">Tipo</th>
+                            <th style="width:15%">Cep</th>
+                            <th style="width:12%">Valor Frete Fixo</th>
+                            <th style="width:12%">Valor Venda <small>(de)</small></th>
+                            <th style="width:12%">Valor Venda <small>(até)</small></th>
+                            <th style="width:12%">Prazo <small>(dias)</small></th>
+                            <th style="width:5%">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="(k, item) in frete.itens" ng-include="getTemplate(item, $index)"></tr>
+                    </tbody>
+                </table>
+
+                <div id="tpl-content" ng-include src="currentTpl"></div>
+
+                <script type="text/ng-template" id="edit">
+                    <input type="hidden" class="form-control" ng-model="item.frt_cod_frt">
+                    <td>
+                        <input type="text" class="form-control" ng-model="item.frt_ordem_prioridade" toint2>
+                    </td>
+                    <td>
+                        <select class="form-control" ng-model="item.frt_cod_tipo">
+                            <option value="">-- Selecione um tipo --</option>
+                            <option value="1">Frete Grátis</option>
+                            <option value="2">Frete Fixo</option>
+                            <option value="3">Frete a Combinar</option>
+                        </select>
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" ng-model="item.frt_cep_mascara_1" style="width:29%" maxlength="2">
+                        <input type="text" class="form-control" ng-model="item.frt_cep_mascara_2" style="width:31%" maxlength="3">
+                        <input type="text" class="form-control" ng-model="item.frt_cep_mascara_3" style="width:31%" maxlength="3">
+                    </td>
+                    <td>
+                        <input type="text" ng-show="item.frt_cod_tipo == 2" class="form-control" maxlength="12" ng-model="item.frt_vlr_frete_fixo" ui-money-mask="mdecimals">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" ng-model="item.frt_vlr_doc_min" maxlength="12" ui-money-mask="mdecimals">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" ng-model="item.frt_vlr_doc_max" maxlength="12" ui-money-mask="mdecimals">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control" ng-model="item.frt_dias_prazo_entrega" maxlength="3" toint2>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-mn" ng-click="removerItem($index)">
+                            <i class="fa fa-close"></i>
+                        </button>
+                    </td>
+                </script>
+            </div>
+        </div>
+    </div>
+</div>

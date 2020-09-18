@@ -1,0 +1,458 @@
+
+<div class="col-md-3 p-l-0 p-r-0">
+    <treasure-overlay-spinner active="spinner.active">
+        <div class="panel" style="min-height:100px">
+            <form role="form" name="forms.formSistema" id="forms.formSistema" class="form-validation" autocomplete="off" novalidate>
+                <div class="panel-header">
+                    <h3>
+                        <span class="m-r-5">
+                            <i class="fa fa-dollar"></i>
+                            <strong>Central</strong> Financeira
+                        </span>
+                    </h3>
+                </div>
+
+                <div class="panel-content p-t-0">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label class="btn btn-default btn-embossed btn-100" ng-class="{'btn-success' : objPesquisa.sistema == '1'}" ng-model="objPesquisa.sistema" btn-radio="'1'" ng-click="setSistema('receber')" id="btn-contas-receber">Receitas</label>
+                            <label class="btn btn-default btn-embossed btn-100" ng-class="{'btn-danger'  : objPesquisa.sistema == '2'}" ng-model="objPesquisa.sistema" btn-radio="'2'" ng-click="setSistema('pagar')" id="btn-contas-pagar">Despesas</label>
+                            <label class="btn btn-default btn-embossed btn-100" ng-class="{'btn-primary' : objPesquisa.sistema == '3'}" ng-model="objPesquisa.sistema" btn-radio="'3'" ng-click="setSistema('extrato')" id="btn-extrato">Extrato</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-8">
+                            <h3 class="m-t-10 m-b-0 pull-left">
+                                <span>
+                                    <i class="fa fa-calendar"></i>
+                                    <strong>Período</strong>
+                                </span>
+                            </h3>
+                            <div class="box-date-financeiro m-b-10 dropdown pull-left">
+                                <a class="c-pointer" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" data-delay="300" aria-expanded="false">
+                                    <span>
+                                        <small>{{objPesquisa.descDataPesquisa}}</small>
+                                        <i class="fa fa-angle-down p-0"></i>
+                                    </span>
+                                </a>
+                                <ul class="dropdown-menu p-0" style="top:20px">
+                                    <li>
+                                        <a class="c-pointer" ng-click="setDataPesquisa('DE')">
+                                            <small>Data de Lançamento</small>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="c-pointer" ng-click="setDataPesquisa('DV')">
+                                            <small>Data de Vencimento</small>
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="c-pointer" ng-click="setDataPesquisa('DD')">
+                                            <small>{{objTela.descDataSistema}}</small>
+                                        </a>
+                                    </li>
+                                    <li ng-if="objPesquisa.sistema != 3">
+                                        <a class="c-pointer" ng-click="setDataPesquisa('DI')">
+                                            <small>Data Inteligente</small>
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <button type="button" class="btn btn-primary btn-sm f-r m-r-0 p-5 m-t-10" id="btn-listar-financas" ng-click="listarTrigger()">
+                                <i class="fa fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="btn-group m-r-0" style="width:100%">
+                                <label class="btn btn-sm btn-default" ng-model="objPesquisa.tipoDataPesquisa" ng-change="setTipoData()" btn-radio="'D'" style="width:25%">Dia</label>
+                                <label class="btn btn-sm btn-default" ng-model="objPesquisa.tipoDataPesquisa" ng-change="setTipoData()" btn-radio="'S'" style="width:25%">Semana</label>
+                                <label class="btn btn-sm btn-default" ng-model="objPesquisa.tipoDataPesquisa" ng-change="setTipoData()" btn-radio="'M'" style="width:25%">Mês</label>
+                                <label class="btn btn-sm btn-default" ng-model="objPesquisa.tipoDataPesquisa" ng-change="setTipoData()" btn-radio="'T'" style="width:25%">Todos</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!--
+                        <label class="btn btn-sm btn-default" ng-model="objPesquisa.tipoDataPesquisa" ng-change="setTipoData()" btn-radio="'I'" style="width:25%">10 dias</label>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group m-b-10">
+                                    <div class="input-daterange input-group">
+                                        <input class="input-sm form-control" maxlength="10" placeholder="Data início..." ng-model="objPesquisa.dtInicio" type="text" data-mask="99/99/9999" trigger="true" datepicker1>
+                                        <span class="input-group-addon">até</span>
+                                        <input class="input-sm form-control" maxlength="10" placeholder="Data fim..." ng-model="objPesquisa.dtFinal" type="text" data-mask="99/99/9999" trigger="true" datepicker1>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    -->
+
+                    <div class="row box-daterange" ng-if="objPesquisa.tipoDataPesquisa != 'T'">
+                        <div class="col-md-12">
+                            <div class="form-group m-b-10">
+                                <div class="input-group" style="width:104%">
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default bootstrap-touchspin-down" type="button" ng-click="ajustarData('A')">
+                                            <i class="fa fa-caret-left"></i>
+                                        </button>
+                                    </span>
+                                    <input class="input-sm form-control" maxlength="10" placeholder="Data início..." ng-model="objPesquisa.dtInicio" type="text" data-mask="99/99/9999" datepicker1>
+
+                                    <span class="input-group-addon">
+                                        <small>até</small>
+                                    </span>
+
+                                    <input class="input-sm form-control" maxlength="10" placeholder="Data fim..." ng-model="objPesquisa.dtFinal" type="text" data-mask="99/99/9999" datepicker1>
+                                    <span class="input-group-btn">
+                                        <button class="btn btn-default bootstrap-touchspin-up" type="button" ng-click="ajustarData('P')">
+                                            <i class="fa fa-caret-right"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Filtro relativo a conta financeira. -->
+                    <div class="row">
+                        <h3 class="col-md-12 m-t-10">
+                            <span>
+                                <i class="fa fa-dollar"></i>
+                                <strong>Conta Financeira</strong>
+                            </span>
+                            <span class="text-primary f-r">
+                                <a class="link-h3" ng-click="openModalContaFinanceira()">Nova Conta</a>
+                            </span>
+                        </h3>
+
+                        <div class="col-md-12">
+                            <div ng-show="!arrContasFinanceiras.length">
+                                <div class="alert alert-warning" role="alert">
+                                    <strong>Nenhuma conta financeira encontrado.</strong>
+                                </div>
+                            </div>
+
+                            <ul class="todo-list">
+                                <li ng-repeat="item in arrContasFinanceiras" class="primary">
+                                    <span class="span-check">
+                                        <input type="checkbox" icheck name="cf-{{$index}}" id="cf-{{$index}}" ng-model="contaFinanceira" class="iradio-text" ng-value="item.par_c01" data-radio="iradio_minimal-blue" ng-change="manipularCF(item)">
+                                        <label for="cf-{{$index}}"></label>
+                                    </span>
+
+                                    <span class="todo-task m-t-0">
+                                        <span show-hide="{{item.par_pai}}">{{item.par_c01}}</span>
+                                        <span ng-if="item.par_i03 === 1">
+                                            <i class="fa fa-star m-l-5 text-primary"></i>
+                                        </span>
+                                    </span>
+
+                                    <div class="todo-date clearfix">
+                                        <div class="completed-date">
+                                            <span class="due-date-span {{arrSaldoContaFinanceira[item.par_pai] >= 0 ? 'c-green' : 'c-red'}}">{{arrSaldoContaFinanceira[item.par_pai] | customCurrency}}</span>
+                                        </div>
+                                        <div class="due-date" id="box-cf-{{item.par_pai}}" style="display:none">
+                                            <span class="text-primary f-r m-r-10">
+                                                <a class="link-h3" ng-click="openModalContaFinanceira(item.par_pai)">Editar</a>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!--
+                        <div class="row m-t-10 m-b-10">
+                            Pesquisa para os títulos a pagar e receber.
+                            <div class="col-md-12" ng-if="objPesquisa.sistema != 3">
+                                <button type="button" class="btn btn-primary btn-embossed btn-100 m-b-0" ng-click="listarConta()">
+                                    <i class="fa fa-search"></i> Efetuar Pesquisa
+                                </button>
+                            </div>
+
+                            Pesquisa para o extrato financeiro.
+                            <div class="col-md-12" ng-if="objPesquisa.sistema == 3">
+                                <button type="button" class="btn btn-primary btn-embossed btn-100 m-b-0" ng-click="listarExtrato()">
+                                    <i class="fa fa-search"></i> Efetuar Pesquisa
+                                </button>
+                            </div>
+                        </div>
+                    -->
+                </div>
+            </form>
+        </div>
+    </treasure-overlay-spinner>
+</div>
+
+<div class="col-md-9 p-r-0">
+    <div class="panel box-financas" ng-show="!objTela.flagGrid">
+        <form class="form-inverse space-down m-t-0 form-financeiro" id="forms.formPesquisa" name="forms.formPesquisa" role="search">
+            <div class="panel-header" style="min-height:100px">
+                <h3 class="m-b-20">
+                    <i class="fa fa-list"></i>
+                    <strong>Listagem</strong> de {{objTela.descSistema}}
+                </h3>
+
+                <div class="control-btn" style="margin-right:2px">
+                    <a class="panel-close m-r-10 btn-search btn-filter" ng-click="objTela.hasFilter = !objTela.hasFilter" title="Refinar pesquisa">
+                        <i class="fa fa-filter i-filter" tooltip-placement="left" tooltip="Refinar pesquisa"></i>
+                    </a>
+
+                    <button type="button" class="btn btn-success btn-sm no-right f-l" ng-click="imprimirRelatorio('xls')">
+                        <i class="fa fa-file-excel-o"></i> EXCEL
+                    </button>
+
+                    <button type="button" class="btn btn-danger btn-sm no-right f-l" ng-click="imprimirRelatorio('pdf')">
+                        <i class="fa fa-file-pdf-o"></i> PDF
+                    </button>
+
+                    <button type="button" class="btn btn-warning btn-sm no-right f-l" ng-if="objPesquisa.sistema != 3 && arrSelecionados.length" ng-click="triggerAcaoTodos()" ladda="triggerAcaoLoading">
+                        <i class="fa fa-list-alt"></i>&nbsp;{{objTela.descAcaoSistema}}
+                    </button>
+
+                    <div class="btn-group box-dropdown f-l m-l-10" ng-if="objPesquisa.sistema != 3">
+                        <div class="box-toggle-dropdown">
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle br-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret m-l-0"></span>
+                            </button>
+                            <span class="dropdown-arrow"></span>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="openModalTransferencia()">
+                                        <i class="fa fa-exchange"></i> Transferência
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-primary btn-sm pull-right no-right" ng-if="objPesquisa.sistema != 3" ng-click="novaConta()">
+                        <i class="fa fa-plus"></i>&nbsp;Nova
+                    </button>
+                </div>
+
+                <!-- Ações para layout responsivo. -->
+                <div class="control-btn-responsive">
+                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Ações &nbsp; <span class="caret"></span>
+                    </button>
+                    <span class="dropdown-arrow"></span>
+                    <ul class="dropdown-menu" role="menu">
+                        <li>
+                            <a href="javascript:void(0)" ng-click="novaConta()">Nova</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" ng-click="openModalTransferencia()">Transferência</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" ng-click="imprimirRelatorio('pdf')">Gerar PDF</a>
+                        </li>
+                        <li>
+                            <a href="javascript:void(0)" ng-click="imprimirRelatorio('xls')">Gerar Excel</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <div class="col-md-5 p-l-0">
+                    <div class="form-group">
+                        <div class="append-icon">
+                            <input class="form-control" placeholder="Pesquisar..." maxlength="100" submit-form="btn-listar-financas" type="text" ng-model="objPesquisa.criterio">
+                            <i class="icon-magnifier"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 p-r-0">
+                    <div class="form-group">
+                        <ui-select class="form-control" ng-model="objPesquisa.centroCusto" theme="select2" ng-change="listarTrigger()">
+                            <ui-select-match placeholder="Centro de Custo">
+                                <span title="{{$select.selected.par_c01}}">
+                                    {{$select.selected.par_c01}}&nbsp;<i class="fa fa-remove" ng-click="limparCentroCusto($event)"></i>
+                                </span>
+                            </ui-select-match>
+                            <ui-select-choices repeat="centroCusto.par_pai as centroCusto in arrCentrosCustos | filter: $select.search">
+                                <span ng-bind-html="centroCusto.par_c01 | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="col-md-2 p-r-0">
+                    <div class="form-group">
+                        <ui-select class="form-control" ng-model="objPesquisa.tipoNatureza" theme="select2" ng-change="listarTrigger()">
+                            <ui-select-match placeholder="Tipo">
+                                <span title="{{$select.selected.nome}}">
+                                    {{$select.selected.nome}}&nbsp;<i class="fa fa-remove" ng-click="limparTipoNatureza($event)"></i>
+                                </span>
+                            </ui-select-match>
+                            <ui-select-choices repeat="tipo.id as tipo in arrTiposNatureza | filter: $select.search">
+                                <span ng-bind-html="tipo.nome | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="col-md-2 p-r-0">
+                    <div class="form-group">
+                        <ui-select class="form-control" ng-model="objPesquisa.situacao" theme="select2" ng-change="listarTrigger()">
+                            <ui-select-match placeholder="Situação">
+                                <span title="{{$select.selected.nome}}">
+                                    {{$select.selected.nome}}&nbsp;<i class="fa fa-remove" ng-click="limparSituacao($event)"></i>
+                                </span>
+                            </ui-select-match>
+                            <ui-select-choices repeat="situacao.id as situacao in arrSituacoes | filter: $select.search">
+                                <span ng-bind-html="situacao.nome | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <!-- Filtros avançados para pesquisa das contas: -->
+                <div class="col-md-12" ng-class="{'animated fadeIn' : objTela.hasFilter, 'animated fadeOutDown oculto' : !objTela.hasFilter}">
+                    <div class="row">
+                        <div class="col-md-5 p-l-0">
+                            <div class="form-group">
+                                <ui-select class="form-control" ng-model="objPesquisa.formaPagamento" theme="select2" ng-change="listarTrigger()">
+                                    <ui-select-match placeholder="Forma de Pagamento">
+                                        <span title="{{$select.selected.par_c01}}">
+                                            {{$select.selected.par_c01}}&nbsp;<i class="fa fa-remove" ng-click="limparFormaPagamento($event)"></i>
+                                        </span>
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="formaPgto.par_pai as formaPgto in arrFormasPgto | filter: $select.search">
+                                        <span ng-bind-html="formaPgto.par_c01 | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 p-r-0" ng-if="arrCamposAdicionais.length && arrCamposAdicionais.tit_fin_placa">
+                            <div class="append-icon">
+                                <input class="form-control" placeholder="{{arrCamposAdicionais.tit_fin_placa.label}}" type="text" ng-model="objPesquisa.finPlaca" maxlength="20">
+                                <i class="icon-magnifier"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4 p-r-0" ng-if="arrCamposAdicionais.length && arrCamposAdicionais.tit_fin_carga">
+                            <div class="append-icon">
+                                <input class="form-control" placeholder="{{arrCamposAdicionais.tit_fin_carga.label}}" type="text" ng-model="objPesquisa.finCarga" maxlength="10" number-only>
+                                <i class="icon-magnifier"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Listagem completa dos títulos: -->
+            <div class="box-financas" ng-include="'financeiro/views/lista-contas.html'"></div>
+        </form>
+    </div>
+
+    <div class="panel sample-show-hide box-financeiro" style="float:left;margin-bottom:200px" ng-show="objTela.flagGrid">
+        <div class="panel-header">
+            <div class="control-btn-left">
+                <button type="button" class="btn btn-sm btn-primary btn-embossed bnt-square" ng-click="voltarConta()">
+                    <i class="fa fa-arrow-left"></i> Voltar
+                </button>
+            </div>
+
+            <h3 class="panel-header-center">
+                <span class="m-r-5">
+                    <strong>Dados</strong> da Conta
+                </span>
+            </h3>
+
+            <div class="control-btn">
+                <a class="panel-close m-r-10 btn-delete btn-trash" ng-click="cancelarConta()" title="Excluir" ng-if="objConta.tit_fin_nro_lan && objConta.tit_fatura_seq">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+
+                <div class="btn-group box-dropdown" ng-if="objConta.tit_fin_nro_lan && objConta.tit_fatura_seq">
+                    <div class="box-toggle-dropdown">
+                        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret m-l-0"></span>
+                        </button>
+                        <span class="dropdown-arrow"></span>
+                        <ul class="dropdown-menu" role="menu">
+                            <li ng-if="hasBoleto()">
+                                <a href="javascript:void(0)" ng-click="gerarBoleto()">
+                                    <i class="fa fa-barcode"></i> Gerar Boleto
+                                </a>
+                            </li>
+                            <li ng-if="hasBoleto() && getVerificaRegrasBoleto()">
+                                <a href="javascript:void(0)" ng-click="cancelarBoleto()">
+                                    <i class="fa fa-trash"></i> Cancelar Boleto
+                                </a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)" ng-click="gerarRecibo()">
+                                    <i class="fa fa-print"></i> Gerar Recibo
+                                </a>
+                            </li>
+                            <li ng-if="objConta.tit_sistema === 1">
+                                <a href="javascript:void(0)" ng-click="gerarDuplicata()">
+                                    <i class="fa fa-print"></i> Gerar Duplicata
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <button type="button" class="btn btn-sm btn-primary clickright no-right m-l-0" ladda="salvarContaLoading" ng-click="salvarConta()">
+                        <i class="fa fa-check"></i> Salvar
+                    </button>
+                </div>
+
+
+                <div ng-if="!objConta.tit_fin_nro_lan && !objConta.tit_fatura_seq">
+                    <button type="button" class="btn btn-sm btn-primary clickright no-right" ladda="salvarContaLoading" ng-click="salvarConta()">
+                        <i class="fa fa-check"></i> Salvar
+                    </button>
+                </div>
+            </div>
+
+            <!-- Ações para layout responsivo. -->
+            <div class="control-btn-responsive">
+                <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ladda="salvarContaLoading">
+                    Ações &nbsp; <span class="caret"></span>
+                </button>
+                <span class="dropdown-arrow"></span>
+                <ul class="dropdown-menu" role="menu">
+                    <li>
+                        <a href="javascript:void(0)" ng-click="voltarConta()">Voltar</a>
+                    </li>
+
+                    <li ng-if="objConta.tit_fin_nro_lan && objConta.tit_fatura_seq">
+                        <a href="javascript:void(0)" ng-click="cancelarConta()">Cancelar</a>
+                    </li>
+
+                    <li ng-if="objConta.tit_fin_nro_lan && objConta.tit_fatura_seq">
+                        <a href="javascript:void(0)" ng-click="gerarRecibo()">Gerar Recibo</a>
+                    </li>
+
+                    <li ng-if="hasBoleto()">
+                        <a href="javascript:void(0)" ng-click="gerarBoleto()">Gerar Boleto</a>
+                    </li>
+
+                    <li ng-if="hasBoleto() && getVerificaRegrasBoleto()">
+                        <a href="javascript:void(0)" ng-click="cancelarBoleto()">Cancelar Boleto</a>
+                    </li>
+
+                    <li>
+                        <a href="javascript:void(0)" ng-click="salvarConta()">Salvar</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="panel-content p-0">
+            <hr class="m-b-10 m-t-5">
+            <form role="form" name="forms.formFinanca" id="forms.formFinanca" method="POST" class="form-validation" autocomplete="off" novalidate>
+                <div ng-include="'financeiro/views/aba-financeiro-principal.html'"></div>
+            </form>
+        </div>
+    </div>
+</div>

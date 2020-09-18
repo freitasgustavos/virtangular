@@ -1,0 +1,25 @@
+
+
+<!-- Exibição da tela de pagamentos. -->
+<div ng-if="flags.flagPgto">
+    <div ng-include="'fatura/views/fatura.html'"></div>
+</div>
+
+
+<!-- Exibição da tela de login. -->
+<div ng-if="!flags.flagPgto">
+    <div ng-if="!flags.flagSenha">
+        <div ng-include="'login/views/form-login.html'"></div>
+    </div>
+    <div ng-if="flags.flagSenha">
+        <div ng-include="'login/views/form-senha.html'"></div>
+    </div>
+    <p class="account-copyright" style="position:relative;margin-top:40px;color:#353940">
+        <span>Copyright &copy; {{ano}}</span>
+        <span>Lojista Virtual</span>.
+        <span>Todos os direitos reservados.</span>
+        <span>
+            <a href="#" ng-click="voltar()" title="Voltar">Voltar</a>
+        </span>
+    </p>
+</div>

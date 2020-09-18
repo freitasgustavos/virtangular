@@ -1,0 +1,38 @@
+
+<div ng-if="flags.flagValidarToken">
+    <div class="alert alert-danger" style="margin-bottom:10px">
+        <p>{{msgValidarToken}}</p>
+    </div>
+</div>
+
+<div ng-if="!flags.flagValidarToken">
+    <!-- Mensagem de erro ao tentar modificar a senha do usuário. -->
+    <div ng-show="objRespostaSalvar" class="cssFade">
+        <div class="{{objRespostaSalvar.classe}}" role="alert" style="margin-bottom:10px">
+            <p>{{objRespostaSalvar.mensagem}}</p>
+        </div>
+    </div>
+
+    <div class="append-icon m-b-10">
+        <input class="form-control form-white password" name="senha" maxlength="20" placeholder="Digite a senha..." title="Senha" type="password" required ng-minlength="5" ng-model="objNovaConta.senha">
+        <i class="icon-lock" style="padding-right:10px"></i>
+
+        <div ng-show="forms.formCriarSenha.submitted || (forms.formCriarSenha.senha.$invalid && !forms.formCriarSenha.senha.$pristine)">
+            <div class="validation-advice" ng-show="forms.formCriarSenha.senha.$error.required">O campo senha é de preenchimento obrigatório.</div>
+            <div class="validation-advice" ng-show="forms.formCriarSenha.senha.$error.minlength">A senha deve ter mais do que 5 caracteres.</div>
+        </div>
+    </div>
+
+    <div class="append-icon m-b-30">
+        <input class="form-control form-white password" name="confirmacao" maxlength="20" placeholder="Confirme sua senha..." title="Confirme sua senha" type="password" required ng-minlength="5" ng-model="objNovaConta.confirmacao" compare-to="objNovaConta.senha">
+        <i class="icon-lock" style="padding-right:10px"></i>
+
+        <div ng-show="forms.formCriarSenha.submitted || (forms.formCriarSenha.confirmacao.$invalid && !forms.formCriarSenha.confirmacao.$pristine)">
+            <div style="padding-bottom:0" class="validation-advice" ng-show="forms.formCriarSenha.confirmacao.$error.required">A confirmação da senha é de preenchimento obrigatório.</div>
+            <div style="padding-bottom:0" class="validation-advice" ng-show="forms.formCriarSenha.confirmacao.$error.compareTo">A senha não confere.</div>
+            <div style="padding-bottom:0" class="validation-advice" ng-show="forms.formCriarSenha.confirmacao.$error.minlength">A senha deve ter mais do que 5 caracteres.</div>
+        </div>
+    </div>
+
+    <button class="btn btn-dark pull-right m-r-0" name="submit-form2" id="submit-form" type="button" ladda="novaSenhaLoading" ng-click="criarSenha()">Criar Senha</button>
+</div>

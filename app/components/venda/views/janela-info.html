@@ -1,0 +1,48 @@
+    <div class="modal-content">
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>{{objModal.label}}</strong>
+
+                    <button class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" type="button" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-check"></i> &nbsp; OK
+                    </button>
+                </h4>
+            </div>
+            <div class="modal-body m-b-20 m-t-20" style="    width: 100%;">
+
+                        <div class="alert alert-info m-t-10">
+                            <p>
+                               <strong>No caso de retorno por Duplicidade poderá ter ocorrido alguma das possibilidades abaixo:</strong>
+
+                            </p>
+                            <br>
+                            <p>
+                                <strong>1)</strong> É provável que o número da nota utilizado para este lançamento, já tenha sido utilizado anteriormente, neste caso você deverá excluir esta nota e lançá-la novamente com uma outra numeração, para isto siga os passos abaixo:
+                            </p>
+                            <p>&nbsp;&nbsp;a) Clique no sub-menu Excluir do botão Salvar</p>
+                            <p>&nbsp;&nbsp;b) Faça a correção do numerador para que não haja novamente o conflito de numeração, acessando o menu Empresas/Certificado Digital e informando o número da próxima NF-e correto.</p>
+                            <p>&nbsp;&nbsp;c) Emitir uma nova venda, contendo os itens desejados.</p>
+
+                            <br>
+                            <div ng-if="!params.temDiferencaDup">
+                                <p>
+                                    <strong>2)</strong> Caso contrário, se tem certeza de que o número nunca foi utilizado anteriormente, é provável que o servidor da SEFAZ estivesse com lentidão  no momento do envio e a nota tenha sido reenviada antes de obter o retorno. Neste caso faça:
+
+                                </p>
+                                <p>
+                                    &nbsp;&nbsp;a) Acesse o sub-menu Atualizar do botão Salvar e verifique que a mensagem de rejeição por duplicidade não aparecerá mais.
+                                </p>
+                            </div>
+
+                        </div>
+
+            </div>
+
+            <div class="modal-footer text-center">
+                <div class="col-sm-12"></div>
+            </div>
+    </div>

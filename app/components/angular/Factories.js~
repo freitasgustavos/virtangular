@@ -1,0 +1,544 @@
+'use strict';
+
+angular.module('newApp')
+
+    .factory('GeralFactory', function(CONFIG, Storage, $notification) {
+        return {
+            notify : function(acao, title, msg) {
+                var container      = '';
+                var style          = 'box';
+                var position       = 'topCenter';
+                var openAnimation  = 'animated fadeIn';
+                var closeAnimation = 'animated fadeOut';
+                var method         = 4000;
+                var type           = acao;
+
+                var ic = (acao === 'success') ? 'fa-check-circle' : 'fa-warning';
+
+                //var content = '<div class="alert alert-' + acao + ' media fade in"><p><i class="fa '+ic+' "></i>&nbsp;&nbsp;<strong>' + title + '</strong></p><p>' + msg + '</p></div>';
+                var content = '<div style="padding: 4px; padding-bottom:2px" class="alert alert-' + acao + ' media fade in"><strong><p style="font-size:13px;text-align: center">' + msg + '</p></strong></div>';
+
+                if (container === '') {
+                    var n = noty({
+                        text         : content,
+                        type         : type,
+                        dismissQueue : true,
+                        layout       : position,
+                        closeWith    : ['click'],
+                        theme        : 'made',
+                        maxVisible   : 10,
+                        animation    : {
+                            open     :  openAnimation,
+                            close    :  closeAnimation,
+                            easing   : 'swing',
+                            speed    :  100
+                        },
+                        timeout      : method,
+                        buttons      : '',
+                        callback     : {
+                            onShow: function() {
+                            }
+                        }
+                    });
+                }
+            },
+
+            notificar : function(response) {
+                if (! response.data.records.error) {
+                    this.notify('success', response.data.records.title, response.data.records.msg);
+                } else {
+                    this.notify('danger', response.data.records.title, response.data.records.msg);
+                }
+            },
+
+            ehVazioCombo : function(item) {
+
+                if(item.nome_real == '') {
+                    this.notify('danger', 'Atenção!','Digite alguma descrição');
+                    return true;
+                }
+
+                return false;
+            },
+
+            retornarSomaDiaData : function(somaDias) {
+                var myDate = new Date(new Date().getTime() + (somaDias * 24 * 60 * 60 * 1000));
+                return ('0' + myDate.getDate()).slice(-2) + '/' + ('0' + (myDate.getMonth() + 1)).slice(-2) + '/' + myDate.getFullYear();
+            },
+
+            confirmar : function(text, func) {
+                var content = '<div class="alert media fade in box-confirm"><p><i class="fa"></i>&nbsp;&nbsp;<strong>' + text + '</strong></p><p></p></div>';
+
+                var n = noty({
+                    text         :  content,
+                    type         : 'confirm',
+                    dismissQueue :  false,
+                    layout       : 'center',
+                    theme        : 'defaultTheme',
+                    buttons      :
+                    [{
+                        addClass : 'btn btn-danger pull-left',
+                        text     : 'Cancelar',
+                        onClick  : function($noty) {
+                            $noty.close();
+                        }
+                    }, {
+                        addClass : 'btn btn-primary m-r-0 pull-right',
+                        text     : 'Ok',
+                        onClick  : function($noty) {
+                            func.call();
+                            $noty.close();
+                        }
+                    }],
+                    animation  : {
+                        open   : 'animated flipInX',
+                        close  : 'animated flipOutX',
+                        easing : 'swing',
+                        speed  :  500
+                    }
+                });
+            },
+
+            /**
+             * Retorna a data atual no formato dd/mm/yyyy
+             * @returns {string}
+             */
+            getDataAtualBr : function() {
+
+                var data = new Date();
+                return ("0" + data.getDate()).substr(-2) + "/"
+                + ("0" + (data.getMonth() + 1)).substr(-2) + "/" + data.getFullYear();
+
+            },
+
+            /**
+             * Retorna o ultimo dia de determinado mes. Se nao passar nada retorna o ultimo dia do mes atual
+             * @returns {string}
+             */
+            getUltimoDiaMes : function(mes) {
+                var data = new Date();
+                var m;
+
+                if (mes) {
+                    m = mes;
+                } else {
+                    m = ("0" + (data.getMonth() + 1)).substr(-2);
+                }
+
+                return (new Date(data.getFullYear(), m, 0)).getDate();
+            },
+
+            /**
+             * Retorna a diferença em dias para a data corrente.
+             * @returns {string}
+             */
+            getDiferencaDias: function(diferenca) {
+
+                diferenca = diferenca || 1;
+
+                var d = new Date();
+                d.setDate(d.getDate() - diferenca);
+
+                return this.getFormatoJsBr(d);
+            },
+
+            /**
+             * Retorna a data de inicio e fim da semana de acordo com o dia corrente.
+             * @returns {object}
+             */
+            getInicioFimSemana: function() {
+                var hoje = new Date();
+
+                // Primeiro dia da semana:
+                var primeiroDia = hoje.getDate() - hoje.getDay();
+
+                // Último dia da semana:
+                var numDomingo, ultimoDia;
+
+                numDomingo = 6 - hoje.getDay();
+                ultimoDia  = new Date(hoje.getFullYear(), hoje.getMonth(), hoje.getDate() + numDomingo);
+
+                return {
+                    dtInicio : this.getFormatoJsBr(new Date(hoje.setDate(primeiroDia))),
+                    dtFinal  : this.getFormatoJsBr(ultimoDia)
+                };
+            },
+
+            /**
+             * Formata a data contida no objeto JS para o formato DD/MM/YYYY
+             * @param data
+             * @returns {string}
+             */
+            getFormatoJsBr : function(data) {
+                return ('0' + data.getDate()).substr(-2) + '/' + ('0' + (data.getMonth() + 1)).substr(-2) + '/' + data.getFullYear()
+            },
+
+            /**
+             * Formata o modo yyyy-mm-dd hh:ii:ss ou yyyy-mm-dd para o formato dd/mm/yyyy
+             * @param data
+             * @returns {string}
+             */
+            formatarDataBr : function(data) {
+
+                if (data) {
+
+                    var arrData, arrDataHora;
+
+                    if(data.length > 12) {
+
+                        arrDataHora = data.split(' ');
+                        data = arrDataHora[0];
+                    }
+
+                    arrData = data.split('-');
+
+                    return arrData[2] + '/'+arrData[1] + '/' + arrData[0];
+                }
+
+                return '';
+            },
+
+            /**
+             * Formata um float com ponto para float com virgula (padrao BR). Ex: 1.5 para 1,5
+             */
+            formatarFloatBr : function(v) {
+
+                if (v !== null) {
+                    return v.replace('.',',');
+                }
+            },
+
+            getFotosProduto : function(arrFotos) {
+                var html = '';
+
+                if (arrFotos) {
+                    html += '<div class="widget widget_slider p-t-0">';
+                    html += '<div class="responsive-slick" data-arrows="true" data-num-slides="3" data-num-scroll="3">';
+
+                    angular.forEach(arrFotos, function(i, j) {
+                        html += '<div class="slide" style="width:126px">';
+                        html += '<img class="product" src="' + CONFIG.CACHE_IMG + i.mid_id + '">';
+                        html += '<button type="button" class="btn btn-sm btn-danger btn-image" data-mid-nro="' + i.mid_nro + '"><i class="fa fa-remove"></i></button>';
+                        html += '</div>';
+                    });
+
+                    html += '</div>';
+                    html += '</div>';
+                }
+
+                return html;
+            },
+
+            /**
+             * Retona a string da pesquisa formatada no padrão da API
+             * @param arr
+             */
+            formatarPesquisar : function(arr) {
+
+                var arrFiltro = new Array(), strFiltro = '';
+
+                angular.forEach(arr, function(item, key) {
+                    if (item || item === 0) {
+
+                        arrFiltro.push(key+':' + item);
+                    }
+                });
+
+                if (arrFiltro.length) {
+                    strFiltro = 'q=(' + arrFiltro.join(',') + ')';
+                }
+
+                return strFiltro;
+            },
+
+            getUrlApi : function() {
+
+                var objUsuario = Storage.usuario.getUsuario();
+                return CONFIG.HOSTNAME + objUsuario.ident_emp;
+            },
+
+            getCepFretePartido : function(cep) {
+
+                var tam = cep.length;
+
+                switch(tam) {
+
+                    case 1:
+                        return [cep.substring(0, 1),'',''];
+                        break;
+                    case 2:
+                        return [cep.substring(0, 2),'',''];
+                        break;
+                    case 3:
+                        return [cep.substring(0, 2),cep.substring(2, 3),''];
+                        break;
+                    case 4:
+                        return [cep.substring(0, 2),cep.substring(2, 4),''];
+                        break;
+                    case 5:
+                        return [cep.substring(0, 2),cep.substring(2, 5),''];
+                        break;
+                    case 6:
+                        return [cep.substring(0, 2),cep.substring(2, 5),cep.substring(5, 6)];
+                        break;
+                    case 7:
+                        return [cep.substring(0, 2),cep.substring(2, 5),cep.substring(5, 7)];
+                        break;
+                    case 8:
+                        return [cep.substring(0, 2),cep.substring(2, 5),cep.substring(5, 8)];
+                        break;
+
+                }
+
+            },
+
+            getDimensaoAproxBanner : function(pos,codTemplate) {
+
+                console.log(codTemplate,'-',pos);
+
+                codTemplate = codTemplate.toString();
+
+                switch(codTemplate) {
+
+                    case '1':
+                        switch(pos) {
+                            case 'A1':
+                                return '1170 x 240 pixels';
+                                break;
+                            case 'B1':
+                                return '1170 x 240 pixels';
+                                break;
+                        }
+                        break;
+
+                    case '2':
+                        switch(pos) {
+                            case 'A1':
+                                return '570 x 568 pixels';
+                                break;
+                            case 'A2':
+                                return '225 x 225 pixels';
+                                break;
+                            case 'B1':
+                                return '1170 x 240 pixels';
+                                break;
+                        }
+                        break;
+
+                    case '3':
+                        switch(pos) {
+                            case 'A1':
+                                return '1170 x 240 pixels';
+                                break;
+                            case 'B1':
+                                return '1170 x 240 pixels';
+                                break;
+                        }
+                        break;
+                }
+            },
+
+            /**
+             * Emite a janela de notificação do html5
+             * @param data
+             */
+            notificacaoHtml5 : function(data) {
+
+                $notification(data.not_titulo, {
+                    body: data.not_desc,
+                    dir: 'auto',
+                    lang: 'en',
+                    tag: 'my-tag',
+                    icon: 'app/images/dollar.png',
+                    delay: 8000, // in ms
+                    focusWindowOnClick: true // focus the window on click
+                });
+            },
+
+            /**
+             * Retorna os meses. Se tipo = 1 -> mes completo. Se tipo = 2 -> mes abreviado
+             * @param tipo
+             * @returns {string[]}
+             */
+            getArrMeses : function(tipo) {
+
+                switch(tipo) {
+                    case 1:
+                        return ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'];
+                    case 2:
+                        return ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'];
+
+                }
+            },
+
+            /**
+             * Retorna os dias da semana. Se tipo = 1 -> dia completo. Se tipo = 2 -> dia abreviado
+             * @param tipo
+             * @returns {string[]}
+             */
+            getArrDiasSemana : function(tipo) {
+
+                switch(tipo) {
+                    case 1:
+                        return [ 'Domingo', 'Segunda', 'Terça', 'Quarta', 'Quinta', 'Sexta', 'Sábado'];
+                    case 2:
+                        return ['Dom','Seg','Ter','Qua','Qui','Sex','Sab'];
+                }
+            },
+
+            /**
+             * Retorna um array de posições zeradas
+             * @param n
+             * @returns {Array}
+             */
+            getArrZeros : function(n) {
+
+                var arr = [];
+                for(var i=0;i<n;i++)
+                {
+                    arr.push(0);
+                }
+                return arr;
+            },
+
+            /**
+             * Método responsável em verificar a existência de um item numa lista que
+             * esteja carregando o componente TYPEAHEAD.
+             * @param arrItens
+             * @param item
+             * @param chave
+             * @param callback
+             */
+            verificarItem: function(arrItens, item, chave, callback) {
+                if (arrItens) {
+                    var keepGoing = true;
+                    angular.forEach(arrItens, function(i, j) {
+                        if (keepGoing) {
+                            var descItem = i[chave].trim();
+                            if (descItem === item) {
+                                keepGoing = false;
+                            }
+                        }
+                    });
+                    callback(keepGoing);
+                }
+            }
+
+        }
+    })
+
+    .factory('AuthTokenFactory', function AuthTokenFactory($rootScope, $window, jwtHelper, Storage) {
+        'use strict';
+
+        var store = $window.localStorage, key = 'auth-token';
+        return {
+            getToken : getToken,
+            setToken : setToken
+        };
+
+        function getToken() {
+            var tokenStorage = store.getItem(key);
+            if (tokenStorage) {
+                if (jwtHelper.isTokenExpired(tokenStorage)) {
+                    store.removeItem(key);
+                    Storage.implementacao.clear();
+
+                    $rootScope.isLogado = Storage.usuario.isLogado();
+                    $rootScope.objUsuario = {};
+
+                    this.setToken();
+                    location.reload('/');
+                }
+
+                return tokenStorage;
+            } else {
+                return false;
+            }
+        }
+
+        function setToken(token) {
+            if (token) {
+                store.setItem(key, token);
+            } else {
+                store.removeItem(key);
+            }
+        }
+    })
+
+    .factory('NotifyFlag', function($window) {
+
+        var store = $window.localStorage, key = 'notify-flag';
+        return {
+
+            setFlag : function(flag) {
+                store.setItem(key, flag);
+            },
+
+            getFlag : function() {
+                var flag = store.getItem(key);
+                if (flag !== null) {
+                    return flag;
+                } else {
+                    return true;
+                }
+            },
+
+            deleteFlag : function () {
+                store.removeItem(key);
+            }
+
+        };
+    })
+
+    .factory('focus', function($timeout, $window) {
+        return function(id) {
+            $timeout(function() {
+                var element = $window.document.getElementById(id);
+                if(element)
+                    element.focus();
+            });
+        };
+    })
+
+    .factory('AuthInterceptor', function AuthInterceptor(AuthTokenFactory) {
+        'use strict';
+
+        return {
+            request : addToken
+        };
+
+        function addToken(config) {
+            var token = AuthTokenFactory.getToken();
+            if (token) {
+                config.headers = config.headers || {};
+                config.headers.Authorization = 'Bearer ' + token;
+            }
+            return config;
+        }
+    })
+
+    .factory('socket', function ($rootScope,AuthTokenFactory,CONFIG) {
+        var socket = io.connect(CONFIG.HOSTNAME_NODEJS,{'query': 'token=' +AuthTokenFactory.getToken()});
+        return {
+            on: function (eventName, callback) {
+                socket.on(eventName, function () {
+                    var args = arguments;
+                    $rootScope.$apply(function () {
+                        callback.apply(socket, args);
+                    });
+                });
+            },
+            emit: function (eventName, data, callback) {
+                socket.emit(eventName, data, function () {
+                    var args = arguments;
+                    $rootScope.$apply(function () {
+                        if (callback) {
+                            callback.apply(socket, args);
+                        }
+                    });
+                })
+            }
+        };
+    });
+
+

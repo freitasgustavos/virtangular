@@ -1,0 +1,208 @@
+
+<div class="box-pgto-body">
+    <treasure-overlay-spinner active="spinnerList.active">
+        <div class="container box-pgto" id="login-block">
+            <!-- Erro na validação do token -->
+            <div ng-if="error">
+                <h2>Tela de pagamento indisponível!</h2>
+            </div>
+
+            <!-- Sucesso na validação do token -->
+            <div ng-if="!error">
+                <div class="account-img" style="margin:10px 0 20px 0">
+                    <img class="account-img" ng-src="{{imageCache}}{{objPayment.company.logo}}&thumb=3">
+
+                    <div class="rotated-badge hidden-print" id="status-badge">
+                        <div class="{{objPayment.status.style}}">
+                            <span>{{objPayment.status.text}}</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row box-pgto-header">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12 m-t-20">
+                                <span class="pgto-label">CLIENTE</span> <br>
+                                <strong class="pgto-value">{{objPayment.customer.name}}</strong>
+                            </div>
+                            <div class="col-sm-12 m-t-10 m-b-20">
+                                <span class="pgto-label">CPF/CNPJ</span> <br>
+                                <strong class="pgto-value">{{objPayment.customer.cpf_cnpj}}</strong>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12 m-t-20 company-name">
+                                <h1>{{objPayment.company.name}}</h1>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row m-t-20 m-b-10">
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h2 class="pgto-detail">Detalhe da Cobrança <small>#{{objPayment.finance.doc_number}}</small></h2>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-6">
+                        <div class="row">
+                            <div class="col-sm-12" style="text-align:right">
+                                <span class="pgto-label">Vencimento</span> <br>
+                                <strong class="pgto-value">{{objPayment.finance.due_date}}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <table class="table table-bordered m-b-20">
+                            <thead>
+                                <tr>
+                                    <th>Itens</th>
+                                    <th class="text-right">Quantidade</th>
+                                    <th class="text-right">Valor</th>
+                                    <th class="text-right">Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in objPayment.finance.itens">
+                                    <td>{{item.description}}</td>
+                                    <td class="text-right">{{item.quantity}}</td>
+                                    <td class="text-right">R$ {{item.price_unitary}}</td>
+                                    <td class="text-right">R$ {{item.price_total}}</td>
+                                </tr>
+                            </tbody>
+                            <tfoot>
+                                <tr>
+                                    <th colspan="3" class="text-right">Subtotal</th>
+                                    <th class="text-right">R$ {{objPayment.finance.value_subtotal}}</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="3" class="text-right">Desconto</th>
+                                    <th class="text-right">R$ {{objPayment.finance.value_discount}}</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="3" class="text-right">Multa/Juros</th>
+                                    <th class="text-right">R$ {{objPayment.finance.value_fines}}</th>
+                                </tr>
+                                <tr>
+                                    <th colspan="3" class="text-right">Total</th>
+                                    <th class="text-right">R$ {{objPayment.finance.value_total}}</th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+                </div>
+
+                <div class="box-form-cc" ng-if="isPending()">
+                    <div class="row">
+                        <div class="col-sm-12 m-b-10">
+                            <div class="row">
+                                <div class="col-sm-9">
+                                    <h2 class="pgto-detail">Pagar Cobrança</h2>
+                                    <span class="pgto-instruction">Efetue o pagamento com segurança pela internet ou em uma agência bancária. Confira as opções de pagamento:</span>
+                                </div>
+                                <div class="col-sm-3">
+                                    <div class="pgto-ssl"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <form class="form-inverse form-validation" name="forms.form_cc" id="forms.forms.formCC" autocomplete="off" role="form" novalidate>
+                        <div class="row" id="box-form-pgto">
+                            <div class="col-sm-12 m-b-10">
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <h4>Cartão de Crédito</h4>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <img alt="Bandeiras" class="pgto-flags" src="https://app.upgestao.com.br/app/images/email/cc_flags.png">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <input class="form-control" id="number" name="number" placeholder="NÚMERO DO CARTÃO" ng-model="objCreditCard.number" ng-required="true" type="text" cc-number cc-format="4242 4242 4242 4242" cc-eager-type ng-class="{true : 'form-error'}[submitted && (forms.form_cc.number.$invalid || forms.form_cc.number.$error.ccNumber)]">
+                                        </div>
+                                        <div ng-show="submitted && (forms.form_cc.number.$invalid && !forms.form_cc.number.$pristine)">
+                                            <p class="text-danger form-error alert1" ng-show="forms.form_cc.number.$error.required">Digite o número do cartão.</p>
+                                            <p class="text-danger form-error alert1" ng-show="forms.form_cc.number.$error.ccNumber">Cartão de crédito inválido.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5">
+                                        <div class="form-group">
+                                            <input class="form-control" id="name" name="name" placeholder="NOME NO CARTÃO" maxlength="50" ng-model="objCreditCard.name" ng-required="true" type="text" ng-class="{true : 'form-error'}[submitted && forms.form_cc.name.$invalid]" style="text-transform:uppercase">
+                                        </div>
+                                        <div ng-show="submitted && (forms.form_cc.name.$invalid && !forms.form_cc.name.$pristine)">
+                                            <p class="text-danger form-error alert1" ng-show="forms.form_cc.name.$error.required">Digite o nome no cartão.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <button class="btn btn-lg btn-primary" ladda="salvarPgtoLoading" type="button" ng-click="efetuarPgto()">
+                                            <span class="pgto-btn-font">PAGAR</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-4">
+                                        <div class="form-group">
+                                            <input class="form-control" id="expiration" name="expiration" placeholder="MM/AA" ui-mask-placeholder-char="MM/AA" ng-model="objCreditCard.expiration" ng-required="true" type="text" ui-mask="99/99" ng-class="{true : 'form-error'}[submitted && forms.form_cc.expiration.$invalid]">
+                                        </div>
+                                        <div ng-show="submitted && (forms.form_cc.expiration.$invalid && !forms.form_cc.expiration.$pristine)">
+                                            <p class="text-danger form-error alert1" ng-show="forms.form_cc.expiration.$error.required">Digite a expiração.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-5">
+                                        <div class="form-group"> {{forms.form_cc.ccNumber.$ccType}}
+                                            <input class="form-control" id="security_code" name="security_code" placeholder="CÓDIGO DE SEGURANÇA" maxlength="4" ng-model="objCreditCard.security_code" ng-required="true" type="text" cc-cvc cc-type="forms.form_cc.ccNumber.$ccType" number-only ng-class="{true : 'form-error'}[submitted && forms.form_cc.security_code.$invalid]">
+                                        </div>
+                                        <div ng-show="submitted && (forms.form_cc.security_code.$invalid && !forms.form_cc.security_code.$pristine)">
+                                            <p class="text-danger form-error alert1" ng-show="forms.form_cc.security_code.$error.required">Digite o código de segurança.</p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <p></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row" style="display:none" id="box-mssg-pgto">
+                            <div class="col-sm-12 m-b-10">
+                                <div class="row">
+                                    <div class="col-sm-12">
+                                        <div class="alert {{objResponse.style}} fade in m-t-10 m-b-10" role="alert">
+                                            <i class="fa fa-info-circle fa-1x" style="margin-top:4px"></i>
+                                            <span class="pgto-alert">{{objResponse.message}}</span>
+                                        </div>
+                                    </div>
+                                    <div class="col-sm-12" ng-if="objResponse.error">
+                                        <a class="pgto-btn-try" href="javascript:void(0)" ng-click="tentarNovamente()">TENTAR NOVAMENTE</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </treasure-overlay-spinner>
+</div>

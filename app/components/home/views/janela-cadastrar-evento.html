@@ -1,0 +1,161 @@
+<div class="modal-dialog modal-lg modal-not-footer">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title modal-title-button">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('close')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                <strong>Agendamento</strong> de Evento
+
+                <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarEventoLoading" ng-click="salvarEvento()">
+                    <i class="fa fa-check"></i> &nbsp; Salvar
+                </button>
+
+                <span ng-if="evento.ano_seq_ano" class="pull-right">
+                    <a class="panel-close m-r-10 btn-delete" title="Cancelar" ng-click="cancelarEvento()">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </span>
+            </h4>
+        </div>
+
+        <div class="modal-body">
+            <form method="POST" enctype="multipart/form-data" id="forms.formEvento" name="forms.formEvento" autocomplete="off" novalidate>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="ano_titulo">Título</label>
+                            <input class="form-control" id="ano_titulo" maxlength="255" name="ano_titulo" placeholder="Digite um título..." type="text" ng-model="evento.ano_titulo">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <span class="pull-left label-modal">
+                                <label for="data_escolhida_ini">De</label>
+                            </span>
+                            <div class="p-r-0 input-group-modal">
+                                <input class="form-control" id="data_escolhida_ini" name="data_escolhida_ini" placeholder="Digite uma data..." type="text" ng-model="evento.data_escolhida_ini" data-mask="99/99/9999" datepicker1 style="width:155px">
+                                <div class="box-timepicker"
+                                    uib-timepicker
+                                    ng-model="evento.hora_ini"
+                                    ng-change="onChangeHoraInicial()"
+                                    hour-step="1"
+                                    minute-step="1"
+                                    show-meridian="false">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group">
+                            <span class="pull-left">
+                                <label class="text-left" for="data_escolhida_fim">Até</label>
+                            </span>
+                            <span class="pull-left m-l-20" ng-show="!evento.ano_seq_ano">
+                                <a class="c-pointer" ng-click="modalRepetirEvento()">
+                                    <small>Repetir Evento</small>
+                                </a>
+                            </span>
+                            <div class="p-r-0 input-group-modal">
+                                <input class="form-control" id="data_escolhida_fim" name="data_escolhida_fim" placeholder="Digite uma data..." type="text" ng-model="evento.data_escolhida_fim" data-mask="99/99/9999" datepicker1 style="width:155px">
+                                <div class="box-timepicker"
+                                    uib-timepicker
+                                    ng-model="evento.hora_fim"
+                                    hour-step="1"
+                                    minute-step="1"
+                                    show-meridian="false">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-9">
+                        <div class="form-group m-b-0">
+                            <label>Cliente</label>
+                            <div class="append-icon append-typeahead">
+                                <lv-autocomplete
+                                    ng-model="evento.clienteSelect"
+                                    clear-input="false"
+                                    trigger-list="true"
+                                    icon-class="fa fa-user"
+                                    obj-search="objFiltroCliente"
+                                    search-limit="10"
+                                    on-select="onSelectCliente"
+                                    add-select-item="addCliente"
+                                    place-holder="Selecione um cliente..."
+                                    string-entity="cliente"
+                                    string-service="cliente"
+                                    confirm-add="true"
+                                    display-property="cad_nome_razao"
+                                    display-complement="cad_cpf_cnpj"
+                                    string-id="autocomplete-cliente">
+                                </lv-autocomplete>
+                            </div>
+
+                            <input type="hidden" name="ano_cad_cod_cad" id="ano_cad_cod_cad" ng-model="evento.ano_cad_cod_cad">
+                        </div>
+                    </div>
+
+                    <div class="col-md-3">
+                        <div class="form-group m-b-0">
+                            <label class="control-label">Situação</label>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <ui-select class="ui-select-evento" ng-model="evento.ano_status" theme="select2">
+                                        <ui-select-match placeholder="Escolha uma situação...">{{$select.selected.nome}}</ui-select-match>
+                                        <ui-select-choices repeat="item.id as item in arrStatus | filter: $select.search">
+                                            <span ng-bind-html="item.nome | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group m-t-20">
+                            <label for="ano_historico">Descrição do Evento</label>
+                            <textarea class="form-control" id="ano_historico" name="ano_historico" rows="6" placeholder="Digite a descrição..." ng-model="evento.ano_historico"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Calendário</label>
+                            <div class="clearfix">
+                                <div class="btn-group">
+                                    <label ng-repeat="pagenda in listaPerfilAgenda" class="btn btn-default" ng-model="evento.ano_2010_calendario" btn-radio="'{{pagenda.par_pai}}'">{{pagenda.par_c01}}</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12 text-center text-sm">
+                        <p ng-bind-html="fraseResumoRepetir"></p>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('reload')">
+                <i class="icon-close"></i> &nbsp; Cancelar
+            </button>
+
+            <button type="button" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" ladda="salvarEventoLoading" ng-click="salvarEvento()">
+                <i class="fa fa-check"></i> &nbsp; Salvar
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,72 @@
+<div class="modal-dialog modal-lg">
+    <form id="forms.formsTipoEspecifico" name="forms.formsTipoEspecifico" method="POST" autocomplete="off" role="form">
+        <div class="modal-content">
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    Atualização de custo
+
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="importaNFeLoading" ng-click="fecharModal('continue')">
+                         Continuar &nbsp; <i class="fa fa-arrow-right"></i>
+                    </button>
+                </h4>
+            </div>
+
+            <div class="modal-body" style="width:100%;overflow:hidden">
+
+
+                <div class="panel">
+                    <div class="panel-header panel-controls ui-sortable-handle">
+                        <h3>
+                            <i class="icon-bulb"></i>
+                            Atualizar o <strong>custo</strong> dos produtos
+                        </h3>
+                        <div class="panel-content">
+                            <div id="DataTables_Table_2_wrapper" class="dataTables_wrapper form-inline dt-bootstrap">
+                                <table class="table table-hover table-dynamic filter-select dataTable" id="DataTables_Table_2" role="grid" aria-describedby="DataTables_Table_2_info">
+                                    <thead>
+                                    <tr role="row">
+                                        <th>Código</th>
+                                        <th>Descrição</th>
+                                        <th>Novo Custo</th>
+                                        <th>
+                                            <div class="pull-right">
+                                                <label class="switch">
+                                                    <input class="switch-input" name="flag_atualiza_custo_topo" id="flag_atualiza_custo_topo" ng-click="iteraFlagAtualiza()" type="checkbox" ng-model="flag_atualiza_custo_topo">
+                                                    <span class="switch-label" data-on="Sim" data-off="Não"></span>
+                                                    <span class="switch-handle"></span>
+                                                </label>
+                                            </div>
+                                        </th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr role="row" class="odd" ng-repeat="item in arrItens">
+                                        <td>{{ item.prod.cProd }}</td>
+                                        <td>{{ item.prod.xProd }}
+                                            <!--<span><a href="javascript:void(0)" ng-click="getJanelaProduto({{ item.prod.cProd }})">Ver cadastro</a></span>-->
+                                        </td>
+                                        <td>{{ item.prod.vCustoUni | currency }}</td>
+                                        <td>
+                                            <div class="pull-right">
+                                                <label class="switch">
+                                                    <input class="switch-input" name="flag_atualiza_custo_{{ item.prod.cProd }}" id="flag_atualiza_custo_{{ item.prod.cProd }}" type="checkbox" ng-model="item.prod.flag_atualiza">
+                                                    <span class="switch-label" data-on="Sim" data-off="Não"></span>
+                                                    <span class="switch-handle"></span>
+                                                </label>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

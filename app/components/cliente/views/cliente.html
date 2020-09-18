@@ -1,0 +1,404 @@
+
+<div class="col-md-4 p-l-0 p-r-0">
+    <treasure-overlay-spinner active="spinnerList.active">
+        <div class="panel">
+            <div class="panel-header">
+                <h3>
+                    <i class="fa fa-list"></i>
+                    <strong>Listagem</strong> {{cliente.labelTitular}}
+                </h3>
+
+                <!-- Adicionar novo cliente. -->
+                <div class="control-btn" ng-if="!spinnerList.active">
+                    <!--
+                    <div class="panel-wizard">
+                        <div ng-intro-options="objWizardOptions"
+                             ng-intro-method="CallMe"
+                             ng-intro-oncomplete="CompletedEvent"
+                             ng-intro-onexit="ExitEvent"
+                             ng-intro-onchange="ChangeEvent"
+                             ng-intro-onbeforechange="BeforeChangeEvent"
+                             ng-intro-onafterchange="AfterChangeEvent"
+                             ng-intro-autostart="false">
+                        </div>
+                        <a class="btn oculto" id="btn-gatilho-cliente" ng-click="CallMe()">Demonstração</a>
+                    </div>
+                    -->
+
+                    <div class="btn-group box-dropdown">
+                        <div class="box-toggle-dropdown box-toggle-dropdown-mini">
+                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle m-r-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret"></span>
+                            </button>
+                            <span class="dropdown-arrow"></span>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="gerarRelatorio('P')">
+                                        <i class="fa fa-file-pdf-o"></i> Gerar PDF
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="gerarRelatorio('E')">
+                                        <i class="fa fa-file-excel-o"></i> Gerar Excel
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <button type="button" style="z-index: 0" class="btn btn-primary btn-sm m-l-0 m-r-15" event-focus="click" event-focus-id="cad_nome_razao" ng-click="novoCliente()" id="btn-novo-cliente">
+                            <i class="fa fa-plus"></i> Novo
+                        </button>
+                    </div>
+                </div>
+
+
+                <!-- Pesquisar por clientes. -->
+                <form class="form-inverse" autocomplete="off" role="search">
+                    <div class="row">
+                        <div class="col-md-12 m-t-10">
+                            <div class="row">
+                                <div class="col-sm-12 after-tooltip" style="margin-top:8px">
+                                    <input type="text" class="form-control" placeholder="Pesquisar por {{cliente.labelTitular}}..." ng-model="objFiltro.texto_pesquisa" ng-keyup="getPesquisar($event)" style="width:92%">
+                                    <i class="fa fa-filter i-filter" ng-click="hasFilter = !hasFilter" tooltip-placement="left" tooltip="Refinar pesquisa"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" ng-class="{'animated fadeIn' : hasFilter, 'animated fadeOutDown oculto' : !hasFilter}">
+                            <div class="panel panel-border-radius bg-white-gray m-b-0 m-t-10">
+                                <div class="panel-header p-l-10">
+                                    <h5 class="m-b-0">
+                                        <strong>FILTROS ADICIONAIS</strong>
+                                    </h5>
+                                </div>
+                                <div class="panel-content panel-search">
+                                    <div class="row">
+                                        <div class="col-md-12 m-b-5">
+                                            <div class="btn-group btn-box-filter m-0 w-l-100">
+                                                <label class="btn btn-default" style="width:25%" ng-model="objFiltro.cad_status" btn-radio="'A'">Ativos</label>
+                                                <label class="btn btn-default" style="width:25%" ng-model="objFiltro.cad_status" btn-radio="'I'">Inativos</label>
+                                                <label class="btn btn-default" style="width:25%" ng-model="objFiltro.cad_status" btn-radio="'E'">Excluídos</label>
+                                                <label class="btn btn-default" style="width:25%" ng-model="objFiltro.cad_status" btn-radio="'T'">Todos</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 m-b-5">
+                                            <div class="box-daterange">
+                                                <label>Data de cadastro</label>
+                                                <div class="input-group">
+                                                    <input class="input-sm form-control" maxlength="10" placeholder="Data início..." ng-model="objFiltro.dt_cad_inicio" type="text" data-mask="99/99/9999" datepicker1>
+                                                    <span class="input-group-addon">até</span>
+                                                    <input class="input-sm form-control" maxlength="10" placeholder="Data fim..." ng-model="objFiltro.dt_cad_final" type="text" data-mask="99/99/9999" datepicker1 style="width:99%">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 m-b-5">
+                                            <div class="box-daterange">
+                                                <label>Código</label>
+                                                <div class="input-group">
+                                                    <input class="input-sm form-control" maxlength="32" toint2 placeholder="Código inicial..." ng-model="objFiltro.cad_cod_cad_inicio" type="text">
+                                                    <span class="input-group-addon">até</span>
+                                                    <input class="input-sm form-control" maxlength="32" toint2 placeholder="Código final..." ng-model="objFiltro.cad_cod_cad_final" type="text" style="width:99%">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 m-b-5" ng-if="!isOnlyNotaFiscal">
+                                            <div class="form-group m-b-0">
+                                                <label>Tipo de Cadastro</label>
+                                                <ui-select multiple ng-model="objFiltro.tipoCadastro">
+                                                    <ui-select-match placeholder="Selecione o tipo de cadastro...">{{$item.par_c01}}</ui-select-match>
+                                                    <ui-select-choices repeat="tipoCadastro in arrTiposCadastro | propsFilter: {par_c01: $select.search}">
+                                                        <div ng-if="!tipoCadastro.isTag" ng-bind-html="tipoCadastro.par_c01 | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12" ng-if="cliente.cad_tip_cli_for === 1">
+                                            <div class="row">
+                                                <div class="col-md-12 m-b-5">
+                                                    <div class="box-daterange">
+                                                        <label>Data de aniversário</label>
+                                                        <div class="input-group">
+                                                            <input class="input-sm form-control" maxlength="10" placeholder="Data aniversário início..." ng-model="objFiltro.dt_cad_niver_inicio" type="text" data-mask="99/99" datepicker1 mask-datepicker="dd/mm">
+                                                            <span class="input-group-addon">até</span>
+                                                            <input class="input-sm form-control" maxlength="10" placeholder="Data aniversário final..." ng-model="objFiltro.dt_cad_niver_final" type="text" data-mask="99/99" datepicker1 mask-datepicker="dd/mm" style="width:99%">
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group m-b-20">
+                                                        <label>Sexo</label>
+                                                        <ui-select multiple ng-model="objFiltro.sexo">
+                                                            <ui-select-match placeholder="Selecione o sexo...">{{$item.name}}</ui-select-match>
+                                                            <ui-select-choices repeat="sexo in arrSexo | propsFilter: {name: $select.search}">
+                                                                <div ng-if="!sexo.isTag" ng-bind-html="sexo.name | highlight: $select.search"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group m-b-20">
+                                                        <label>Tipo de Pessoa</label>
+                                                        <ui-select multiple ng-model="objFiltro.tipoPessoa">
+                                                            <ui-select-match placeholder="Selecione o tipo de pessoa...">{{$item.name}}</ui-select-match>
+                                                            <ui-select-choices repeat="tipoPessoa in arrTipoPessoa | propsFilter: {name: $select.search}">
+                                                                <div ng-if="!tipoPessoa.isTag" ng-bind-html="tipoPessoa.name | highlight: $select.search"></div>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12" ng-if="cliente.cad_tip_cli_for === 2 || cliente.cad_tip_cli_for === 3">
+                                            <div class="form-group m-b-20">
+                                                <label>Tipo de Pessoa</label>
+                                                <ui-select multiple ng-model="objFiltro.tipoPessoa">
+                                                    <ui-select-match placeholder="Selecione o tipo de pessoa...">{{$item.name}}</ui-select-match>
+                                                    <ui-select-choices repeat="tipoPessoa in arrTipoPessoa | propsFilter: {name: $select.search}">
+                                                        <div ng-if="!tipoPessoa.isTag" ng-bind-html="tipoPessoa.name | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 t-right">
+                                            <button type="button" class="btn btn-primary btn-sm m-0" title="Filtrar" ng-click="listarClientes()">
+                                                <i class="fa fa-search"></i> &nbsp; Filtrar
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Listagem dos clientes. -->
+            <div class="panel m-t-10 no-bottom">
+                <div class="malihu-list dropdown-menu-list panel-content panel-malihu widget-news" ng-class="{'panel-cliente-filtro' : hasFilter}" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200">
+                    <div ng-include="'cliente/views/lista-cliente.html'"></div>
+                </div>
+            </div>
+
+            <div class="panel m-b-0" ng-if="arrClientes.length">
+                <div class="col-md-12 box-paginacao">
+                    <div class="t-center p-10">
+                        <a ng-click="paginarClientes()">
+                            <span>Listar mais...</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-footer" style="overflow:hidden" ng-if="arrClientes.length">
+                <div class="col-md-7 p-0">
+                    <div class="row p-l-10">
+                        <p class="m-t-0 m-b-0" ng-if="totais.length">
+                            <div ng-repeat="item in totais" style="float:left;margin-right:5px">
+                                <span class="label label-primary">
+                                    <strong ng-switch on="item.tipo">
+                                        <span ng-switch-when="N" tooltip-placement="right" tooltip="Cadastrados no último mês">{{item.qtde}} novo(s)</span>
+                                        <span ng-switch-when="A">{{item.qtde}} ativo(s)</span>
+                                        <span ng-switch-when="I">{{item.qtde}} inativo(s)</span>
+                                    </strong>
+                                </span>
+                            </div>
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-5 p-0">
+                    <div class="row t-right p-r-10">
+                        <a ng-click="getJanelaEmails()" class="c-pointer">Copiar e-mails</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </treasure-overlay-spinner>
+</div>
+
+
+<!-- Painel inicial com manual: -->
+<div class="col-md-8 p-r-0 box-manual" ng-class="{'animated virtux' : flagTutorial === true, 'animated oculto' : flagTutorial === false}" id="panel-20">
+    <div class="panel-manual" ng-include="'home/views/tutorial.html'"></div>
+</div>
+
+
+<!-- Painel principal com formulário de cadastro e edição: -->
+<div id="panel-1" class="col-md-8 p-r-0 box-principal" ng-class="{'animated virtux' : flagTutorial === false, 'animated oculto' : flagTutorial === true}">
+    <treasure-overlay-spinner active="spinnerForm.active">
+        <div class="panel" id="panel-2">
+            <div class="panel-header" id="panel-3">
+                <div class="btn-reset">
+                    <!-- <a ng-click="triggerWizard()">Trigger</a> -->
+                    <button type="button" class="btn btn-sm btn-primary" ng-click="voltar()" id="btn-voltar-cliente">
+                        <i class="fa fa-arrow-left"></i> Voltar
+                    </button>
+                </div>
+
+                <h3 class="title-header">
+                    <i class="fa fa-user"></i>
+                    <strong>Dados </strong> {{cliente.labelTitularSingMin}}
+                    <span ng-if="cliente.cad_cod_cad" class="c-lightblue m-l-5">#{{cliente.cad_cod_cad}}</span>
+                </h3>
+
+                <div class="control-btn" ng-if="!cliente.cad_eh_cancelado_aux">
+                    <a class="panel-close btn-delete btn-trash" ng-click="cancelarCliente()" title="{{nomeBotaoCancelar}}">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+
+                    <div class="box-report" ng-if="cliente.cad_cod_cad != null">
+                        <button type="button" class="btn btn-sm btn-warning no-right" ng-click="imprimirFicha()" title="Imprimir Ficha do Cliente">
+                            <i class="fa fa-print"></i> Imprimir
+                        </button>
+                    </div>
+
+                    <button type="button" class="btn btn-sm btn-primary btn-salvar" ladda="salvarClienteLoading" ng-click="salvarCliente()" title="Salvar" id="btn-salvar-cliente">
+                        <i class="fa fa-check"></i> Salvar
+                    </button>
+                </div>
+
+                <div class="control-btn" ng-if="cliente.cad_eh_cancelado_aux">
+                    <button type="button" class="btn btn-sm btn-success btn-salvar" ladda="salvarClienteLoading" ng-click="reutilizarCliente()" title="Reutilizar">
+                        <i class="fa fa-undo"></i> Reutilizar
+                    </button>
+                </div>
+
+                <!-- Botões para o layout responsivo -->
+                <div class="control-btn-responsive" id="panel-4">
+                    <div class="col-md-12" id="panel-5">
+                        <div class="row">
+                            <div class="col-xs-8">
+                                <div class="row">
+                                    <h3 class="truncate">
+                                        <i class="fa fa-user"></i>
+                                        <strong>Dados </strong> {{cliente.labelTitularSingMin}}
+                                        <span ng-if="cliente.cad_cod_cad" class="c-lightblue m-l-5">
+                                            <small>#{{cliente.cad_cod_cad}}</small>
+                                        </span>
+                                    </h3>
+                                </div>
+                            </div>
+                            <div class="col-xs-4 t-right">
+                                <div class="row box-btn-responsive">
+                                    <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" ladda="salvarClienteLoading">
+                                        Ações &nbsp; <span class="caret"></span>
+                                    </button>
+                                    <span class="dropdown-arrow"></span>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <li>
+                                            <a href="javascript:void(0)" ng-click="voltar()">Voltar</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)" ng-click="cancelarCliente()">Cancelar</a>
+                                        </li>
+                                        <li ng-if="cliente.cad_cod_cad != null">
+                                            <a href="javascript:void(0)" ng-click="imprimirFicha()">Imprimir</a>
+                                        </li>
+                                        <li>
+                                            <a href="javascript:void(0)" ng-click="salvarCliente()">Salvar</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-content" id="panel-6">
+                <div class="pull-right" ng-if="!cliente.cad_eh_cancelado_aux">
+                    <label class="m-t-10">Ativo:</label>
+                    <label class="switch">
+                        <input class="switch-input" name="cad_eh_inativo" id="cad_eh_inativo" type="checkbox" ng-model="cliente.cad_eh_inativo_aux">
+                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                        <span class="switch-handle"></span>
+                    </label>
+                </div>
+
+                <tabset class="tab-fade-in">
+                    <!-- Aba contendo o formulário principal para adicionar um cliente. -->
+                    <tab active="tabs[0].active" id="tab-cliente-principal">
+                        <tab-heading>Principal</tab-heading>
+                        <div class="panel-inner">
+                            <div ng-include="'cliente/views/aba-cliente-principal.html'"></div>
+                        </div>
+                    </tab>
+
+                    <!-- Aba contedo o formulário para adicionar endereços para o cliente. -->
+                    <tab active="tabs[1].active" ng-click="getOutrasAbas(2)" id="tab-cliente-endereco">
+                        <tab-heading>Endereço</tab-heading>
+                        <div class="panel-inner">
+                            <div ng-if="cliente.cad_cod_cad != null">
+                                <div ng-include="'cliente/views/aba-cliente-endereco.html'"></div>
+                            </div>
+                            <div ng-if="cliente.cad_cod_cad == null">
+                                <div class="alert alert-info media fade in no-bottom" role="alert">
+                                    <i class="fa fa-info-circle fa-2x"></i>
+                                    <span class="alert-texto font-small">Salve antes de prosseguir.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+
+                    <!-- Aba para anotações. -->
+                    <tab active="tabs[2].active" ng-click="getOutrasAbas(3)" id="tab-cliente-anotacoes">
+                        <tab-heading>Anotações</tab-heading>
+                        <div class="panel-inner">
+                            <div ng-if="cliente.cad_cod_cad != null">
+                                <div ng-include="'cliente/views/aba-cliente-anotacoes.html'"></div>
+                            </div>
+                            <div ng-if="cliente.cad_cod_cad == null">
+                                <div class="alert alert-info media fade in no-bottom" role="alert">
+                                    <i class="fa fa-info-circle fa-2x"></i>
+                                    <span class="alert-texto font-small">Salve antes de prosseguir.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+
+                    <tab active="tabs[3].active" ng-click="getOutrasAbas(4)" id="tab-cliente-anexo">
+                        <tab-heading>Anexos</tab-heading>
+                        <div class="panel-inner">
+                            <div ng-if="cliente.cad_cod_cad != null">
+                                <div ng-include="'cliente/views/aba-cliente-anexos.html'"></div>
+                            </div>
+                            <div ng-if="cliente.cad_cod_cad == null">
+                                <div class="alert alert-info media fade in no-bottom" role="alert">
+                                    <i class="fa fa-info-circle fa-2x"></i>
+                                    <span class="alert-texto font-small">Salve antes de prosseguir.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+
+                    <!-- Aba para veiculos - Apenas trnaportadoras. -->
+                    <tab active="tabs[4].active" ng-if="cliente.cad_tip_cli_for === 3" ng-click="getOutrasAbas(5)" id="tab-cliente-veiculos">
+                        <tab-heading>Veículos</tab-heading>
+                        <div class="panel-inner">
+                            <div ng-if="cliente.cad_cod_cad != null">
+                                <div ng-include="'cliente/views/aba-transportadora-veiculos.html'"></div>
+                            </div>
+                            <div ng-if="cliente.cad_cod_cad == null">
+                                <div class="alert alert-info media fade in no-bottom" role="alert">
+                                    <i class="fa fa-info-circle fa-2x"></i>
+                                    <span class="alert-texto font-small">Salve antes de prosseguir.</span>
+                                </div>
+                            </div>
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </treasure-overlay-spinner>
+</div>
+
+
+<!-- Janela modal. -->
+<div class="modal fade" id="modal-responsive" aria-hidden="true" ng-include="'cliente/views/aba-cliente-endereco-form.html'"></div>

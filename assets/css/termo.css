@@ -1,0 +1,100 @@
+body {
+    font-family: Arial, sans-serif;
+    width: 100%
+}
+
+.box-corpo {
+    width: 100%
+}
+
+.box-cabecalho {
+    width: 100%;
+    text-align: center;
+}
+
+.box-total {
+    width: 100%
+}
+
+.box-tabela {
+    width: 100%;
+}
+
+.titulo {
+    font-size: 18px;
+}
+
+.tabela {
+    border: 1px solid #ddd;
+    border-collapse: collapse;
+    font-size: 12px;
+    width: 100%;
+}
+
+.th {
+    text-transform: uppercase;
+    background-color: #F0F4F8;
+    border-bottom: 1px solid #ddd;
+}
+
+.th-left {
+    text-align: left;
+    text-transform: uppercase;
+    background-color: #F0F4F8;
+    border-bottom: 1px solid #ddd;
+}
+
+.td {
+    border-bottom: 1px solid #ddd;
+}
+
+.td-preco {
+    border-right: 1px solid #ddd;
+    border-bottom: 1px solid #ddd;
+}
+
+.item {
+    font-size: 13px;
+    font-weight: normal;
+    text-align: justify;
+    width: 100%;
+}
+
+.sublinhado {
+    text-decoration: underline;
+}
+
+.item-paragrafo {
+    font-size: 13px;
+    font-weight: normal;
+    text-align: justify;
+    width: 100%;
+    text-indent: 2em;
+    margin-left: 30px;
+}
+
+.item-ident {
+    font-size: 13px;
+    font-weight: normal;
+    text-align: justify;
+    width: 100%;
+    margin-left: 30px;
+}
+
+.item-subtitulo {
+    font-size: 13px;
+    font-weight: normal;
+    text-align: justify;
+    width: 100%;
+    margin-top: 30px;
+}
+
+.subtitulo {
+    font-size: 15px;
+}
+
+.final {
+    font-size: 14px;
+    text-align: left;
+    width: 100%;
+}

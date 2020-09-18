@@ -1,0 +1,41 @@
+
+<div ng-if="arrSolucoes.length">
+    <div class="row m-t-10">
+        <div ng-repeat="solucao in arrSolucoes" class="col-md-3">
+            <div class="form-group m-b-0">
+                <button class="btn btn-primary btn-embossed btn-100" ng-class="{'btn-success' : solucao.sol_has_sol}" ng-click="getPlanosBySolucao(solucao)" style="padding:6px 12px">
+                    <strong>{{solucao.sol_nome_sol}}</strong>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <p class="texto-planos">Tenha em mãos todas as informações de sua empresa. Gestão pessoal ou empresarial completa. Controle seu caixa, suas contas financeiras, centros de custos, formas de pagamento e muita mais. Ganhe tempo com lançamentos recorrentes, emita boletos e recibos. Tudo isso em uma solução simples e intuitiva, em poucos minutos já estará utilizando sem dificuldades.</p>
+    </div>
+
+    <div class="row">
+        <div class="m-t-10 panel-plano">
+            <div ng-repeat="item in objSelecionados.solucao.sol_sis_tpl" class="col-md-3">
+                <div class="panel" ng-class="((item.tpl_has_tpl === true) ? 'bg-success' : 'bg-aero')" ng-click="upgrade(item)">
+                    <div class="panel-header ui-sortable-handle">
+                        <h3 class="m-b-0">{{item.tpl_nome}}</h3>
+                    </div>
+                    <div class="panel-content">
+                        <div ng-repeat="preco in item.tpl_sis_iva">
+                            <div ng-if="preco.iva_periodicidade === objSelecionados.plano.iva_periodicidade">
+                                <span>{{preco.iva_valor | currency}} / <span periodicidade="preco">{{preco.iva_periodicidade}}</span></span>
+                                <div ng-if="preco.iva_has_periodicidade === true">
+                                    <strong>SEU PLANO</strong>
+                                </div>
+                                <div ng-if="preco.iva_has_periodicidade === undefined">
+                                    <strong>QUERO ESTE</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

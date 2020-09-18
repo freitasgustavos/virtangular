@@ -1,0 +1,53 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title modal-title-button">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                <strong>Dados</strong> da Carta de Correção (CC-e)
+
+                <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarCceLoading" ng-click="salvarCce()">
+                    <i class="fa fa-check"></i> &nbsp; Salvar e Enviar
+                </button>
+
+            </h4>
+        </div>
+
+        <div class="modal-body">
+            <!-- O formulário é apenas mostrado quando o modo de edição é habilitado. -->
+            <div id="box-edicao" class="sample-show-hide">
+                <form name="forms.fVendaCce" class="form-validation" novalidate autocomplete="off" ng-submit="salvarCce()">
+                    <!--<div class="row">-->
+                        <!--<div class="col-md-4">-->
+                            <!--<div class="form-group">-->
+                                <!--<label class="control-label">Campo a Corrigir</label>-->
+                                <!--<ui-select name="fin_cfo_cfop" id="fin_cfo_cfop" class="form-control" ng-model="objModal.campoCorrigir" theme="select2" >-->
+                                    <!--<ui-select-match placeholder="Selecione o campo">{{$select.selected.nome}}</ui-select-match>-->
+                                    <!--<ui-select-choices repeat="c.id as c in arrCamposCorrigir | filter: $select.search">-->
+                                        <!--<span ng-bind-html="cfo.nome | highlight: $select.search"></span>-->
+                                    <!--</ui-select-choices>-->
+                                <!--</ui-select>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="col-md-1">-->
+                            <!--<div class="form-group-input">-->
+                                <!--<button class="btn btn-primary" ng-click="incluirCampo()">+</button>-->
+                             <!--</div>-->
+                        <!--</div>-->
+                    <!--</div>-->
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Descrição</label>
+                                <textarea class="form-control" placeholder="Digite a descrição" ng-model="cce.obs_descricao" style="height:100px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

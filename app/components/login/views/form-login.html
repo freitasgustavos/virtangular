@@ -1,0 +1,153 @@
+<div class="container" id="login-block">
+    <div class="account-img">
+        <img class="account-img" alt="{{nomeSolucao}}" ng-src="../app/images/{{imgLogin}}" ng-click="go()">
+    </div>
+
+    <div class="account-info">
+        <h3 class="text-center text-login m-b-0">
+            Controle sua empresa
+        </h3>
+        <h3 class="text-center text-login m-b-0">
+            por completo
+        </h3>
+
+        <ul>
+            <li>
+                <i class="fa fa-dollar"></i> &nbsp; Vendas e compras
+            </li>
+            <li>
+                <i class="fa fa-key"></i> Finanças e estoque
+            </li>
+            <li>
+                <i class="fa fa-calculator"></i> Controle tributário
+            </li>
+            <li>
+                <i class="fa fa-cog"></i> Notas fiscais de produtos e serviços
+            </li>
+            <li>
+                <i class="fa fa-bar-chart"></i> Painéis e indicadores inteligentes
+            </li>
+        </ul>
+    </div>
+
+    <div class="account-form">
+        <!-- Formulário para login no sistema. -->
+        <div ng-show="flags.flagFormLogin" class="cssFade">
+            <form class="form-signin" id="formLogin" name="forms.formLogin" method="POST" novalidate>
+                <h3 class="m-b-30 m-t-20">
+                    <strong>Faça o acesso</strong> em sua conta
+                </h3>
+
+                <!-- Mensagem de erro ou sucesso para o login. -->
+                <div ng-show="objResposta" class="cssFade">
+                    <div class="{{objResposta.classe}}" role="alert" style="margin-bottom:10px">
+                        <p ng-bind-html="objResposta.mensagem">{{objResposta.mensagem}}</p>
+                    </div>
+                </div>
+
+                <div class="append-icon m-b-10">
+                    <input class="form-control form-white username m-b-0" id="email" name="email" maxlength="255" placeholder="E-mail" type="email" title="E-mail" required ng-model="objLogin.email">
+                    <i class="fa fa-user" style="padding-right:10px"></i>
+
+                    <div ng-show="forms.formLogin.submitted || (forms.formLogin.email.$invalid && !forms.formLogin.email.$pristine)">
+                        <div class="validation-advice" ng-show="forms.formLogin.email.$error.required">Entre com seu e-mail.</div>
+                        <div class="validation-advice" ng-show="forms.formLogin.email.$error.email">E-mail inválido.</div>
+                    </div>
+                </div>
+
+                <div class="append-icon m-b-30">
+                    <input class="form-control form-white password" id="senha" name="senha" maxlength="20" placeholder="Senha" title="Senha" type="password" required ng-model="objLogin.senha">
+                    <i class="fa fa-lock" style="padding-right:10px"></i>
+
+                    <div ng-show="forms.formLogin.submitted || (forms.formLogin.senha.$invalid && !forms.formLogin.senha.$pristine)">
+                        <div class="validation-advice" ng-show="forms.formLogin.senha.$error.required">Entre com sua senha.</div>
+                    </div>
+                </div>
+
+                <button class="btn btn-dark pull-right m-r-0" name="submit-form2" id="submit-form" type="submit" ladda="loginUsuarioLoading" ng-click="login()">Acessar</button>
+
+                <span class="forgot-password pull-left">
+                    <a ng-click="mostrar('E')">Esqueceu a senha?</a>
+                </span>
+            </form>
+        </div>
+
+
+        <!-- Formulário para recuperação de senha. -->
+        <div ng-show="flags.flagFormSenha" class="cssFade">
+            <form class="form-password" id="formLembrete" name="forms.formLembrete" method="POST" novalidate>
+                <h3 class="m-b-30 m-t-20">
+                    <strong>Recupere</strong> sua senha
+                </h3>
+
+                <!-- Mensagem de erro ou sucesso para a recuperação de senha. -->
+                <div ng-show="objRespostaRecuperar" class="cssFade">
+                    <div class="{{objRespostaRecuperar.classe}}" role="alert" style="margin-bottom:10px">
+                        <p>{{objRespostaRecuperar.mensagem}}</p>
+                    </div>
+                </div>
+
+                <div ng-show="!flags.flagShowMsg" class="cssFade">
+                    <div class="append-icon m-b-30">
+                        <input class="form-control form-white password" id="lembrete" name="lembrete" maxlength="255" placeholder="E-mail" title="E-mail" type="email" required ng-model="objLembrete.email">
+                        <i class="fa fa-lock" style="padding-right:10px"></i>
+
+                        <div ng-show="forms.formLembrete.submitted || (forms.formLembrete.lembrete.$invalid && !forms.formLembrete.lembrete.$pristine)">
+                            <div class="validation-advice" ng-show="forms.formLembrete.lembrete.$error.required">Entre com seu e-mail de cadastro.</div>
+                            <div class="validation-advice" ng-show="forms.formLembrete.lembrete.$error.email">E-mail inválido.</div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-lg btn-danger btn-block" id="submit-password" ladda="recuperarSenhaLoading" type="button" ng-click="recuperar()">Enviar</button>
+                </div>
+
+                <div ng-show="flags.flagShowMsg" class="cssFade">
+                    <p>Enviamos um e-mail para <strong>{{objLembrete.email}}</strong> com as instruções e o link para você trocar a senha.</p> <p>Caso não receba o e-mail em alguns minutos verifique sua caixa de spam ou envie-nos seu e-mail novamente.</p>
+                </div>
+
+                <div class="clearfix m-t-60">
+                    <p class="pull-left m-b-0">
+                        <a ng-click="mostrar('L')">Já possui uma conta? Faça o acesso.</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+
+        <!-- Informações para ativação de conta -->
+        <div ng-show="flags.flagAtivaConta" class="cssFade">
+            <h3 class="m-b-30 m-t-20">
+                <strong>Ative </strong> sua conta
+            </h3>
+
+            <!-- Mensagem de erro ou sucesso para a ativação da conta. -->
+            <div ng-show="objRespostaRecuperar" class="cssFade">
+                <div class="{{objRespostaRecuperar.classe}}" role="alert" style="margin-bottom:10px">
+                    <p>{{objRespostaRecuperar.mensagem}}</p>
+                </div>
+            </div>
+
+            <div class="clearfix m-t-60">
+                <p class="pull-left m-b-0">
+                    <a ng-click="mostrar('L')">Já possui uma conta? Faça o acesso.</a>
+                </p>
+            </div>
+        </div>
+
+        <!-- Formulário para criação da senha. -->
+        <div ng-show="flags.flagFormCriarSenha" class="cssFade">
+            <form class="form-password" id="formCriarSenha" name="forms.formCriarSenha" method="POST" novalidate>
+                <h3 class="m-b-30 m-t-20">
+                    <strong>Crie</strong> sua senha
+                </h3>
+
+                <div ng-include="'login/views/form-criar-senha.html'"></div>
+
+                <div class="clearfix m-t-60">
+                    <p class="pull-left m-b-0">
+                        <a ng-click="mostrar('L')">Já possui uma conta? Faça o acesso.</a>
+                    </p>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,34 @@
+<div class="modal-dialog modal-not-footer">
+    <form id="forms.formsTransporte" name="forms.formsTransporte" method="POST" autocomplete="off" role="form">
+        <div class="modal-content">
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    Data para <strong>Inventário</strong>
+
+                    <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarTransporteLoading" ng-click="fecharModal('ok')">
+                        <i class="fa fa-check"></i> &nbsp; Ok
+                    </button>
+                </h4>
+            </div>
+
+            <div class="modal-body" style="width:100%">
+                <div class="col-md-12 form-append">
+                    <div class="row">
+
+                        <label>Data para o inventário</label>
+                        <div class="append-icon">
+                            <input type="text" name="dataInventario" id="dataInventario" class="form-control" placeholder="Data para inventário..." ng-model="objModal.dataInventario" data-mask="99/99/9999" datepicker1 required>
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer text-center">
+            </div>
+        </div>
+    </form>
+</div>

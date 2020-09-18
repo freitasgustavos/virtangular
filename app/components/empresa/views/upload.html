@@ -1,0 +1,75 @@
+<div class="modal-dialog">
+    <form method="POST" enctype="multipart/form-data" id="formUpload" name="formUpload" novalidate>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+
+                    <strong>Fotos: EMPRESA</strong>
+
+                    <!-- Botão para selecionar arquivo. -->
+                    <span class="pull-right" ng-hide="picFile">
+                        <span class="btn btn-default btn-embossed btn-file">
+                            <span class="fileinput-new">
+                                <i class="fa fa-upload"></i> &nbsp; Escolher
+                            </span>
+                            <input type="file" ngf-select ng-model="picFile" name="file" accept="image/*" required>
+                        </span>
+                    </span>
+
+                    <!-- Botão para salvar. -->
+                    <span class="pull-right" ng-if="picFile">
+                        <button ng-click="upload(picFile, $event)" ladda="salvarFotoLoading" class="btn btn-primary btn-embossed  bnt-square pull-right m-r-0" type="button">
+                            <i class="fa fa-check"></i> &nbsp; Salvar
+                        </button>
+                    </span>
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <!--
+                <div ngf-drop ng-model="picFile" ngf-pattern="image/*" style="background: #E4E4E4; overflow: hidden;width:570px;height:300px;">
+                    <img-crop image="picFile  | ngfDataUrl" area-type="rectangle" aspect-ratio="1.4" result-image-size='{w: 610,h: 400}'
+                              result-image="croppedDataUrl" ng-init="croppedDataUrl=''">
+                    </img-crop>
+                </div>
+                <div>
+                    <img ng-src="{{croppedDataUrl}}" />
+                </div>
+                -->
+
+                <div class="form-upload m-b-20">
+                    <div ng-if="picFile">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="fileinput-new thumbnail" data-provides="fileinput">
+                                    <img ngf-src="picFile" class="product">
+                                </div>
+                                <div class="fileinput-preview fileinput-exists thumbnail" style="border:0 none"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="!fotoAtual">
+                    <div class="alert alert-warning m-b-0" role="alert">
+                        <strong>Atenção:</strong> Nenhuma foto encontrada para a empresa em questão.
+                    </div>
+                </div>
+
+                <div ng-if="fotoAtual">
+                    <div class="fileinput-new thumbnail">
+                        <img ng-src="{{imageCache}}{{fotoAtual}}" class="product">
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer text-center">
+                <div class="col-sm-12"></div>
+            </div>
+        </div>
+    </form>
+</div>

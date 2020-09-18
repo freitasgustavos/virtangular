@@ -1,0 +1,216 @@
+
+<div class="modal-dialog modal-not-footer">
+    <form method="POST" id="forms.formBoleto" name="forms.formBoleto" autocomplete="off" novalidate>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="icon-close"></i> &nbsp; Cancelar
+                    </button>
+
+                    <strong>Boleto</strong> de Cobrança
+
+                    <span class="pull-right" ng-if="hasBoleto === false">
+                        <button class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" ladda="salvarBoletoLoading" ng-click="gerarBoleto()" type="button">
+                            <i class="fa fa-print"></i> &nbsp; Gerar Boleto
+                        </button>
+                    </span>
+
+                    <span class="pull-right" ng-if="hasBoleto === true">
+                        <button class="btn btn-warning btn-embossed bnt-square pull-right m-r-0" ladda="segundaViaLoading" ng-click="gerarSegundaVia()" type="button">
+                            <i class="fa fa-print"></i> &nbsp; Segunda Via
+                        </button>
+                    </span>
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="col-md-12 form-append">
+                    <!-- Quando não existe boleto para o título. -->
+                    <div class="row" ng-if="hasBoleto === false">
+                        <p class="m-b-10">É necessário escolher algum e-mail para geração do boleto bancário.</p>
+                        <!--
+                            <div class="col-md-12 m-b-10">
+                                <div class="row">
+                                    <label for="bol_email">E-mail <i class="obrigatorio">*</i></label>
+                                    <div class="append-icon">
+                                        <input class="form-control" type="email" placeholder="Entre com um e-mail..." maxlength="255" id="bol_email" name="bol_email" ng-model="objParams.bol_email" required ng-class="{true : 'form-error'}[submitted && forms.formBoleto.bol_email.$invalid]">
+                                        <i class="icon-envelope-letter"></i>
+                                    </div>
+                                    <div ng-show="submitted || (forms.formBoleto.bol_email.$invalid && !forms.formBoleto.bol_email.$pristine)">
+                                        <div class="text-danger form-error" ng-show="(forms.formBoleto.bol_email.$error.required)">O campo e-mail é de preenchimento obrigatório.</div>
+                                        <div class="text-danger form-error" ng-show="(forms.formBoleto.bol_email.$error.email)">Entre com um e-mail válido.</div>
+                                    </div>
+                                </div>
+                            </div>
+                        -->
+
+                        <div class="col-md-12">
+                            <div class="row" ng-show="arrEmails.length">
+                                <table class="table table-hover table-icheck font-small m-b-0">
+                                    <colgroup>
+                                        <col width="5%">
+                                        <col width="40%">
+                                        <col width="35%">
+                                        <col width="20%">
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th class="text-center">&nbsp;</th>
+                                            <th class="text-left">Contato</th>
+                                            <th>E-mail</th>
+                                            <th>Telefone</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="email in arrEmails" ng-click="setContato(email.cto_cod_cto)" class="c-pointer">
+                                            <td class="text-center">
+                                                <div class="icheck-inline text-center">
+                                                    <input type="radio" icheck ng-disabled="true" name="selecionado" ng-model="codContato" class="iradio-text" ng-value="email.cto_cod_cto" data-radio="iradio_minimal-blue">
+                                                </div>
+                                            </td>
+                                            <td class="text-left">
+                                                <span tooltip-placement="top" tooltip="{{email.cto_nome}}">
+                                                    {{email.cto_nome | strLimit : 30}}
+                                                </span>
+                                            </td>
+                                            <td>
+                                                <span>{{email.cto_email}}</span>
+                                            </td>
+                                            <td>
+                                                <span>{{email.cto_fone | tel}}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            <div class="row" ng-show="!arrEmails.length">
+                                <div class="alert alert-warning m-t-10 m-b-0">
+                                    <p class="font-small m-b-0">
+                                        <strong>Atenção:</strong> Nenhum e-mail encontrado!
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quando existir um boleto para o título. -->
+                    <div class="row" ng-if="hasBoleto === true">
+                        <div class="col-md-12 m-b-20">
+                            <div class="row">
+                                <label>E-mail</label>
+                                <div class="append-icon">
+                                    <input class="form-control" type="email" ng-model="objParams.bol_email" readonly="readonly">
+                                    <i class="icon-envelope-letter"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="row">
+                                <table class="table table-bordered font-small m-b-0">
+                                    <thead>
+                                        <tr>
+                                            <th colspan="2">
+                                                <strong>DADOS DO BOLETO BANCÁRIO</strong>
+                                            </th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>
+                                                <strong>VALOR</strong>
+                                            </td>
+                                            <td>
+                                                <span>{{objBoleto.tit_transacao.tra_valor_transacao | customCurrency}}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>VENCIMENTO</strong>
+                                            </td>
+                                            <td>
+                                                <span>{{objBoleto.tit_transacao.tra_dat_expiracao | dateFormat}}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>STATUS</strong>
+                                            </td>
+                                            <td>
+                                                <div ng-switch on="objBoleto.tit_transacao.tra_status_transacao">
+                                                    <div ng-switch-when="2">
+                                                        <span class="badge badge-info">
+                                                            <strong>
+                                                                <small>EM ESPERA</small>
+                                                            </strong>
+                                                        </span>
+                                                    </div>
+                                                    <div ng-switch-when="3">
+                                                        <span class="badge badge-success">
+                                                            <strong>
+                                                                <small>PAGO</small>
+                                                            </strong>
+                                                        </span>
+                                                    </div>
+                                                    <div ng-switch-when="4">
+                                                        <span class="badge badge-warning">
+                                                            <strong>
+                                                                <small>NÃO PAGO</small>
+                                                            </strong>
+                                                        </span>
+                                                    </div>
+                                                    <div ng-switch-when="7">
+                                                        <span class="badge badge-danger">
+                                                            <strong>
+                                                                <small>CANCELADA</small>
+                                                            </strong>
+                                                        </span>
+                                                    </div>
+                                                    <div ng-switch-default>
+                                                        <span class="badge badge-primary">
+                                                            <strong>
+                                                                <small>OUTROS</small>
+                                                            </strong>
+                                                        </span>
+                                                    </div>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>CLIENTE</strong>
+                                            </td>
+                                            <td>
+                                                <span>{{objBoleto.tit_transacao.tra_desc_transacao}}</span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>LINK</strong>
+                                            </td>
+                                            <td>
+                                                <span>
+                                                    <a href="{{objBoleto.tit_transacao.tra_link}}" target="_blank">{{objBoleto.tit_transacao.tra_link}}</a>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td>
+                                                <strong>BARCODE</strong>
+                                            </td>
+                                            <td>
+                                                <span>{{objBoleto.tit_transacao.tra_barcode}}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

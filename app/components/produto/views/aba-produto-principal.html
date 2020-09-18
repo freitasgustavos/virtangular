@@ -1,0 +1,94 @@
+
+<div ng-show="getPermissaoSol('9') && !produto.pro_cod_pro && objUsuario.ident_emp != '51728'">
+    <div class="alert alert-info media fade in no-bottom">
+        <p class="alert-texto font-small">
+            <strong>Atenção:</strong> Como sua empresa possui sistema de sincronismo a opção de cadastro de novo {{objBundleTela.labels.L002}} não está disponível.
+        </p>
+    </div>
+</div>
+
+<div ng-show="!getPermissaoSol('9') || produto.pro_cod_pro || objUsuario.ident_emp == '51728'">
+    <div class="row">
+        <div class="panel-body p-0">
+            <div class="box-imagem-produto text-center col-xs-2 m-b-20">
+                <div ng-if="produto.imagem_principal">
+                    <img ng-src="{{imageCache}}{{produto.imagem_principal.mid_id}}&thumb=2" class="img-responsive img-mw img-thumbnail" alt="{{produto.pro_descricao_longa}}" ng-click="getFormUpload(produto.pro_cod_pro)">
+                </div>
+                <div ng-if="produto.imagem_principal == null">
+                    <img ng-src="../app/images/sem-imagem.jpg" class="img-responsive img-mw img-thumbnail" alt="Sem imagem" ng-click="getFormUpload(produto.pro_cod_pro)">
+                </div>
+            </div>
+
+            <div class="col-md-8" style="overflow:hidden">
+                <div class="form-group">
+                    <label>Descrição <i class="obrigatorio">*</i></label>
+                    <input name="pro_descricao_longa" id="pro_descricao_longa" maxlength="120" class="form-control" placeholder="Digite a descrição do {{objBundleTela.labels.L002}}" ng-model="produto.pro_descricao_longa" ng-class="{true : 'form-error'}[submitted && forms.formProduto.pro_descricao_longa.$invalid]" required type="text" ng-blur="setUrlAmigavel()">
+                </div>
+                <div ng-show="submitted || (forms.formProduto.pro_descricao_longa.$invalid && !forms.formProduto.pro_descricao_longa.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="(forms.formProduto.pro_descricao_longa.$error.required)">Digite a descrição.</p>
+                </div>
+            </div>
+
+            <div class="form-group col-md-2">
+                <label>Cod.</label>
+                <input ng-if="!produto.pro_cod_pro" number-only name="pro_cod_pro_antigo" id="pro_cod_pro_antigo" maxlength="9" class="form-control" ng-model="produto.pro_cod_pro_antigo" type="text">
+                <div class="profil-info" ng-if="produto.pro_cod_pro">{{produto.pro_cod_pro}}</div>
+            </div>
+
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label class="label-link">
+                        <a ng-click="trocarMedida()">{{nomeMedida}}</a>
+                    </label>
+                    <input name="pro_unidade" maxlength="4" class="form-control" placeholder="Digite a unidade ou fração" ng-model="produto.pro_unidade" type="text">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label class="w-l-100">
+                        <span class="f-l">Código de Barras</span>
+                        <span class="f-r label-link font-small" ng-if="pro_eh_servico === 0 && produto.pro_cod_pro">
+                            <a ng-click="openModalFornecedor(produto)">Códigos Equivalentes</a>
+                        </span>
+                    </label>
+                    <input name="pro_cod_bar" class="form-control" maxlength="50" placeholder="Digite o código de barras" ng-model="produto.pro_cod_bar" type="text">
+                </div>
+            </div>
+
+            <div class="col-md-12  p-r-0">
+                <div class="form-group form-ui-select">
+                    <label>Marcações</label>
+                    <ui-select multiple tagging="tagTransform" ng-model="produto.produtoMarcas" theme="select2" style="width:98%" on-select="onSelectedMarcacao($item)">
+                        <ui-select-match placeholder="Selecione uma marcação">{{$item.name}}</ui-select-match>
+                        <ui-select-choices repeat="marca in arrMarcacoes | propsFilter: {name: $select.search}">
+                            <div ng-if="marca.isTag" ng-bind-html="marca.name + ' (novo)' | highlight: $select.search"></div>
+                            <div ng-if="!marca.isTag" ng-bind-html="marca.name | highlight: $select.search"></div>
+                        </ui-select-choices>
+                    </ui-select>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="flagEmissor === false">
+        <div class="col-md-12">
+            <div class="form-group">
+                <label>Categoria</label>
+                <input class="form-control input-disabled" placeholder="Pesquise por uma categoria" maxlength="80" readonly type="text" ng-model="produto.proGruSelect" ng-click="getCategoria()">
+                <input name="pro_gru_cod_gru" id="pro_gru_cod_gru" type="hidden" ng-model="produto.pro_gru_cod_gru">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group m-b-0">
+                <label>Informações adicionais:</label>
+                <textarea id="pro_inf_adicionais" name="pro_inf_adicionais" rows="8" cols="8" class="form-control" ng-model="produto.pro_inf_adicionais"></textarea>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" ng-model="produto.pro_eh_servico">
+</div>

@@ -1,0 +1,21 @@
+<table class="table table-hover" ng-show="parametros.length">
+    <thead>
+        <tr>
+            <th width="30%">Código</th>
+            <th width="70%">Descrição</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="parametro in parametros" ng-click="getParametro(parametro.codCombinadoParam)" ng-class="{selected: parametro.codCombinadoParam === combinadoParSelected}" class="c-pointer">
+            <td>{{parametro.codigoComb}}</td>
+            <td>{{parametro.par_c01}}</td>
+        </tr>
+    </tbody>
+</table>
+
+<div ng-show="!parametros.length && parametro.assunto_pesquisar">
+    <div class="alert alert-warning alert-fade font-small" role="alert">
+        <i class="fa fa-info-circle fa-2x"></i>
+        <span class="alert-texto font-small">Nenhum registro encontrado!</span>
+    </div>
+</div>

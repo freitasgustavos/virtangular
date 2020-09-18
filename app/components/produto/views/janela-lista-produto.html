@@ -1,0 +1,125 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title modal-title-button">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                Alterar produto da <strong>NF-e</strong>
+
+                <span class="pull-right">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-times"></i> &nbsp; Fechar
+                    </button>
+                </span>
+            </h4>
+        </div>
+
+        <div class="modal-body">
+
+            <table class="table table-hover">
+                <thead>
+                    <tr>
+
+                        <!-- Pesquisar por produtos. -->
+                        <form class="form-inverse space-down m-t-30" autocomplete="off" role="search">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="append-icon space-bottom-20" class="col-md-12">
+                                        <input type="text" class="form-control" placeholder="Pesquisar produtos..." ng-model="pesquisaProduto.texto_produto_pesquisar" ng-change="getPesquisar()">
+                                        <i class="icon-magnifier"></i>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </tr>
+                    <tr>
+                        <th>Cód.</th>
+                        <th>Descrição</th>
+                        <th>Categoria</th>
+                    </tr>
+                </thead>
+                <tbody infinite-scroll="listarProduto()" infinite-scroll-distance="0" infinite-scroll-disabled="listaProdutoBusy">
+                    <!-- produto in listaProd = (produtos | filter: texto_produto_pesquisar) -->
+                    <tr ng-repeat="produto in produtos" style="cursor:pointer" ng-click="setProdutoNFe(produto)" ng-class="{selected: produto.pro_cod_pro === proCodProSelected}">
+                        <td>
+                            <div ng-switch on="tipo_coluna">
+                                <div ng-switch-when="2">
+                                    <span my-estoque="produto" value="{{produto.pro_cod_pro}}"></span>
+                                </div>
+                                <div ng-switch-default>
+                                    <span>{{produto.pro_cod_pro}}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-switch on="tipo_coluna">
+                                <div ng-switch-when="2">
+                                    <span my-estoque="produto" value="{{produto.pro_descricao_longa}}"></span>
+                                </div>
+                                <div ng-switch-default>
+                                    <span>{{produto.pro_descricao_longa}}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div ng-switch on="tipo_coluna">
+                                <div ng-switch-when="2">
+                                    <span my-estoque="produto" value="{{produto.produto_grupo.gru_descricao}}"></span>
+                                </div>
+                                <div ng-switch-default>
+                                    <span>{{produto.produto_grupo.gru_descricao}}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td ng-if="tipo_coluna == 2">
+                            <span my-estoque="produto" value="{{produto.produto_saldo.sal_atu_qtd_saldo | toInt}}"></span>
+                        </td>
+                        <td ng-if="tipo_coluna == 2">
+                            <span my-estoque="produto" value="{{produto.msa_atu_estoque_minimo | toInt}}"></span>
+                        </td>
+                        <td ng-if="tipo_coluna == 3">
+                            <span class="label label-success" ng-if="!produto.pro_eh_inativo">Sim</span>
+                            <span class="label label-danger" ng-if="produto.pro_eh_inativo">Não</span>
+                        </td>
+                        <td ng-if="tipo_coluna == 3">
+                            <span class="label label-success" ng-if="produto.pro_eh_visivel_web">Sim</span>
+                            <span class="label label-danger" ng-if="!produto.pro_eh_visivel_web">Não</span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+
+            <div class="panel-content p-0">
+                <div ng-if="flagLoadingLista">
+                    <circle-spinner></circle-spinner>
+                </div>
+                <div ng-if="!produtos.length && flagMsg">
+                    <div class="alert alert-warning alert-fade" role="alert">
+                        <i class="fa fa-info-circle fa-2x"></i>
+                        <span class="alert-texto font-small">Nenhum registro encontrado!</span>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="modal-footer text-center">
+            <div class="col-sm-12">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <span class="pull-right">
+                        <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                            <i class="fa fa-times"></i> &nbsp; Fechar
+                        </button>
+                    </span>
+                </h4>
+            </div>
+        </div>
+    </div>
+</div>

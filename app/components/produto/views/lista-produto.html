@@ -1,0 +1,84 @@
+
+<table class="table table-hover">
+    <thead>
+        <tr>
+            <th ng-if="pro_eh_servico === 0">
+                <span class="label-link" ng-if="tipo_codigo === 'CN'">
+                    <a ng-click="trocarCodigo()">
+                        <small>Cód.</small>
+                    </a>
+                </span>
+                <span class="label-link" ng-if="tipo_codigo === 'CB'">
+                    <a ng-click="trocarCodigo()">
+                        <small>Cód. de Barras</small>
+                    </a>
+                </span>
+            </th>
+            <th ng-if="pro_eh_servico === 1">
+                <span>Cód.</span>
+            </th>
+            <th>Descrição</th>
+            <th>
+                <span ng-if="flagEmissor === false">Categoria</span>
+            </th>
+            <th ng-if="tipo_coluna == 2">
+                <span tooltip-placement="left" tooltip="Estoque Atual">EA</span>
+            </th>
+            <th ng-if="tipo_coluna == 3">Ativo</th>
+            <th ng-if="tipo_coluna == 3">Loja Virtual</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr ng-repeat="produto in arrProdutos" class="c-pointer" ng-click="getProduto(produto.pro_cod_pro)" ng-class="{selected: produto.pro_cod_pro === proCodProSelected}">
+            <td>
+                <div ng-switch on="tipo_coluna">
+                    <div ng-switch-default>
+                        <span ng-if="tipo_codigo === 'CN'">
+                            <span sinc-code="produto" tipo="{{tipo_codigo}}">{{produto.pro_cod_pro}}</span>
+                        </span>
+                        <span ng-if="tipo_codigo === 'CB'">
+                            <span sinc-code="produto" tipo="{{tipo_codigo}}">{{produto.pro_cod_bar}}</span>
+                        </span>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div ng-switch on="tipo_coluna">
+                    <div ng-switch-default>
+                        <span>{{produto.pro_descricao_longa}}</span>
+                    </div>
+                </div>
+            </td>
+            <td>
+                <div ng-switch on="tipo_coluna" ng-if="flagEmissor === false">
+                    <div ng-switch-default>
+                        <span>{{produto.pro_gru_desc_gru}}</span>
+                    </div>
+                </div>
+            </td>
+            <td ng-if="tipo_coluna == 2">
+                <span get-estoque="produto" value="{{produto.sal_atu_qtd_saldo}}">{{produto.sal_atu_qtd_saldo | toInt}}</span>
+            </td>
+            <td ng-if="tipo_coluna == 3">
+                <span class="label label-success" ng-if="!produto.pro_eh_inativo">Sim</span>
+                <span class="label label-danger" ng-if="produto.pro_eh_inativo">Não</span>
+            </td>
+            <td ng-if="tipo_coluna == 3">
+                <span class="label label-success" ng-if="produto.pro_eh_visivel_web">Sim</span>
+                <span class="label label-danger" ng-if="!produto.pro_eh_visivel_web">Não</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<div class="panel-content p-0">
+    <div ng-if="!arrProdutos.length && spinnerList.active === false">
+        <div class="alert alert-warning alert-fade" role="alert">
+            <i class="fa fa-info-circle fa-2x"></i>
+            <span class="alert-texto font-small">Nenhum registro encontrado!</span>
+        </div>
+    </div>
+</div>
+
+<div ng-if="isProdutoEmpty" class="panel-manual" ng-include="'home/views/tutorial_cliente.html'"></div>

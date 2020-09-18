@@ -1,0 +1,103 @@
+<div class="modal-dialog">
+    <form method="POST" enctype="multipart/form-data" id="forms.formEstampa" name="forms.formEstampa" autocomplete="off" novalidate>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>Estampa</strong>
+
+                    <!-- Botão para selecionar arquivo. -->
+                    <span class="pull-right" ng-hide="picFile">
+                        <span class="btn btn-default btn-embossed btn-file">
+                            <span class="fileinput-new">
+                                <i class="fa fa-upload"></i> &nbsp; Escolher
+                            </span>
+                            <input type="file" id="btn-upload" ngf-select ngf-change="reset()" ng-model="picFile" name="file" accept="image/*" required>
+                        </span>
+                    </span>
+
+                    <!-- Botão para salvar o upload. -->
+                    <span class="pull-right" ng-if="picFile">
+                        <button ng-click="upload(picFile, $event)" ladda="salvarEstampaLoading" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" type="button">
+                            <i class="fa fa-check"></i> &nbsp; Salvar
+                        </button>
+                    </span>
+
+                    <!-- Botão para salvar através da escolha. -->
+                    <span class="pull-right" ng-if="picEscolha">
+                        <button ng-click="clonar()" class="btn btn-primary btn-embossed bnt-square pull-right m-r-10" ladda="clonarEstampaLoading" type="button">
+                            <i class="fa fa-check"></i> &nbsp; Salvar
+                        </button>
+                    </span>
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-upload">
+                    <div ng-if="picFile">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="control-label">Descrição</label>
+                                    <input type="text" class="form-control" placeholder="Entre com uma descrição..." ng-model="objEstampa.mid_descricao" maxlength="255">
+                                </div>
+                            </div>
+                            <div class="col-md-12 m-b-20">
+                                <div class="fileinput-new thumbnail f-l" data-provides="fileinput">
+                                    <img ngf-src="picFile" class="product">
+                                </div>
+                                <div class="fileinput-preview fileinput-exists thumbnail" style="border:0 none"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="arrMidias.length">
+                    <p class="text-muted m-b-0">
+                        <strong>Selecione uma já existente ou clique para escolher uma nova:</strong>
+                    </p>
+                    <ul class="product-attr-list attr-color m-b-20">
+                        <li ng-repeat="midia in arrMidias" ng-if="midia.mid_nro !== objAuxiliar.mid_nro">
+                            <label ng-click="escolherEstampa(midia)">
+                                <a href="javascript:void(0)" title="Estampa">
+                                    <img alt="Estampa" class="attr-estampa" ng-src="{{imageCache}}{{midia.mid_id}}" img-tooltip="midia">
+                                </a>
+                            </label>
+                        </li>
+                    </ul>
+                </div>
+
+                <div ng-if="(!arrEstampa.length && !picFile && $angular.equals({}, objEstampa))">
+                    <div class="alert alert-warning m-b-0" role="alert">
+                        <strong>Atenção:</strong> O produto ainda não possui estampa, clique <span class="c-hover" uploadfile>aqui</span> para escolher ou selecione uma dentre as existentes até o momento.
+                    </div>
+                </div>
+
+                <div ng-if="(!arrMidias.length && !picFile && $angular.equals({}, objEstampa))">
+                    <div class="alert alert-warning m-b-0" role="alert">
+                        <strong>Atenção:</strong> O produto ainda não possui estampa, selecione uma dentre as existentes até o momento.
+                    </div>
+                </div>
+
+                <div ng-if="arrEstampa.length || objEstampa.mid_id">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Descrição</label>
+                                <input type="text" class="form-control" placeholder="Entre com uma descrição..." disabled="disabled" ng-model="objEstampa.mid_descricao" maxlength="255">
+                            </div>
+                        </div>
+                        <div class="col-md-12">
+                            <div class="fileinput-new thumbnail f-l">
+                                <img ng-src="{{imageCache}}{{objEstampa.mid_id}}" class="product">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,271 @@
+
+<div ng-if="objWizard.p1 === false">
+    <div class="col-md-12 m-t-20">
+        <div class="panel bg-orange bd-6">
+            <div class="panel-header">
+                <h3 class="title-panel">
+                    <strong>Atenção!</strong>
+                </h3>
+            </div>
+            <div class="panel-content o-h">
+                <div class="alert alert-warning m-b-10">
+                    <i class="fa fa-info-circle fa-2x icon-alert"></i>
+                    <p class="alert-texto p-justify" style="font-size:14px">
+                        Caro usuário, complete o cadastro do passo anterior <strong>(Empresa)</strong> para prosseguir esta etapa referente ao cadastro das informações dos módulos, perfis e documentos fiscais <strong>(Certificados)</strong> de sua empresa.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-if="objWizard.p1 === true">
+    <form id="forms.formWizard" name="forms.formWizardModulos" autocomplete="off" role="form">
+        <div class="col-md-12 m-b-10">
+            <div class="col-md-8">
+                <h2>Qual o perfil de sua empresa:</h2>
+            </div>
+            <div class="col-md-4 t-right">
+                <button type="button" class="btn btn-primary btn-sm m-r-0 m-t-20" ladda="finalizarEmpresaDadosLoading" ng-click="finalizar()">
+                    <i class="fa fa-check"></i> &nbsp; Próximo
+                </button>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="col-md-12">
+                <div class="panel panel-instrucoes">
+                    <div class="panel-header-form panel-form panel-border">
+                        <h5>
+                            <span class="fa fa-user m-r-10"></span>
+                            <strong>Perfil da Empresa</strong>
+                        </h5>
+                    </div>
+                    <div class="panel-content o-h" style="min-height:450px">
+                        <div class="row">
+                            <div class="m-t-10 panel-plano">
+                                <div class="col-md-6">
+                                    <div class="panel m-b-0" ng-class="((objPerfis.VAREJO) ? 'bg-primary' : 'bg-aero')" ng-click="triggerPerfil('VAREJO')">
+                                        <div class="panel-header" style="padding:16px 14px">
+                                            <h3>Varejista</h3>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="panel m-b-0" ng-class="((objPerfis.ATACADO) ? 'bg-primary' : 'bg-aero')" ng-click="triggerPerfil('ATACADO')">
+                                        <div class="panel-header" style="padding:16px 10px">
+                                            <h3>Atacadista</h3>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="panel m-b-0" ng-class="((objPerfis.INDUSTRIA) ? 'bg-primary' : 'bg-aero')" ng-click="triggerPerfil('INDUSTRIA')">
+                                        <div class="panel-header" style="padding:16px 14px">
+                                            <h3>Indústria</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="panel m-b-0" ng-class="((objPerfis.SERVICOS) ? 'bg-primary' : 'bg-aero')" ng-click="triggerPerfil('SERVICOS')">
+                                        <div class="panel-header" style="padding:8px">
+                                            <h3>Prestadora de Serviços</h3>
+                                        </div>
+                                    </div>
+                                    <br>
+                                    <div class="panel m-b-0" ng-class="((objPerfis.TRANSPORTE) ? 'bg-primary' : 'bg-aero')" ng-click="triggerPerfil('TRANSPORTE')">
+                                        <div class="panel-header" style="padding:8px">
+                                            <h3>Transporte</h3>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--
+                                <div class="col-md-2">
+                                    <div class="panel m-b-0" ng-class="((objPerfis.VAREJO) ? 'bg-primary' : 'bg-aero')" ng-click="triggerPerfil('VAREJO')">
+                                        <div class="panel-header" style="padding:16px 14px">
+                                            <h3>Varejista</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="panel m-b-0" ng-class="((objPerfis.ATACADO) ? 'bg-primary' : 'bg-aero')" ng-click="triggerPerfil('ATACADO')">
+                                        <div class="panel-header" style="padding:16px 10px">
+                                            <h3>Atacadista</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="panel m-b-0" ng-class="((objPerfis.INDUSTRIA) ? 'bg-primary' : 'bg-aero')" ng-click="triggerPerfil('INDUSTRIA')">
+                                        <div class="panel-header" style="padding:16px 14px">
+                                            <h3>Indústria</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="panel m-b-0" ng-class="((objPerfis.SERVICOS) ? 'bg-primary' : 'bg-aero')" ng-click="triggerPerfil('SERVICOS')">
+                                        <div class="panel-header" style="padding:8px">
+                                            <h3>Prestadora <br> de Serviços</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="panel m-b-0" ng-class="((objPerfis.TRANSPORTE) ? 'bg-primary' : 'bg-aero')" ng-click="triggerPerfil('TRANSPORTE')">
+                                        <div class="panel-header" style="padding:8px">
+                                            <h3>Transporte</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                -->
+
+                                <div class="col-md-12">
+                                    <h3 class="m-b-5">Qual o setor que sua empresa atua?</h3>
+                                </div>
+
+                                <div class="col-md-12 panel-setor">
+                                    <ui-select class="form-control" ng-model="empresa.emp_cod_setor_pai" ng-change="onChangeSetor()" theme="select2">
+                                        <ui-select-match placeholder="SELECIONE UM SETOR...">{{$select.selected.set_descricao}}</ui-select-match>
+                                        <ui-select-choices repeat="setor.set_cod_set as setor in arrSetores | filter: $select.search">
+                                            <span ng-bind-html="setor.set_descricao | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+                                </div>
+
+                                <div ng-if="empresa.emp_cod_setor_pai && empresa.emp_cod_setor_pai != 9000">
+                                    <div class="col-md-12">
+                                        <h3 class="m-b-5">Qual o segmento que sua empresa atua?</h3>
+                                    </div>
+                                    <div class="col-md-12 panel-setor" >
+                                        <ui-select class="form-control" ng-model="empresa.emp_cod_setor" theme="select2">
+                                            <ui-select-match placeholder="SELECIONE UM SEGMENTO...">{{$select.selected.set_descricao}}</ui-select-match>
+                                            <ui-select-choices repeat="setor.set_cod_set as setor in arrSegmentos | filter: $select.search">
+                                                <span ng-bind-html="setor.set_descricao | highlight: $select.search"></span>
+                                            </ui-select-choices>
+                                        </ui-select>
+                                    </div>
+                                </div>
+
+                                <div ng-if="empresa.emp_cod_setor_pai == 9000">
+                                    <div class="col-md-12">
+                                        <h3 class="m-b-5">Outro:</h3>
+                                    </div>
+                                    <div class="col-md-12 panel-setor m-b-20">
+                                        <input class="form-control" id="emp_desc_setor" maxlength="80" name="emp_desc_setor" ng-model="empresa.emp_desc_setor" placeholder="Entre com o setor..." type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="col-md-12">
+                <div class="panel panel-instrucoes">
+                    <div class="panel-header-form panel-form panel-border">
+                        <h5>
+                            <span class="fa fa-newspaper-o m-r-10"></span>
+                            <strong>Tipos de emissão de documentos fiscais:</strong>
+                        </h5>
+                    </div>
+                    <div class="panel-content o-h" style="min-height:450px">
+                        <div class="row">
+                            <div class="m-t-10 panel-plano">
+                                <div class="col-md-3">
+                                    <div class="panel m-b-0" ng-class="((objModulos.m1) ? 'bg-primary' : 'bg-aero')" ng-click="triggerModulo('m1')">
+                                        <div class="panel-header">
+                                            <h3>Emissão <br> NF-e</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="panel m-b-0" ng-class="((objModulos.m2) ? 'bg-primary' : 'bg-aero')" ng-click="triggerModulo('m2')">
+                                        <div class="panel-header">
+                                            <h3>Emissão <br> NFC-e</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="panel m-b-0" ng-class="((objModulos.m3) ? 'bg-primary' : 'bg-aero')" ng-click="triggerModulo('m3')">
+                                        <div class="panel-header">
+                                            <h3>Emissão <br> NFS-e</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="panel m-b-0" ng-class="((objModulos.m4) ? 'bg-primary' : 'bg-aero')" ng-click="triggerModulo('m4')">
+                                        <div class="panel-header">
+                                            <h3>Emissão <br> CT-e</h3>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Informações relativas ao certificado: -->
+                                <div ng-if="getVerificaCertificado()">
+                                    <div class="col-md-12">
+                                        <h3 class="m-b-5">Qual tipo de certificado irá utilizar para assinar as notas fiscais?</h3>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="panel" ng-class="((certificado === 1) ? 'bg-primary' : 'bg-aero')" ng-click="setCertificado(1)">
+                                            <div class="panel-header">
+                                                <h3>Certificado Digital A1 <br> (arquivo .pfx)</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="panel" ng-class="((certificado === 2) ? 'bg-primary' : 'bg-aero')" ng-click="setCertificado(2)">
+                                            <div class="panel-header">
+                                                <h3>Certificado Digital A3 <br> (cartão de autenticação)</h3>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" ng-if="certificado === 1">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h3 class="m-b-5 m-t-0">Anexe aqui seu certificado:</h3>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="input-group">
+                                                    <input class="form-control" placeholder="Anexar certificado..." ng-model="empresa.emp_nfe_cert_arq_txt" readonly="readonly" type="text" ng-click="anexar(empresa.emp_cod_emp)">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-primary m-r-0 m-b-0" type="button" ng-click="anexar(empresa.emp_cod_emp)">Procurar</button>
+                                                    </span>
+                                                </div>
+                                                <small class="msg-certificado text-danger" ng-show="!empresa.emp_nfe_cert_arq_txt">
+                                                    Você ainda não enviou nenhum arquivo!
+                                                </small>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12" ng-if="certificado === 2">
+                                        <div class="alert alert-info">
+                                            <p class="alert-texto font-small p-justify">
+                                                <a href="http://www.lojistavirtual.com.br/public/download/LojistaAssina_update.exe">Clique aqui</a> para efetuar o download do Lojista Assina, em caso de dúvidas acesse nosso material de apoio através deste <a href="http://www.lojistavirtual.com.br/public/download/LojistaAssina_update.exe">link</a>. <span class="text-info">A instalação deverá ser realizada no computador em que se encontra o Certificado Digital (A3).</span>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <!-- Campo RNTRC para transportadoras -->
+                                    <div class="col-md-12" ng-if="objModulos.m4">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h3 class="m-b-5 m-t-10">Informe o RNTRC:</h3>
+                                            </div>
+                                            <div class="col-md-12">
+                                                <div class="form-group">
+                                                    <input name="emp_rntrc" id="emp_rntrc" class="form-control" maxlength="14" placeholder="RNTRC..." ng-model="empresa.emp_rntrc" number-only type="text">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

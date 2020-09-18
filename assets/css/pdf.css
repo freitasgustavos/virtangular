@@ -1,0 +1,56 @@
+.box-corpo{font-family:Arial,sans-serif;width:100%}
+.box-cabecalho{width:100%}
+.box-total{width:100%}
+.box-parcial{float:left;width:50%}
+.box-imagem{float:left;text-align:center;width:25%}
+.box-titulo{float:right;text-align:center;width:75%}
+.img-item{width:40px;height:40px}
+.box-informacoes{background-color:#f5f5f5;float:left;margin-top:10px;padding:5px 0;width:100%}
+.logomarca{margin-top:30px;width:75%}
+.titulo{font-size:22px;margin:10px 0 0 2px;text-align:left}
+.nome-empresa{font-size:12px;margin:0 0 5px 0}
+.td-text{font-size:12px;margin:0 0 5px 0}
+.tabela{border-collapse:collapse;font-family:Arial,sans-serif;text-transform:uppercase;width:100%}
+.tabela-ficha{border-collapse:collapse;font-family:Arial,sans-serif;font-size:12px;width:100%}
+.box-tabela{border-top:1px solid #000;width:100%}
+.bg-dark{background:#f5f5f5}
+.bg-white{background:#fff}
+.tp{padding:8px 4px}
+.td{padding:8px 4px;text-transform:uppercase;font-size:10px}
+.td-total{padding:4px 4px;text-transform:uppercase;font-size:10px;border-bottom:1px dotted #000}
+.td-info{padding:8px 4px;text-transform:uppercase;font-size:10px}
+.tc{padding:4px}
+.tf{padding:12px 4px;border-bottom:1px solid #000;border-top:1px solid #000}
+.tr{padding:0;margin:0;border-bottom:1px solid #000;border-top:1px solid #000}
+.th{font-size:12px;vertical-align:top;border-bottom:1px solid #000;text-transform:uppercase;background:#ecedee}
+.th-invoice{font-size:12px;vertical-align:top;border-bottom:1px dotted #000;border-top:1px solid #000;text-transform:uppercase;background:#ecedee}
+.tf-invoice{padding:8px 4px;border-bottom:1px solid #000}
+.last{border-bottom:1px dotted #000}
+.first{border-top:1px solid #000}
+.tp-informacoes{padding:4px 8px}
+.tr-foot{background:#ecedee}
+.f-mini{font-size:10px}
+.f-small-mini{font-size:9px}
+.f-total{font-size:11px}
+.a-rig{text-align:right}
+.a-lef{text-align:left}
+.a-cen{text-align:center}
+.box-rodape{background-color:#f5f5f5;font-family:Arial,sans-serif;font-size:10px;padding:10px 5px;width:100%}
+.box-rodape-informacoes{float:left;width:60%}
+.box-rodape-logomarca{float:left;width:40%}
+.logo-virtux{margin-top:5px;width:40%}
+.paragrafo-rodape{margin:0 0 5px;padding:0}
+.c-red{color:#c72929}
+.bg-label{color:#fff;font-size:10px}
+.bg-item{vertical-align:middle;padding-left:4px}
+.box-cabecalho-titulo{width:100%;float:left;text-align:left}
+.box-cabecalho-info{font-size:12px;width:100%;float:left;margin-bottom:10px}
+.info-left{text-align:left;width:60%;float:left}
+.info-right{text-align:right;width:40%;float:left}
+.info{margin-left:4px;font-size:11px;margin:0 0 3px 4px}
+.info-empresa{font-size:14px;line-height:22px;margin-left:4px}
+.vt{vertical-align:top}
+.h5-title{font-weight:bold;font-size:12.5px;margin-top:20px;margin-bottom:10px;text-transform:uppercase}
+.bbd{border-bottom:1px dotted #000}
+.h6-title{border-bottom:1px dotted #000;padding:5px}
+.box-paginacao{width:100%;font-size:12px;font-family:Arial,sans-serif}

@@ -1,0 +1,161 @@
+<script type="text/ng-template" id="itemTpl.html">
+    <a tabindex="-1" style="{{((match.model.id == '1#1') ? 'background-color:#1D7777;color:#fff' : '')+';cursor:pointer;'}}">
+        <i ng-class="((match.model.id == '1#1') ? 'fa fa-plus-circle' : 'fa fa-user')"></i>
+        <span style="cursor:pointer;" ng-bind-html="match.model.cad_nome_razao + ((match.model.cad_cpf_cnpj) ? '(' + match.model.cad_cpf_cnpj + ')' : '') | uibTypeaheadHighlight:query"></span>
+    </a>
+</script>
+<script type="text/ng-template" id="usuarioTpl.html">
+    <a tabindex="-1" style="{{(match.model.id == '1#1') ? 'background-color:#1D7777;color:#fff' : ''}}">
+        <i ng-class="((match.model.id == '1#1') ? 'icon-plus' : '')"></i>
+        <span style="cursor:pointer;" ng-bind-html="match.model.agp_descricao | uibTypeaheadHighlight:query"></span>
+    </a>
+</script>
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content" ng-init="resumoRepetirEvento()">
+        <div class="modal-header">
+            <h4 class="modal-title modal-title-button">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal()">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                <strong>Repetir</strong> Evento
+
+                <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarEventoLoading" ng-click="salvarRepetirEvento()">
+                    <i class="fa fa-check"></i> &nbsp; Salvar
+                </button>
+
+                <span ng-if="evento.ano_seq_ano" class="pull-right">
+                    <a class="panel-close m-r-10 btn-delete" title="Cancelar" ng-click="cancelarEvento()">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </span>
+            </h4>
+        </div>
+        <div class="modal-body">
+            <form method="POST" enctype="multipart/form-data" id="forms.formRepetirEvento" name="forms.formRepetirEvento" novalidate>
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label for="repetirEventoParams.repeticao">Repetição <i class="obrigatorio">*</i></label></label>
+                            </div>
+
+                            <div class="col-md-9">
+                                <select id="repetirEventoParams.repeticao" name="repeticao" class="form-control" ng-model="repetirEventoParams.repeticao" ng-change="resumoRepetirEvento()" required>
+                                    <option value="0">--- Selecione ---</option>
+                                    <option value="1">Todos os dias</option>
+                                    <option value="2">Semanal</option>
+                                    <option value="3">Mensal</option>
+                                    <option value="4">Anual</option>
+                                </select>
+
+                            </div>
+                            <div ng-show="submitted || (forms.formRepetirEvento.repeticao.$invalid && !forms.formRepetirEvento.repeticao.$pristine)">
+                                <p class="text-danger form-error alert1" ng-show="(forms.formRepetirEvento.repeticao.$error.required)">Informe um período de repetição.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label for="repetirEventoParams.repeteACada">Repete a cada <i class="obrigatorio">*</i></label></label>
+                            </div>
+
+                            <div class="col-md-8">
+                                <select id="repetirEventoParams.repeteACada" name="repeteACada" class="form-control" ng-model="repetirEventoParams.repeteACada" ng-change="resumoRepetirEvento()" required>
+                                    <option value="1">1</option>
+                                    <option value="2">2</option>
+                                    <option value="3">3</option>
+                                    <option value="4">4</option>
+                                    <option value="5">5</option>
+                                    <option value="6">6</option>
+                                    <option value="7">7</option>
+                                    <option value="8">8</option>
+                                    <option value="9">9</option>
+                                    <option value="10">10</option>
+                                    <option value="11">11</option>
+                                    <option value="12">12</option>
+                                    <option value="13">13</option>
+                                    <option value="14">14</option>
+                                    <option value="15">15</option>
+                                    <option value="16">16</option>
+                                    <option value="17">17</option>
+                                    <option value="18">18</option>
+                                    <option value="19">19</option>
+                                    <option value="20">20</option>
+                                    <option value="21">21</option>
+                                    <option value="22">22</option>
+                                    <option value="23">23</option>
+                                    <option value="24">24</option>
+                                    <option value="25">25</option>
+                                    <option value="26">26</option>
+                                    <option value="27">27</option>
+                                    <option value="28">28</option>
+                                    <option value="29">29</option>
+                                    <option value="30">30</option>
+                                </select>
+                            </div>
+
+
+                            <div class="col-md-1">
+                                <p>{{ repetirEventoParams.labelRepeteACada }}</p>
+                            </div>
+                        </div>
+                        <div ng-show="submitted || (forms.formRepetirEvento.repeteACada.$invalid && !forms.formRepetirEvento.repeteACada.$pristine)">
+                            <p class="text-danger form-error alert1" ng-show="(forms.formRepetirEvento.repeteACada.$error.required)">Informe um intervalo de repetição.</p>
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="form-group">
+                            <div class="col-md-3">
+                                <label for="repetirEventoParams.dataInicio">Inicio <i class="obrigatorio">*</i></label></label>
+                            </div>
+                            <div class="col-md-9">
+                                <input id="repetirEventoParams.dataInicio" name="dataInicio" class="form-control " placeholder="Digite uma data..." type="text" ng-model="repetirEventoParams.dataInicio" data-mask="99/99/9999" datepicker1 ng-change="resumoRepetirEvento()" required>
+                            </div>
+                            <div ng-show="submitted || (forms.formRepetirEvento.dataInicio.$invalid && !forms.formRepetirEvento.dataInicio.$pristine)">
+                                <p class="text-danger form-error alert1" ng-show="(forms.formRepetirEvento.dataInicio.$error.required)">Informe uma data de inicio.</p>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <br />
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+                        <div class="form-inline">
+                            <div class="col-md-3">
+                                <label for="repetirEventoParams.tipoFim">Termina  <i class="obrigatorio">*</i></label></label>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="radio">
+                                    <label><input type="radio" name="tipoFim" id="repetirEventoParams.tipoFim" ng-model="repetirEventoParams.tipoFim" ng-change="resumoRepetirEvento()" value="1">Após <input type="number" name="ocorrencias" maxlength="2" class="form-control input-sm" placeholder="numero de" ng-model="repetirEventoParams.ocorrencias" ng-change="resumoRepetirEvento()" ng-disabled="ocorrenciasEnabled" onclick="this.select()"> ocorrências ou</label>
+                                    <div ng-show="submitted || (!ocorrenciasEnabled && forms.formRepetirEvento.ocorrencias.$invalid && !forms.formRepetirEvento.ocorrencias.$pristine)">
+                                        <p class="text-danger form-error alert1" ng-show="(!ocorrenciasEnabled && forms.formRepetirEvento.ocorrencias.$error.required)">Informe o número de ocorrências para essa repetição.</p>
+                                    </div>
+                                </div>
+                                <div class="radio">
+                                    <label><input type="radio" name="tipoFim" ng-model="repetirEventoParams.tipoFim" ng-change="resumoRepetirEvento()" value="2">Em <input id="dataFim" name="dataFim" class="form-control input-sm" placeholder="uma data..." type="text" ng-model="repetirEventoParams.dataFim" data-mask="99/99/9999" datepicker1 ng-change="resumoRepetirEvento()" ng-disabled="dataFimEnabled"></label>
+                                    <div ng-show="submitted || (!dataFimEnabled && forms.formRepetirEvento.dataFim.$invalid && !forms.formRepetirEvento.dataFim.$pristine)">
+                                        <p class="text-danger form-error alert1" ng-show="(!dataFimEnabled && forms.formRepetirEvento.dataFim.$error.required)">Informe uma data de término desta repetição.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6 col-md-offset-3 text-center text-sm">
+                        <p><strong>Resumo: </strong> {{ eventoResumo }} </p>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

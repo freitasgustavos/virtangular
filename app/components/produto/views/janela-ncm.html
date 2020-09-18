@@ -1,0 +1,166 @@
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header p-b-0">
+            <h4 class="modal-title modal-title-button">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                <strong>Informações do {{ params.labelTela }}</strong>
+
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarNCMLoading" ng-click="salvarNCM()">
+                    <i class="fa fa-check"></i> &nbsp; Salvar
+                </button>
+            </h4>
+        </div>
+
+        <div class="modal-body" style="width:100%;overflow:hidden">
+            <div class="panel-content">
+
+                <!-- Tela de configuração do NCM para Produtos  -->
+                <div ng-show="!params.ehServico">
+                    <form id="forms.formsNCM" name="forms.formsNCM" method="POST" autocomplete="off" role="form">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Número do NCM</label>
+                                    <input name="ncm_nro_ncm_modal" id="ncm_nro_ncm_modal" class="form-control" type="text" ng-class="{true : 'form-error'}[submitted && forms.formsNCM.ncm_nro_ncm_modal.$invalid]" ui-mask="9999.99.99" ng-model="objNCM.ncm_nro_ncm" maxlength="10" required>
+                                </div>
+                                <div ng-show="submitted || (forms.formsNCM.ncm_nro_ncm_modal.$error.required && !forms.formsNCM.ncm_nro_ncm_modal.$pristine)">
+                                    <p class="text-danger form-error alert1" ng-show="(forms.formsNCM.ncm_nro_ncm_modal.$error.required)">Digite o número do NCM.</p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>CEST correspondente (quando ST)</label>
+                                    <input name="ncm_nro_cest" id="ncm_nro_cest" class="form-control" type="text" ui-mask="99.999.99" ng-model="objNCM.ncm_nro_cest">
+                                </div>
+                            </div>
+
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>Índice IBPT (%)</label>
+                                    <input name="ncm_aliq_ibpt" class="form-control" type="text" maxlength="10" placeholder="Entre com o índice IBPT..." ng-model="objNCM.ncm_aliq_ibpt" onclick="this.select()" ui-negative-number ui-number-mask="mdecimals">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Descrição do NCM</label>
+                                    <input name="ncm_descricao" class="form-control" type="text" placeholder="Entre com a descrição do NCM..." ng-model="objNCM.ncm_descricao" maxlength="500">
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group m-b-0" ng-if="tipoMva === 1">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="label-link">
+                                                <a ng-click="trocarTipoMva()">MVA Padrão Contribuinte</a>
+                                            </label>
+                                            <div class="append-icon">
+                                                <input name="ncm_perc_mva_padrao_contri" class="form-control" maxlength="10" type="text" placeholder="Entre com o MVA (%) padrão (contribuinte)..." ng-model="objNCM.ncm_perc_mva_padrao_contri" maxlength="32" onclick="this.select()" ui-negative-number ui-number-mask="mdecimals">
+                                                <i class="p-r-10">%</i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group m-b-0" ng-if="tipoMva === 2">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <label class="label-link">
+                                                <a ng-click="trocarTipoMva()">Valor Pauta Contribuinte</a>
+                                            </label>
+                                            <div class="append-icon">
+                                                <input name="ncm_vlr_pauta_padrao_contri" class="form-control" maxlength="10" type="text" placeholder="Entre com a pauta (R$) padrão (contribuinte)..." ng-model="objNCM.ncm_vlr_pauta_padrao_contri" maxlength="32" onclick="this.select()" ui-negative-number ui-number-mask="mdecimals">
+                                                <i class="fa fa-money p-r-10"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Redução da base de cálculo (padrão)</label>
+                                    <div class="append-icon">
+                                        <input name="ncm_vlr_reducao_base_calc" class="form-control" type="text" maxlength="10" placeholder="Entre com a redução da base de cálculo (padrão)..." ng-model="objNCM.ncm_vlr_reducao_base_calc" maxlength="32" onclick="this.select()" ui-negative-number ui-number-mask="mdecimals">
+                                        <i class="p-r-10">%</i>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="m-20 m-r-0 m-l-0">Impostos Atribuídos:</h3>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="btn-group">
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_icmsproprio')" ng-class="getClasseCss('ncm_tem_icmsproprio')" ng-model="objNCM.ncm_tem_icmsproprio">ICMS</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_icmsst')" ng-class="getClasseCss('ncm_tem_icmsst')" ng-model="objNCM.ncm_tem_icmsst">ICMS ST</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_ipi')" ng-class="getClasseCss('ncm_tem_ipi')" ng-model="objNCM.ncm_tem_ipi">IPI</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_pis')" ng-class="getClasseCss('ncm_tem_pis')" ng-model="objNCM.ncm_tem_pis">PIS</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_cofins')" ng-class="getClasseCss('ncm_tem_cofins')" ng-model="objNCM.ncm_tem_cofins">COFINS</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_iss')" ng-class="getClasseCss('ncm_tem_iss')" ng-model="objNCM.ncm_tem_iss">ISS</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_ir')" ng-class="getClasseCss('ncm_tem_ir')" ng-model="objNCM.ncm_tem_ir">IR</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_ii')" ng-class="getClasseCss('ncm_tem_ii')" ng-model="objNCM.ncm_tem_ii">II</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_inss')" ng-class="getClasseCss('ncm_tem_inss')" ng-model="objNCM.ncm_tem_inss">INSS</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_csll')" ng-class="getClasseCss('ncm_tem_csll')" ng-model="objNCM.ncm_tem_csll">CSLL</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_fcp')" ng-class="getClasseCss('ncm_tem_fcp')" ng-model="objNCM.ncm_tem_fcp">FCP</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Tela de configuração para o CNAE de Serviços -->
+                <div ng-show="params.ehServico">
+                    <form id="forms.formsCNAE" name="forms.formsCNAE" method="POST" autocomplete="off" role="form">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label>CNAE do Serviço</label>
+                                    <input name="ncm_nro_ncm_modal" id="ncm_nro_ncm_modal" class="form-control" type="text" ng-class="{true : 'form-error'}[submitted && forms.formsNCM.ncm_nro_ncm_modal.$invalid]" ng-model="objNCM.ncm_nro_ncm" maxlength="10" number-only required>
+                                </div>
+                                <div ng-show="submitted || (forms.formsNCM.ncm_nro_ncm_modal.$error.required && !forms.formsNCM.ncm_nro_ncm_modal.$pristine)">
+                                    <p class="text-danger form-error alert1" ng-show="(forms.formsNCM.ncm_nro_ncm_modal.$error.required)">Digite o CNAE do Serviço.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-md-12">
+                                <h3 class="m-20 m-r-0 m-l-0">Impostos Atribuídos:</h3>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="btn-group">
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_icmsproprio')" ng-class="getClasseCss('ncm_tem_icmsproprio')" ng-model="objNCM.ncm_tem_icmsproprio">ICMS</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_icmsst')" ng-class="getClasseCss('ncm_tem_icmsst')" ng-model="objNCM.ncm_tem_icmsst">ICMS ST</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_ipi')" ng-class="getClasseCss('ncm_tem_ipi')" ng-model="objNCM.ncm_tem_ipi">IPI</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_pis')" ng-class="getClasseCss('ncm_tem_pis')" ng-model="objNCM.ncm_tem_pis">PIS</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_cofins')" ng-class="getClasseCss('ncm_tem_cofins')" ng-model="objNCM.ncm_tem_cofins">COFINS</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_iss')" ng-class="getClasseCss('ncm_tem_iss')" ng-model="objNCM.ncm_tem_iss">ISS</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_ir')" ng-class="getClasseCss('ncm_tem_ir')" ng-model="objNCM.ncm_tem_ir">IR</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_ii')" ng-class="getClasseCss('ncm_tem_ii')" ng-model="objNCM.ncm_tem_ii">II</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_inss')" ng-class="getClasseCss('ncm_tem_inss')" ng-model="objNCM.ncm_tem_inss">INSS</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_csll')" ng-class="getClasseCss('ncm_tem_csll')" ng-model="objNCM.ncm_tem_csll">CSLL</label>
+                                    <label class="btn btn-sm" ng-click="setImposto('ncm_tem_fcp')" ng-class="getClasseCss('ncm_tem_fcp')" ng-model="objNCM.ncm_tem_fcp">FCP</label>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,350 @@
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content modal-itens">
+        <div class="modal-header p-b-0">
+            <h4 class="modal-title modal-title-button">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('reload')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                <strong>Editar</strong> Item
+
+                <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarItemLoading" ng-click="salvarItem()">
+                    <i class="fa fa-check"></i> &nbsp; Salvar
+                </button>
+
+                <span class="pull-right">
+                    <a class="panel-close m-r-20 btn-delete" title="Remover" ng-click="cancelarItem(objModal.$index)">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </span>
+            </h4>
+        </div>
+
+        <form id="forms.formItem" name="forms.formItem" method="POST" autocomplete="off" role="form">
+            <div class="modal-body modal-addon p-b-0" style="overflow:inherit!important">
+                <div class="panel-content">
+                    <div class="col-md-12 form-item">
+                        <div class="row">
+                            <div class="col-md-2 p-r-0" style="width:13%;text-align:center">
+                                <img ng-src="{{objModal.venda.produto_foto}}" class="img-responsive img-mw img-thumbnail m-t-0">
+                            </div>
+
+                            <div class="col-md-5 p-r-0">
+                                <div class="form-group m-b-0">
+                                    <label class="form-label-itens">
+                                        <span class="pull-left" ng-if="objModal.codNatureza != 31">Item</span>
+                                        <span class="pull-left" ng-if="objModal.codNatureza == 31">Serviço</span>
+
+                                        <!-- Código do produto. -->
+                                        <small class="pull-left c-primary" style="margin-top: 3px;">
+                                            &nbsp;&nbsp;#{{objModal.venda.ite_pro_cod_pro}}
+                                        </small>
+
+                                        <small class="pull-right c-primary" style="margin-top: 2px;margin-right: 10px;" ng-if="!objModal.venda.pro_eh_complemento_imposto">
+                                            <a ng-click="openJanelaProduto(objModal.venda.ite_pro_cod_pro)" style="cursor:pointer;">Editar</a>
+                                        </small>
+                                    </label>
+                                    <input class="form-control" type="text" ng-model="objModal.venda.ite_pro_descricao" maxlength="120"  >
+
+                                    <!-- Quantidade em estoque e categoria. -->
+                                    <div class="m-t-5">
+                                        <div  ng-if="!objModal.venda.pro_eh_complemento_imposto">
+                                            <small class="m-r-10" ng-if="objModal.venda.produto_grupo.gru_descricao">
+                                                <i class="fa fa-tags"></i> {{objModal.venda.produto_grupo.gru_descricao}}
+                                            </small>
+                                            <small>
+                                                <i class="fa fa-inbox"></i>Disponível:
+                                                <span get-estoque="objModal" value="{{objModal.venda.produto_saldo.sal_atu_qtd_saldo}}"></span>
+                                            </small>
+                                        </div>
+                                        <small class="f-right text-right inf-adicionais">
+                                            <a ng-click="editInformacoesAdicionais(objModal.venda)">Informações Adicionais</a>
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-1 p-r-0" ng-if="!objModal.venda.pro_eh_complemento_imposto">
+                                <div class="form-group">
+                                    <label>Qtd</label> <!-- venda.selected.ite_pro_qtd -->
+                                    <input class="form-control" type="text" placeholder="Digite a quantidade" ng-model="objModal.venda.ite_pro_qtd_br" ng-keyup="calcular()" valid-number ng-disabled="objModal.codNatureza != 11">
+
+                                    <!-- Unidade do produto. -->
+                                    <div class="m-t-5">
+                                        <small ng-if="objModal.venda.produto.pro_unidade != null">
+                                            <i class="fa fa-dropbox"></i> {{objModal.venda.produto.pro_unidade}}
+                                        </small>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 p-r-0" ng-if="!objModal.venda.pro_eh_complemento_imposto">
+
+                                <div class="form-group">
+                                    <label>Valor Unitário </label>
+                                    <div class="p-r-0 input-group" ng-if="objModal.inputs.ite_vlr_uni_bruto">
+                                        <input class="form-control" placeholder="Digite o valor" type="text" ng-model="objModal.venda.ite_vlr_uni_bruto" ng-keyup="calcular()" ui-money-mask="mdecimals" onclick="this.select()" >
+                                        <span class="input-group-addon c-pointer" ng-click="alterarInputDecimal('ite_vlr_uni_bruto')">
+                                            <i class="fa fa-money p-0"></i>
+                                        </span>
+                                    </div>
+
+                                    <!--ng-disabled="objModal.v.fin_tip_emitente == 'P' && objModal.v.codNatureza != 11"-->
+                                    <div class="p-r-0 input-group" ng-if="!objModal.inputs.ite_vlr_uni_bruto">
+                                        <input class="form-control" placeholder="Digite o valor" type="text" ng-model="objModal.venda.ite_vlr_uni_bruto" lv-money="teste" ng-keyup="calcular()" onclick="this.select()">
+                                        <span class="input-group-addon c-pointer" ng-click="alterarInputDecimal('ite_vlr_uni_bruto')">
+                                            <i class="fa fa-money p-0"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-2 p-r-0" ng-if="!objModal.venda.pro_eh_complemento_imposto">
+                                <div class="form-group">
+                                    <label>Valor Bruto</label>
+                                    <div class="p-r-0 input-group">
+                                        <input class="form-control" readonly="readonly" placeholder="Digite o valor bruto" type="text" ng-model="objModal.venda.ite_vlr_tot_bruto" ui-money-mask="mdecimals" onclick="this.select()">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-money p-0"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <span class="text-operator">=</span>
+                            </div>
+                        </div>
+
+                        <div class="row m-t-10 box-input-money">
+                            <div class="col-md-{{objModal.colLinhaTrib}} p-r-0" ng-if="!objModal.venda.pro_eh_complemento_imposto">
+                                <div class="form-group" style="width:98%">
+                                    <label>
+                                        <span class="m-r-5">Desconto</span>
+                                        <!-- <a class="c-pointer c-gray" ng-click="trocarMedida()">{{objMedida.nomeMedida}}</a> -->
+                                    </label>
+
+                                    <div ng-if="objMedida.codMedida == 1">
+
+                                        <div class="p-r-0 input-group" ng-if="objModal.inputs.ite_vlr_tot_desconto">
+                                            <input class="form-control" type="text" ng-model="objModal.venda.ite_vlr_tot_desconto" ng-keyup="calcular()" ui-money-mask="mdecimals" onclick="this.select()">
+                                            <span class="input-group-addon c-pointer" ng-click="alterarInputDecimal('ite_vlr_tot_desconto')">
+                                                <i class="fa fa-money p-0"></i>
+                                            </span>
+                                        </div>
+                                        <div class="p-r-0 input-group" ng-if="!objModal.inputs.ite_vlr_tot_desconto">
+                                            <input class="form-control" type="text" ng-model="objModal.venda.ite_vlr_tot_desconto" ng-keyup="calcular()" lv-money="teste" onclick="this.select()">
+                                            <span class="input-group-addon c-pointer" ng-click="alterarInputDecimal('ite_vlr_tot_desconto')">
+                                                <i class="fa fa-money p-0"></i>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div ng-if="objMedida.codMedida == 2">
+                                        <input class="form-control" placeholder="%" type="text" ng-model="objModal.venda.ite_por_tot_desconto" number-range minvalue="0" maxvalue="100">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-{{objModal.colLinhaTrib}} p-r-0">
+                                <div class="form-group" style="width:98%">
+                                    <label>Despesas</label>
+                                    <div class="p-r-0 input-group">
+                                        <input class="form-control" placeholder="Digite o despesas" type="text" ng-model="objModal.venda.ite_vlr_tot_despesas" ng-keyup="calcular()" ui-money-mask="mdecimals" onclick="this.select()">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-money p-0"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <span class="text-operator" ng-if="!objModal.venda.pro_eh_complemento_imposto">+</span>
+                            </div>
+
+                            <div class="col-md-{{objModal.colLinhaTrib}} p-r-0" ng-if="objModal.codNatureza != 31">
+                                <div class="form-group" style="width:98%">
+                                    <label>Frete</label>
+                                    <div class="p-r-0 input-group">
+                                        <input class="form-control" placeholder="Digite o frete" type="text" ng-model="objModal.venda.ite_vlr_tot_frete" ng-keyup="calcular()" ui-money-mask="mdecimals" onclick="this.select()">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-money p-0"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <span class="text-operator">+</span>
+                            </div>
+
+                            <div class="col-md-{{objModal.colLinhaTrib}} p-r-0" ng-if="objModal.codNatureza != 31">
+                                <div class="form-group" style="width:98%">
+                                    <label>Seguro</label>
+                                    <div class="p-r-0 input-group">
+                                        <input class="form-control" placeholder="Digite o seguro" type="text" ng-model="objModal.venda.ite_vlr_tot_seguro" ng-keyup="calcular()" ui-money-mask="mdecimals" onclick="this.select()">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-money p-0"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <span class="text-operator">+</span>
+                            </div>
+
+                            <div class="col-md-{{objModal.colLinhaTrib}} p-r-0">
+                                <div class="form-group" style="width:98%">
+                                    <label>Impostos Retidos</label>
+                                    <div class="p-r-0 input-group">
+                                        <input class="form-control" readonly="readonly" type="text" ng-model="objModal.venda.ite_vlr_tot_impostos_retidos_format">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-money p-0"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <span class="text-operator">+</span>
+                            </div>
+
+                            <div class="col-md-{{objModal.colLinhaTrib}} p-r-0">
+                                <div class="form-group" style="width:90%">
+                                    <label>Valor Líquido</label>
+                                    <div class="p-r-0 input-group">
+                                        <input class="form-control" readonly="readonly" type="text" ng-model="objModal.venda.ite_vlr_tot_liquido" ui-money-mask="2" onclick="this.select()">
+                                        <span class="input-group-addon">
+                                            <i class="fa fa-money p-0"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <span class="text-operator">=</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 m-b-10" ng-if="objModal.codNatureza != 11 && objModal.codNatureza != 31">
+                <div class="form-item" style="float:left;width:100%;margin-top:-10px" >
+                    <div class="col-md-6 p-r-0 p-l-0" >
+                        <div class="form-group box-cfop-item" >
+                            <label>CFOP do item</label>
+                            <ui-select  name="ite_cfo_cfop" id="ite_cfo_cfop" class="form-control" ng-model="objModal.venda.ite_cfo_cfop" theme="select2" >
+                                <ui-select-match placeholder="Selecione">{{$select.selected.cfo_cfop}} - {{$select.selected.cfo_descricao}}</ui-select-match>
+                                <ui-select-choices repeat="cfo.cfo_cfop as cfo in listaCfo |  propsFilter: {cfo_cfop: $select.search, cfo_descricao:$select.search}">
+                                    <span ng-bind-html="cfo.cfo_cfop +' - '+cfo.cfo_descricao | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        &nbsp;
+                    </div>
+                    <div class="col-md-2" style="margin-top:35px;text-align:right;padding-right:0">
+                        <button class="btn btn-primary btn-sm m-0" ng-click="editTributo()">
+                            Novo Imposto
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-12 m-b-10" ng-if="objModal.codNatureza == 11 || objModal.codNatureza == 31">
+                <div class="form-item" >
+                    <div class="col-md-6 p-r-0 p-l-0" >
+                        &nbsp;
+                    </div>
+                    <div class="col-md-4">
+                        &nbsp;
+                    </div>
+                    <div class="col-md-2" style="margin-top:35px;text-align:right;padding-right:0">
+                        <button class="btn btn-primary btn-sm m-0" ng-click="editTributo()">
+                            Novo Imposto
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+        <div class="modal-footer text-center">
+            <table class="table table-striped table-hover table-mini">
+                <thead>
+                    <tr>
+                        <th class="text-left">Imposto</th>
+                        <th class="text-center" ng-if="objModal.codNatureza != 31">
+                            <span ng-if="objModal.tipCs == 1">CSO/CST</span>
+                            <span ng-if="objModal.tipCs == 2">CST</span>
+                        </th>
+                        <th class="text-right">Base de Cálculo</th>
+                        <th class="text-right">Aliquota</th>
+                        <th class="text-right">Valor Imposto</th>
+                        <th class="text-center">Soma Nota?</th>
+                        <th class="text-center">Não Tributado</th>
+                        <th class="text-right">Valor Contábil</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="(k, tributo) in objModal.venda.itens_tributo" class="c-pointer" ng-click="editTributo(tributo, k, $index)">
+                        <td class="text-left">{{tributo.nomeImposto}}</td>
+                        <td class="text-center" ng-if="objModal.codNatureza != 31">
+                            <span ng-if="objModal.tipCs == 1">{{tributo.tri_cso}} / {{tributo.tri_cst}}</span>
+                            <span ng-if="objModal.tipCs == 2">{{tributo.tri_cst}}</span>
+                        </td>
+                        <td class="text-right">
+                            <span class="label label-default">{{tributo.tri_bc_perc_mva}}%</span>&nbsp;{{tributo.tri_bc_vlr_liquido | currency}}
+                        </td>
+                        <td class="text-right">{{tributo.tri_aliq_perc}}</td>
+                        <td class="text-right">
+                            <span class="c-primary">
+                                <strong>{{tributo.tri_imp_vlr_liquido | currency}}</strong>
+                            </span>
+                        </td>
+                        <td class="text-center">
+                            <span ng-if="tributo.tri_eh_retido == 1">Sim</span>
+                            <span ng-if="tributo.tri_eh_retido == 0">Não</span>
+                        </td>
+                        <td class="text-right">{{tributo.tri_naotrib_vlr | currency}}</td>
+                        <td class="text-right">{{tributo.tri_contabil_vlr | currency}}</td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="m-t-10">
+                <div class="col-md-4 p-l-0">
+                    <div class="form-group m-b-0">
+                        <label>Vendedor</label>
+                        <div class="append-icon append-typeahead">
+                            <lv-autocomplete
+                                ng-model="objModal.venda.vendedorSelect"
+                                clear-input="false"
+                                trigger-list="true"
+                                icon-class="fa fa-user"
+                                search-limit="10"
+                                on-select="onSelectVendedor"
+                                add-select-item="addVendedor"
+                                place-holder="Selecione o vendedor..."
+                                string-entity="vendedor"
+                                string-service="vendedor"
+                                display-property="par_c01"
+                                confirm-add="true"
+                                string-id="autocomplete-vendedor">
+                            </lv-autocomplete>
+                            <input type="hidden" ng-model="objModal.venda.ite_vnd_cod_vendedor_item">
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-2 p-r-0" style="text-align:center" ng-if="objModal.codNatureza != 31">
+                    <div class="form-group">
+                        <label>Nro Pedido:</label>
+                        <input class="form-control" type="text" ng-model="objModal.venda.ite_origem_ped_nro" maxlength="15">
+                    </div>
+                </div>
+                <div class="col-md-2 p-r-0" style="text-align:center" ng-if="objModal.codNatureza != 31">
+                    <div class="form-group">
+                        <label>Seq Item Pedido:</label>
+                        <input class="form-control" type="text" ng-model="objModal.venda.ite_origem_ped_seq" maxlength="6">
+                    </div>
+                </div>
+                <div class="col-md-{{objModal.colLinhaBaixo}} p-r-0" style="text-align:center">
+                    <div class="form-group">
+                        <label>Não tributados:</label>
+                        <input class="form-control" readonly="readonly" type="text" ng-model="objModal.venda.ite_vlr_tot_naotrib" ui-money-mask="mdecimals">
+                    </div>
+                </div>
+                <div class="col-md-{{objModal.colLinhaBaixo}} p-r-0" style="text-align:center">
+                    <div class="form-group">
+                        <label>Total Contábil:</label>
+                        <input class="form-control" readonly="readonly" type="text" ng-model="objModal.venda.ite_vlr_tot_contabil" ui-money-mask="mdecimals">
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

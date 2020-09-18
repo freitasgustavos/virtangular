@@ -1,0 +1,50 @@
+
+<div class="col-md-12 p-l-0 p-r-0">
+    <div class="panel" style="min-height:984px">
+        <div class="panel-content">
+            <div class="col-md-12">
+                <h3>Autocomplete</h3>
+
+                <lv-autocomplete
+                    ng-model="objCliente"
+                    clear-input="false"
+                    trigger-list="true"
+                    icon-class="fa fa-user"
+                    obj-search="objFiltroCliente"
+                    search-limit="10"
+                    on-select="onSelectCliente"
+                    add-select-item="addCliente"
+                    place-holder="Teste de autocomplete"
+                    string-entity="cliente"
+                    string-service="cliente"
+                    display-property="cad_nome_razao"
+                    display-complement="cad_cpf_cnpj"
+                    confirm-add="false"
+                    string-id="autocomplete-cliente"
+                    max-length="10">
+                </lv-autocomplete>
+
+                <br><br>
+
+                <lv-autocomplete
+                    ng-model="objProduto"
+                    clear-input="false"
+                    trigger-list="true"
+                    icon-class="icon-trash"
+                    search-limit="10"
+                    on-select="onSelectProduto"
+                    add-select-item="addProduto"
+                    place-holder="Selecione um produto"
+                    string-entity="produto"
+                    string-service="produto"
+                    display-property="pro_descricao_longa"
+                    confirm-add="true"
+                    string-id="autocomplete-produto">
+                </lv-autocomplete>
+
+                <input type="button" ng-click="clearInput()" value="Limpar" class="btn m-t-10 btn-default">
+                <p class="m-t-10">{{selectedData}}</p>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,58 @@
+
+<div class="col-md-4 p-l-0 m-b-0">
+    <div class="panel">
+        <div class="panel-header">
+            <h3>
+                <i class="fa fa-picture-o"></i>
+                <strong>Template</strong> da Loja
+            </h3>
+            <div class="control-btn">
+                <button type="button" class="btn btn-primary btn-sm pull-right" ng-click="salvarTemplate()" style="margin-right:2px!important">
+                    <i class="fa fa-check"></i> &nbsp; Salvar
+                </button>
+            </div>
+        </div>
+        <div class="panel-header">
+            <div class="row box-minicolors p-b-10">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input name="tem_cor1_padrao" maxlength="7" id="tem_cor1_padrao" class="form-control input-sm" placeholder="Cor primária" ng-model="template.tem_cor1_padrao" minicolors="customSettings" type="text">
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <input name="tem_cor2_padrao" maxlength="7" id="tem_cor2_padrao" class="form-control input-sm" placeholder="Cor Secundária" ng-model="template.tem_cor2_padrao" minicolors="customSettings" type="text">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <input type="hidden" ng-model="template.tem_cod_template">
+        <div class="panel m-b-0" ng-include="'loja-virtual/views/lista-loja-virtual-template.html'" style="margin-left:5px"></div>
+    </div>
+</div>
+
+
+<div class="col-md-8 portlets p-r-0 m-b-0">
+    <form enctype="multipart/form-data" name="forms.formsTemplate" id="forms.formsTemplate" method="POST" autocomplete="off" novalidate>
+        <div class="panel m-b-0">
+            <div class="panel-header">
+                <h3 class="title-header m-b-20" ng-show="template.parteTemplate">
+                    <span class="m-r-5">
+                        <i class="fa fa-info"></i>
+                        <strong>Dados</strong> do box {{template.parteTemplate}}
+                    </span>
+                </h3>
+
+                <div class="control-btn" ng-if="template.visivelSalvar">
+                    <button type="button" class="btn btn-sm btn-primary clickright" ladda="salvarTemplateLoading" ng-click="salvarTemplate()" style="margin-right:2px">
+                        <i class="fa fa-check"></i> &nbsp; Salvar
+                    </button>
+                </div>
+            </div>
+
+            <div class="panel-content p-t-0" ng-include="'loja-virtual/views/form-loja-virtual-template.html'"></div>
+        </div>
+    </form>
+</div>
+

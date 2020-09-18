@@ -1,0 +1,39 @@
+
+<div class="modal-dialog">
+    <form class="form-horizontal" method="POST" id="forms.formContaFinanceira" name="forms.formContaFinanceira" autocomplete="off" novalidate>
+        <div class="modal-content">
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button-sm">
+                    <button type="button" class="btn btn-primary btn-embossed btn-sm pull-left m-0" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong style="font-size:20px">Conta Financeira</strong>
+
+                    <span class="pull-right">
+                        <button type="button" class="btn btn-primary btn-embossed btn-sm pull-right m-r-0" ladda="salvarContaFinanceiraLoading" ng-click="salvarConta()">
+                            <i class="fa fa-check"></i> &nbsp; Salvar
+                        </button>
+                    </span>
+                </h4>
+            </div>
+
+            <div class="modal-body p-t-20" style="overflow:inherit!important">
+                <div class="panel-content">
+                    <div class="col-md-12">
+                        <div class="row">
+                            <label class="control-label" for="par_c01">Descrição <i class="obrigatorio">*</i></label>
+                            <input class="form-control" id="par_c01" name="par_c01" maxlength="80" ng-model="objContaFinanceira.par_c01" placeholder="Entre com a descrição..." type="text" required>
+
+                            <div class="alert-small" ng-show="submitted || (forms.formContaFinanceira.par_c01.$invalid && !forms.formContaFinanceira.par_c01.$pristine)">
+                                <p class="text-danger form-error alert1" ng-show="forms.formContaFinanceira.par_c01.$error.required">
+                                    Descrição é um campo obrigatório.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

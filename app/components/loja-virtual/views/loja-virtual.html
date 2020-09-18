@@ -1,0 +1,73 @@
+
+<div class="box-lv-cinza">
+    <div class="col-md-12 p-l-0 p-r-0">
+        <div class="panel">
+            <div class="panel-content p-0">
+                <tabset class="tab-fade-in tab_top" horizontal="true">
+                    <tab id="tab-template">
+                        <tab-heading>
+                            <i class="fa fa-picture-o"></i> Tema e Banners
+                        </tab-heading>
+                        <div class="row">
+                            <div ng-include="'loja-virtual/views/aba-loja-virtual-template.html'"></div>
+                        </div>
+                    </tab>
+
+                    <tab id="tab-institucional">
+                        <tab-heading>
+                            <i class="fa fa-home"></i> Institucional
+                        </tab-heading>
+                        <div class="row">
+                            <div ng-include="'loja-virtual/views/aba-loja-virtual-institucional.html'"></div>
+                        </div>
+                    </tab>
+
+                    <tab id="tab-template">
+                        <tab-heading>
+                            <i class="fa fa-shopping-basket"></i> Dados da Loja
+                        </tab-heading>
+                        <div class="row">
+                            <div ng-include="'loja-virtual/views/aba-loja-virtual-social.html'"></div>
+                        </div>
+                    </tab>
+
+                    <tab id="tab-template">
+                        <tab-heading>
+                            <i class="fa fa-money"></i> Cobranças
+                        </tab-heading>
+                        <div class="row">
+                            <div ng-include="'loja-virtual/views/aba-loja-virtual-cobranca.html'"></div>
+                        </div>
+                    </tab>
+
+                    <tab id="tab-frete">
+                        <tab-heading>
+                            <i class="fa fa-truck"></i> Frete
+                        </tab-heading>
+                        <div class="row">
+                            <div ng-include="'loja-virtual/views/aba-loja-virtual-frete.html'"></div>
+                        </div>
+                    </tab>
+
+                    <tab id="tab-cupons" ng-if="::getPermissao('21')">
+                        <tab-heading ng-click="listarCupom()">
+                            <i class="fa fa-tags"></i> Cupons de Desconto
+                        </tab-heading>
+                        <div class="row">
+                            <div ng-include="'loja-virtual/views/aba-loja-virtual-cupom.html'"></div>
+                        </div>
+                    </tab>
+
+                    <tab id="tab-contatos">
+                        <tab-heading>
+                            <i class="fa fa-comments"></i> Mensagens
+                        </tab-heading>
+                        <div class="row">
+                            <div ng-include="'loja-virtual/views/aba-loja-virtual-contato.html'"></div>
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </div>
+</div>

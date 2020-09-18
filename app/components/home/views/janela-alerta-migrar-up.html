@@ -1,0 +1,37 @@
+<div class="modal-dialog" style="margin-top: 3%!important;">
+    <div class="modal-content">
+        <div class="modal-body">
+            <h2 class="t-center">
+                <strong ng-if="objModal.diffDias > 1">FALTAM {{objModal.diffDias}} DIAS PARA A SUA MIGRAÇÃO</strong>
+                <strong ng-if="objModal.diffDias == 1">ÚLTIMO DIA PARA A SUA MIGRAÇÃO</strong>
+                <strong ng-if="objModal.diffDias <= 0">ACESSE A NOSSA NOVA PLATAFORMA</strong>
+            </h2>
+
+            <p class="p-5 m-0">Olá <strong>{{objUsuario.usu_nome}}</strong>,</p>
+
+            <p class="p-5 m-0">A partir deste mês a plataforma Lojista Virtual foi migrada para melhor lhe atender, agora leva o nome de <strong>{{objModal.solName}}</strong>.</p>
+
+            <p class="p-5 m-0">Para migrar é simples, basta acessar <a href="{{objModal.url}}" target="_blank">{{objModal.urlDesc}}</a> e entrar com os seus dados de login.</p>
+
+            <p class="p-5 m-0">Nesta nova versão, além da nova Nota Fiscal versão 4.0, você ainda contará com um sistema mais rápido e intuitivo, com telas mais limpas, além de novos relatórios, emissão de boletos e até a possibilidade de conciliação bancária e em breve, cartão de crédito.</p>
+        </div>
+
+        <div class="modal-footer">
+            <div class="row">
+                <div class="col-md-6 t-left">
+                    <button type="button" class="btn btn-lg btn-danger btn-embossed" ng-click="fecharModal('cancel')" ng-show="objModal.diffDias > 1">
+                        <span>Migrar Depois</span>
+                    </button>
+                    <button type="button" class="btn btn-lg btn-danger btn-embossed" ng-click="fecharModal('cancel')" ng-show="objModal.diffDias == 1">
+                        <span>Migrar Amanhã</span>
+                    </button>
+                </div>
+                <div class="col-md-6 t-right">
+                    <button type="button" class="btn btn-lg btn-primary btn-embossed m-r-0" ng-click="migrar()" ladda="migrarLoading">
+                        <span>Ok, entendi</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

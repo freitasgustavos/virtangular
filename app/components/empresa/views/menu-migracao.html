@@ -1,0 +1,30 @@
+
+<ul class="product-tabs">
+    <li ng-class="{'active' : migracaoDados.tipoMigracao === 1}">
+        <a ng-click="setAbaMigracao(1)">
+            <i class="fa fa-user"></i>
+            <span>Cadastros</span>
+        </a>
+    </li>
+
+    <li ng-class="{'active' : migracaoDados.tipoMigracao === 2}">
+        <a ng-click="setAbaMigracao(2)">
+            <i class="fa fa-cubes"></i>
+            <span>Produtos</span>
+        </a>
+    </li>
+
+    <li ng-if="!getPermissaoSol('10')" ng-class="{'active' : migracaoDados.tipoMigracao === 3}">
+        <a ng-click="setAbaMigracao(3)">
+            <i class="fa fa-usd"></i>
+            <span>Finanças</span>
+        </a>
+    </li>
+
+    <li ng-class="{'active' : migracaoDados.tipoMigracao === 4}">
+        <a ng-click="setAbaMigracao(4)">
+            <i class="fa fa-list-ol"></i>
+            <span>Inventário</span>
+        </a>
+    </li>
+</ul>

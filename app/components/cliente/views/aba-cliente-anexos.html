@@ -1,0 +1,53 @@
+
+<div class="row">
+    <div class="panel">
+        <div class="control-btn">
+            <button type="button" data-toggle="modal" class="btn btn-primary btn-sm  pull-right " ng-click="getFormAnexo()">
+                <i class="fa fa-plus"></i> &nbsp; Novo Anexo
+            </button>
+        </div>
+
+        <div class="panel-header panel-controls">
+            <h3 style="float:left">
+                <i class="fa fa-table"></i>
+                <strong>Listagem</strong> de Anexos
+            </h3>
+        </div>
+
+        <div class="panel-content" ng-if="arrAnexos.length > 0">
+            <table class="table table-striped grid-anotacoes" style="font-size:12px">
+                <thead>
+                    <tr>
+                        <th width="30%">Data de Cadastro</th>
+                        <th width="60%">Descrição</th>
+                        <th class="text-right" width="10%">Ações</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="anexo in arrAnexos" ng-click="downloadAnexo(anexo)" style="cursor:pointer">
+                        <td>{{anexo.mid_dat_cadastro | dateFormat}} às {{anexo.mid_dat_cadastro | hourFormat}}.</td>
+                        <td>{{anexo.mid_descricao}}</td>
+                        <td ng-click="$event.stopPropagation()" class="text-right">
+                            <button class="btn btn-danger btn-sm m-0" ng-click="removerAnexo(anexo.mid_nro)">
+                                <i class="fa fa-close"></i>
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+                <tfoot>
+                    <tr>
+                        <td class="t-right" colspan="3">
+                            <strong>Quantidade de registro(s) {{arrAnexos.length}}</strong>
+                        </td>
+                    </tr>
+                </tfoot>
+            </table>
+        </div>
+
+        <div class="panel-content" ng-if="!arrAnexos.length && spinnerForm.active === false">
+            <div class="alert alert-warning alert-fade font-small" role="alert" style="float:left;width:100%">
+                <strong>Atenção:</strong> Nenhum anexo cadastrado para o cliente {{cliente.cad_nome_razao}} até o momento!
+            </div>
+        </div>
+    </div>
+</div>

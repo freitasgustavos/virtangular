@@ -1,0 +1,33 @@
+<div class="modal-dialog modal-md">
+    <div class="modal-content">
+        <div class="modal-header p-b-0">
+            <h4 class="modal-title modal-title-button">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('reload')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                <strong>Enviar</strong> por email
+
+                <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="objModal.enviarOrcamentoLoading" ng-click="{{objModal.funcEnvio}}">
+                    <i class="fa fa-check"></i> &nbsp; Enviar
+                </button>
+            </h4>
+        </div>
+
+        <div class="modal-body" style="overflow:inherit!important">
+            <div class="row m-t-15">
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <div class="profil-info">
+                            <div class="inside-tooltip">
+                                <input type="text" class="form-control" id="cto_email" ng-model="objModal.venda.contato.cto_email">
+                                <i class="fa fa-question-circle c-blue" rel="popover" popover-append-to-body="true" popover-trigger="mouseenter" popover-placement="left" popover="Envie para vários e-mails basta separar por vírgula." popover-title="Dica:"></i>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

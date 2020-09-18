@@ -1,0 +1,85 @@
+
+<div id="box-empresa" ng-class="{'animated virtux' : tab != 5, 'animated oculto' : tab == 5}">
+    <div class="col-md-3 p-l-0 p-r-0">
+        <div class="panel">
+            <div class="panel-header">
+                <h3>
+                    <i class="fa fa-building-o"></i>
+                    <strong>Empresa</strong>
+                </h3>
+            </div>
+            <div class="panel-content panel-scroll p-t-0" style="min-height:798px;max-height:798px">
+                <ul class="product-tabs m-b-20">
+                    <li ng-class="{'active' : tab==1}">
+                        <a ng-click="tab=1">
+                            <i class="fa fa-server"></i>
+                            <span>Dados da Empresa</span>
+                        </a>
+                    </li>
+
+                    <li ng-show="getPermissaoSol('10') || getPermissaoSol('2')" ng-class="{'active' : tab==2}">
+                        <a ng-click="tab=2">
+                            <i class="fa fa-key"></i>
+                            <span>Certificado Digital</span>
+                        </a>
+                    </li>
+
+                    <li ng-show="getPermissaoSol('10') || getPermissaoSol('2')" ng-class="{'active' : tab==3}">
+                        <a ng-click="tab=3">
+                            <i class="fa fa-calculator"></i>
+                            <span>Tributos</span>
+                        </a>
+                    </li>
+
+                    <li ng-show="getPermissaoSol('2') || getPermissaoSol('11')" ng-class="{'active' : tab==4}">
+                        <a ng-click="tab=4">
+                            <i class="fa fa-money"></i>
+                            <span>Cobranças</span>
+                        </a>
+                    </li>
+
+                    <li>
+                        <a ng-click="tab=5">
+                            <i class="fa fa-refresh"></i>
+                            <span>Migração</span>
+                        </a>
+                    </li>
+
+                    <li ng-if="objUsuario.is_cdl">
+                        <a href="http://formularios.cdludi.org.br/agenda-certificado.html" target="_blank">
+                            <i class="fa fa-refresh"></i>
+                            <span>Renovar Certificado</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9 p-r-0">
+        <div class="panel">
+            <div class="tabs-container">
+                <div class="product-tabs-content tab-content" id="box-dados-empresa" ng-show="tab == 1">
+                    <div class="panel-inner-more" ng-include="'empresa/views/dados.html'"></div>
+                </div>
+
+                <div class="product-tabs-content tab-content" id="box-certificados" ng-show="tab == 2">
+                    <div class="panel-inner-more" ng-include="'empresa/views/aba-empresa-certificado.html'"></div>
+                </div>
+
+                <div class="product-tabs-content tab-content" id="box-tributos" ng-show="tab == 3">
+                    <div class="panel-inner-more" ng-include="'empresa/views/aba-empresa-tributos.html'"></div>
+                </div>
+
+                <div class="product-tabs-content tab-content" id="box-cobrancas" ng-show="tab == 4">
+                    <div class="panel-inner-more" ng-include="'empresa/views/aba-empresa-cobrancas.html'"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div id="box-migracao" ng-class="{'animated virtux' : tab == 5, 'animated oculto' : tab != 5}">
+    <div ng-include="'empresa/views/migracao.html'"></div>
+</div>

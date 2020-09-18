@@ -1,0 +1,290 @@
+
+<form id="forms.formWizard" name="forms.formWizard" autocomplete="off" role="form">
+    <div class="col-md-12 m-b-10">
+        <div class="col-md-8">
+            <h2>Complete os dados de sua empresa:</h2>
+        </div>
+        <div class="col-md-4 t-right">
+            <button type="button" class="btn btn-primary btn-sm m-r-0 m-t-20" ladda="salvarEmpresaDadosLoading" ng-click="salvarEmpresa()">
+                <i class="fa fa-check"></i> &nbsp; Próximo
+            </button>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="col-md-12 m-b-10">
+            <div class="panel panel-instrucoes">
+                <div class="panel-header-form panel-form panel-border">
+                    <h5>
+                        <span class="fa fa-building-o m-r-10"></span>
+                        <strong>Empresa</strong>
+                    </h5>
+                </div>
+                <div class="panel-content o-h">
+                    <div class="row">
+                        <!-- Campos para pessoa física: -->
+                        <div ng-if="empresa.emp_pf_pj === 1">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label ng-click="trocarTipo()" class="c-pointer">
+                                                <span class="label-link c-blue">CPF</span> <i class="obrigatorio">*</i>
+                                            </label>
+                                            <input name="emp_cpf" id="emp_cpf" type="text" class="form-control" placeholder="CPF..." ng-model="empresa.emp_cpf_cnpj" ng-class="{true : 'form-error'}[submitted && (forms.formWizard.emp_cpf.$invalid || forms.formWizard.emp_cpf.$error.cpf)]" required ui-br-cpf-mask>
+                                        </div>
+                                        <div ng-show="submitted || (forms.formWizard.emp_cpf.$invalid && !forms.formWizard.emp_cpf.$pristine)">
+                                            <p class="text-danger form-error alert1">
+                                                <span ng-show="forms.formWizard.emp_cpf.$error.cpf">O CPF fornecido é inválido.</span>
+                                                <span ng-show="forms.formWizard.emp_cpf.$error.required">CPF é um campo obrigatório.</span>
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="emp_nome">Nome <i class="obrigatorio">*</i></label>
+                                            <input id="emp_nome" name="emp_nome_razao" class="form-control" maxlength="60" placeholder="Nome..." ng-model="empresa.emp_nome_razao" ng-class="{true : 'form-error'}[submitted && forms.formWizard.emp_nome_razao.$invalid]" type="text" required allow-pattern="(\d|[ a-zçÇ,/-])">
+                                        </div>
+                                        <div ng-show="submitted || (forms.formWizard.emp_nome_razao.$invalid && !forms.formWizard.emp_nome_razao.$pristine)">
+                                            <p class="text-danger form-error alert1" ng-show="forms.formWizard.emp_nome_razao.$error.required">Digite o nome.</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="emp_apelido">Apelido</label>
+                                            <input name="emp_apelido_fantasia" id="emp_apelido" class="form-control" maxlength="255" placeholder="Apelido..." ng-model="empresa.emp_apelido_fantasia" type="text">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="emp_rg">Registro Geral</label>
+                                            <input name="emp_rg" id="emp_rg" class="form-control" maxlength="20" placeholder="Registro geral..." ng-model="empresa.emp_rg_iest" type="text" allow-pattern="(\d|[a-zçÇ,/-])">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Campos para pessoa jurídica: -->
+                        <div ng-if="empresa.emp_pf_pj === 2">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label ng-click="trocarTipo()" class="c-pointer">
+                                        <span class="label-link c-blue">CNPJ</span> <i class="obrigatorio">*</i>
+                                    </label>
+                                    <div class="append-icon">
+                                        <input id="emp_cnpj" name="emp_cnpj" class="form-control" placeholder="CNPJ..." ng-model="empresa.emp_cpf_cnpj" ng-class="{true : 'form-error'}[submitted && (forms.formWizard.emp_cnpj.$invalid || forms.formWizard.emp_cnpj.$error.cnpj)]" type="text" required ui-br-cnpj-mask>
+                                        <small class="link-append link-bottom-append">
+                                            <a ng-click="getDadosReceita()">Buscar</a>
+                                        </small>
+                                    </div>
+                                </div>
+                                <div ng-show="submitted || (forms.formWizard.emp_cnpj.$invalid && !forms.formWizard.emp_cnpj.$pristine)">
+                                    <p class="text-danger form-error alert1">
+                                        <span ng-show="forms.formWizard.emp_cnpj.$error.cnpj">O CNPJ fornecido é inválido.</span>
+                                        <span ng-show="forms.formWizard.emp_cnpj.$error.required">CNPJ é um campo obrigatório.</span>
+                                    </p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="emp_razao_social">Razão Social <i class="obrigatorio">*</i></label>
+                                    <input id="emp_razao_social" name="emp_nome_razao" class="form-control" maxlength="60" placeholder="Razão social..." ng-model="empresa.emp_nome_razao" ng-class="{true : 'form-error'}[submitted && forms.formWizard.emp_nome_razao.$invalid]" type="text" required allow-pattern="(\d|[ a-zçÇ,/-])">
+                                </div>
+                                <div ng-show="submitted || (forms.formWizard.emp_nome_razao.$invalid && !forms.formWizard.emp_nome_razao.$pristine)">
+                                    <p class="text-danger form-error alert1" ng-show="forms.formWizard.emp_nome_razao.$error.required">Digite a razão social.</p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label for="emp_apelido_fantasia">Nome Fantasia</label>
+                                    <input name="emp_apelido_fantasia" id="emp_apelido_fantasia" class="form-control" maxlength="60" placeholder="Nome Fantasia..." ng-model="empresa.emp_apelido_fantasia" type="text" allow-pattern="(\d|[ a-zçÇ,/-])">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="emp_iest">Inscrição Estadual</label>
+                                    <input name="emp_iest" id="emp_iest" class="form-control" maxlength="14" placeholder="Incrição estadual..." ng-model="empresa.emp_rg_iest" type="text" allow-pattern="\d">
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="emp_imun">Inscrição Municipal</label>
+                                    <input name="emp_imun" id="emp_imun" class="form-control" maxlength="15" placeholder="Incrição municipal..." ng-model="empresa.emp_imun" type="text" allow-pattern="\d">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <small>Entre com as informações principais da sua empresa, atente-se para os campos obrigatórios.</small>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12">
+            <div class="panel panel-instrucoes">
+                <div class="panel-header-form panel-form panel-border">
+                    <h5>
+                        <span class="fa fa-phone m-r-10"></span>
+                        <strong>Contato</strong>
+                    </h5>
+                </div>
+                <div class="panel-content o-h">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="emp_nome_contato">Nome do Contato</label>
+                                <input name="emp_nome_contato" id="emp_nome_contato" class="form-control" maxlength="255" placeholder="Nome do Contato..." ng-model="empresa.emp_nome_contato" type="text" allow-pattern="(\d|[ a-zçÇ,/-])">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="emp_email">E-mail <i class="obrigatorio">*</i></label>
+                                <input name="emp_email" id="emp_email" class="form-control" maxlength="255" placeholder="E-mail..." type="text" ng-model="empresa.emp_email" ng-class="{true : 'form-error'}[submitted && forms.formWizard.emp_email.$invalid]" required>
+                            </div>
+                            <div ng-show="submitted || (forms.formWizard.emp_email.$invalid && !forms.formWizard.emp_email.$pristine)">
+                                <p class="text-danger form-error alert1" ng-show="forms.formWizard.emp_email.$error.required">Digite o e-mail.</p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="emp_fone">Telefone <i class="obrigatorio">*</i></label>
+                                        <input name="emp_fone" id="emp_fone" class="form-control" maxlength="14" placeholder="Telefone..." ng-model="empresa.emp_fone" ng-class="{true : 'form-error'}[submitted && forms.formWizard.emp_fone.$invalid || forms.formWizard.emp_fone.$error.brPhoneNumber]" type="text" ui-br-phone-number required>
+                                    </div>
+                                    <div ng-show="submitted || (forms.formWizard.emp_fone.$invalid && !forms.formWizard.emp_fone.$pristine)">
+                                        <p class="text-danger form-error alert1">
+                                            <span ng-show="forms.formWizard.emp_fone.$error.brPhoneNumber">Digite um telefone válido.</span>
+                                            <span ng-show="forms.formWizard.emp_fone.$error.required">O telefone é um campo obrigatório.</span>
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="emp_celular">Celular</label>
+                                        <input name="emp_celular" id="emp_celular" class="form-control" maxlength="15" placeholder="Celular..." ng-model="empresa.emp_celular" ng-class="{true : 'form-error'}[submitted && forms.formWizard.emp_celular.$error.brPhoneNumber]" type="text" ui-br-phone-number>
+                                    </div>
+                                    <div ng-show="submitted || (forms.formWizard.emp_celular.$invalid && !forms.formWizard.emp_celular.$pristine)">
+                                        <p class="text-danger form-error alert1" ng-show="forms.formWizard.emp_celular.$error.brPhoneNumber">Digite um celular válido.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <small>Entre com as informações de contato.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <!-- Dados referentes ao endereço da empresa: -->
+        <div class="col-md-12">
+            <div class="panel panel-instrucoes">
+                <div class="panel-header-form panel-form panel-border">
+                    <h5>
+                        <span class="fa fa-home m-r-10"></span>
+                        <strong>Endereço</strong>
+                    </h5>
+                </div>
+                <div class="panel-content o-h">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="emp_cep">CEP <i class="obrigatorio">*</i></label>
+                                        <input name="emp_cep" id="emp_cep" class="form-control" type="text" maxlength="9" placeholder="CEP..." ng-model="empresa.emp_cep" ui-br-cep-mask ng-keyup="getEnderecoPorCep()" ng-class="{true : 'form-error'}[submitted && forms.formWizard.emp_cep.$invalid]" required>
+                                    </div>
+                                    <div ng-show="submitted || (forms.formWizard.emp_cep.$invalid && !forms.formWizard.emp_cep.$pristine)">
+                                        <p class="text-danger form-error alert1" ng-show="forms.formWizard.emp_cep.$error.required">Digite o CEP.</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label for="emp_complemento">Complemento</label>
+                                        <input name="emp_complemento" id="emp_complemento" class="form-control" maxlength="60" placeholder="Complemento..." ng-model="empresa.emp_complemento" type="text">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group box-select-state">
+                                <label>Estado</label>
+                                <ui-select class="form-control" ng-model="empresa.emp_uf" theme="select2" ng-change="getCidadePorUf()">
+                                    <ui-select-match placeholder="Selecione o estado">{{$select.selected.nome}}</ui-select-match>
+                                    <ui-select-choices repeat="uf.id +'#'+ uf.uf as uf in arrEstados.records | filter: $select.search">
+                                        <span ng-bind-html="uf.nome | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Cidade</label>
+                                <ui-select class="form-control" ng-model="empresa.emp_cidade" theme="select2">
+                                    <ui-select-match placeholder="Selecione a cidade">{{$select.selected.nome}}</ui-select-match>
+                                    <ui-select-choices repeat="cidade.id +'#'+ cidade.nome as cidade in arrCidades.records | filter: $select.search">
+                                        <span ng-bind-html="cidade.nome | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="emp_nro">Número <span class="obrigatorio">*</span></label>
+                                <input name="emp_nro" id="emp_nro" class="form-control" maxlength="60" ng-minlength="2" placeholder="Número..." ng-model="empresa.emp_nro" type="text" ng-class="{true : 'form-error'}[submitted && forms.formWizard.emp_nro.$invalid]" type="text" allow-pattern="(\d|[ a-zçÇ,/-])" required>
+                            </div>
+                            <div ng-show="submitted || (forms.formWizard.emp_nro.$invalid && !forms.formWizard.emp_nro.$pristine)">
+                                <p class="text-danger form-error alert1" ng-show="forms.formWizard.emp_nro.$error.required">Número é um campo obrigatório.</p>
+                                <p class="text-danger form-error alert1" ng-show="forms.formWizard.emp_nro.$error.minlength">Tamanho mínimo de 2 caracteres.</p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label for="emp_bairro">Bairro</label>
+                                <input name="emp_bairro" id="emp_bairro" class="form-control" maxlength="60" placeholder="Bairro..." ng-model="empresa.emp_bairro" type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label for="emp_endereco">Endereço <span class="obrigatorio">*</span></label>
+                                <input name="emp_endereco" id="emp_endereco" class="form-control" maxlength="60" placeholder="Endereço..." ng-model="empresa.emp_endereco" type="text" ng-class="{true : 'form-error'}[submitted && forms.formWizard.emp_endereco.$invalid]" type="text" allow-pattern="(\d|[ a-zçÇ,/-])" required>
+                            </div>
+                            <div ng-show="submitted || (forms.formWizard.emp_endereco.$invalid && !forms.formWizard.emp_endereco.$pristine)">
+                                <p class="text-danger form-error alert1" ng-show="forms.formWizard.emp_endereco.$error.required">Endereço é um campo obrigatório.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="panel-footer">
+                    <small>Entre com as informações de endereço.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

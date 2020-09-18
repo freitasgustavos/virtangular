@@ -1,0 +1,38 @@
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header p-b-0">
+            <h4 class="modal-title modal-title-button">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                <strong>E-mails</strong>
+
+                <button ng-if="params.objClientes.length" type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ng-click="copiar()">
+                    <i class="fa fa-copy"></i> &nbsp; Copiar
+                </button>
+            </h4>
+        </div>
+
+        <div class="modal-body">
+            <div class="panel-content">
+                <div style="max-height:300px" class="malihu-list dropdown-menu-list panel-content widget-news" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200">
+                    <ul class="block-lista" ng-if="params.objClientes.length">
+                        <li ng-repeat="cliente in params.objClientes" ng-if="cliente.cto_email">
+                            <span>
+                                <em>{{cliente.cad_nome_razao}}</em> <strong>&#60;{{cliente.cto_email}}&#62;</strong>
+                            </span>
+                        </li>
+                    </ul>
+
+                    <div ng-if="!params.objClientes.length">
+                        <div class="alert alert-warning m-b-0 m-t-10" role="alert">
+                            <strong>Atenção:</strong> Caro usuário, nenhum e-mail encontrado.
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

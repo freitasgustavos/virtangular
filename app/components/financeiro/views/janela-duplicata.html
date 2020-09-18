@@ -1,0 +1,100 @@
+<div class="modal-dialog modal-not-footer">
+    <form id="forms.formsFornecedor" name="forms.formsDuplicata" method="POST" autocomplete="off" role="form">
+        <div class="modal-content">
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>Lista de Endereços</strong>
+
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" ng-click="gerarDuplicata()">
+                        <i class="fa fa-print"></i> &nbsp; Gerar
+                    </button>
+                </h4>
+            </div>
+
+            <div class="modal-body" style="width:100%;overflow:hidden">
+                <div class="col-md-12">
+                    <div class="row" ng-show="arrEnderecos.length">
+                        <table class="table table-hover table-icheck font-small m-b-0">
+                            <colgroup>
+                                <col width="5%">
+                                <col width="15%">
+                                <col width="41%">
+                                <col width="22%">
+                                <col width="22%">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th class="text-center">&nbsp;</th>
+                                    <th class="text-left">Tipo</th>
+                                    <th>Endereço</th>
+                                    <th>Bairro</th>
+                                    <th>Cidade</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="endereco in arrEnderecos" ng-click="setEnderecoCobranca(endereco.end_seq_end)" class="c-pointer">
+                                    <td class="text-center">
+                                        <div class="icheck-inline text-center">
+                                            <input type="radio" icheck ng-disabled="true" name="selecionado" ng-model="fin_end_cod_end_cob" class="iradio-text" ng-value="endereco.end_seq_end" data-radio="iradio_minimal-blue">
+                                        </div>
+                                    </td>
+                                    <td class="text-left">
+                                        <span ng-switch on="endereco.end_tip_end">
+                                            <span ng-switch-when="0">
+                                                <span class="badge badge-success">
+                                                    <small class="font-bold">FATURA</small>
+                                                </span>
+                                            </span>
+                                            <span ng-switch-when="1">
+                                                <span class="badge badge-info">
+                                                    <small class="font-bold">COMERCIAL</small>
+                                                </span>
+                                            </span>
+                                            <span ng-switch-when="2">
+                                                <span class="badge badge-primary">
+                                                    <small class="font-bold">RESIDENCIAL</small>
+                                                </span>
+                                            </span>
+                                            <span ng-switch-when="3">
+                                                <span class="badge badge-danger">
+                                                    <small class="font-bold">COBRANÇA</small>
+                                                </span>
+                                            </span>
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span tooltip-placement="top" tooltip="{{endereco.end_endereco}}">
+                                            {{endereco.end_endereco | strLimit : 30}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span tooltip-placement="top" tooltip="{{endereco.end_endereco_bairro}}">
+                                            {{endereco.end_endereco_bairro | strLimit : 30}}
+                                        </span>
+                                    </td>
+                                    <td>
+                                        <span tooltip-placement="top" tooltip="{{endereco.end_endereco_cidade}}">
+                                            {{endereco.end_endereco_cidade | strLimit : 15}}
+                                        </span>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="row" ng-show="!arrEnderecos.length">
+                        <div class="alert alert-warning m-t-10 m-b-0">
+                            <p class="font-small m-b-0">
+                                <strong>Atenção:</strong> Nenhum endereço encontrado!
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

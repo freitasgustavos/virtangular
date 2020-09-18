@@ -1,0 +1,81 @@
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title modal-title-button">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                <strong>Dados</strong> do Contato
+
+                <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarContatoLoading" ng-click="salvarContato()">
+                    <i class="fa fa-check"></i> &nbsp; Salvar
+                </button>
+
+                <span ng-if="cto_cod_cto" class="pull-right">
+                    <a class="panel-close m-r-20 btn-delete" title="Excluir" ng-click="cancelarContato(contato.cto_cod_cto)">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </span>
+            </h4>
+        </div>
+
+        <div class="modal-body">
+            <form name="forms.fLojaVirtualContato" class="form-validation" novalidate autocomplete="off">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label  class="control-label">Nome</label>
+                            <input type="text" class="form-control" ng-model="contato.cto_nome" maxlength="255" ng-disabled="true">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">E-mail</label>
+                            <input type="text" class="form-control" ng-model="contato.cto_email" maxlength="255" ng-disabled="true">
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Telefone</label>
+                            <input type="text" class="form-control" ng-model="contato.cto_telefone" maxlength="14" ng-disabled="true">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Título</label>
+                            <input type="text" class="form-control" ng-model="contato.cto_titulo" maxlength="100" ng-disabled="true">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Observação</label>
+                            <textarea class="form-control" ng-model="contato.cto_descricao" ng-disabled="true"></textarea>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label" style="margin-top:8px;margin-right:5px">Status:</label>
+                            <label class="switch switch-green" style="width:100px">
+                                <input name="cto_respondido" id="cto_respondido" type="checkbox" class="switch-input" ng-model="contato.cto_respondido" >
+                                <span class="switch-label" data-on="Respondido" data-off="Aberto"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" name="cto_cod_cto" ng-model="contato.cto_cod_cto">
+            </form>
+        </div>
+    </div>
+</div>

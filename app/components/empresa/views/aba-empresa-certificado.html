@@ -1,0 +1,212 @@
+
+<form role="form" name="forms.formEmpresaCertificado" class="form-validation" autocomplete="off" novalidate>
+    <div class="row">
+        <div class="col-md-12 portlets">
+            <div class="panel-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="title-header">
+                            <i class="fa fa-key"></i>
+                            <strong>Certificados</strong>
+                        </h3>
+
+                        <div class="control-btn">
+                            <button type="button" class="btn btn-primary btn-sm btn-tab clickright" ladda="salvarEmpresaCertificadoLoading" ng-click="salvarEmpresa('forms.formEmpresaCertificado')">
+                                <i class="fa fa-check"></i> Salvar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 m-t-10">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Tipo de Certificado</label>
+                            <ui-select class="form-control" ng-model="empresa.emp_tip_nota" theme="select2">
+                                <ui-select-match placeholder="Selecione o tipo do certificado">{{$select.selected.nome}}</ui-select-match>
+                                <ui-select-choices repeat="tipNota.id as tipNota in listaTipNota | filter: $select.search">
+                                    <span ng-bind-html="tipNota.nome | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4" ng-if="::getPermissao('11')">
+                        <div class="form-group">
+                            <label>
+                                <span>Ambiente</span>
+                                <strong>(NF-e)</strong>
+                            </label>
+                            <ui-select class="form-control" ng-model="empresa.emp_nfe_ambiente" theme="select2" >
+                                <ui-select-match placeholder="Selecione o ambiente">{{$select.selected.nome}}</ui-select-match>
+                                <ui-select-choices repeat="ambiente.id  as ambiente in listaAmbiente | filter: $select.search">
+                                    <span ng-bind-html="ambiente.nome | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4 sample-show-hide" ng-show="empresa.emp_tip_nota == 1">
+                        <div class="form-group">
+                            <label>Certificado Digital</label>
+                            <div class="form-group">
+                                <button type="button" class="btn btn-default btn-certificado" ng-click="getFormNfe(empresa.emp_cod_emp)">
+                                    <i class="fa fa-key"></i>
+                                </button>
+                                <small class="msg-certificado" ng-show="!empresa.emp_nfe_cert_arq_txt">
+                                    Você ainda não enviou nenhum arquivo!
+                                </small>
+                                <small class="msg-certificado" ng-show="empresa.emp_nfe_cert_arq_txt">
+                                    {{empresa.emp_nfe_cert_arq_txt}}
+                                </small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 sample-show-hide" ng-show="empresa.emp_tip_nota == 2 && (getPermissaoSol('22') || getPermissaoSol('20') || getPermissaoSol('16') || getPermissaoSol('15'))">
+                        <div class="form-group">
+                            <div class="alert alert-info m-b-0">
+                                <p class="alert-texto font-small">
+                                    Efetue o download do nosso programa para certificados A3 <strong><a href="http://www.lojistavirtual.com.br/public/download/Assina_update.exe">clicando aqui.</a></strong>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12 sample-show-hide" ng-show="getPermissaoSol('17')">
+                        <div class="form-group">
+                            <div class="alert alert-info m-b-0">
+                                <p class="alert-texto font-small">
+                                    Empresa habilitada a emitir cupons fiscais, faça o download <strong><a href="http://www.lojistavirtual.com.br/public/download/LojistaCupom_update.exe">clicando aqui.</a></strong>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Forma de Emissão</label>
+                            <ui-select class="form-control" ng-model="empresa.emp_nfe_forma_emissao" theme="select2">
+                                <ui-select-match placeholder="Selecione a forma de emissão">{{$select.selected.nome}}</ui-select-match>
+                                <ui-select-choices repeat="f.id as f in listaFormaEmissao | filter: $select.search">
+                                    <span ng-bind-html="f.nome | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+
+                    <!--
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Nro. Última Nota</label>
+                                <input class="form-control" placeholder="Nro. da última nota..." ng-model="empresa.nro_ultima_nota" type="text">
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Nro. Atual da Nota</label>
+                                <input class="form-control" placeholder="Nro. atual da nota..." ng-model="empresa.nro_atual_nota" disabled="disabled" type="text">
+                            </div>
+                        </div>
+                    -->
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <table class="table table-striped font-small" style="overflow-x:inherit">
+                                <thead>
+                                    <tr>
+                                        <th>Sequência</th>
+                                        <th>Número</th>
+                                        <th>Série</th>
+                                        <th></th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr class="c-pointer">
+                                        <td>
+                                            <span>Nro Próxima NF-e</span>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="d" maxlength="8" ng-model="empresa.nro_prox_nota" class="form-control input-sm" style="width:90%">
+                                        </td>
+                                        <td>
+                                            <input type="text" name="d" maxlength="1" ng-model="empresa.emp_nro_serie" class="form-control input-sm" style="width:90%" number-range minvalue="1" maxvalue="2">
+                                        </td>
+                                        <td class="t-right">
+                                            <button type="button" class="btn btn-primary btn-xs btn-tab clickright" ladda="salvarEmpresaDadosSeq1Loading" ng-click="salvarSeq('seq_nfe')">
+                                                <i class="fa fa-check"></i> &nbsp; Salvar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="c-pointer">
+                                        <td>
+                                            <span>Nro Próxima CT-e</span>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="d" maxlength="8" ng-model="empresa.nro_prox_cte" class="form-control input-sm" style="width:90%">
+                                        </td>
+                                        <td>&nbsp;</td>
+                                        <td class="t-right">
+                                            <button type="button" class="btn btn-primary btn-xs btn-tab clickright" ladda="salvarEmpresaDadosSeq3Loading" ng-click="salvarSeq('seq_cte')">
+                                                <i class="fa fa-check"></i> &nbsp; Salvar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <!--<tr class="c-pointer" ng-if="getPermissaoSol('16')">-->
+                                        <!--<td>-->
+                                            <!--<span>Nro Próxima NFS-e</span>-->
+                                        <!--</td>-->
+                                        <!--<td>-->
+                                            <!--<input type="text" name="d" maxlength="8" ng-model="empresa.nro_prox_nfse" class="form-control input-sm" style="width:90%">-->
+                                        <!--</td>-->
+                                        <!--<td>&nbsp;</td>-->
+                                        <!--<td class="t-right">-->
+                                            <!--<button type="button" class="btn btn-primary btn-xs btn-tab clickright" ladda="salvarEmpresaDadosSeq2Loading" ng-click="salvarSeq('seq_nfse')">-->
+                                                <!--<i class="fa fa-check"></i> &nbsp; Salvar-->
+                                            <!--</button>-->
+                                        <!--</td>-->
+                                    <!--</tr>-->
+                                    <tr class="c-pointer" ng-if="getPermissaoSol('16')">
+                                        <td>
+                                            <span>Nro Próximo RPS</span>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="d" maxlength="8" ng-model="empresa.nro_prox_rps" class="form-control input-sm" style="width:90%">
+                                        </td>
+                                        <td>&nbsp;</td>
+                                        <td class="t-right">
+                                            <button type="button" class="btn btn-primary btn-xs btn-tab clickright" ladda="salvarEmpresaDadosSeq2Loading" ng-click="salvarSeq('seq_rps')">
+                                                <i class="fa fa-check"></i> &nbsp; Salvar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr class="c-pointer" ng-if="getPermissaoSol('16')">
+                                        <td>
+                                            <span>Nro Próximo NFS-e Lote</span>
+                                        </td>
+                                        <td>
+                                            <input type="text" name="d" maxlength="8" ng-model="empresa.nro_prox_lote_nfse" class="form-control input-sm" style="width:90%">
+                                        </td>
+                                        <td>&nbsp;</td>
+                                        <td class="t-right">
+                                            <button type="button" class="btn btn-primary btn-xs btn-tab clickright" ladda="salvarEmpresaDadosSeq4Loading" ng-click="salvarSeq('seq_lote_nfse')">
+                                                <i class="fa fa-check"></i> &nbsp; Salvar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                             </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

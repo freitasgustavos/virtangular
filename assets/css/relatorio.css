@@ -1,0 +1,41 @@
+.box-corpo{font-family:Arial,sans-serif;width:100%}
+.box-cabecalho{width:100%}
+.box-total{width:100%}
+.box-half{float:left;width:50%}
+.box-resumo{margin-top:20px}
+.box-logomarca{float:left;text-align:center;width:20%}
+.box-titulo{float:left;text-align:center;width:80%}
+.title-resumo{margin-bottom:10px;padding-bottom:0;font-size:14px}
+.img-item{width:40px;height:40px}
+.box-informacoes{background-color:#ecedee;float:left;margin-top:10px;padding:5px 0;width:100%}
+.logomarca{margin-top:30px;width:75%}
+.titulo{font-size:22px;margin:10px 0 0 2px;text-align:left}
+.nome-empresa{font-size:12px;margin:0 0 5px 0}
+.tabela{border-collapse:collapse;font-family:Arial,sans-serif;font-size:11px;width:100%}
+.tabela-ficha{border-collapse:collapse;font-family:Arial,sans-serif;font-size:12px;width:100%}
+.box-tabela{border-top:1px solid #000;width:100%}
+.bg-dark{background:#ecedee}
+.bg-white{background:#fff}
+.tp{padding:8px 4px}
+.tc{padding:4px}
+.th{vertical-align:top;border-bottom:1px solid #000}
+.tf{padding:12px 4px;border-bottom:1px solid #000;border-top:1px solid #000}
+.tfh{padding:8px 4px;border-bottom:1px solid #000;border-top:1px solid #000}
+.last{border-bottom:1px dotted #000}
+.first{border-top:1px solid #000}
+.tp-informacoes{padding:4px 8px}
+.tr-foot{background:#ecedee}
+.f-mini{font-size:10px}
+.f-small-mini{font-size:9px}
+.f-total{font-size:12px}
+.a-rig{text-align:right}
+.a-lef{text-align:left}
+.a-cen{text-align:center}
+.box-rodape{background-color:#ecedee;font-family:Arial,sans-serif;font-size:10px;padding:10px 5px;width:100%}
+.box-rodape-informacoes{float:left;width:60%}
+.box-rodape-logomarca{float:left;width:40%}
+.logo-virtux{margin-top:5px;width:40%}
+.paragrafo-rodape{margin:0 0 5px;padding:0}
+.c-red{color:#c72929}
+.bg-label{color:#fff;font-size:10px}
+.bg-item{vertical-align:middle;padding-left:4px}

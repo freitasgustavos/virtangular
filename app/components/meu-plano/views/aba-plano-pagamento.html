@@ -1,0 +1,70 @@
+
+<div ng-if="!arrTitulos.length">
+    <div class="alert alert-warning alert-fade font-small m-b-0" role="alert">
+        <span>Você não possui títulos para pagamento até o momento!</span>
+    </div>
+</div>
+
+<div ng-if="arrTitulos.length">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="alert alert-info font-small m-b-10" role="alert">
+                <span>Caso já tenha efetuado o pagamento, aguarde, pois a compensação poderá ser confirmada em até 3 dias úteis! Caso seu acesso tenha sido bloqueado, entrar em contato com nossa equipe de suporte via Chat.</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Forma de Pagamento</label>
+                <input class="form-control" type="text" readonly value="Boleto Bancário">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Valor Total</label>
+                <input class="form-control" type="text" readonly ng-model="vlrTotalTitulos" ui-money-mask="mdecimals">
+            </div>
+        </div>
+    </div>
+
+    <table class="table table-hover font-small m-b-0">
+        <colgroup>
+            <col width="50%">
+            <col width="20%">
+            <col width="20%">
+            <col width="10%">
+        </colgroup>
+        <thead>
+            <tr>
+                <th>Descrição</th>
+                <th>Valor</th>
+                <th>Dt. Vencimento</th>
+                <th>Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="titulo in arrTitulos">
+                <td>
+                    <span tooltip-placement="bottom" tooltip="{{titulo.tit_descricao}}">{{titulo.tit_descricao | strLimit:30}}</span>
+                </td>
+                <td>{{titulo.tit_doc_vlr_liquido | currency}}</td>
+                <td>{{titulo.tit_dat_vct | dateFormat}}</td>
+                <td>
+                    <a class="btn btn-sm btn-success" href="{{titulo.tra_link}}" target="_blank">
+                        <span>Imprimir</span>
+                    </a>
+                </td>
+            </tr>
+        </tbody>
+        <tfoot>
+            <tr>
+                <th class="t-right" colspan="4">
+                    <strong class="c-gray">TOTAL:</strong>
+                    <span>{{vlrTotalTitulos | currency}}</span>
+                </th>
+            </tr>
+        </tfoot>
+    </table>
+</div>

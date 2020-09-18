@@ -1,0 +1,120 @@
+
+<div ng-class="{'animated fadeIn' : objComponentes.search, 'animated fadeOutDown oculto' : !objComponentes.search}">
+    <uib-accordion close-others="true">
+        <div uib-accordion-group class="panel-default" heading="Filtros Adicionais" is-open="true">
+            <div class="row">
+                <div class="col-md-12">
+                    <p>
+                        <strong>Elabore os filtros para a geração do relatório de {{objRelatorio.par_c01}}:</strong>
+                    </p>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Data de Apuração <i class="obrigatorio">*</i></label>
+                                <input class="form-control" id="inv_dt_apuracao" name="inv_dt_apuracao" ng-model="objFiltro.date_002" maxlength="10" placeholder="Data de Apuração..." data-mask="99/99/9999" datepicker1 type="text" required ng-class="{true : 'form-error'}[submitted && forms.formRelatorio.inv_dt_apuracao.$invalid]">
+                            </div>
+                            <div ng-show="submitted || (forms.formRelatorio.inv_dt_apuracao.$invalid && !forms.formRelatorio.inv_dt_apuracao.$pristine)">
+                                <p class="text-danger form-error alert1" ng-show="forms.formRelatorio.inv_dt_apuracao.$error.required">Entre com a data de apuração.</p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Código ínicio</label>
+                                <input class="form-control" ng-model="objFiltro.code_003" maxlength="10" placeholder="Código ínicio..." valid-number type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-4">
+                            <div class="form-group">
+                                <label>Código final</label>
+                                <input class="form-control" ng-model="objFiltro.code_004" maxlength="10" placeholder="Código final..." valid-number type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-t-5">
+                        <div class="col-md-12 m-b-0 t-right">
+                            <span class="text-danger cancel-link" ng-click="limparPesquisa()">
+                                <span>Cancelar Filtros</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </uib-accordion>
+</div>
+
+<div class="col-md-12">
+    <div class="row">
+        <uib-accordion close-others="true">
+            <div uib-accordion-group class="panel-default panel-grid" heading="Prévia do Relatório" is-open="true">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div ng-if="arrRegistros !== null">
+                            <table class="table table-hover font-mini m-b-0" id="grid-relatorio-inventario">
+                                <colgroup>
+                                    <col width="10%">
+                                    <col width="14%">
+                                    <col width="32%">
+                                    <col width="8%">
+                                    <col width="12%">
+                                    <col width="12%">
+                                    <col width="12%">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Cód. de Barras</th>
+                                        <th>Produto</th>
+                                        <th class="text-right">Unidade</th>
+                                        <th class="text-right">Qtde.</th>
+                                        <th class="text-right">Custo Médio</th>
+                                        <th class="text-right">Valor Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in arrRegistros" class="c-pointer">
+                                        <td>{{item.ite_pro_cod_pro}}</td>
+                                        <td>{{item.pro_cod_bar}}</td>
+                                        <td>{{item.pro_descricao_longa}}</td>
+                                        <td class="text-right">{{item.pro_unidade}}</td>
+                                        <td class="text-right">
+                                            <span get-estoque="item" value="{{item.ite_qtde_inventario}}"></span>
+                                        </td>
+                                        <td class="text-right">{{item.ite_vlr_uni_customedio | currency}}</td>
+                                        <td class="text-right">
+                                            <span get-total-by-attr="item" value="{{item.ite_qtde_inventario}}" attr="ite_vlr_uni_customedio"></span>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="4" class="va-top">
+                                            <span>{{arrRegistros.length}} registro(s) encontrado(s).</span>
+                                        </th>
+                                        <th colspan="3">
+                                            <span class="row-total">
+                                                <span class="row-label">VALOR TOTAL</span>
+                                                <span class="row-info">{{::totalizarInventario()}}</span>
+                                            </span>
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div ng-if="arrRegistros === null">
+                            <div class="alert alert-warning alert-fade m-b-0">
+                                <i class="fa fa-info-circle fa-2x p-r-10"></i>
+                                <span class="alert-texto">Nenhum registro encontrado!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </uib-accordion>
+    </div>
+</div>

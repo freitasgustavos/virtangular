@@ -1,0 +1,77 @@
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header p-b-0">
+            <h4 class="modal-title modal-title-button" style="text-align:left">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+                <strong style="margin-left:30%">Rastreamento</strong>
+            </h4>
+        </div>
+
+        <div class="modal-body" style="overflow:inherit">
+            <div class="panel-content">
+                <tabset class="tab-fade-in">
+                    <tab active="tabs[0].active">
+                        <tab-heading>Rastreamento</tab-heading>
+                        <div ng-show="objModal.arrRastreamento.error">
+                            <div class="alert alert-warning m-b-0" role="alert">
+                                <strong>Atenção:</strong> {{objModal.arrRastreamento.msg}}
+                            </div>
+                        </div>
+                        <div ng-show="!objModal.arrRastreamento.error">
+                            <table class="table table-striped table-hover table-mini">
+                                <colgroup>
+                                    <col width="10%">
+                                    <col width="25%">
+                                    <col width="30%">
+                                    <col width="35%">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th class="text-left">Data</th>
+                                        <th class="text-left">Ação</th>
+                                        <th class="text-left">Local</th>
+                                        <th class="text-left">Detalhes</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in objModal.arrRastreamento">
+                                        <td class="text-left">{{item.data}}</td>
+                                        <td class="text-left">{{item.descricao}}</td>
+                                        <td class="text-left">{{item.local}}, {{item.cidade}} ({{item.uf}})</td>
+                                        <td class="text-left">{{item.detalhes}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </tab>
+
+                    <tab active="tabs[1].active">
+                        <tab-heading>Notificar</tab-heading>
+                        <form role="form" name="forms.formNotificacao" id="forms.formNotificacao" class="form-validation" autocomplete="off" novalidate>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <!--<div class="form-group m-b-0">-->
+                                        <!--<label for="not_email">E-mail <i class="obrigatorio">*</i></label>-->
+                                    <!--</div>-->
+                                    <div class="input-group bootstrap-touchspin">
+                                        <!--<input name="not_email" id="not_email" maxlength="255" class="form-control" type="email" placeholder="Digite o e-mail para notificação..." ng-class="{true : 'form-error'}[submitted && forms.formNotificacao.not_email.$invalid]" ng-model="objNotificacao.email" required>-->
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary bootstrap-touchspin-up" type="button" ladda="enivarNotificacaoLoading" ng-click="enviar()">Enviar</button>
+                                        </span>
+                                    </div>
+                                    <!--<div class="m-t-20" ng-show="submitted || (forms.formNotificacao.not_email.$invalid && !forms.formNotificacao.not_email.$pristine)">-->
+                                        <!--<p class="text-danger form-error alert1" ng-show="(forms.formNotificacao.not_email.$error.required)">E-mail é um campo de preenchimento obrigatório.</p>-->
+                                        <!--<p class="text-danger form-error alert1" ng-show="(forms.formNotificacao.not_email.$error.email)">Este não é um e-mail válido.</div>-->
+                                    <!--</div>-->
+                                </div>
+                            </div>
+                        </form>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+    </div>
+</div>

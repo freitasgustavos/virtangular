@@ -1,0 +1,242 @@
+
+
+<div id="panel-operacoes" class="col-md-4 p-l-0 p-r-0">
+    <treasure-overlay-spinner active="spinnerList.active">
+        <div class="panel m-b-0">
+            <div class="panel-header">
+                <h3 class="m-b-20">
+                    <i class="fa fa-list"></i>
+                    <span>Contratos</span>
+                </h3>
+
+                <div class="control-btn">
+                    <div class="btn-group box-dropdown">
+                        <!--
+                            <div class="box-icon-filter">
+                                <a style="color:#5b5b5b" ng-click="showPanel()">
+                                    <i class="fa fa-filter i-filter" tooltip-placement="left" tooltip="Refinar pesquisa"></i>
+                                </a>
+                            </div>
+                            <div class="box-toggle-dropdown box-toggle-dropdown-mini">
+                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle m-r-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret"></span>
+                                </button>
+                                <span class="dropdown-arrow"></span>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="javascript:void(0)" ng-click="getJanelaRelatorio()">
+                                            <i class="fa fa-print"></i> Imprimir
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                        -->
+                        <button type="button" class="btn btn-primary btn-sm m-l-0 m-r-15" title="Novo" ng-click="novoContrato()" style="margin-right:4px">
+                            <i class="fa fa-plus"></i> Novo
+                        </button>
+                    </div>
+                </div>
+
+                <form class="form-inverse" autocomplete="off" role="search">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-sm-12 m-b-5 after-tooltip">
+                                    <div class="input-group inside-tooltip">
+                                        <input type="text" class="form-control input-sm" placeholder="Pesquisar..." ng-model="objPesquisa.ctt_str_pesquisa" submit-form="btn-operacao" style="z-index:0">
+                                        <i class="fa fa-question-circle c-blue" rel="popover" popover-append-to-body="true" popover-trigger="mouseenter" popover-placement="right" popover="Pesquise pelo número, código ou descrição do contrato" popover-title="Dica importante:"></i>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary btn-sm btn-okay" id="btn-operacao" ng-click="getPesquisar()" type="button">OK</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="panel no-bottom">
+                <div class="panel-content panel-content p-t-0" ng-class="{'panel-venda-filtro' : hasFilter}" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200" style="padding:15px;min-height:770px;max-height:770px">
+                    <table class="table table-hover m-b-0 font-small grid-biggest" id="grid-contratos" ng-if="arrContratos.length">
+                        <colgroup>
+                            <col width="12%">
+                            <col width="56%">
+                            <col width="12%">
+                            <col width="16%">
+                            <col width="4%">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>DATA</th>
+                                <th>DESCRIÇÃO</th>
+                                <th>STATUS</th>
+                                <th class="text-right">VALOR</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in arrContratos" ng-click="getContrato(item)" class="c-pointer" ng-class="{selected: item.ctt_cod_ctt === cttSelected}">
+                                <td style="font-size:10px!important;padding-top:12px!important">{{item.ctt_dat_cadastro | dateFormat}}</td>
+                                <td>
+                                    <span class="table-span" tooltip-placement="top" tooltip="{{item.ctt_cad_nome_razao}}">
+                                        {{item.ctt_cad_nome_razao | strLimit : 28}}
+                                    </span>
+                                    <span class="table-span" tooltip-placement="top" tooltip="{{item.ctt_descricao}}">
+                                        {{item.ctt_descricao | strLimit : 25}}
+                                    </span>
+                                </td>
+                                <td>
+                                    <div ng-switch on="item.ctt_eh_ativo">
+                                        <span ng-switch-when="0" class="label label-warning"><small>INATIVO</small></span>
+                                        <span ng-switch-when="1" class="label label-success"><small>ATIVO</small></span>
+                                        <span ng-switch-when="2" class="label label-danger"><small>VENCIDO</small></span>
+                                    </div>
+                                </td>
+                                <td class="text-right">{{item.ctt_vlr_tot | currency}}</td>
+                                <td>
+                                    <span ng-if="item.ctt_mid_id == ''"><i class="fa fa-ban p-0"></i></span>
+                                    <span ng-if="item.ctt_mid_id != ''"><i class="fa fa-paperclip p-0"></i></span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="m-t-10 panel-total" ng-if="!arrContratos.length && spinnerList.active === false">
+                        <div class="alert alert-warning alert-fade" role="alert">
+                            <i class="fa fa-info-circle fa-2x"></i>
+                            <span class="alert-texto font-small">Nenhum registro encontrado!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="arrContratos.length">
+                <div class="panel m-b-0">
+                    <div class="col-md-12 box-paginacao">
+                        <div class="t-center p-10">
+                            <a ng-click="paginarContratos()">
+                                <span>Listar mais...</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-footer" style="overflow:hidden">
+                    <div class="col-md-7 p-0">
+                        <div class="row p-l-20">
+                            <h6 class="m-0">
+                                <strong>{{arrContratos.length}}</strong> lançamentos.
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </treasure-overlay-spinner>
+</div>
+
+
+<!-- Painel inicial com manual. -->
+<div class="col-md-8 p-r-0" ng-class="{'animated virtux' : flagTutorial === true, 'animated oculto' : flagTutorial === false}">
+    <div ng-include="'home/views/tutorial.html'"></div>
+</div>
+
+
+<!-- Painel principal com formulário de cadastro e edição. -->
+<div class="col-md-8 p-r-0" ng-class="{'animated virtux' : flagTutorial === false, 'animated oculto' : flagTutorial === true}">
+    <div class="panel panel-contrato">
+        <div class="panel-header panel-header-wizard">
+            <div class="btn-reset">
+                <button type="button" class="btn btn-sm btn-primary" ng-click="voltar()" style="margin-left:2px">
+                    <i class="fa fa-arrow-left"></i> Voltar
+                </button>
+            </div>
+
+            <h3 class="title-header" style="padding-left:60px">
+                <i class="fa fa-file-text-o"></i>
+                <strong>Contrato</strong>
+                <span ng-if="objContrato.ctt_cod_ctt" class="c-lightblue m-l-10">#{{objContrato.ctt_cod_ctt}}</span>
+            </h3>
+
+            <div class="control-btn">
+                <div class="btn-group box-dropdown">
+                    <div ng-if="objContrato.ctt_cod_ctt">
+                        <div class="box-toggle-dropdown">
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret m-l-0"></span>
+                            </button>
+                            <span class="dropdown-arrow"></span>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="downloadContrato()">
+                                        <i class="fa fa-download"></i> Download
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="cancelarContrato()">
+                                        <i class="fa fa-trash-o"></i> Cancelar
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-primary m-l-0" ladda="salvarContratoLoading" ng-click="salvarContrato()">
+                            <i class="fa fa-check"></i> Salvar
+                        </button>
+                    </div>
+
+                    <div ng-if="!objContrato.ctt_cod_ctt">
+                        <button type="button" class="btn btn-sm btn-primary m-l-0" ladda="salvarContratoLoading" ng-click="salvarContrato()">
+                            <i class="fa fa-check"></i> Salvar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row box-wizard-operacoes">
+            <div class="panel-content panel-content-venda">
+                <form class="wizard" id="forms.formContrato" name="forms.formContrato" data-style="arrow" autocomplete="off" role="form">
+                    <div class="wizard-arrow">
+                        <fieldset>
+                            <legend>1 - Documento</legend>
+                            <treasure-overlay-spinner active="spinnerForm.active">
+                                <div class="panel-inner-less">
+                                    <div ng-include="'contrato/views/aba-contrato-documento.html'"></div>
+                                </div>
+                            </treasure-overlay-spinner>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>2 - Serviços</legend>
+                            <treasure-overlay-spinner active="spinnerForm.active">
+                                <div class="panel-inner-less">
+                                    <div ng-include="'contrato/views/aba-contrato-servicos.html'"></div>
+                                </div>
+                            </treasure-overlay-spinner>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>3 - Cobrança</legend>
+                            <treasure-overlay-spinner active="spinnerForm.active">
+                                <div class="panel-inner-less">
+                                    <div ng-include="'contrato/views/aba-contrato-cobranca.html'"></div>
+                                </div>
+                            </treasure-overlay-spinner>
+                        </fieldset>
+
+                        <div class="pull-right box-nota" ng-if="objContrato.ctt_eh_ativo != 2">
+                            <div class="box-half">
+                                <label class="switch switch-greater m-b-0 m-t-15" style="width:80px">
+                                    <input class="switch-input" name="ctt_eh_ativo" id="ctt_eh_ativo" type="checkbox" ng-model="objContrato.ctt_eh_ativo">
+                                    <span class="switch-label" data-on="ATIVO" data-off="INATIVO"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

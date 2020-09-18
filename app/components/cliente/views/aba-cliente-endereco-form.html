@@ -1,0 +1,112 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title modal-title-button">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                <strong>Dados</strong> do Endereço
+
+                <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarEnderecoLoading" ng-click="salvarEndereco()">
+                    <i class="fa fa-check"></i> &nbsp; Salvar
+                </button>
+
+                <span ng-if="end_seq_end" class="pull-right">
+                    <a class="panel-close m-r-20 btn-delete" title="Excluir" ng-click="cancelarEndereco(endereco.end_cad_cod_cad, endereco.end_seq_end)">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </span>
+            </h4>
+        </div>
+
+        <div class="modal-body">
+            <p>Preencha o endereço nos campos adequados.</p>
+            <form name="forms.fClienteEndereco" class="form-validation" novalidate autocomplete="off" ng-submit="salvarEndereco()">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">CEP</label>
+                            <input type="text" maxlength="9" class="form-control" placeholder="Digite o CEP" ng-model="endereco.end_cep" ui-br-cep-mask ng-keyup="getEnderecoPorCep($event)">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Tipo</label>
+                            <ui-select class="form-control" ng-model="endereco.end_tip_end" theme="select2">
+                                <ui-select-match placeholder="Selecione o tipo">{{$select.selected.nome}}</ui-select-match>
+                                <ui-select-choices repeat="tipoEndereco.id as tipoEndereco in listaTipoEndereco | filter: $select.search">
+                                    <span ng-bind-html="tipoEndereco.nome | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label class="control-label">Endereço</label>
+                            <input name="end_endereco" type="text" maxlength="60" class="form-control" placeholder="Digite o endereço" ng-model="endereco.end_endereco" ng-class="{true: 'form-error'}[submitted && forms.fClienteEndereco.end_endereco.$invalid]" required>
+                        </div>
+                        <div ng-show="submitted || (forms.fClienteEndereco.end_endereco.$invalid && !forms.fClienteEndereco.end_endereco.$pristine) ">
+                            <p class="text-danger form-error alert1" ng-show="forms.fClienteEndereco.end_endereco.$error.required">Digite o Endereço.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label class="control-label">Número</label>
+                            <input type="text" class="form-control" maxlength="20" placeholder="Digite o número" ng-model="endereco.end_endereco_nro">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Complemento</label>
+                            <input type="text" class="form-control" maxlength="80" placeholder="Digite o complemento" ng-model="endereco.end_endereco_complemento">
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Bairro</label>
+                            <input type="text" class="form-control" maxlength="80" placeholder="Digite o bairro" ng-model="endereco.end_endereco_bairro">
+                        </div>
+                    </div>
+                </div>
+                <div class="row" style="min-height:150px">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Estado</label>
+                            <ui-select name="end_endereco_uf" id="end_endereco_uf" class="form-control" ng-model="endereco.end_endereco_uf" theme="select2" ng-change="getCidadePorUf()" ng-required="true">
+                                <ui-select-match placeholder="Selecione o estado">{{$select.selected.nome}}</ui-select-match>
+                                <ui-select-choices repeat="uf.id + '#' + uf.uf as uf in listaUf.records | filter: $select.search">
+                                    <span ng-bind-html="uf.nome | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div ng-show="submitted || (forms.fClienteEndereco.end_endereco_uf.$invalid && !forms.fClienteEndereco.end_endereco_uf.$pristine)">
+                            <p class="text-danger form-error alert1" ng-show="(forms.fClienteEndereco.end_endereco_uf.$error.required)">Escolha o estado.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Cidade</label>
+                            <ui-select name="end_endereco_cidade" id="end_endereco_cidade" class="form-control" ng-model="endereco.end_endereco_cidade" theme="select2" ng-required="true">
+                                <ui-select-match placeholder="Selecione a cidade">{{$select.selected.nome}}</ui-select-match>
+                                <ui-select-choices repeat="cidade.id + '#' + cidade.nome as cidade in listaCidade.records | filter: $select.search">
+                                    <span ng-bind-html="cidade.nome | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                        <div ng-show="submitted || (forms.fClienteEndereco.end_endereco_cidade.$invalid && !forms.fClienteEndereco.end_endereco_cidade.$pristine)">
+                            <p class="text-danger form-error alert1" ng-show="(forms.fClienteEndereco.end_endereco_cidade.$error.required)">Escolha a cidade.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" name="end_seq_end" ng-model="endereco.end_seq_end">
+                <input type="hidden" name="end_cad_cod_cad" ng-model="endereco.end_cad_cod_cad">
+            </form>
+        </div>
+    </div>
+</div>

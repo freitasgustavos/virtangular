@@ -1,0 +1,69 @@
+<div class="modal-dialog">
+    <form method="POST" enctype="multipart/form-data" id="formUpload" name="formUpload" autocomplete="off" novalidate>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>Fotos: {{foto.entity}}</strong>
+
+                    <!-- Botão para selecionar arquivo. -->
+                    <span class="pull-right" ng-hide="picFile">
+                        <span class="btn btn-default btn-embossed btn-file">
+                            <span class="fileinput-new">
+                                <i class="fa fa-upload"></i> &nbsp; Escolher
+                            </span>
+                            <input type="file" id="btn-upload" ngf-select ng-model="picFile" name="file" accept="image/*" required>
+                        </span>
+                    </span>
+
+                    <!-- Botão para salvar. -->
+                    <span class="pull-right" ng-if="picFile">
+                        <button ng-click="upload(picFile, $event)" ladda="salvarFotoLoading" class="btn btn-primary btn-embossed  bnt-square pull-right m-r-0" type="button">
+                            <i class="fa fa-check"></i> &nbsp; Salvar
+                        </button>
+                    </span>
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-upload m-b-20">
+                    <div ng-if="picFile">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="fileinput-new thumbnail" data-provides="fileinput">
+                                    <img ngf-src="picFile" class="product">
+                                </div>
+                                <div class="fileinput-preview fileinput-exists thumbnail" style="border:0 none"></div>
+                                <!--
+                                <div class="fileinput fileinput-new" data-provides="fileinput">
+                                    <div class="fileinput-new thumbnail">
+                                        <img ngf-src="picFile" class="product">
+                                    </div>
+                                    <div class="fileinput-preview fileinput-exists thumbnail"></div>
+                                </div>
+                                -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="foto.mensagem && !picFile">
+                    <div class="alert alert-warning m-b-0" role="alert">
+                        <strong>Atenção:</strong> O produto ainda não possui fotos, clique <span class="c-hover" uploadfile>aqui</span> para escolher.
+                    </div>
+                </div>
+
+                <div ng-class="{'hidden': foto.pro_hidden}" class="col-sm-12 cssFade box-fotos">
+                    <div ng-bind-html="htmlFotosProdutos"></div>
+                </div>
+            </div>
+
+            <div class="modal-footer text-center">
+                <div class="col-sm-12"></div>
+            </div>
+        </div>
+    </form>
+</div>

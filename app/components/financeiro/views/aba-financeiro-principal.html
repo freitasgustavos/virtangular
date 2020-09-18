@@ -1,0 +1,635 @@
+
+<div class="col-md-12 col-sm-12 col-xs-12">
+    <div class="row">
+        <div class="col-sm-6">
+            <div ng-if="objPesquisa.sistema == 1 || objConta.tit_sistema == 1">
+                <div class="form-group box-lv-input">
+                    <label>Cliente <i class="obrigatorio">*</i></label>
+                    <lv-autocomplete
+                        ng-model="objConta.pessoa"
+                        clear-input="false"
+                        trigger-list="true"
+                        icon-class="fa fa-user"
+                        obj-search="objDropdown.objEntidadePessoa"
+                        search-limit="10"
+                        on-select="onSelectPessoa"
+                        add-select-item="addPessoa"
+                        place-holder="Pesquise por um cliente..."
+                        string-entity="cliente"
+                        string-service="cliente"
+                        display-property="cad_nome_razao"
+                        display-complement="cad_cpf_cnpj"
+                        confirm-add="true"
+                        string-id="autocomplete-cliente">
+                    </lv-autocomplete>
+
+                    <!-- Botão para edição dos dados do cliente. -->
+                    <div ng-show="objConta.pessoa && objConta.pessoa != ' ' && objConta.tit_cad_cod_cad">
+                        <small class="link-append lv-plugin" ng-click="getJanelaCliente(objConta.tit_cad_cod_cad)">Editar</small>
+                    </div>
+                </div>
+                <div ng-show="submitted || (forms.formFinanca.tit_cad_cod_cad.$invalid && !forms.formFinanca.tit_cad_cod_cad.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="(forms.formFinanca.tit_cad_cod_cad.$error.required)">
+                        Cliente é um campo de preenchimento obrigatório.
+                    </p>
+                </div>
+            </div>
+
+            <div ng-if="objPesquisa.sistema == 2 || objConta.tit_sistema == 2">
+                <div class="form-group box-lv-input">
+                    <label>Fornecedor <i class="obrigatorio">*</i></label>
+                    <lv-autocomplete
+                        ng-model="objConta.pessoa"
+                        clear-input="false"
+                        trigger-list="true"
+                        icon-class="fa fa-user"
+                        obj-search="objDropdown.objEntidadePessoa"
+                        search-limit="10"
+                        on-select="onSelectPessoa"
+                        add-select-item="addPessoa"
+                        place-holder="Pesquise por um fornecedor..."
+                        string-entity="fornecedor"
+                        string-service="cliente"
+                        display-property="cad_nome_razao"
+                        display-complement="cad_cpf_cnpj"
+                        confirm-add="true"
+                        string-id="autocomplete-fornecedor">
+                    </lv-autocomplete>
+
+                    <!-- Botão para edição dos dados do fornecedor. -->
+                    <div ng-show="objConta.pessoa && objConta.pessoa != ' ' && objConta.tit_cad_cod_cad">
+                        <small class="link-append lv-plugin" ng-click="getJanelaCliente(objConta.tit_cad_cod_cad)">Editar</small>
+                    </div>
+                </div>
+                <div ng-show="submitted || (forms.formFinanca.tit_cad_cod_cad.$invalid && !forms.formFinanca.tit_cad_cod_cad.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="(forms.formFinanca.tit_cad_cod_cad.$error.required)">
+                        Fornecedor é um campo de preenchimento obrigatório.
+                    </p>
+                </div>
+            </div>
+
+            <input id="tit_cad_cod_cad" name="tit_cad_cod_cad" type="hidden" ng-model="objConta.tit_cad_cod_cad" required>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="form-group">
+                <label for="tit_descricao">Descrição <i class="obrigatorio">*</i></label>
+                <input class="form-control" maxlength="255" id="tit_descricao" name="tit_descricao" placeholder="Digite a descrição..." type="text" ng-model="objConta.tit_descricao" required>
+            </div>
+            <div ng-show="submitted || (forms.formFinanca.tit_descricao.$invalid && !forms.formFinanca.tit_descricao.$pristine)">
+                <p class="text-danger form-error alert1" ng-show="(forms.formFinanca.tit_descricao.$error.required)">
+                    Descrição é um campo de preenchimento obrigatório.
+                </p>
+            </div>
+        </div>
+
+        <div class="col-sm-2 box-situacao-financeira">
+            <div class="form-group m-b-5">
+                <label>Situação</label><br>
+                <label class="switch switch-green m-b-0 m-t-0" style="width:100px">
+                    <input name="tit_faturado" id="tit_faturado" type="checkbox" class="switch-input" ng-model="objConta.tit_situacao_flag" ng-change="setDataAtual()">
+                    <span class="switch-label" data-on="{{objTela.descSitSistema}}" data-off="Aberto"></span>
+                    <span class="switch-handle"></span>
+                </label>
+            </div>
+
+            <div class="form-group m-b-0 box-pgto-parcial" ng-if="objConta.acaoTela === 'atualizar' && !objConta.tit_situacao_flag">
+                <span class="span-link" tooltip-placement="bottom" tooltip="Efetuar pagamento parcial deste título." ng-click="pgtoParcial()">
+                    Pagamento Parcial
+                </span>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>Forma de Pagamento</label>
+                <lv-autocomplete
+                    ng-model="objConta.formaPagamento"
+                    clear-input="false"
+                    trigger-list="true"
+                    icon-class="fa fa-dollar"
+                    search-limit="10"
+                    on-select="onSelectFormaPagamento"
+                    add-select-item="addFormaPagamento"
+                    place-holder="Pesquise por uma forma de pagamento..."
+                    string-entity="forma de pagamento"
+                    string-service="formaPgto"
+                    display-property="par_c01"
+                    confirm-add="true"
+                    string-id="autocomplete-pgto">
+                </lv-autocomplete>
+
+                <input type="hidden" ng-model="objConta.tit_6060_forma_pagamento">
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label ng-class="{'label-disabled' : !objConta.tit_situacao_flag}">{{objTela.descDataSistema}}</label>
+                <div class="append-icon">
+                    <input class="form-control clear-disabled" maxlength="10" placeholder="{{objTela.descDataSistema}}..." type="text" ng-model="objConta.tit_dat_pgt" ng-disabled="!objConta.tit_situacao_flag" data-mask="99/99/9999" datepicker1>
+                    <i class="fa fa-calendar"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label>Subtotal</label>
+                <div class="append-icon">
+                    <!-- ng-model="objConta.tit_doc_vlr_liquido" -->
+                    <input class="form-control input-total" placeholder="Subtotal..." type="text" ng-model="objConta.tit_doc_vlr_bruto" ng-change="calcular(true)" ng-blur="verificarRecorrencias('V')" ui-money-mask="mdecimals" onclick="this.select()">
+                    <i class="fa fa-money"></i>
+                </div>
+            </div>
+        </div>
+
+        <!--
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label ng-class="{'label-disabled' : !objConta.tit_situacao_flag}">Descontos</label>
+                    <div class="append-icon">
+                        <input class="form-control clear-disabled" placeholder="Descontos..." type="text" ng-model="objConta.tit_doc_vlr_descontos" ng-disabled="!objConta.tit_situacao_flag" ui-money-mask="mdecimals" ng-change="calcular()" style="text-align:right" onclick="this.select()">
+                        <i class="fa fa-money"></i>
+                    </div>
+                </div>
+            </div>
+        -->
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="form-group">
+                <label>Conta Financeira</label>
+                <lv-autocomplete
+                    ng-model="objConta.contaFinanceira"
+                    clear-input="false"
+                    trigger-list="true"
+                    icon-class="fa fa-bank"
+                    search-limit="10"
+                    on-select="onSelectContaFinanceira"
+                    place-holder="Pesquise por uma conta financeira..."
+                    string-entity="conta financeira"
+                    string-service="contaFinan"
+                    display-property="par_c01"
+                    confirm-add="false"
+                    string-id="autocomplete-conta">
+                </lv-autocomplete>
+
+                <input type="hidden" ng-model="objConta.tit_5010_conta_fin">
+            </div>
+        </div>
+
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label class="text-danger">Data de Vencimento</label>
+                <div class="append-icon">
+                    <input class="form-control" maxlength="10" placeholder="Data de vencimento..." type="text" ng-model="objConta.tit_dat_vct" ng-change="verificarRecorrencias('D')" data-mask="99/99/9999" datepicker1>
+                    <i class="fa fa-calendar"></i>
+                </div>
+            </div>
+        </div>
+
+        <!--
+            <div class="col-sm-3">
+                <div class="form-group">
+                    <label ng-class="{'label-disabled' : !objConta.tit_situacao_flag}">Acréscimos</label>
+                    <div class="append-icon">
+                        <input class="form-control clear-disabled" placeholder="Acréscimos..." type="text" ng-model="objConta.tit_doc_vlr_despesas" ng-disabled="!objConta.tit_situacao_flag" ui-money-mask="mdecimals" ng-change="calcular()" style="text-align:right" onclick="this.select()">
+                        <i class="fa fa-money"></i>
+                    </div>
+                </div>
+            </div>
+        -->
+
+        <div class="col-sm-3">
+            <div class="form-group form-double">
+                <label ng-class="{'label-disabled' : !objConta.tit_situacao_flag}" style="display:block">Descontos</label>
+
+                <div class="col-md-5 input-group pull-left">
+                    <input class="form-control clear-disabled" size="10" type="text" ng-disabled="!objConta.tit_situacao_flag" ng-model="objConta.tit_doc_porct_descontos" ng-blur="calcularPorcDesconto()" onclick="this.select()" number-range minvalue="0" maxvalue="100" style="z-index:0">
+                    <span class="input-group-addon" ng-class="{'addon-disabled' : !objConta.tit_situacao_flag}">%</span>
+                </div>
+
+                <div class="col-md-5 input-group pull-right">
+                    <input class="form-control clear-disabled" type="text" ng-model="objConta.tit_doc_vlr_descontos" ng-disabled="!objConta.tit_situacao_flag" ng-change="calcular()" ng-blur="calcularDesconto()" style="text-align:right" onclick="this.select()" ui-money-mask="mdecimals">
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-12 col-sm-12 col-xs-12 ng-scope">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="form-group">
+                        <label>Centro de Custo</label>
+                        <lv-autocomplete
+                            ng-model="objConta.centroCusto"
+                            clear-input="false"
+                            trigger-list="true"
+                            icon-class="fa fa-tag"
+                            obj-search="objDropdown.objCentroCusto"
+                            search-limit="10"
+                            on-select="onSelectCentroCusto"
+                            add-select-item="addCentroCusto"
+                            place-holder="Pesquise por um centro de custo..."
+                            string-entity="centro de custo"
+                            string-service="centroCusto"
+                            display-property="par_c01"
+                            confirm-add="true"
+                            string-id="autocomplete-centro">
+                        </lv-autocomplete>
+
+                        <input type="hidden" ng-model="objConta.tit_6050_cdc">
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group">
+                        <label>Data de Lançamento</label>
+                        <div class="append-icon">
+                            <div ng-switch on="objConta.acaoTela">
+                                <div ng-switch-when="inserir">
+                                    <input class="form-control" maxlength="10" placeholder="Data de lançamento..." type="text" ng-model="objConta.tit_dat_lan" data-mask="99/99/9999" datepicker1>
+                                </div>
+                                <div ng-switch-when="atualizar">
+                                    <input tooltip-placement="top" tooltip="Conhecido contabilmente como data de competência." class="form-control" maxlength="10" placeholder="Data de lançamento..." type="text" ng-model="objConta.tit_dat_lan" data-mask="99/99/9999" datepicker1>
+                                </div>
+                            </div>
+                            <i class="fa fa-calendar"></i>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-sm-3">
+                    <div class="form-group form-double">
+                        <label ng-class="{'label-disabled' : !objConta.tit_situacao_flag}" style="display:block">Acréscimos</label>
+
+                        <div class="col-md-5 input-group pull-left">
+                            <input class="form-control clear-disabled" size="10" type="text" ng-disabled="!objConta.tit_situacao_flag" ng-blur="calcularPorcAcrescimo()" ng-model="objConta.tit_doc_porct_despesas" onclick="this.select()" number-range minvalue="0" maxvalue="100" style="z-index:0">
+                            <span class="input-group-addon" ng-class="{'addon-disabled' : !objConta.tit_situacao_flag}">%</span>
+                        </div>
+
+                        <div class="col-md-5 input-group pull-right">
+                            <input type="text" class="form-control clear-disabled" size="10" ng-disabled="!objConta.tit_situacao_flag" ng-model="objConta.tit_doc_vlr_despesas" ng-change="calcular()" ng-blur="calcularAcrescimo()" ui-money-mask="mdecimals" onclick="this.select()" style="text-align:right">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row" ng-if="arrCamposAdicionais.length">
+        <div class="col-md-12 col-sm-12 col-xs-12 ng-scope">
+            <div class="row">
+                <div class="col-md-6" ng-if="arrCamposAdicionais.tit_fin_placa">
+                    <div class="form-group">
+                        <label for="tit_fin_placa">{{arrCamposAdicionais.tit_fin_placa.label}}</label>
+                        <input class="form-control" name="tit_fin_placa" id="tit_fin_placa" maxlength="20" type="text" placeholder="{{arrCamposAdicionais.tit_fin_placa.label}}" ng-model="objConta.tit_fin_placa" ng-required="arrCamposAdicionais.tit_fin_placa.required">
+                    </div>
+                    <div ng-show="arrCamposAdicionais.tit_fin_placa.label && (submitted || (forms.formFinanca.tit_fin_placa.$invalid && !forms.formFinanca.tit_fin_placa.$pristine))">
+                        <p class="text-danger form-error alert1" ng-show="(forms.formFinanca.tit_fin_placa.$error.required)">{{arrCamposAdicionais.tit_fin_placa.label}} é um campo de preenchimento obrigatório.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6" ng-if="arrCamposAdicionais.tit_fin_carga">
+                    <div class="form-group">
+                        <label for="tit_fin_carga">{{arrCamposAdicionais.tit_fin_carga.label}}</label>
+                        <input class="form-control" number-only name="tit_fin_carga" id="tit_fin_carga" maxlength="10" type="text" placeholder="{{arrCamposAdicionais.tit_fin_carga.label}}" ng-model="objConta.tit_fin_carga" ng-required="arrCamposAdicionais.tit_fin_carga.required">
+                    </div>
+                    <div ng-show="arrCamposAdicionais.tit_fin_carga.label && (submitted || (forms.formFinanca.tit_fin_carga.$invalid && !forms.formFinanca.tit_fin_carga.$pristine))">
+                        <p class="text-danger form-error alert1" ng-show="(forms.formFinanca.tit_fin_carga.$error.required)">{{arrCamposAdicionais.tit_fin_carga.label}} é um campo de preenchimento obrigatório.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-9 col-sm-9 col-xs-9">
+            <div class="row">
+                <div class="col-sm-12">
+                    <div class="form-group m-b-0">
+                        <label>Observações</label>
+                        <textarea bgcolored class="form-control" placeholder="Digite alguma observação..." cols="3" rows="5" ng-model="objConta.tit_observacao"></textarea>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3 col-sm-3 col-xs-3">
+            <div class="row">
+                <div class="col-sm-12">
+                    <label>Totais</label>
+                    <div class="box-total">
+                        <div class="col-md-12 p-r-0 p-l-0">
+                            <div class="row">
+                                <div class="col-sm-6 text-label">Descontos:</div>
+                                <div class="col-sm-6 text-right">
+                                    <span class="c-red">
+                                        <span>-</span> {{objConta.tit_doc_vlr_descontos | customCurrency | semCif}}
+                                    </span>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6 text-label">Acréscimos:</div>
+                                <div class="col-sm-6 text-right">
+                                    <span>+</span> {{objConta.tit_doc_vlr_despesas | customCurrency | semCif}}
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-6 text-label">
+                                    <strong class="c-darkgrey">Total:</strong>
+                                </div>
+                                <div class="col-sm-6 text-right">
+                                    <strong class="c-darkgrey">{{objConta.tit_doc_vlr_liquido | customCurrency | semCif}}</strong>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!--
+                    <div class="col-sm-12">
+                        <div class="col-md-12 p-r-0 p-l-0 m-t-5">
+                            {{objConta.tit_doc_vlr_liquido | customCurrency | semCif}} ng-change="calcularReverso()" ng-blur="verificarRecorrencias('V')"
+                            <div class="append-icon">
+                                <input readonly class="form-control input-total c-green" placeholder="Total..." type="text" ng-model="objConta.tit_doc_vlr_liquido" ui-money-mask="mdecimals">
+                                <i class="fa fa-money"></i>
+                            </div>
+                        </div>
+                    </div>
+                -->
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="col-md-12 col-sm-12 col-xs-12 p-0">
+    <hr>
+</div>
+
+
+<div class="box-recorrencias col-md-12 col-sm-12 col-xs-12 p-0">
+    <!-- Dados para títulos recorrentes. -->
+    <div class="col-md-8 col-sm-8 col-xs-8">
+        <div class="row">
+            <!-- Botão que habilita a recorrência dos títulos. -->
+            <div class="col-md-12" ng-if="objConta.acaoTela === 'inserir'">
+                <div class="form-group">
+                    <label style="margin-top:6px;margin-right:12px">
+                        Repetir o lançamento deste título?
+                    </label>
+                    <label class="switch">
+                        <input class="switch-input" type="checkbox" ng-model="objConta.tit_recorrente_flag" ng-change="setPeriodicidade()">
+                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                        <span class="switch-handle"></span>
+                    </label>
+                </div>
+            </div>
+
+            <div ng-show="objConta.tit_recorrente_flag" class="sample-show-hide">
+                <!-- Mostrar formulário apenas no cadastro. -->
+                <div ng-if="objConta.acaoTela === 'inserir'">
+                    <div class="col-md-6">
+                        <div class="form-group box-periodicidade">
+                            <label>Periodicidade</label>
+                            <div class="form-group">
+                                <ui-select class="form-control" ng-model="objConta.tit_periodicidade" theme="select2">
+                                    <ui-select-match placeholder="Entre com a periodicidade...">{{$select.selected.descricao}}</ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in objPeriodicidade | filter: $select.search">
+                                        <span ng-bind-html="item.descricao | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Parcelas</label>
+                            <div class="inside-tooltip">
+                                <input class="form-control" placeholder="Qtde. de Parcelas..." ng-model="objConta.tit_ocorrencia" style="width:65%;float:left" type="text">
+                                <i class="fa fa-question-circle c-blue" rel="popover" popover-append-to-body="true" popover-trigger="mouseenter" popover-placement="right" popover="2x, 4x, 10x ou 10 20 30" popover-title="Exemplos para Entrada:"></i>
+                                <button type="button" class="btn btn-primary btn-ok" ng-click="gerarParcelas()">OK</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12 m-b-10 sample-show-hide" ng-if="objConta.tit_recorrente.length">
+                    <div class="row">
+                        <div class="col-md-6" ng-if="arrRecorrenciaOne.length">
+                            <table class="table table-striped table-hover font-mini">
+                                <thead>
+                                    <tr>
+                                        <th style="width:30%">VENC.</th>
+                                        <th style="width:18%">PARCELA</th>
+                                        <th style="width:34%">VALOR</th>
+                                        <th style="width:18%" class="t-center">STATUS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="parcela in arrRecorrenciaOne" style="cursor:pointer" ng-click="getParcela(parcela)" ng-class="{active : (objConta.tit_fatura_seq === parcela.tit_fatura_seq && objConta.acaoTela === 'atualizar') || (parcela.tit_index === 0 && objConta.acaoTela === 'inserir')}">
+                                        <td>{{parcela.tit_dat_vct | dateFormat}}</td>
+                                        <td>
+                                            <span class="table-span" tooltip-placement="top" tooltip="{{parcela.tit_descricao}}" ng-if="objConta.acaoTela === 'inserir'">
+                                                {{parcela.tit_descricao | strLimit:5}}
+                                            </span>
+                                            <span class="table-span" tooltip-placement="top" tooltip="{{parcela.tit_descricao}}" ng-if="objConta.acaoTela === 'atualizar'">
+                                                {{parcela.tit_fatura_seq | strParcelas:objConta.tit_recorrente}}
+                                            </span>
+                                        </td>
+                                        <td class="price-padding">{{parcela.tit_doc_vlr_liquido | customCurrency}}</td>
+                                        <td>
+                                            <div ng-switch on="parcela.tit_faturado">
+                                                <div ng-switch-when="0" class="t-center">
+                                                    <i class="fa fa-times-circle-o c-red" tooltip-placement="top" tooltip="Em débito"></i>
+                                                </div>
+                                                <div ng-switch-when="3" class="t-center">
+                                                    <i class="glyphicon glyphicon-ok-circle c-green" tooltip-placement="top" tooltip="Pago"></i>
+                                                </div>
+                                                <div ng-switch-when="999" class="t-center">
+                                                    <i class="glyphicon glyphicon-exclamation-sign c-orange" tooltip-placement="top" tooltip="Vencido"></i>
+                                                </div>
+                                                <div ng-switch-default class="t-center">
+                                                    <i class="fa fa-times-circle-o c-red" tooltip-placement="top" tooltip="Pago"></i>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="col-md-6" ng-if="arrRecorrenciaTwo.length">
+                            <table class="table table-striped table-hover font-mini">
+                                <thead>
+                                    <tr>
+                                        <th style="width:30%">VENC.</th>
+                                        <th style="width:18%">PARCELA</th>
+                                        <th style="width:34%">VALOR</th>
+                                        <th style="width:18%" class="t-center">STATUS</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="parcela in arrRecorrenciaTwo" style="cursor:pointer" ng-click="getParcela(parcela)" ng-class="{active : objConta.tit_fatura_seq === parcela.tit_fatura_seq && objConta.acaoTela === 'atualizar'}">
+                                        <td>{{parcela.tit_dat_vct | dateFormat}}</td>
+                                        <td>
+                                            <span class="table-span" tooltip-placement="top" tooltip="{{parcela.tit_descricao}}" ng-if="objConta.acaoTela === 'inserir'">
+                                                {{parcela.tit_descricao | strLimit:5}}
+                                            </span>
+                                            <span class="table-span" tooltip-placement="top" tooltip="{{parcela.tit_descricao}}" ng-if="objConta.acaoTela === 'atualizar'">
+                                                {{parcela.tit_fatura_seq | strParcelas:objConta.tit_recorrente}}
+                                            </span>
+                                        </td>
+                                        <td class="price-padding">{{parcela.tit_doc_vlr_liquido | customCurrency}}</td>
+                                        <td>
+                                            <div ng-switch on="parcela.tit_faturado">
+                                                <div ng-switch-when="0" class="t-center">
+                                                    <i class="fa fa-times-circle-o c-red" tooltip-placement="top" tooltip="Em débito"></i>
+                                                </div>
+                                                <div ng-switch-when="3" class="t-center">
+                                                    <i class="glyphicon glyphicon-ok-circle c-green" tooltip-placement="top" tooltip="Pago"></i>
+                                                </div>
+                                                <div ng-switch-when="999" class="t-center">
+                                                    <i class="glyphicon glyphicon-exclamation-sign c-orange" tooltip-placement="top" tooltip="Vencido"></i>
+                                                </div>
+                                                <div ng-switch-default class="t-center">
+                                                    <i class="fa fa-times-circle-o c-red" tooltip-placement="top" tooltip="Pago"></i>
+                                                </div>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!--
+                <div class="col-md-12" ng-if="objConta.tit_recorrente">
+                    <table class="table table-striped m-b-10 sample-show-hide">
+                        <thead>
+                            <tr>
+                                <th style="width:30%">VENC.</th>
+                                <th style="width:20%">PARCELA</th>
+                                <th style="width:30%">VALOR</th>
+                                <th style="width:20%" class="t-center">QUITADO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="parcela in objConta.tit_recorrente">
+                                <td>{{parcela.tit_dat_vct}}</td>
+                                <td>{{parcela.tit_descricao}}</td>
+                                <td>{{parcela.tit_doc_vlr_liquido | currency}}</td>
+                                <td>
+                                    <div ng-switch on="parcela.tit_faturado">
+                                        <div ng-switch-when="0" class="t-center">
+                                            <i class="fa fa-times-circle-o c-red"></i>
+                                        </div>
+                                        <div ng-switch-when="3" class="t-center">
+                                            <i class="glyphicon glyphicon-ok-circle c-green"></i>
+                                        </div>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Listagem dos documentos. -->
+    <div class="col-md-4 col-sm-4 col-xs-4">
+        <div ng-if="objConta.tit_fin_nro_lan && objConta.tit_fatura_seq">
+            <div class="col-sm-12">
+                <h3 class="m-t-0">Documentos Vinculados:</h3>
+                <button type="button" class="btn btn-default" ng-click="getFormUpload()" style="height:45px;border:1px solid #dfdfdf">
+                    <i class="glyphicon glyphicon-paperclip icon-anexo"></i>
+                </button>
+
+                <table class="table table-striped table-hover font-mini" ng-show="objConta.tit_midia.length">
+                    <colgroup>
+                        <col width="70%">
+                        <col width="20%">
+                        <col width="10%">
+                    </colgroup>
+                    <thead>
+                        <tr>
+                            <th>Descrição</th>
+                            <th class="text-center">Data</th>
+                            <th class="text-right">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="documento in objConta.tit_midia" style="cursor:pointer">
+                            <td ng-click="download(documento)">{{documento.mid_descricao}}</td>
+                            <td ng-click="download(documento)" class="text-center">{{documento.mid_dat_cadastro | dateFormat}} às {{documento.mid_dat_cadastro | hourFormat}}.</td>
+                            <td class="text-right">
+                                <button class="btn btn-danger btn-mn m-0" ng-if="documento.mid_nro" ng-click="removerDocumento(documento.mid_nro)">
+                                    <i class="fa fa-close"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--
+    <div ng-if="objConta.tit_fin_nro_lan && objConta.tit_fatura_seq">
+        <div class="col-md-12 col-sm-12 col-xs-12">
+            <div class="row">
+                <div class="col-sm-12">
+                    <h3 class="m-t-0">Documentos Vinculados:</h3>
+                    <button type="button" class="btn btn-default" ng-click="getFormUpload()" style="height:45px;border:1px solid #dfdfdf">
+                        <i class="glyphicon glyphicon-paperclip icon-anexo"></i>
+                    </button>
+
+                    <table class="table table-hover table-css" ng-show="objConta.tit_midia.length">
+                        <colgroup>
+                            <col width="70%">
+                            <col width="20%">
+                            <col width="10%">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>Descrição</th>
+                                <th class="text-center">Data</th>
+                                <th class="text-right">Ações</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="documento in objConta.tit_midia" style="cursor:pointer">
+                                <td ng-click="download(documento.mid_id)">{{documento.mid_descricao}}</td>
+                                <td ng-click="download(documento.mid_id)" class="text-center">{{documento.mid_dat_cadastro | dateFormat}} às {{documento.mid_dat_cadastro | hourFormat}}.</td>
+                                <td class="text-right">
+                                    <button class="btn btn-danger btn-mn m-0" ng-click="removerDocumento(documento.mid_nro)">
+                                        <i class="fa fa-close"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+-->

@@ -1,0 +1,221 @@
+
+<div ng-show="getPermissaoSol('9') && !produto.pro_cod_pro && objUsuario.ident_emp != '51728'">
+    <div class="alert alert-info media fade in no-bottom">
+        <p class="alert-texto font-small">
+            <strong>Atenção:</strong> Como sua empresa possui sistema de sincronismo a opção de cadastro de novo {{objBundleTela.labels.L002}} não está disponível.
+        </p>
+    </div>
+</div>
+
+
+<div ng-show="!getPermissaoSol('9') || produto.pro_cod_pro || objUsuario.ident_emp == '51728'">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="form-group m-b-0">
+                <label style="margin-top:8px;margin-right:12px">Este produto é inventariável?</label>
+                <label class="switch">
+                    <input class="switch-input" name="pro_eh_inventariavel" id="pro_eh_inventariavel" type="checkbox" ng-model="produto.pro_eh_inventariavel_aux">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+
+    <div class="form-validation form-horizontal form-precificacao">
+        <input type="hidden" name="pro_cod_pro" ng-model="produto.pro_cod_pro">
+
+        <!-- Definições de estoque do produto ou serviço. -->
+        <div class="col-sm-6 p-l-0 m-t-10" ng-if="pro_eh_servico === 0">
+            <div class="panel panel-grey" ng-if="(!flagEmissor || flagEcommerce)">
+                <div class="panel-header panel-controls">
+                    <h3 class="title-h3">
+                        <i class="fa fa-list"></i>
+                        <strong>Estoque</strong>
+                    </h3>
+                </div>
+                <div class="panel-content">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">Estoque Atual</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" valid-number ng-disabled="getPermissaoSol('2')" onclick="this.select()" type="text" ng-model="produto.sal_atu_qtd_saldo">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">Estoque Mínimo</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" valid-number onclick="this.select()" type="text" ng-model="produto.pro_estoque_minimo">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Definições de preço do produto. -->
+        <div class="col-sm-6 p-r-0 m-t-10">
+            <div class="panel panel-grey">
+                <div class="panel-header panel-controls">
+                    <h3 class="title-h3">
+                        <i class="fa fa-list"></i>
+                        <strong>Preços</strong>
+                    </h3>
+                </div>
+                <div class="panel-content">
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">Preço Venda</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" maxlength="20" type="text" ng-model="produto.pro_preco5" ui-money-mask="mdecimals" onclick="this.select()">
+                        </div>
+                    </div>
+
+                    <div class="form-group" ng-if="::getPermissaoSol(7)">
+                        <label class="col-sm-6 control-label">Preço Anterior <small>(de)</small></label>
+                        <div class="col-sm-6">
+                            <input class="form-control" maxlength="20" type="text" ng-model="produto.pro_preco4" ui-money-mask="mdecimals" onclick="this.select()">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="col-sm-6 control-label">Preço Custo</label>
+                        <div class="col-sm-6">
+                            <input class="form-control" maxlength="20" type="text" ng-model="produto.pro_preco1" ui-money-mask="mdecimals" onclick="this.select()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12 m-t-10 p-0" ng-if="(produto.pro_cod_pro) && (!flagEmissor && !flagEcommerce)">
+            <div class="panel box-movimentacao" ng-if="produto.arr_movimentacao.length">
+                <div class="panel-header panel-controls">
+                    <h3 class="m-b-0">
+                        <i class="fa fa-inbox"></i> &nbsp; <strong>Movimentação</strong> de Estoque
+                    </h3>
+                </div>
+                <div class="panel-content panel-tab-content" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200">
+                    <table class="table table-striped font-small m-b-0">
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>DOC</th>
+                                <th>Natureza</th>
+                                <th>Descrição</th>
+                                <th class="text-right">Emis.</th>
+                                <th class="text-right">Qtde.</th>
+                                <th class="text-right">Vlr. Unit.</th>
+                                <th class="text-right">Vlr. Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in produto.arr_movimentacao" ng-class="{'text-danger': item.ite_6020_natureza == 1 || item.ite_6020_natureza == 4 || item.ite_6020_natureza == 5 || item.ite_6020_natureza == 15, 'text-success': item.ite_6020_natureza == 2 || item.ite_6020_natureza == 3 || item.ite_6020_natureza == 6 || item.ite_6020_natureza == 16, 'text-info': item.ite_6020_natureza == 99}">
+                                <td>
+                                    <small>{{item.ite_dat_lan}}</small>
+                                </td>
+                                <td>{{item.fin_doc_nro}}</td>
+                                <td>
+                                    <span ng-switch on="item.ite_6020_natureza">
+                                        <span ng-switch-when="1">
+                                            <strong>
+                                                <small>{{(item.fin_nfe_finalidade == 2) ? 'COMPLEMENTO' : 'VENDA'}}</small>
+                                            </strong>
+                                        </span>
+                                        <div ng-switch-when="2">
+                                            <strong>
+                                                <small>COMPRA</small>
+                                            </strong>
+                                        </div>
+                                        <div ng-switch-when="3">
+                                            <strong>
+                                                <small>DEV. VENDA</small>
+                                            </strong>
+                                        </div>
+                                        <div ng-switch-when="4">
+                                            <strong>
+                                                <small>DEV. COMPRA</small>
+                                            </strong>
+                                        </div>
+                                        <div ng-switch-when="5">
+                                            <strong>
+                                                <small>OUT. SAÍDAS</small>
+                                            </strong>
+                                        </div>
+                                        <div ng-switch-when="6">
+                                            <strong>
+                                                <small>OUT. ENTRADAS</small>
+                                            </strong>
+                                        </div>
+                                        <div ng-switch-when="15">
+                                            <strong>
+                                                <small>SAÍDA INSUMOS</small>
+                                            </strong>
+                                        </div>
+                                        <div ng-switch-when="16">
+                                            <strong>
+                                                <small>PROD. ENTRADA</small>
+                                            </strong>
+                                        </div>
+                                        <div ng-switch-when="99">
+                                            <strong>
+                                                <small>SAL. INICIAL</small>
+                                            </strong>
+                                        </div>
+                                    </span>
+                                </td>
+                                <td>
+                                    <span ng-switch on="item.ite_6020_natureza">
+                                        <div ng-switch-when="15">
+                                            <span tooltip-placement="top" tooltip="{{item.fin_comentario}}">
+                                                {{item.fin_comentario | strLimit:40}}
+                                            </span>
+                                        </div>
+                                        <div ng-switch-when="16">
+                                            <span tooltip-placement="top" tooltip="{{item.fin_comentario}}">
+                                                {{item.fin_comentario | strLimit:40}}
+                                            </span>
+                                        </div>
+                                        <div ng-switch-when="99">
+                                            <span get-data-anterior registro="{{produto.arr_movimentacao[1].ite_dat_lan}}"></span>
+                                        </div>
+                                        <div ng-switch-default>
+                                            <span tooltip-placement="top" tooltip="{{item.ite_cad_cod_cad}}">
+                                                {{item.ite_cad_cod_cad | strLimit:50}}
+                                            </span>
+                                        </div>
+                                    </span>
+                                </td>
+                                <td class="text-right">
+                                    <span ng-switch on="item.fin_tip_emitente">
+                                        <span ng-switch-when="P" tooltip-placement="top" tooltip="Emissão própria">
+                                            <strong>
+                                                <small>P</small>
+                                            </strong>
+                                        </span>
+                                        <span ng-switch-when="T" tooltip-placement="top" tooltip="Emissão por terceiros">
+                                            <strong>
+                                                <small>T</small>
+                                            </strong>
+                                        </span>
+                                    </span>
+                                </td>
+                                <td class="text-right">
+                                    <!-- {{item.ite_pro_qtd | toFloatDesc}} -->
+                                    <span get-estoque="item" value="{{item.ite_pro_qtd}}"></span>
+                                </td>
+                                <td class="text-right">
+                                    <span ng-if="item.ite_6020_natureza != 99">{{item.ite_vlr_uni_bruto | currency}}</span>
+                                </td>
+                                <td class="text-right">
+                                    <span ng-if="item.ite_6020_natureza != 99">{{item.ite_vlr_tot_bruto | currency}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="panel-footer text-right" style="border-top:1px solid #E2E2E2">
+                    <strong>Saldo Final:</strong> <span>{{getSaldoMovimentacao()}}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,33 @@
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <form role="form" name="forms.formInfoAdicionais" id="forms.formInfoAdicionais" class="form-validation" autocomplete="off" novalidate>
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>Informações Adicionais</strong>
+
+                    <button class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" ladda="salvarInfoAdicionaisLoading" type="button" ng-click="salvar()">
+                        <i class="fa fa-check"></i> &nbsp; Salvar
+                    </button>
+                </h4>
+            </div>
+
+            <div class="modal-body m-t-20">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group m-b-0">
+                                <label>Informações Adicionais</label>
+                                <textarea id="pro_inf_adicionais" name="pro_inf_adicionais" rows="8" cols="8" class="form-control" ng-model="objModal.ite_pro_inf_adicionais"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

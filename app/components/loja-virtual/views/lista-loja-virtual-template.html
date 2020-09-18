@@ -1,0 +1,78 @@
+
+    <!--
+    <script type="text/javascript">
+        $('.maphilight').maphilight();
+    </script>
+
+    <slick style="width:360px" dots="true" autoplaySpeed="3000" slides-to-show="1" slides-to-scroll="1" touch-move="false" on-after-change="slideChange()">
+        <div>
+            <input type="hidden" name="template" value="1">
+            <img alt="Template 1" src="app/images/templates/t1.png" class="maphilight" usemap="#mapt1">
+        </div>
+        <div>
+            <input type="hidden" name="template" value="2">
+            <img alt="Template 2" src="app/images/templates/t2.png" class="maphilight" usemap="#mapt2">
+        </div>
+        <div>
+            <input type="hidden" name="template" value="3">
+            <img alt="Template 3" src="app/images/templates/t3.png" class="maphilight" usemap="#mapt3">
+        </div>
+    </slick>
+    -->
+
+    <slick style="width:360px" init-onload="false" data="dataLoaded" dots="true" autoplaySpeed="3000" slides-to-show="1" slides-to-scroll="1" touch-move="false" on-after-change="slideChange()">
+        <div ng-repeat="item in arrTemplates">
+            <input type="hidden" name="template" value="{{item.id}}">
+            <img alt="Template {{item.id}}" ng-src="../app/images/templates/t{{item.id}}.png" class="maphilight" usemap="#mapt{{item.id}}">
+        </div>
+    </slick>
+
+    <map name="mapt1">
+        <area shape="rect" coords="8,4,317,20" alt="Inicio" ng-click="setParteTemplate('inicio')">
+        <area shape="rect" coords="8,20,317,70" alt="Topo" ng-click="setParteTemplate('topo')">
+        <area shape="rect" coords="8,70,317,85" alt="Menu" ng-click="setParteTemplate('menu')">
+        <area shape="rect" coords="8,85,317,190" alt="Banner Principal" ng-click="setParteTemplate('banner','A1')">
+        <area shape="rect" coords="8,190,317,436" alt="Produto" ng-click="setParteTemplate('produto')">
+        <area shape="rect" coords="8,436,317,560" alt="Banner Baixo" ng-click="setParteTemplate('banner-rodape','B1')">
+        <area shape="rect" coords="8,560,317,605" alt="Clientes" ng-click="setParteTemplate('clientes')">
+        <area shape="rect" coords="8,605,317,645" alt="Rodapé" ng-click="setParteTemplate('rodape')">
+    </map>
+
+    <map name="mapt2">
+        <area shape="rect" coords="8,4,317,20" alt="Inicio" ng-click="setParteTemplate('inicio')">
+        <area shape="rect" coords="8,20,317,70" alt="Topo" ng-click="setParteTemplate('topo')">
+        <area shape="rect" coords="8,70,317,90" alt="Menu" ng-click="setParteTemplate('menu')">
+        <area shape="rect" coords="8,90,158,230" alt="Banner Principal" ng-click="setParteTemplate('banner','A1')">
+        <area shape="rect" coords="158,90,317,230" alt="Banner Categoria" ng-click="setParteTemplate('banner-categoria','A2')">
+        <area shape="rect" coords="8,230,317,480" alt="Produto" ng-click="setParteTemplate('produto')">
+        <area shape="rect" coords="8,480,317,600" alt="Banner Baixo" ng-click="setParteTemplate('banner-rodape','B1')">
+        <area shape="rect" coords="8,600,317,650" alt="Clientes" ng-click="setParteTemplate('clientes')">
+        <area shape="rect" coords="8,650,317,745" alt="Rodapé" ng-click="setParteTemplate('rodape')">
+    </map>
+
+    <map name="mapt3">
+        <area shape="rect" coords="0,0,310,10" alt="Inicio" ng-click="setParteTemplate('inicio')">
+        <area shape="rect" coords="0,10,310,45" alt="Topo" ng-click="setParteTemplate('topo')">
+        <area shape="rect" coords="0,45,310,58" alt="Menu" ng-click="setParteTemplate('menu')">
+        <area shape="rect" coords="0,58,310,108" alt="Banner Principal" ng-click="setParteTemplate('banner','A1')">
+        <area shape="rect" coords="0,108,310,343" alt="Produto" ng-click="setParteTemplate('produto')">
+        <area shape="rect" coords="0,343,310,450" alt="Banner Baixo" ng-click="setParteTemplate('banner-rodape','B1')">
+        <area shape="rect" coords="0,450,310,488" alt="Clientes" ng-click="setParteTemplate('clientes')">
+        <area shape="rect" coords="0,488,310,576" alt="Rodapé" ng-click="setParteTemplate('rodape')">
+    </map>
+
+    <map name="mapt4">
+        <area shape="rect" coords="0,0,310,10" alt="Inicio" ng-click="setParteTemplate('inicio')">
+        <area shape="rect" coords="0,10,310,30" alt="Topo" ng-click="setParteTemplate('topo')">
+        <area shape="rect" coords="0,45,310,30" alt="Menu" ng-click="setParteTemplate('menu')">
+        <area shape="rect" coords="0,40,310,125" alt="Banner Principal" ng-click="setParteTemplate('banner','A1')">
+        <area shape="rect" coords="0,130,90,245" alt="Categoria SideBar" ng-click="setParteTemplate('categoria-sidebar','SC1')">
+        <area shape="rect" coords="0,245,90,293" alt="Cloud Word" ng-click="setParteTemplate('cloud-word','CW1')">
+        <area shape="rect" coords="0,290,90,340" alt="News Letter" ng-click="setParteTemplate('newsletter','NL1')">
+        <area shape="rect" coords="0,460,90,340" alt="Banner SideBar" ng-click="setParteTemplate('banner-sidebar','E1')">
+        <area shape="rect" coords="0,540,90,460" alt="Fotos do Instagram" ng-click="setParteTemplate('fotos-instagram')">
+        <area shape="rect" coords="90,128,310,540" alt="Produto" ng-click="setParteTemplate('produto')">
+        <area shape="rect" coords="0,540,310,595" alt="Banner Baixo" ng-click="setParteTemplate('banner-rodape','B1')">
+        <area shape="rect" coords="0,683,310,595" alt="Clientes" ng-click="setParteTemplate('clientes')">
+        <area shape="rect" coords="0,730,310,680" alt="Rodapé" ng-click="setParteTemplate('rodape')">
+    </map>

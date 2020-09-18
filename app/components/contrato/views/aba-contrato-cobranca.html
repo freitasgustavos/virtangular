@@ -1,0 +1,246 @@
+
+<div class="row">
+    <div class="col-md-3" ng-if="objContrato.ctt_tip_cobranca == 2 || objContrato.ctt_tip_cobranca == 4">
+        <div class="form-group">
+            <label for="ctt_dat_val_contrato">Data de Validade <i class="obrigatorio">*</i></label>
+            <input class="form-control" id="ctt_dat_val_contrato" placeholder="Data de validade..." ng-model="objContrato.ctt_dat_val_contrato" maxlength="10" type="text" data-mask="99/99/9999" required datepicker1>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="ctt_dat_ven">Data para Vencimento <i class="obrigatorio">*</i></label>
+            <input class="form-control" id="ctt_dat_ven" placeholder="Melhor data para vencimento..." ng-model="objContrato.ctt_dat_ven" title="Entre com a melhor data para vencimento" maxlength="10" type="text" data-mask="99/99/9999" datepicker1 ng-disabled="objContrato.ctt_cod_ctt">
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="ctt_dias_para_faturar">Dias para Faturar</label>
+            <input class="form-control" id="ctt_dias_para_faturar" placeholder="Dias para faturar..." ng-model="objContrato.ctt_dias_para_faturar" title="Dias para faturar" maxlength="2" type="text" number-only>
+        </div>
+    </div>
+
+    <div class="col-md-3" ng-if="objContrato.ctt_tip_cobranca != 1">
+        <div class="form-group m-b-0">
+            <label>Periodicidade <i class="obrigatorio">*</i></label>
+            <ui-select class="form-control" ng-model="objContrato.ctt_cod_periodicidade" theme="select2">
+                <ui-select-match placeholder="Escolha uma periodicidade...">{{$select.selected.name}}</ui-select-match>
+                <ui-select-choices repeat="item.id as item in arrPeriodicidade | filter: $select.search">
+                    <span ng-bind-html="item.name | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Vendedor</label>
+            <lv-autocomplete
+                ng-model="objContrato.strVendedor"
+                clear-input="false"
+                trigger-list="true"
+                icon-class="fa fa-user"
+                search-limit="20"
+                on-select="onSelectVendedor"
+                place-holder="Pesquise por um vendedor..."
+                string-entity="vendedor"
+                string-service="vendedor"
+                display-property="par_c01"
+                display-complement="cad_cpf_cnpj"
+                confirm-add="false"
+                string-id="autocomplete-vendedor">
+            </lv-autocomplete>
+            <input type="hidden" ng-model="objContrato.ctt_vnd_cod_vendedor">
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label>Cobranças Emitidas</label>
+            <input class="form-control" placeholder="Cobranças emitidas" type="text" readonly="readonly" ng-model="objContrato.ctt_qtde_cob_emi">
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label>Cobranças Restantes</label>
+            <input class="form-control" placeholder="Cobranças restantes" type="text" readonly="readonly" ng-model="objContrato.ctt_qtde_cob_res">
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Centro de Custo</label>
+            <lv-autocomplete
+                ng-model="objContrato.strCentroCusto"
+                clear-input="false"
+                trigger-list="true"
+                icon-class="fa fa-tag"
+                search-limit="10"
+                on-select="onSelectCentroCusto"
+                add-select-item="addCentroCusto"
+                place-holder="Pesquise por um centro de custo..."
+                string-entity="centro de custo"
+                string-service="centroCusto"
+                display-property="par_c01"
+                confirm-add="true"
+                string-id="autocomplete-centro">
+            </lv-autocomplete>
+            <input type="hidden" ng-model="objContrato.ctt_6050_cdc">
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Conta Financeira</label>
+            <lv-autocomplete
+                ng-model="objContrato.strContaFinanceira"
+                clear-input="false"
+                trigger-list="true"
+                icon-class="fa fa-bank"
+                search-limit="10"
+                on-select="onSelectContaFinanceira"
+                add-select-item="addContaFinanceira"
+                place-holder="Pesquise por uma conta financeira..."
+                string-entity="conta financeira"
+                string-service="contaFinan"
+                display-property="par_c01"
+                confirm-add="true"
+                string-id="autocomplete-conta">
+            </lv-autocomplete>
+            <input type="hidden" ng-model="objContrato.ctt_5010_conta_fin">
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Forma de Pagamento</label>
+            <lv-autocomplete
+                ng-model="objContrato.strFormaPgto"
+                clear-input="false"
+                trigger-list="true"
+                icon-class="fa fa-dollar"
+                search-limit="10"
+                on-select="onSelectFormaPgto"
+                add-select-item="addFormaPgto"
+                place-holder="Pesquise por uma forma de pagamento..."
+                string-entity="forma de pagamento"
+                string-service="formaPgto"
+                display-property="par_c01"
+                confirm-add="true"
+                string-id="autocomplete-formapgto">
+            </lv-autocomplete>
+            <input type="hidden" ng-model="objContrato.ctt_6060_forma_pagamento">
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group m-b-0">
+            <label>Emitir nota:</label>
+            <ui-select style="width:100%" ng-model="objContrato.ctt_eh_emissao_nota_fat" theme="select2">
+                <ui-select-match placeholder="Escolha uma opção...">{{$select.selected.name}}</ui-select-match>
+                <ui-select-choices repeat="emissao.id as emissao in arrEmissoes | propsFilter : {name : $select.search}">
+                    <span ng-bind-html="emissao.name | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label>Valor Total</label>
+            <div class="append-icon">
+                <input class="form-control input-total" placeholder="Valor total..." readonly="readonly" type="text" ng-model="objContrato.objServico.somaTotalLiquido" ui-money-mask="mdecimals" onclick="this.select()">
+                <i class="fa fa-money"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-12">
+        <tabset class="tab-fade-in">
+            <tab id="tab-contrato-observacao">
+                <tab-heading>Observações</tab-heading>
+                <div class="row">
+                    <div class="form-group">
+                        <label>Observação:</label>
+                        <textarea class="form-control" placeholder="Digite alguma observação..." cols="3" rows="5" ng-model="objContrato.ctt_observacao"></textarea>
+                    </div>
+                </div>
+            </tab>
+
+            <tab id="tab-contrato-historico" ng-click="listarHistorico()">
+                <tab-heading>Histórico</tab-heading>
+                <div class="row" ng-if="arrHistorico.length" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200" style="max-height:440px;min-height:440px">
+                    <div class="col-md-12 p-0">
+                        <h3 class="m-10">
+                            <i class="fa fa-history"></i>
+                            <strong>Histórico</strong> de Recorrências
+                        </h3>
+                    </div>
+                    <div class="panel-content" style="padding:10px">
+                        <table class="table table-striped font-small m-b-0">
+                            <colgroup>
+                                <col width="10%">
+                                <col width="15%">
+                                <col width="41%">
+                                <col width="14%">
+                                <col width="14%">
+                                <col width="6%">
+                            </colgroup>
+                            <thead>
+                                <tr>
+                                    <th>Contrato</th>
+                                    <th class="text-left">Parcela</th>
+                                    <th class="text-left">Descrição</th>
+                                    <th class="text-right">Dt. Pgto.</th>
+                                    <th class="text-right">Dt. Venct.</th>
+                                    <th>Pago</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in arrHistorico" class="c-pointer">
+                                    <td>{{item.ctt_cod_ctt}}</td>
+                                    <td>{{item.ctt_num_seq - 1}}/{{qtdeHistorico}}</td>
+                                    <td>
+                                        <span tooltip-placement="top" tooltip="{{item.ctt_descricao}}">{{item.ctt_descricao | strLimit : 40}}</span>
+                                    </td>
+                                    <td class="text-right">{{item.ctt_dat_pgt | dateFormat}}</td>
+                                    <td class="text-right">{{item.ctt_dat_ven | dateFormat}}</td>
+                                    <td>
+                                        <div ng-switch on="item.ctt_faturado">
+                                            <span ng-switch-when="0" class="label label-danger">NÃO</span>
+                                            <span ng-switch-when="3" class="label label-success">SIM</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="panel-footer text-right" style="border-top:1px solid #E2E2E2">
+                        <strong>Total de Recorrências:</strong> <span>{{qtdeHistorico}}</span>
+                    </div>
+                </div>
+
+                <div class="row" ng-if="!arrHistorico.length">
+                    <div class="alert alert-warning alert-fade" role="alert">
+                        <i class="fa fa-info-circle fa-2x"></i>
+                        <span class="alert-texto font-small">Nenhum registro encontrado!</span>
+                    </div>
+                </div>
+            </tab>
+        </tabset>
+    </div>
+</div>

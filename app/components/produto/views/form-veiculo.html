@@ -1,0 +1,266 @@
+
+<div class="row">
+    <div class="col-md-12" ng-if="!objTipoProduto.vei_seq">
+        <h3 class="m-t-0 m-b-20">
+            <i class="fa fa-bus"></i>
+            <span class="p-l-10">Cadastro de veículo</span>
+        </h3>
+    </div>
+
+    <div class="col-md-12" ng-if="objTipoProduto.vei_seq">
+        <h3 class="m-t-0 m-b-20">
+            <i class="fa fa-bus"></i>
+            <span class="p-l-10">
+                <span>Atualizar dados do veículo</span> &nbsp;
+                <strong class="text-primary">#{{objTipoProduto.vei_seq}}</strong>
+            </span>
+        </h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="vei_qtd_saldo">Quantidade (Saldo) <i class="obrigatorio">*</i></label>
+            <input name="vei_qtd_saldo" id="vei_qtd_saldo" class="form-control" maxlength="15" placeholder="Digite a quantidade (saldo)..." onclick="this.select()" type="text" ng-model="objTipoProduto.vei_qtd_saldo" number-only required ng-class="{true : 'form-error'}[submitted && forms.formsTipoEspecifico.vei_qtd_saldo.$invalid]">
+        </div>
+        <div ng-show="submitted || (forms.formsTipoEspecifico.vei_qtd_saldo.$invalid && !forms.formsTipoEspecifico.vei_qtd_saldo.$pristine)">
+            <p class="text-danger form-error alert1" ng-show="(forms.formsTipoEspecifico.vei_qtd_saldo.$error.required)">Digite a quantidade (saldo).</p>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="vei_chassi">Chassi</label>
+            <input name="vei_chassi" id="vei_chassi" class="form-control" maxlength="20" placeholder="Digite o chassi..." type="text" ng-model="objTipoProduto.vei_chassi">
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Tipo de Operação</label>
+            <ui-select class="form-control" ng-model="objTipoProduto.vei_tip_operacao" theme="select2">
+                <ui-select-match placeholder="Selecione o tipo de operação">{{$select.selected.nome}}</ui-select-match>
+                <ui-select-choices repeat="operacao.id as operacao in arrTipoOperacao | filter: $select.search">
+                    <span ng-bind-html="operacao.nome | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Tipo de Combustível</label>
+            <ui-select class="form-control" ng-model="objTipoProduto.vei_tip_combustivel" theme="select2">
+                <ui-select-match placeholder="Selecione o tipo de combustível">{{$select.selected.nome}}</ui-select-match>
+                <ui-select-choices repeat="combustivel.id as combustivel in arrTipoCombustivel | filter: $select.search">
+                    <span ng-bind-html="combustivel.nome | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Tipo do Veículo</label>
+            <ui-select class="form-control" ng-model="objTipoProduto.vei_tip_veiculo" theme="select2">
+                <ui-select-match placeholder="Selecione o tipo do veículo">{{$select.selected.nome}}</ui-select-match>
+                <ui-select-choices repeat="tipo.id as tipo in arrTipoVeiculo | filter: $select.search">
+                    <span ng-bind-html="tipo.nome | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Tipo de Pintura</label>
+            <ui-select class="form-control" ng-model="objTipoProduto.vei_tip_pintura" theme="select2">
+                <ui-select-match placeholder="Selecione o tipo de pintura">{{$select.selected.nome}}</ui-select-match>
+                <ui-select-choices repeat="pintura.id as pintura in arrTipoPintura | filter: $select.search">
+                    <span ng-bind-html="pintura.nome | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Espécie do Veículo</label>
+            <ui-select class="form-control" ng-model="objTipoProduto.vei_esp_veiculo" theme="select2">
+                <ui-select-match placeholder="Selecione a espécie do veículo">{{$select.selected.nome}}</ui-select-match>
+                <ui-select-choices repeat="especie.id as especie in arrEspecies | filter: $select.search">
+                    <span ng-bind-html="especie.nome | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Chassi Remarcado</label>
+            <ui-select class="form-control" ng-model="objTipoProduto.vei_cod_vin" theme="select2">
+                <ui-select-match placeholder="Selecione se o chassi é remarcado">{{$select.selected.nome}}</ui-select-match>
+                <ui-select-choices repeat="chassi.id as chassi in arrChassiRemarcado | filter: $select.search">
+                    <span ng-bind-html="chassi.nome | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Condição do Veículo</label>
+            <ui-select class="form-control" ng-model="objTipoProduto.vei_cond_veiculo" theme="select2">
+                <ui-select-match placeholder="Selecione a condição do veículo">{{$select.selected.nome}}</ui-select-match>
+                <ui-select-choices repeat="condicao.id as condicao in arrTipoCondicao | filter: $select.search">
+                    <span ng-bind-html="condicao.nome | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Restrição</label>
+            <ui-select class="form-control" ng-model="objTipoProduto.vei_tip_restricao" theme="select2">
+                <ui-select-match placeholder="Selecione o tipo de restrição">{{$select.selected.nome}}</ui-select-match>
+                <ui-select-choices repeat="restricao.id as restricao in arrTipoRestricao | filter: $select.search">
+                    <span ng-bind-html="restricao.nome | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="vei_cor_cod">Cor (Código)</label>
+            <input name="vei_cor_cod" id="vei_cor_cod" class="form-control" maxlength="10" placeholder="Digite o código da cor..." type="text" ng-model="objTipoProduto.vei_cor_cod">
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="vei_cor_descricao">Cor (Descrição)</label>
+            <input name="vei_cor_descricao" id="vei_cor_descricao" class="form-control" maxlength="50" placeholder="Digite a descrição da cor..." type="text" ng-model="objTipoProduto.vei_cor_descricao">
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Código da Cor (RENAVAM)</label>
+            <ui-select class="form-control" ng-model="objTipoProduto.vei_cor_cod_denatran" theme="select2">
+                <ui-select-match placeholder="Selecione o código da cor (RENAVAM)">{{$select.selected.nome}}</ui-select-match>
+                <ui-select-choices repeat="corCodigo.id as corCodigo in arrCoresRenavam | filter: $select.search">
+                    <span ng-bind-html="corCodigo.nome | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="vei_vlr_potencia">Potência</label>
+            <input name="vei_vlr_potencia" id="vei_vlr_potencia" class="form-control" maxlength="4" placeholder="Digite o valor da potência..." onclick="this.select()" type="text" ng-model="objTipoProduto.vei_vlr_potencia" number-only>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="vei_vlr_cilindradas">Cilindradas</label>
+            <input name="vei_vlr_cilindradas" id="vei_vlr_cilindradas" class="form-control" maxlength="4" placeholder="Digite o valor das cilindradas..." onclick="this.select()" type="text" ng-model="objTipoProduto.vei_vlr_cilindradas" number-only>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="vei_qtd_lotacao">Lotação</label>
+            <input name="vei_qtd_lotacao" id="vei_qtd_lotacao" class="form-control" maxlength="8" placeholder="Digite a lotação..." onclick="this.select()" type="text" ng-model="objTipoProduto.vei_qtd_lotacao" number-only>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="vei_cod_modelo_renavam">Código do Modelo (RENAVAM)</label>
+            <input name="vei_cod_modelo_renavam" id="vei_cod_modelo_renavam" class="form-control" maxlength="8" placeholder="Digite o código do modelo (RENAVAM)..." onclick="this.select()" type="text" ng-model="objTipoProduto.vei_cod_modelo_renavam" number-only>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="vei_vlr_peso_liq">Peso Líquido</label>
+            <input name="vei_vlr_peso_liq" id="vei_vlr_peso_liq" class="form-control" maxlength="15" placeholder="Digite o peso líquido..." onclick="this.select()" type="text" ng-model="objTipoProduto.vei_vlr_peso_liq" ui-number-mask="4">
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="vei_vlr_peso_bru">Peso Bruto</label>
+            <input name="vei_vlr_peso_bru" id="vei_vlr_peso_bru" class="form-control" maxlength="15" placeholder="Digite o peso bruto..." onclick="this.select()" type="text" ng-model="objTipoProduto.vei_vlr_peso_bru" ui-number-mask="4">
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="vei_nro_serie">Número de Série</label>
+            <input name="vei_nro_serie" id="vei_nro_serie" class="form-control" maxlength="20" placeholder="Digite o número de série..." type="text" ng-model="objTipoProduto.vei_nro_serie">
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="vei_nro_motor">Número do Motor</label>
+            <input name="vei_nro_motor" id="vei_nro_motor" class="form-control" maxlength="50" placeholder="Digite o número do motor..." type="text" ng-model="objTipoProduto.vei_nro_motor">
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="vei_vlr_cmt">Capacidade Máxima de Tração</label>
+            <input name="vei_vlr_cmt" id="vei_vlr_cmt" class="form-control" maxlength="15" placeholder="Digite o CMT..." onclick="this.select()" type="text" ng-model="objTipoProduto.vei_vlr_cmt" ui-number-mask="4">
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="vei_vlr_distancia_eixos">Distância entre Eixos</label>
+            <input name="vei_vlr_distancia_eixos" id="vei_vlr_distancia_eixos" class="form-control" maxlength="4" placeholder="Digite a distância entre os eixos..." onclick="this.select()" type="text" ng-model="objTipoProduto.vei_vlr_distancia_eixos" number-only>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="vei_ano_modelo">Ano (Modelo)</label>
+            <div class="inside-tooltip">
+                <input name="vei_ano_modelo" id="vei_ano_modelo" class="form-control" maxlength="4" placeholder="Digite o ano do modelo..." onclick="this.select()" type="text" ng-model="objTipoProduto.vei_ano_modelo" number-only>
+                <i class="fa fa-question-circle" rel="popover" popover-append-to-body="true" popover-trigger="mouseenter" popover-placement="right" popover="2017" popover-title="Exemplo:"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="vei_ano_fabricacao">Ano (Fabricação)</label>
+            <div class="inside-tooltip">
+                <input name="vei_ano_fabricacao" id="vei_ano_fabricacao" class="form-control" maxlength="4" placeholder="Digite o ano de fabricação..." onclick="this.select()" type="text" ng-model="objTipoProduto.vei_ano_fabricacao" number-only>
+                <i class="fa fa-question-circle" rel="popover" popover-append-to-body="true" popover-trigger="mouseenter" popover-placement="right" popover="2017" popover-title="Exemplo:"></i>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,50 @@
+
+<div ng-switch on="codAcaoPrincipal">
+    <!-- Padrão dos botões na tela: -->
+    <div ng-switch-when="11">
+        <button type="button" class="btn btn-primary btn-embossed" ng-click="voltarListagem()">
+            <i class="fa fa-refresh"></i> Lançamentos
+        </button>
+        <!--
+        <button type="button" class="btn btn-primary btn-embossed">
+            <i class="fa fa-chain-broken"></i> Ignorar
+        </button>
+        <button type="button" class="btn btn-primary btn-embossed">
+            <i class="glyphicon glyphicon-transfer"></i> Transferência
+        </button>
+        <button type="button" class="btn btn-primary btn-embossed">
+            <i class="glyphicon glyphicon-plus-sign"></i> Novo
+        </button>
+        -->
+    </div>
+
+    <!-- Ação para desfazer uma conciliação: -->
+    <div ng-switch-when="22">
+        <button type="button" class="btn btn-primary btn-embossed" ng-click="voltarListagem()">
+            <i class="fa fa-refresh"></i> Lançamentos
+        </button>
+        <button type="button" class="btn btn-primary btn-embossed" ladda="desfazerConciliacaoLoading" ng-click="desfazerConciliacao()">
+            <i class="fa fa-chain-broken"></i> Desfazer Conciliação
+        </button>
+    </div>
+
+    <!-- Ação para conciliação de todos os tipos de títulos por escolha do usuário: -->
+    <div ng-switch-when="99">
+        <button type="button" class="btn btn-primary btn-embossed" ng-click="voltarListagem()">
+            <i class="fa fa-refresh"></i> Lançamentos
+        </button>
+        <button type="button" class="btn btn-primary btn-embossed" ng-click="transferir()" ng-if="!objSelecionados.arrFinanceiro.length">
+            <i class="fa fa-exchange"></i> Transferência
+        </button>
+        <button type="button" class="btn btn-primary btn-embossed" ladda="salvarConciliacaoLoading" ng-click="salvarConciliacao()">
+            <i class="fa fa-chain"></i> Conciliar
+        </button>
+        <button type="button" class="btn btn-primary btn-embossed" ladda="novaConciliacaoLoading" ng-click="criarConciliacao()" ng-if="!objSelecionados.arrFinanceiro.length">
+            <i class="fa fa-plus"></i> Novo
+        </button>
+    </div>
+</div>
+
+
+
+

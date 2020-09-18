@@ -1,0 +1,47 @@
+<div class="modal-dialog">
+    <form method="POST" enctype="multipart/form-data" id="forms.formNfe" name="forms.formNfe" id="formFavicon" name="formFavicon" novalidate>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>NF-e</strong>
+
+                    <span class="pull-right">
+                        <button ng-click="atualizarDadosNfe(picFile, $event)" ladda="salvarNfeLoading" class="btn btn-primary btn-embossed  bnt-square pull-right m-r-0" type="button">
+                            <i class="fa fa-check"></i> &nbsp; Salvar
+                        </button>
+                    </span>
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-upload m-b-10">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="label-switch">Enviar Certificado:</label>
+                               <span class="btn btn-primary btn-embossed btn-file">
+                                <span class="fileinput-new">
+                                    <i class="fa fa-upload"></i> &nbsp; Escolher...
+                                </span>
+                                <input type="file" ngf-select ng-model="picFile" name="picFile" accept=".pfx">
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="label-switch">Senha <i class="obrigatorio">*</i></label>
+                                <input name="emp_nfe_pwd" id="emp_nfe_pwd" class="form-control" maxlength="255" placeholder="Digite uma senha..." type="password" ng-model="objNfe.emp_nfe_pwd">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

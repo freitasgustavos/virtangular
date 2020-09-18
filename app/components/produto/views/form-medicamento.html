@@ -1,0 +1,79 @@
+
+<div class="row">
+    <div class="col-md-12" ng-if="!objTipoProduto.lot_seq">
+        <h3 class="m-t-0 m-b-20">
+            <i class="fa fa-medkit"></i>
+            <span class="p-l-10">Cadastro de medicamento</span>
+        </h3>
+    </div>
+
+    <div class="col-md-12" ng-if="objTipoProduto.lot_seq">
+        <h3 class="m-t-0 m-b-20">
+            <i class="fa fa-medkit"></i>
+            <span class="p-l-10">
+                <span>Atualizar dados do medicamento</span> &nbsp;
+                <strong class="text-primary">#{{objTipoProduto.lot_seq}}</strong>
+            </span>
+        </h3>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="lot_lote_nro">Número do Lote</label>
+            <input name="lot_lote_nro" id="lot_lote_nro" class="form-control" maxlength="40" placeholder="Digite a número do lote..." type="text" ng-model="objTipoProduto.lot_lote_nro">
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="lot_lote_qtd">Quantidade (Lote) <i class="obrigatorio">*</i></label>
+            <input name="lot_lote_qtd" id="lot_lote_qtd" class="form-control" maxlength="15" placeholder="Digite a quantidade (lote)..." onclick="this.select()" type="text" ng-model="objTipoProduto.lot_lote_qtd" number-only>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="lot_dat_fabricacao">Data de Fabricação</label>
+            <div class="append-icon">
+                <input name="lot_dat_fabricacao" id="lot_dat_fabricacao" class="form-control" maxlength="10" placeholder="Digite a data de fabricação..." type="text" ng-model="objTipoProduto.lot_dat_fabricacao" data-mask="99/99/9999" datepicker1>
+                <i class="fa fa-calendar"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="lot_dat_validade">Data de Validade</label>
+            <div class="append-icon">
+                <input name="lot_dat_validade" id="lot_dat_validade" class="form-control" maxlength="10" placeholder="Digite a data de validade..." type="text" ng-model="objTipoProduto.lot_dat_validade" data-mask="99/99/9999" datepicker1>
+                <i class="fa fa-calendar"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="lot_qtd_saldo">Saldo em Estoque</label>
+            <input name="lot_qtd_saldo" id="lot_qtd_saldo" class="form-control" maxlength="15" placeholder="Digite a quantidade em estoque..." onclick="this.select()" type="text" ng-model="objTipoProduto.lot_qtd_saldo" required ng-class="{true : 'form-error'}[submitted && forms.formsTipoEspecifico.lot_qtd_saldo.$invalid]">
+        </div>
+        <div ng-show="submitted || (forms.formsTipoEspecifico.lot_qtd_saldo.$invalid && !forms.formsTipoEspecifico.lot_qtd_saldo.$pristine)">
+            <p class="text-danger form-error alert1" ng-show="(forms.formsTipoEspecifico.lot_qtd_saldo.$error.required)">Entre com a quantidade em estoque.</p>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label for="lot_vlr_max_consumidor">Valor Máximo (Consumidor)</label>
+            <div class="append-icon">
+                <input name="lot_vlr_max_consumidor" id="lot_vlr_max_consumidor" class="form-control" maxlength="15" placeholder="Digite o valor máximo (consumidor)..." onclick="this.select()" type="text" ng-model="objTipoProduto.lot_vlr_max_consumidor" ui-money-mask="mdecimals">
+                <i class="fa fa-money"></i>
+            </div>
+        </div>
+    </div>
+</div>

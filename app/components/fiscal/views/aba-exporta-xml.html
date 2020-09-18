@@ -1,0 +1,58 @@
+<form role="form" name="forms.formFiscalExportaXML" class="form-validation" autocomplete="off" novalidate>
+    <div class="row">
+        <div class="col-md-12 portlets">
+            <div class="panel-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="title-header">
+                            <i class="fa fa-code"></i>
+                            <strong>Exportar Dados</strong>
+                        </h3>
+
+                        <div class="control-btn">
+                            <button type="button" class="btn btn-primary btn-sm btn-tab clickright" ladda="fiscalExportaXMLLoading" ng-click="exportaXML('forms.formFiscalExportaXML')">
+                                <i class="fa fa-random"></i> Gerar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-content">
+                <div class="col-md-12 m-t-10">
+                    <h3 class="m-t-10">
+                        <span class="fa fa-code"></span>&nbsp;
+                        <strong>Exportar Notas <small>do período</small></strong>
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Data para o processamento</label>
+                                <div class="append-icon">
+                                    <input id="data-exporta-xml" name="data-exporta-xml" class="form-control" ng-model="exportarXML.periodo" ng-class="{true : 'form-error'}[submitted && forms.formFiscalExportaXML.data-exporta-xml.$invalid]" maxlength="10" placeholder="Data para processamento" type="text" monthdatepicker required>
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <div ng-show="submitted || (forms.formFiscalExportaXML.data-exporta-xml.$invalid && !forms.formFiscalExportaXML.data-exporta-xml.$pristine)">
+                                    <p class="text-danger form-error alert1" ng-show="forms.formFiscalExportaXML.data-exporta-xml.$error.required">Informe o período.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-md-offset-1">
+                            <div class="form-group">
+                                <div class="pull-right text-center">
+                                    <label class="m-t-10">Exporta PDF?</label>
+                                    <br />
+                                    <label class="switch">
+                                        <input class="switch-input" name="exporta_pdf" id="exporta_pdf" type="checkbox" ng-model="exportarXML.exporta_pdf">
+                                        <span class="switch-label" data-on="Sim" data-off="Não"></span>
+                                        <span class="switch-handle"></span>
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

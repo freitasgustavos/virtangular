@@ -1,0 +1,239 @@
+<script type="text/ng-template" id="itemTpl.html">
+    <a tabindex="-1" style="{{(match.model.id == '1#1') ? 'background-color:#1D7777;color:#fff' : ''}}">
+        <i ng-class="((match.model.id == '1#1') ? 'fa fa-plus-circle' : 'fa fa-user')"></i>
+        <span ng-bind-html="match.model.cad_nome_razao + ((match.model.cad_cpf_cnpj) ? '(' + match.model.cad_cpf_cnpj + ')' : '') | uibTypeaheadHighlight:query"></span>
+    </a>
+</script>
+
+<script type="text/ng-template" id="centroCustoTpl.html">
+    <a tabindex="-1" style="{{(match.model.id == '1#1') ? 'background-color:#1D7777;color:#fff' : ''}}">
+        <i ng-class="((match.model.id == '1#1') ? 'icon-plus' : '')"></i>
+        <span ng-bind-html="match.model.par_c01 | uibTypeaheadHighlight:query"></span>
+    </a>
+</script>
+
+<script type="text/ng-template" id="formaPagamentoTpl.html">
+    <a tabindex="-1" style="{{(match.model.id == '1#1') ? 'background-color:#1D7777;color:#fff' : ''}}">
+        <i ng-class="((match.model.id == '1#1') ? 'icon-plus' : '')"></i>
+        <span ng-bind-html="match.model.par_c01 | uibTypeaheadHighlight:query"></span>
+    </a>
+</script>
+
+<script type="text/ng-template" id="contaFinanceiraTpl.html">
+    <a tabindex="-1" style="{{(match.model.id == '1#1') ? 'background-color:#1D7777;color:#fff' : ''}}">
+        <i ng-class="((match.model.id == '1#1') ? 'icon-plus' : '')"></i>
+        <span ng-bind-html="match.model.par_c01 | uibTypeaheadHighlight:query"></span>
+    </a>
+</script>
+
+
+<div class="col-md-12">
+    <div class="form-group">
+        <label for="tit_descricao">Descrição <i class="obrigatorio">*</i></label>
+        <input class="form-control" id="tit_descricao" name="tit_descricao" placeholder="Digite a descrição..." tabindex="1" type="text" ng-model="objConta.tit_descricao" required>
+    </div>
+    <div ng-show="submitted || (forms.formFinanca.tit_descricao.$invalid && !forms.formFinanca.tit_descricao.$pristine)">
+        <p class="text-danger form-error alert1" ng-show="(forms.formFinanca.tit_descricao.$error.required)">
+            O campo descrição é de preenchimento obrigatório.
+        </p>
+    </div>
+</div>
+
+
+<div class="col-md-12">
+    <div ng-if="objPesquisa.sistema == 1 || objConta.tit_sistema == 1">
+        <div class="form-group">
+            <label>Cliente <i class="obrigatorio">*</i></label>
+            <input class="form-control" placeholder="Pesquise por um cliente..." tabindex="3" type="text"
+                   ng-model="objConta.pessoa"
+                   typeahead-focus uib-typeahead="item for item in (listarPessoa($viewValue))"
+                   typeahead-on-select="onSelectPessoa($item, $model, $label)"
+                   typeahead-template-url="itemTpl.html">
+        </div>
+        <div ng-show="submitted || (forms.formFinanca.tit_cad_cod_cad.$invalid && !forms.formFinanca.tit_cad_cod_cad.$pristine)">
+            <p class="text-danger form-error alert1" ng-show="(forms.formFinanca.tit_cad_cod_cad.$error.required)">
+                O campo cliente é de preenchimento obrigatório.
+            </p>
+        </div>
+    </div>
+
+    <div ng-if="objPesquisa.sistema == 2 || objConta.tit_sistema == 2">
+        <div class="form-group">
+            <label >Fornecedor <i class="obrigatorio">*</i></label>
+            <input class="form-control" placeholder="Pesquise por um fornecedor..." tabindex="2" type="text"
+                   ng-model="objConta.pessoa"
+                   typeahead-focus uib-typeahead="item for item in (listarPessoa($viewValue))"
+                   typeahead-on-select="onSelectPessoa($item, $model, $label)"
+                   typeahead-template-url="itemTpl.html">
+        </div>
+        <div ng-show="submitted || (forms.formFinanca.tit_cad_cod_cad.$invalid && !forms.formFinanca.tit_cad_cod_cad.$pristine)">
+            <p class="text-danger form-error alert1" ng-show="(forms.formFinanca.tit_cad_cod_cad.$error.required)">
+                O campo fornecedor é de preenchimento obrigatório.
+            </p>
+        </div>
+    </div>
+
+    <input id="tit_cad_cod_cad" name="tit_cad_cod_cad" type="hidden" ng-model="objConta.tit_cad_cod_cad" required>
+</div>
+
+
+<div class="col-md-6">
+    <div class="form-group">
+        <label>Conta Financeira</label>
+
+        <input class="form-control" placeholder="Pesquise por uma conta..." tabindex="4" type="text"
+               ng-model="objConta.contaFinanceira"
+               typeahead-focus
+               uib-typeahead="item for item in (listarContaFinanceira($viewValue))"
+               typeahead-on-select="onSelectContaFinanceira($item, $model, $label)"
+               typeahead-template-url="contaFinanceiraTpl.html">
+
+        <input type="hidden" ng-model="objConta.tit_5010_conta_fin">
+    </div>
+</div>
+
+
+<div class="col-md-6">
+    <div class="form-group">
+        <label>Centro de Custo</label>
+
+        <input class="form-control" placeholder="Pesquise por um centro de custo..." tabindex="5" type="text"
+               ng-model="objConta.centroCusto"
+               typeahead-focus
+               uib-typeahead="item for item in (listarCentroCusto($viewValue))"
+               typeahead-on-select="onSelectCentroCusto($item, $model, $label)"
+               typeahead-template-url="centroCustoTpl.html">
+
+        <input type="hidden" ng-model="objConta.tit_6050_cdc">
+    </div>
+</div>
+
+
+<div class="col-md-12">
+    <div class="form-group m-b-0">
+        <label>Observações</label>
+        <textarea class="form-control" placeholder="Digite alguma observação..." cols="3" rows="3" tabindex="6" ng-model="objConta.tit_observacao"></textarea>
+    </div>
+</div>
+
+
+<div class="col-md-12">
+    <hr>
+</div>
+
+
+<div class="col-md-10">
+    <div class="form-group">
+        <label>Forma de Pagamento</label>
+        <input class="form-control" placeholder="Pesquise por uma forma de pagamento..." tabindex="7" type="text"
+               ng-model="objConta.formaPagamento"
+               typeahead-focus uib-typeahead="item for item in (listarFormaPagamento($viewValue))"
+               typeahead-on-select="onSelectFormaPagamento($item, $model, $label)"
+               typeahead-template-url="formaPagamentoTpl.html">
+
+        <input type="hidden" ng-model="objConta.tit_6060_forma_pagamento">
+    </div>
+</div>
+
+
+<div class="col-md-2">
+    <div class="form-group">
+        <label>Situação</label><br>
+        <label class="switch switch-green" style="width:100px">
+            <input name="tit_situacao" id="tit_situacao" type="checkbox" class="switch-input" ng-model="objConta.tit_situacao_flag" ng-change="setDataAtual()">
+            <span class="switch-label" data-on="Recebido" data-off="Aberto"></span>
+            <span class="switch-handle"></span>
+        </label>
+    </div>
+</div>
+
+
+<div class="col-md-9 p-l-0 p-r-0">
+    <div class="col-md-5">
+        <div class="form-group">
+            <label>Data de Emissão</label>
+            <div class="append-icon">
+                <input class="form-control" maxlength="10" placeholder="Data de emissão..." type="text" tabindex="8" ng-model="objConta.tit_dat_lan" data-mask="99/99/9999" datepicker1>
+                <i class="fa fa-calendar"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="form-group">
+            <label>Sub-total</label>
+            <div class="append-icon">
+                <input class="form-control" placeholder="Sub-total..." type="text" tabindex="11" ng-model="objConta.tit_doc_vlr_bruto" ui-money-mask="mdecimals" ng-change="calcular()">
+                <i class="fa fa-money"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="form-group">
+            <label>Data de Vencimento</label>
+            <div class="append-icon">
+                <input class="form-control" maxlength="10" placeholder="Data de vencimento..." type="text" tabindex="9" tabindex="9" ng-model="objConta.tit_dat_vct" data-mask="99/99/9999" datepicker1>
+                <i class="fa fa-calendar"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="form-group">
+            <label>Descontos</label>
+            <div class="append-icon">
+                <input class="form-control" placeholder="Descontos..." type="text" tabindex="12" ng-model="objConta.tit_doc_vlr_descontos" ui-money-mask="mdecimals" ng-change="calcular()">
+                <i class="fa fa-money"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="form-group">
+            <label>{{objTela.descDataSistema}}</label>
+            <div class="append-icon">
+                <input class="form-control" maxlength="10" placeholder="{{objTela.descDataSistema}}..." type="text" tabindex="10" ng-model="objConta.tit_dat_pgt" data-mask="99/99/9999" datepicker1>
+                <i class="fa fa-calendar"></i>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-5">
+        <div class="form-group">
+            <label>Acréscimos</label>
+            <div class="append-icon">
+                <input class="form-control" placeholder="Acréscimos..." type="text" tabindex="13" ng-model="objConta.tit_doc_vlr_despesas" ui-money-mask="mdecimals" ng-change="calcular()">
+                <i class="fa fa-money"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-3">
+    <div class="widget-infobox sample-show-hide" style="float:none">
+        <div class="col-xs-8 infobox box-infobox">
+            <div class="left">
+                <i class="fa fa-money bg-green"></i>
+            </div>
+            <div class="right" style="position:absolute;text-align:right;width:88%">
+                <div class="txt text-right">Totalização:</div>
+                <span class="pull-left txt">
+                    {{objConta.tit_doc_vlr_bruto | currency | semCif}}
+                </span>
+
+                <span class="pull-left txt">
+                    <small>-</small> {{objConta.tit_doc_vlr_descontos | currency | semCif}}
+                </span>
+
+                <span class="pull-left txt m-b-5">
+                    <small>+</small> {{objConta.tit_doc_vlr_despesas | currency | semCif}}
+                </span>
+
+                <span class="pull-left txt sum">
+                    {{objConta.tit_doc_vlr_liquido | customCurrency | semCif}}
+                </span>
+            </div>
+        </div>
+    </div>
+</div>

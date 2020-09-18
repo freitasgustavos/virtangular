@@ -1,0 +1,427 @@
+<style type="text/css">
+    .fc-header-title h2 {
+        font-size: .3em;
+        white-space: normal !important;
+    }
+    .fc-view-month .fc-event, .fc-view-agendaWeek .fc-event {
+        font-size: 0;
+        overflow: hidden;
+        height: 2px;
+    }
+    .fc-view-agendaWeek .fc-event-vert {
+        font-size: 0;
+        overflow: hidden;
+        width: 2px !important;
+    }
+    .fc-agenda-axis {
+        width: 20px !important;
+        font-size: .7em;
+    }
+    .fc-button-content {
+        padding: 0;
+    }
+    .fc-basic-view .fc-body .fc-row {
+        min-height: 2.5em !important;
+    }
+    .fc-row  {
+        height: 30px !important;
+        max-height: 2.7em !important;
+    }
+    .fc-header-title h2 {
+        font-size: .9em;
+        white-space: normal !important;
+    }
+    .fc-view-month .fc-event, .fc-view-agendaWeek .fc-event {
+        font-size: 0;
+        overflow: hidden;
+        height: 2px;
+    }
+    .fc-view-agendaWeek .fc-event-vert {
+        font-size: 0;
+        overflow: hidden;
+        width: 2px !important;
+    }
+    .fc-agenda-axis {
+        width: 20px !important;
+        font-size: .7em;
+    }
+    .fc-button-content {
+        padding: 0;
+    }
+    .fc-content {
+        height: 1px !important;
+    }
+    .fc-toolbar {
+        font-size: 8px !important;
+    }
+    .fc-toolbar h2 {
+        margin: 0;
+        font-size: 18px !important;
+    }
+    .fc-row {
+        cursor: pointer;
+    }
+    .fc-day:hover{
+        background-color: #87d9ce;
+    }
+    .fc-content-skeleton .fc-day-number:hover{
+        background-color: #87d9ce;
+    }
+</style>
+
+<div class="row">
+    <div class="col-md-5 p-r-0">
+        <div ng-if="getPermissao('36')">
+            <div class="panel m-b-10">
+                <div class="panel-header">
+                    <h3>
+                        <i class="fa fa-line-chart"></i>
+                        <strong>Faturamento</strong>
+                    </h3>
+                    <div class="control-btn">
+                        <!-- <a href="javascript:void(0)" ng-click="hello()"><i class="icon-reload"></i></a> -->
+                        <!-- <a href="javascript:void(0)" ng-click="imprimir(1)"><i class="icon-printer"></i></a> -->
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div ng-if="opGraficoFaturamento === 'A'">
+                        <canvas
+                            id="line-faturamento"
+                            class="chart chart-line"
+                            chart-legend="true"
+                            chart-data="objGraficoFaturamentoAnual.data"
+                            chart-labels="objGraficoFaturamentoAnual.labels"
+                            chart-colors="objGraficoFaturamentoAnual.colours"
+                            chart-series="objGraficoFaturamentoAnual.series"
+                            chart-click="getFaturamentoMensal">
+                        </canvas>
+
+                        <ul class="bar-legend">
+                            <li>
+                                <span style="background-color:#619ED6"></span> {{objAnosFaturamento[0]}}
+                            </li>
+                            <li>
+                                <span style="background-color:#F3B084"></span> {{objAnosFaturamento[1]}}
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel m-b-10" ng-if="::getPermissaoSol('2') || getPermissaoSol('11')">
+                <div class="panel-header">
+                    <h3>
+                        <i class="fa fa-bar-chart"></i>
+                        <strong>Receitas <span style="text-transform:lowercase;padding:0 4px">x</span> Despesas</strong>
+                    </h3>
+                    <div class="control-btn">
+                        <!-- <a href="javascript:void(0)" ng-click="hello()"><i class="icon-reload"></i></a> -->
+                        <!-- <a href="javascript:void(0)" ng-click="imprimir(2)"><i class="icon-printer"></i></a> -->
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div ng-if="opGraficoReceitasDespesas === 'A'">
+                        <canvas
+                            id="bar"
+                            class="chart chart-bar"
+                            chart-legend="false"
+                            chart-data="objGraficoReceitasDespesasAnual.data"
+                            chart-labels="objGraficoReceitasDespesasAnual.labels"
+                            chart-colors="objGraficoReceitasDespesasAnual.colours"
+                            chart-options="objGraficoReceitasDespesasAnual.options"
+                            chart-series="objGraficoReceitasDespesasAnual.series"
+                            chart-click="getReceitasDespesasMensal">
+                        </canvas>
+
+                        <!-- Legenda colocada de maneira estática. -->
+                        <ul class="bar-legend">
+                            <li>
+                                <span style="background-color:#619ED6"></span> Receitas
+                            </li>
+                            <li>
+                                <span style="background-color:#F3B084"></span> Despesas
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel m-b-10" ng-if="::getPermissaoSol('2') || getPermissaoSol('10') || getPermissaoSol('11')">
+                <div class="panel-header">
+                    <h3>
+                        <i class="fa fa-bar-chart"></i>
+                        <strong>Centros de Custo</strong>
+                    </h3>
+                    <div class="control-btn">
+                        <select ng-model="objFiltro.tipo" ng-change="getGraficoCentroCusto()">
+                            <option ng-selected="{{$index == objFiltro.tipo}}" ng-repeat="tipo in objTipos" value="{{$index}}">
+                                {{tipo}}
+                            </option>
+                        </select>
+                        <select ng-model="objFiltro.mes" ng-change="getGraficoCentroCusto()" style="margin-left:10px">
+                            <option ng-selected="{{$index == objFiltro.mes}}" ng-repeat="item in objMeses" value="{{$index}}">
+                                {{item}}
+                            </option>
+                        </select>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <div ng-if="objGraficoCentroCusto.error">
+                        <div class="alert alert-warning font-small" role="alert">
+                            <strong>Atenção:</strong> Não existem dados para gerar o gráfico para o mês escolhido!
+                        </div>
+                    </div>
+                    <div ng-if="!objGraficoCentroCusto.error">
+                        <canvas id="bar-centro-custo"
+                            class="chart-horizontal-bar"
+                            chart-legend="false"
+                            chart-data="objGraficoCentroCusto.data"
+                            chart-labels="objGraficoCentroCusto.labels"
+                            chart-series="objGraficoCentroCusto.series"
+                            chart-colors="objGraficoCentroCusto.colours"
+                            chart-options="objGraficoCentroCusto.options"
+                            chart-click="getCentroCusto">
+                        </canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3 p-r-10 p-l-10">
+        <div ng-if="getPermissao('36')">
+            <div class="panel m-b-10 box-home-grafico" ng-if="::getPermissaoSol('2') || getPermissaoSol('11')">
+                <div class="panel-header">
+                    <h3>
+                        <span class="font-titulo">
+                            <i class="fa fa-pie-chart"></i>
+                            <span>Saldo das Contas</span>
+                        </span>
+                        <small class="font-total" ng-if="objContasFinanceiras.length">
+                            Totalização {{vlrGraficoSaldo | currency}}
+                        </small>
+                    </h3>
+                    <div class="control-btn">
+                        <!-- <a href="javascript:void(0)" ng-click="hello()"><i class="icon-reload"></i></a> -->
+                        <a href="javascript:void(0)" ng-click="imprimir(3)"><i class="fa fa-print"></i></a>
+                    </div>
+                </div>
+                <div class="panel-content">
+                    <canvas
+                        id="pie-saldo"
+                        class="chart chart-pie"
+                        chart-data="objGraficoSaldo.data"
+                        chart-labels="objGraficoSaldo.labels"
+                        chart-colors="objGraficoSaldo.colours"
+                        chart-options="objGraficoSaldo.options">
+                    </canvas>
+
+                    <div ng-if="objLegendaSaldo.length">
+                        <ul class="legenda">
+                            <li ng-repeat="item in objLegendaSaldo">
+                                <div class="box-item-legenda">
+                                    <span ng-style="{'background-color' : item.gra_hexa_cor}"></span> {{item.gra_descricao}}
+                                </div>
+                                <div class="box-item-legenda">
+                                    <strong>{{item.gra_vlr_saldo | customCurrency}}</strong>
+                                    <small style="margin-left:5px">({{item.gra_vlr_porcentagem}}%)</small>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel m-b-10 box-home-grafico" ng-if="::getPermissaoSol('2') || getPermissaoSol('11')">
+                <div class="panel-header">
+                    <h3>
+                        <span class="font-titulo">
+                            <i class="fa fa-pie-chart"></i>
+                            <span>Vendedores</span>
+                        </span>
+                        <div class="control-btn">
+                            <select ng-model="objFiltro.mes" ng-change="getGraficoVendedor()" style="margin-left:10px">
+                                <option ng-selected="{{$index == objFiltro.mes}}" ng-repeat="item in objMeses" value="{{$index}}">
+                                    {{item}}
+                                </option>
+                            </select>
+                        </div>
+                        <small class="font-total" ng-if="objVendedores.length">
+                            Totalização {{vlrGraficoVendedor | currency}}
+                        </small>
+                    </h3>
+                </div>
+                <div class="panel-content">
+                    <div ng-if="objGraficoVendedor.error">
+                        <div class="alert alert-warning font-small" role="alert">
+                            <strong>Atenção:</strong> Não existem dados para geração do gráfico!
+                        </div>
+                    </div>
+
+                    <div ng-if="!objGraficoVendedor.error">
+                        <canvas
+                            id="pie-vendedor"
+                            class="chart chart-pie"
+                            chart-data="objGraficoVendedor.data"
+                            chart-labels="objGraficoVendedor.labels"
+                            chart-colors="objGraficoVendedor.colours"
+                            chart-options="objGraficoVendedor.options">
+                        </canvas>
+
+                        <div ng-if="objLegendaVendedor.length">
+                            <ul class="legenda">
+                                <li ng-repeat="item in objLegendaVendedor">
+                                    <div class="box-item-legenda">
+                                        <span ng-style="{'background-color' : item.gra_hexa_cor}"></span> {{item.gra_descricao}}
+                                    </div>
+                                    <div class="box-item-legenda">
+                                        <strong>{{item.gra_vlr_total | customCurrency}}</strong>
+                                        <small style="margin-left:5px">({{item.gra_vlr_porcentagem}}%)</small>
+                                    </div>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 p-l-0" ng-if="::getPermissaoSol('2') || getPermissaoSol('7') || getPermissaoSol('11')">
+        <!-- Verificar se o usuário tem o perfil para visualizar a agenda. -->
+        <div class="panel m-b-10" style="min-height:930px" ng-if="getPermissao('23')">
+            <div class="panel-header">
+                <h3>
+                    <i class="fa fa-calendar"></i>
+                    <strong>Agenda</strong>
+                </h3>
+                <div class="control-btn"></div>
+            </div>
+            <div class="panel-content">
+                <div class="row" style="margin-left:-20px">
+                    <div class=" widget-infobox" style="float:left;background-color:#eee">
+                        <div class="infobox" style="padding:0px;background-color:#eee;height:236px">
+                            <div>
+                                <div>
+                                    <div class="c-primary" style="text-align: center;font-size: 20px;">{{diaSemana}}</div>
+                                    <div class="text-center f-40 w-700">{{diaClicado}}</div>
+                                </div>
+                            </div>
+                            <div class="left">
+                                <span class="w-700 pull-left" style="padding:5px">Pagamentos:</span>
+                                <div class="f-16 w-700 text-danger" style="text-align:right">{{somaPagar | currency}}</div>
+                                <br>
+                                <span class="w-700 pull-left" style="padding:5px">Recebimentos:</span>
+                                <div class="f-16 w-700 text-success" style="text-align:right">{{somaReceber | currency}}</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div id="calendar" ui-calendar="uiConfig3.calendar" class="span8 calendar" ng-model="eventSources" calendar="calendar" style="width:65%;float:left"></div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="box-agenda-tabs">
+                        <div class="control-btn">
+                            <button type="button" class="btn btn-primary btn-sm pull-right no-right" title="Novo" ng-click="novoEvento()">
+                                <i class="fa fa-plus"></i> Novo
+                            </button>
+                        </div>
+
+                        <tabset class="tab-fade-in">
+                            <tab active="tabs2[0].active">
+                                <tab-heading>Lembretes</tab-heading>
+                                <table class="table table-hover font-small">
+                                    <tr ng-repeat="eventoDia in arrEventoDia" class="c-pointer" ng-click="novoEvento(eventoDia.ano_seq_ano)">
+                                        <td>
+                                            <span>{{eventoDia.start}}</span>
+                                        </td>
+                                        <td>
+                                            <div ng-switch="eventoDia.ano_status">
+                                                <span ng-switch-when="0">
+                                                    <i>{{eventoDia.title}}</i>
+                                                </span>
+                                                <span ng-switch-when="1">
+                                                    <strong>{{eventoDia.title}}</strong>
+                                                </span>
+                                                <span ng-switch-when="2">
+                                                    <span style="text-decoration:line-through">{{eventoDia.title}}</span>
+                                                </span>
+                                                <span ng-switch-default>
+                                                    {{eventoDia.title}}
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="label" ng-style="{'background-color' : getColor(eventoDia)}">{{eventoDia.nomeCalendario}}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="panel-content">
+                                    <div ng-if="flagLoadingLista">
+                                        <circle-spinner></circle-spinner>
+                                    </div>
+                                    <div ng-if="!arrEventoDia.length && flgMsg">
+                                        <div class="alert alert-warning alert-fade font-small" role="alert">
+                                            Você não possui lembretes neste dia!
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>
+
+                            <tab active="tabs2[1].active" >
+                                <tab-heading>Aniversariantes</tab-heading>
+                                <table class="table table-hover font-small">
+                                    <tr ng-repeat="aniversariantesDia in arrAniversarianteDia" class="c-pointer" ng-click="novoEvento(eventoDia.ano_seq_ano)">
+                                        <td>
+                                            <span>
+                                                <i class="icon-star"></i>
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <span>{{aniversariantesDia.title}}</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="panel-content">
+                                    <div ng-if="flagLoadingLista">
+                                        <circle-spinner></circle-spinner>
+                                    </div>
+                                    <div ng-if="!arrAniversarianteDia.length && flgMsg">
+                                        <div class="alert alert-warning alert-fade font-small" role="alert">
+                                            Você não possui aniversariantes neste dia!
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>
+
+                            <tab active="tabs2[2].active" ng-click="getOutrasAbas(3)">
+                                <tab-heading>Contas</tab-heading>
+                                <table class="table table-hover font-small">
+                                    <tr ng-repeat="contaDia in arrContaDia" class="c-pointer">
+                                        <td>
+                                            <span>{{contaDia.title}}</span>
+                                        </td>
+                                        <td>
+                                            <span class="label label-success" ng-if="contaDia.tipoEvento == 1">À Receber</span>
+                                            <span class="label label-danger" ng-if="contaDia.tipoEvento == 2">À Pagar</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <div class="panel-content">
+                                    <div ng-if="flagLoadingLista">
+                                        <circle-spinner></circle-spinner>
+                                    </div>
+                                    <div ng-if="!arrContaDia.length && flgMsg">
+                                        <div class="alert alert-warning alert-fade font-small" role="alert">
+                                            Você não possui contas neste dia!
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>
+                        </tabset>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

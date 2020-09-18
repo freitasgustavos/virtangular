@@ -1,0 +1,74 @@
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <form role="form" name="forms.formCategoriaMarca" id="forms.formCategoriaMarca" class="form-validation" autocomplete="off" novalidate>
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>Dados da {{objTela.entity}}</strong>
+
+                    <button class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" ladda="salvarDadosLoading" type="button" ng-click="salvarDados()">
+                        <i class="fa fa-check"></i> &nbsp; Salvar
+                    </button>
+
+                    <span ng-if="objTela.id" class="pull-right">
+                        <a class="panel-close m-r-20 btn-delete" title="Excluir" ng-click="cancelar()">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    </span>
+                </h4>
+            </div>
+
+            <div class="modal-body modal-body-overflow">
+                <div class="panel-content">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Descrição <i class="obrigatorio">*</i></label>
+                            <input name="dd_descricao" id="dd_descricao" maxlength="40" class="form-control" placeholder="Digite a descrição ..." ng-model="objDados.dd_descricao" ng-class="{true : 'form-error'}[submitted && forms.formCategoriaMarca.dd_descricao.$invalid]" style="width:100%" required type="text">
+                        </div>
+                        <div ng-show="submitted || (forms.formCategoriaMarca.dd_descricao.$invalid && !forms.formCategoriaMarca.dd_descricao.$pristine)">
+                            <p class="text-danger form-error alert1" ng-show="(forms.formCategoriaMarca.dd_descricao.$error.required)">Digite a descrição.</p>
+                        </div>
+                    </div>
+
+                    <!-- Campos existentes apenas para as marcas! -->
+                    <div ng-if="objTela.tipo === 'M'">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label style="margin-top:8px;margin-right:6px">Vitrine:</label>
+                                <label class="switch">
+                                    <input class="switch-input" name="mar_eh_vitrine" id="mar_eh_vitrine" type="checkbox" ng-model="objDados.dd_eh_vitrine_aux">
+                                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                                    <span class="switch-handle"></span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-10">
+                        <div class="form-group">
+                            <label>{{objTela.entity}} Pai</label>
+                        </div>
+                        <div class="panel-tree m-b-10">
+                            <div
+                                data-angular-treeview="true"
+                                data-tree-id="tree"
+                                data-tree-model="objTree"
+                                data-node-id="id"
+                                data-node-label="label"
+                                data-node-children="children">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer text-center">
+                <div class="col-sm-12"></div>
+            </div>
+        </form>
+    </div>
+</div>

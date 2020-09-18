@@ -1,0 +1,125 @@
+<div class="col-md-4 p-l-0 p-r-0 panel-inner-itens">
+    <treasure-overlay-spinner active="spinnerList.active">
+        <div class="panel m-b-0">
+            <div class="panel-header">
+                <div>
+                    <h3 class="m-b-20">
+                        <i class="fa fa-list"></i>
+                        Lista de <strong>Veículos</strong>
+                    </h3>
+
+                    <div class="control-btn">
+                        <div class="btn-group box-dropdown">
+                            <!--<div class="box-toggle-dropdown box-toggle-dropdown-mini">-->
+                            <!--<button type="button" class="btn btn-primary btn-sm dropdown-toggle m-r-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">-->
+                            <!--<span class="caret"></span>-->
+                            <!--</button>-->
+                            <!--<span class="dropdown-arrow"></span>-->
+                            <!--<ul class="dropdown-menu" role="menu">-->
+                            <!--<li>-->
+                            <!--<a href="javascript:void(0)" ng-click="getJanelaRelatorio()">-->
+                            <!--<i class="fa fa-print"></i> Imprimir-->
+                            <!--</a>-->
+                            <!--</li>-->
+                            <!--</ul>-->
+                            <!--</div>-->
+                            <button type="button" class="btn btn-primary btn-sm m-l-0 m-r-15" title="Novo" event-focus="click" event-focus-id="vei_cod_vei" ng-click="novoVeiculo()" style="margin-right:4px">
+                                <i class="fa fa-plus"></i> Novo
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <div class="panel no-bottom" ng-show="!veiculo.clienteSelect">
+                <div class="panel-content panel-content panel-malihu-venda p-t-0" ng-class="{'panel-venda-filtro' : hasFilter}" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200">
+                    <table class="table table-hover table-css" ng-if="arrVeiculos.length">
+                        <colgroup>
+                            <col width="10%">
+                            <col width="25%">
+                            <col width="55%">
+                            <col width="10%">
+                        </colgroup>
+                        <thead>
+                        <tr>
+                            <th>Cod.</th>
+                            <th>Placa</th>
+                            <th>Renavam</th>
+                            <th class="text-right">UF</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="v in arrVeiculos" ng-click="getVeiculo(v.vei_cod_vei)" class="c-pointer m-b-10 m-t-10">
+                            <td class="text-number">{{v.vei_cod_vei}}</td>
+                            <td class="p-r-0">{{v.vei_placa}}</td>
+                            <td class="p-r-0">{{v.vei_renavam}}</td>
+                            <td class="text-right">{{v.vei_uf_linc}}</td>
+                        </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="m-t-10 panel-total" ng-if="!arrVeiculos.length && spinnerList.active === false">
+                        <div class="alert alert-warning alert-fade" role="alert">
+                            <i class="fa fa-info-circle fa-2x"></i>
+                            <span class="alert-texto font-small">Nenhum registro encontrado!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </treasure-overlay-spinner>
+</div>
+
+
+<!-- Painel inicial com manual: -->
+<div class="col-md-8 p-r-0" ng-class="{'animated virtux' : flagTutorial === true, 'animated oculto' : flagTutorial === false}">
+    <div ng-include="'home/views/tutorial.html'"></div>
+</div>
+
+
+<!-- Painel principal com formulário de cadastro e edição: -->
+<div class="col-md-8 p-r-0" ng-class="{'animated virtux' : flagTutorial === false, 'animated oculto' : flagTutorial === true}">
+    <div class="panel">
+        <div class="panel-header panel-header-wizard">
+            <div class="btn-reset">
+                <button type="button" class="btn btn-sm btn-primary" ng-click="voltar()" style="margin-left:2px">
+                    <i class="fa fa-arrow-left"></i> Voltar
+                </button>
+            </div>
+
+            <h3 class="title-header">
+                <i class="fa fa-truck" aria-hidden="true"></i>
+                <span>Cadastro de <strong>Veículos</strong> &nbsp;&nbsp;</span>
+            </h3>
+
+            <div class="control-btn">
+                <a class="panel-close btn-delete" ng-click="cancelarVeiculo()" title="Excluir">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+
+                <div class="btn-group box-dropdown">
+                    <button type="button" class="btn btn-sm btn-primary m-l-0" ladda="salvarVeiculoLoading" ng-click="salvarVeiculo()">
+                        <i class="fa fa-check"></i> Salvar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="panel-content panel-content-venda">
+                <form class="wizard" id="forms.form_veiculo" name="forms.form_veiculo" data-style="arrow" autocomplete="off" role="form">
+                    <div class="wizard-arrow m-t-20">
+                        <div ng-if="!flagTutorial">
+                            <div ng-include="'transporte/views/aba-transporte-veiculo.html'"></div>
+                        </div>
+                    </div>
+                </form>
+
+                <footer class="box-documento">
+                </footer>
+            </div>
+
+        </div>
+    </div>
+</div>

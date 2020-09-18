@@ -1,0 +1,17 @@
+.box-total{width:100%}
+.recorte{border-bottom:1px dotted #000;width:100%}
+.box-conteudo{width:100%}
+.tbl-boleto{border-collapse:collapse;width:100%;font-family:Arial,sans-serif,Serif}
+.font-description{font-family:Arial,sans-serif,Serif;font-size:11px;line-height:24px;margin:0 0 2px 0;padding:0}
+.font-clear-title{color:#7f7f7f;font-family:Arial,sans-serif,Serif;font-size:15px}
+.font-dark{color:#333;font-size:14px}
+.font-clear{color:#7f7f7f;font-size:12px}
+.font-document{color:#7f7f7f;font-size:12px}
+.img-logomarca{height:40px;margin:0;padding:0;width:40px}
+.mr-10{margin-right:10px}
+.l1{display:block;float:left;width:100%}
+.l2{display:block;float:left;width:100%}
+.p-default{padding:10px 10px;border:1px solid #000}
+.p-header{padding:8px 8px}
+.p-footer{padding:10px 8px 0 8px;text-align:center;border:1px solid #000}
+.p-image{padding:0 8px 0 0}

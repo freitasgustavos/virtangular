@@ -1,0 +1,116 @@
+<form role="form" name="forms.formFiscalSintegra" class="form-validation" autocomplete="off" novalidate>
+    <div class="row">
+        <div class="col-md-12 portlets">
+            <div class="panel-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="title-header">
+                            <i class="fa fa-file-text-o"></i>
+                            <strong>Sintegra</strong>
+                        </h3>
+
+                        <div class="control-btn">
+                            <button type="button" class="btn btn-primary btn-sm btn-tab clickright" ladda="fiscalGerarSintegraLoading" ng-click="preparaGerarSintegra('forms.formFiscalSintegra')">
+                                <i class="fa fa-random"></i> Gerar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-content">
+                <div class="col-md-12 m-t-10">
+                    <h3 class="m-t-10">
+                        <span class="fa fa-file-o"></span>&nbsp;
+                        <strong>Movimentos de compra e venda </strong>
+                    </h3>
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Data para o processamento</label>
+                                <div class="append-icon">
+                                    <input id="data-sintegra" name="data-sintegra" class="form-control" ng-model="sintegra.dataProcessamento" ng-class="{true : 'form-error'}[submitted && forms.formFiscalSintegra.data-sintegra.$invalid]" maxlength="10" placeholder="Data para processamento" type="text" monthdatepicker required>
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <div ng-show="submitted || (forms.formFiscalSintegra.data-sintegra.$invalid && !forms.formFiscalSintegra.data-sintegra.$pristine)">
+                                    <p class="text-danger form-error alert1" ng-show="forms.formFiscalSintegra.data-sintegra.$error.required">Informe o período.</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Tipo do arquivo</label>
+                                <select class="form-control" ng-model="sintegra.tipo_arqivo">
+                                    <option ng-repeat="tipoArquivo in arrTipoArquivoSintegra" value="{{ tipoArquivo.id }}">{{ tipoArquivo.label }}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Finalidade do arquivo</label>
+
+                                <select class="form-control" ng-model="sintegra.finalidadeArquivo">
+                                    <option value="1">Normal</option>
+                                    <option value="2">Retificação Total</option>
+                                    <option value="3">Retificação Aditiva</option>
+                                    <option value="5">Desfazimento</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Gerar Inventário?</label>
+
+                                <div class="col-md-12 m-b-15">
+                                    <div class="btn-group">
+                                        <label class="btn btn-sm btn-default m-b-0" ng-model="sintegra.inventario" ng-click="setGerarInventario(1)" btn-radio="1">Sim</label>
+                                        <label class="btn btn-sm btn-default m-b-0" ng-model="sintegra.inventario" ng-click="setGerarInventario(0)" btn-radio="0">Não</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Log de retorno da API -->
+                <div class="row" ng-if="logError">
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h3 class="m-20 m-r-0 m-l-0">Ocorreram <strong>{{ logError.length }} erros</strong> ao gerar o sintegra:</h3>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <table class="table table-striped table-bordered table-hover grid-anotacoes">
+                                <thead>
+                                <tr>
+                                    <th>Tipo</th>
+                                    <th>Mensagem</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="error in logError" ng-class="{active: isActive($index)}" class="danger fadeIn">
+                                    <td>
+                                        <div>
+                                            <span>{{error.title}}</span>
+                                        </div>
+                                    </td>
+                                    <td>
+                                        <div class="text-uppercase">
+                                            <span>{{error.msg}}</span>
+                                        </div>
+                                    </td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

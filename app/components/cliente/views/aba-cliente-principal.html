@@ -1,0 +1,409 @@
+
+<script type="text/ng-template" id="ehContribuinte.html">
+    <div class="col-md-3 p-0" style="max-width: 112px;">
+        <div class="form-group text-center">
+            <label>Contrib. ICMS</label>
+            <label class="switch" style="margin-top:-5px">
+                <input class="switch-input" name="eh_contribuinte" id="eh_contribuinte" type="checkbox" ng-model="cliente.eh_contribuinte_aux">
+                <span class="switch-label" data-on="Sim" data-off="Não"></span>
+                <span class="switch-handle"></span>
+            </label>
+        </div>
+    </div>
+</script>
+
+<script type="text/ng-template" id="retemIss.html">
+    <div ng-if="::getPermissao('37') && getPermissaoSol('16')">
+        <div class="col-md-3 p-0" style="max-width: 112px;">
+            <div class="form-group text-center">
+                <label>Retém ISS</label>
+                <label class="switch" style="margin-top:-5px">
+                    <input class="switch-input" name="retem_iss" id="retem_iss" type="checkbox" ng-model="cliente.eh_contribuinte_iss_aux">
+                    <span class="switch-label" data-on="Sim" data-off="Não"></span>
+                    <span class="switch-handle"></span>
+                </label>
+            </div>
+        </div>
+    </div>
+</script>
+
+<!-- Formulário de cadastro. -->
+<form role="form" name="forms.form1" id="form-cliente" class="form-validation" autocomplete="off" novalidate>
+    <div class="row box-upload-pessoa">
+        <div class="panel-body p-10 m-b-10">
+            <div class="text-center col-xs-3">
+                <!-- Foto na atualização. -->
+                <div class="box-upload-foto" ng-if="cliente.cad_cod_cad">
+                    <!-- Avatar como imagem. -->
+                    <div ng-if="cliente.imagem_atual == null">
+                        <img ng-src="../assets/global/images/avatars/sem_avatar2.jpg" class="img-circle img-lg" alt="{{cliente.cad_apelido_fantasia}}" style="cursor:pointer" ng-click="getFormUpload(cliente.cad_cod_cad)">
+                        <!--
+                        <div ng-if="cliente.cad_arquivo_foto != null">
+                            <img ng-src="../assets/global/images/avatars/avatar{{cliente.cad_arquivo_foto}}_big.png" class="img-circle img-lg" alt="{{cliente.cad_apelido_fantasia}}" style="cursor:pointer" ng-click="getFormUpload(cliente.cad_cod_cad)">
+                        </div>
+                        -->
+                    </div>
+
+                    <!-- Imagem via upload de foto. -->
+                    <div ng-if="cliente.imagem_atual">
+                        <img ng-src="{{imageCache}}{{cliente.imagem_atual.mid_id}}" class="img-circle img-lg" alt="{{cliente.cad_apelido_fantasia}}" style="cursor:pointer" ng-click="getFormUpload(cliente.cad_cod_cad)">
+                    </div>
+
+                    <i class="fa fa-search-plus pull-right" style="padding-right:40px"></i>
+                </div>
+
+                <!-- Foto na inserção. -->
+                <div class="box-upload-foto" ng-if="!cliente.cad_cod_cad">
+                    <img ng-src="../assets/global/images/avatars/sem_avatar2.jpg" class="img-circle img-lg" alt="{{cliente.cad_apelido_fantasia}}" style="cursor:pointer">
+                </div>
+            </div>
+
+            <div class="clearfix col-xs-9">
+                <h2 class="c-dark w-600">{{cliente.cad_nome_razao}}</h2>
+                <div class="btn-group">
+                    <label class="btn btn-sm btn-default" ng-model="cliente.cad_pf_pj" btn-radio="'1'" ng-click="trocarPessoa(1)">Física</label>
+                    <label class="btn btn-sm btn-default" ng-model="cliente.cad_pf_pj" btn-radio="'2'" ng-click="trocarPessoa(2)">Jurídica</label>
+                </div>
+                <div class="btn-group" ng-show="cliente.cad_pf_pj == 1">
+                    <label class="btn btn-sm btn-default" ng-model="cliente.cad_sexo" btn-radio="'1'" ng-click="getRandFoto(1)">Masculino</label>
+                    <label class="btn btn-sm btn-default" ng-model="cliente.cad_sexo" btn-radio="'2'" ng-click="getRandFoto(2)">Feminino</label>
+                </div>
+
+                <div ng-include="'ehContribuinte.html'"></div>
+                <div ng-include="'retemIss.html'"></div>
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="cliente.cad_pf_pj == '1'">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Nome <i class="obrigatorio">*</i></label>
+                <input id="cad_nome_razao" name="cad_nome_razao" class="form-control" maxlength="60" placeholder="Digite o Nome do {{cliente.labelTitularSingMin}}" ng-model="cliente.cad_nome_razao" ng-class="{true : 'form-error'}[submitted && forms.form1.cad_nome_razao.$invalid]" type="text" required allow-pattern="(\d|[ a-zçÇ,/-])">
+            </div>
+            <div ng-show="submitted || (forms.form1.cad_nome_razao.$invalid && !forms.form1.cad_nome_razao.$pristine)">
+                <p class="text-danger form-error alert1" ng-show="(cliente.cad_pf_pj == '1' && forms.form1.cad_nome_razao.$error.required)">Digite o nome.</p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Apelido</label>
+                <input name="cad_apelido_fantasia" class="form-control" maxlength="60" placeholder="Digite o Apelido do {{cliente.labelTitularSingMin}}" ng-model="cliente.cad_apelido_fantasia" type="text">
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="cliente.cad_pf_pj == '2'">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Razão Social <i class="obrigatorio">*</i></label>
+                <input name="cad_nome_razao" class="form-control" maxlength="60" placeholder="Digite a Razão Social" ng-model="cliente.cad_nome_razao" ng-class="{true : 'form-error'}[submitted && forms.form1.cad_nome_razao.$invalid]" required type="text" allow-pattern="(\d|[ a-zçÇ,/-])">
+            </div>
+            <div ng-show="submitted || (forms.form1.cad_nome_razao.$invalid && !forms.form1.cad_nome_razao.$pristine)">
+                <p class="text-danger form-error alert1" ng-show="forms.form1.cad_nome_razao.$error.required">Digite a Razão Social.</p>
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Nome Fantasia</label>
+                <input class="form-control" maxlength="60" placeholder="Digite o Nome Fantasia" ng-model="cliente.cad_apelido_fantasia" type="text">
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="cliente.cad_pf_pj == '1'">
+        <!-- Campos obrigatórios caso ICMS esteja TRUE para pessoa física: -->
+        <div ng-if="cliente.eh_contribuinte_aux">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>
+                        <span>CPF</span>
+                        <i class="obrigatorio">*</i>
+                    </label>
+                    <input id="cad_cpf_true" name="cad_cpf_true" type="text" maxlength="14" class="form-control" placeholder="Digite o CPF" ng-model="cliente.cad_cpf_cnpj" ng-class="{true : 'form-error'}[submitted && (forms.form1.cad_cpf_true.$invalid || forms.form1.cad_cpf_true.$error.cpf)]" required ui-br-cpf-mask>
+                </div>
+                <div ng-show="submitted || (forms.form1.cad_cpf_true.$invalid && !forms.form1.cad_cpf_true.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="forms.form1.cad_cpf_true.$error.cpf">O CPF fornecido é inválido.</p>
+                    <p class="text-danger form-error alert1" ng-show="forms.form1.cad_cpf_true.$error.required">Digite o CPF.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Produtor Rural <i class="obrigatorio">*</i></label>
+                    <input type="text" id="cad_imun" name="cad_imun" class="form-control" maxlength="14" placeholder="Produtor Rural" ng-model="cliente.cad_imun" ng-class="{true : 'form-error'}[submitted && forms.form1.cad_imun.$invalid]" required number-only>
+                </div>
+                <div ng-show="submitted || (forms.form1.cad_imun.$invalid && !forms.form1.cad_imun.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="forms.form1.cad_imun.$error.required">Digite o produtor rural.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Campos não podem ser obrigatórios caso ICMS esteja FALSE para pessoa física: -->
+        <div ng-if="!cliente.eh_contribuinte_aux">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>
+                        <span>CPF</span>
+                    </label>
+                    <input id="cad_cpf_false" name="cad_cpf_false" type="text" class="form-control" placeholder="Digite o CPF" ng-model="cliente.cad_cpf_cnpj" ng-class="{true : 'form-error'}[submitted && forms.form1.cad_cpf_false.$invalid && forms.form1.cad_cpf_false.$error.cpf]" ui-br-cpf-mask>
+                </div>
+                <div ng-show="submitted || (forms.form1.cad_cpf_false.$invalid && !forms.form1.cad_cpf_false.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="forms.form1.cad_cpf_false.$error.cpf">O CPF fornecido é inválido.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Produtor Rural</label>
+                    <input type="text" class="form-control" maxlength="20" placeholder="Produtor Rural" ng-model="cliente.cad_imun" number-only>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>RG</label>
+                <input type="text" class="form-control" maxlength="20" placeholder="Digite o RG" ng-model="cliente.cad_rg_iest" allow-pattern="(\d|[a-zçÇ,/-])">
+            </div>
+        </div>
+    </div>
+
+    <div class="row" ng-if="cliente.cad_pf_pj == '2'">
+        <!-- Campos obrigatórios caso ICMS esteja TRUE para pessoa jurídica: -->
+        <div ng-if="cliente.eh_contribuinte_aux">
+            <div class="col-md-6">
+                <div class="form-group ">
+                    <div style="height:100%">
+                        <label for="cad_cnpj_true">
+                            <span>CNPJ</span>
+                            <i class="obrigatorio">*</i>
+                        </label>
+                        <a class="pull-right" ng-show="objUsuario.is_cdl && cliente.cad_pf_pj == 2" target="_blank" href="http://www.sintegra.gov.br/">Verificar</a>
+                    </div>
+                    <div class="append-icon">
+                        <input name="cad_cnpj_true" id="cad_cnpj_true" type="text" class="form-control" placeholder="Digite o CNPJ" ng-model="cliente.cad_cpf_cnpj" ng-class="{true : 'form-error'}[submitted && (forms.form1.cad_cnpj_true.$invalid || forms.form1.cad_cnpj_true.$error.cnpj)]" required ui-br-cnpj-mask>
+                        <small class="link-append">
+                            <a ng-show="cliente.cad_pf_pj == 2" target="_blank" href="" ng-click="getDadosCadastraisReceitaWS()">Buscar</a>
+                        </small>
+                    </div>
+                </div>
+                <div ng-show="submitted || (forms.form1.cad_cnpj_true.$invalid && !forms.form1.cad_cnpj_true.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="forms.form1.cad_cnpj_true.$error.cnpj">O CNPJ fornecido é inválido.</p>
+                    <p class="text-danger form-error alert1" ng-show="forms.form1.cad_cnpj_true.$error.required">Digite o CNPJ.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Inscrição Estadual <i class="obrigatorio">*</i></label>
+                    <input type="text" id="cad_iest" name="cad_iest" class="form-control" maxlength="14" placeholder="Digite a Inscrição Estadual" ng-class="{true : 'form-error'}[submitted && forms.form1.cad_iest.$invalid]" ng-model="cliente.cad_rg_iest" number-only required allow-pattern="\d">
+                </div>
+                <div ng-show="submitted || (forms.form1.cad_iest.$invalid && !forms.form1.cad_iest.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="forms.form1.cad_iest.$error.required">Digite a inscrição estadual.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Campos não podem ser obrigatórios caso ICMS esteja FALSE para pessoa jurídica: -->
+        <div ng-if="!cliente.eh_contribuinte_aux">
+            <div class="col-md-6">
+                <div class="form-group ">
+                    <div style="height:100%">
+                        <label for="cad_cnpj_false">
+                            <span>CNPJ</span>
+                        </label>
+                        <a class="pull-right" ng-show="objUsuario.is_cdl && cliente.cad_pf_pj == 2" target="_blank" href="http://www.sintegra.gov.br/">Verificar</a>
+                    </div>
+                    <div class="append-icon">
+                        <input name="cad_cnpj_false" id="cad_cnpj_false" type="text" class="form-control" placeholder="Digite o CNPJ" ng-model="cliente.cad_cpf_cnpj" ng-class="{true : 'form-error'}[submitted && forms.form1.cad_cnpj_false.$invalid && forms.form1.cad_cnpj_false.$error.cnpj]" ui-br-cnpj-mask>
+                        <small class="link-append">
+                            <a ng-show="cliente.cad_pf_pj == 2" target="_blank" href="" ng-click="getDadosCadastraisReceitaWS()">Buscar</a>
+                        </small>
+                    </div>
+                </div>
+                <div ng-show="submitted || (forms.form1.cad_cnpj_false.$invalid && !forms.form1.cad_cnpj_false.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="forms.form1.cad_cnpj_false.$error.cnpj">O CNPJ fornecido é inválido.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Inscrição Estadual</label>
+                    <input type="text" class="form-control" maxlength="14" placeholder="Digite a Inscrição Estadual" allow-pattern="\d" ng-model="cliente.cad_rg_iest">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-3">
+            <div class="form-group">
+                <label>Inscrição Municipal</label>
+                <input type="text" class="form-control" maxlength="14" placeholder="Inscrição Municipal" ng-model="cliente.cad_imun" number-only>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row" ng-if="!isOnlyNotaFiscal">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="c-block">Tipo de Cadastro</label>
+                <lv-autocomplete
+                    ng-model="cliente.tipoCadastro"
+                    clear-input="false"
+                    trigger-list="true"
+                    icon-class="fa fa-globe"
+                    search-limit="10"
+                    on-select="onSelectTipoCadastro"
+                    add-select-item="addTipoCadastro"
+                    place-holder="Pesquise por um tipo..."
+                    string-entity="tipo de cadastro"
+                    string-service="tipoCadastro"
+                    display-property="par_c01"
+                    confirm-add="true"
+                    string-id="autocomplete-tipo">
+                </lv-autocomplete>
+
+                <input type="hidden" ng-model="cliente.cad_2040_tipo_cad">
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group form-ui-select">
+                <label>Marcações</label>
+                <ui-select multiple tagging="tagTransform" ng-model="cliente.objMarcacoes" theme="select2" style="width:100%" on-select="onSelectedMarcacao($item)">
+                    <ui-select-match placeholder="Selecione uma marcação">{{$item.name}}</ui-select-match>
+                    <ui-select-choices repeat="marca in arrMarcacoes | propsFilter: {name: $select.search}">
+                        <div ng-if="marca.isTag" ng-bind-html="marca.name + ' (novo)' | highlight: $select.search"></div>
+                        <div ng-if="!marca.isTag" ng-bind-html="marca.name | highlight: $select.search"></div>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Nome do Contato Principal</label>
+                <input type="text" class="form-control" maxlength="80" placeholder="Digite o Nome do Contato"  ng-model="cliente.contato.cto_nome">
+            </div>
+        </div>
+
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>E-mails</label>
+                <div class="profil-info">
+                    <div class="inside-tooltip">
+                        <input name="cto_email" type="text" class="form-control" maxlength="255" placeholder="Digite os E-mails de Contato" ng-model="cliente.contato.cto_email" ng-class="{true : 'form-error'}[submitted && forms.form1.cto_email.$invalid]">
+                        <i class="fa fa-question-circle c-blue" rel="popover" popover-append-to-body="true" popover-trigger="mouseenter" popover-placement="left" popover="Informe vários e-mails, basta separar por vírgula." popover-title="Dica:"></i>
+                    </div>
+                </div>
+            </div>
+            <div ng-show="submitted || (forms.form1.cto_email.$invalid && !forms.form1.cto_email.$pristine)">
+                <p class="text-danger form-error alert1" ng-show="forms.form1.cto_email.$error.email">Digite um e-mail válido.</p>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Telefone</label>
+                <input ng-if="!cliente.endereco.end_eh_exterior" name="cto_fone" type="text" class="form-control" maxlength="14" placeholder="Digite o Telefone" ng-model="cliente.contato.cto_fone" ui-br-phone-number ng-class="{true : 'form-error'}[submitted && forms.form1.cto_fone.$invalid]">
+                <input ng-if="cliente.endereco.end_eh_exterior" name="cto_fone" type="text" class="form-control" maxlength="11" placeholder="Digite o Telefone" ng-model="cliente.contato.cto_fone" number-only ng-class="{true : 'form-error'}[submitted && forms.form1.cto_fone.$invalid]">
+            </div>
+            <div ng-show="submitted || (forms.form1.cto_fone.$invalid && !forms.form1.cto_fone.$pristine)">
+                <p class="text-danger form-error alert1" ng-show="forms.form1.cto_fone.$error.brPhoneNumber">Digite um telefone válido.</p>
+            </div>
+        </div>
+
+        <div ng-if="cliente.cad_pf_pj == '1'">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Celular</label>
+                    <input ng-if="!cliente.endereco.end_eh_exterior" name="cto_celular" type="text" class="form-control" maxlength="15" placeholder="Digite o Celular" ng-model="cliente.contato.cto_celular" ui-br-phone-number ng-class="{true : 'form-error'}[submitted && forms.form1.cto_celular.$invalid]">
+                    <input ng-if="cliente.endereco.end_eh_exterior" name="cto_celular" type="text" class="form-control" maxlength="11" placeholder="Digite o Celular" ng-model="cliente.contato.cto_celular" number-only ng-class="{true : 'form-error'}[submitted && forms.form1.cto_celular.$invalid]">
+                </div>
+                <div ng-show="submitted || (forms.form1.cto_celular.$invalid && !forms.form1.cto_celular.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="forms.form1.cto_celular.$error.brPhoneNumber">Digite um celular válido.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Data de Nascimento</label>
+                    <input type="text" class="form-control" maxlength="10" placeholder="Dt. de Nascimento" ng-model="cliente.cad_dat_nascimento" data-mask="99/99/9999">
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="cliente.cad_pf_pj == '2'">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Celular</label>
+                    <input name="cto_celular" type="text" class="form-control" maxlength="15" placeholder="Digite o Celular" ng-model="cliente.contato.cto_celular" ui-br-phone-number ng-class="{true : 'form-error'}[submitted && forms.form1.cto_celular.$invalid]">
+                </div>
+                <div ng-show="submitted || (forms.form1.cto_celular.$invalid && !forms.form1.cto_celular.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="forms.form1.cto_celular.$error.brPhoneNumber">Digite um celular válido.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <input type="hidden" name="cad_cod_cad" ng-model="cliente.cad_cod_cad">
+</form>
+
+
+<!-- Listagem dos contatos. -->
+<div class="panel no-bottom">
+    <div class="control-btn" >
+        <button type="button" data-toggle="modal" class="btn btn-primary btn-sm pull-right" ng-click="getFormContato()">
+            <i class="fa fa-plus"></i> &nbsp; Novo Contato
+        </button>
+    </div>
+
+    <div class="panel-header">
+        <h3>
+            <i class="fa fa-table"></i>
+            <strong>Outros</strong> Contatos
+        </h3>
+    </div>
+
+    <div class="panel-content" ng-if="cliente.cad_cod_cad">
+        <table class="table table-striped font-small" ng-if="listaContato.length > 0">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>E-mail</th>
+                    <th>Telefone</th>
+                    <th>Celular</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="contato in listaContato" ng-click="getFormContato(contato.cto_cod_cto)" class="c-pointer">
+                    <td>
+                        <span tooltip-placement="top" tooltip="{{contato.cto_nome}}">{{contato.cto_nome | strLimit : 15}}</span>
+                    </td>
+                    <td>
+                        <span tooltip-placement="top" tooltip="{{contato.cto_email}}">{{contato.cto_email | strLimit : 15}}</span>
+                    </td>
+                    <td>
+                        <span tooltip-placement="top" tooltip="{{contato.cto_fone}}">
+                            {{contato.cto_fone}}
+                        </span>
+                    </td>
+                    <td>
+                        <span tooltip-placement="top" tooltip="{{contato.cto_celular}}">
+                            {{contato.cto_celular}}
+                        </span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

@@ -1,0 +1,104 @@
+
+<div class="row">
+    <div class="col-md-12 portlets">
+        <div class="row">
+            <div class="col-md-4" style="overflow:hidden">
+                <div class="form-group">
+                    <label>Escolha o layout do arquivo</label>
+                </div>
+            </div>
+
+            <div class="col-md-8" style="overflow:hidden">
+                <div class="form-group">
+                    <select class="form-control" ng-model="migracaoDados.layoutMigracao">
+                        <option value="0">-- SELECIONE UM LAYOUT --</option>
+                        <option value="1">SEFAZ (.txt)</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4" style="overflow:hidden">
+                <div class="form-group">
+                    <label>Selecione o arquivo</label>
+                </div>
+            </div>
+
+            <div class="col-md-8" style="overflow:hidden">
+                <div class="form-group">
+                    <!-- <input type="file" ngf-select ng-model="fileImport" on-read-file="showFileContent($fileContent)" ng-class="{true : 'form-error'}[submitted && forms.formMigracao.fileImport.$error]" required> -->
+                    <div class="form-upload">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <input class="custom-file-input" on-read-file="exibeConteudoTXT($fileContent)" type="file" ngf-select ng-model="fileImport" id="fileImport" name="fileImport" accept="*" required>
+                            </div>
+                         </div>
+                    </div>
+                    <div ng-show="submitted || (forms.formMigracao.fileImport.$invalid && !forms.formMigracao.fileImport.$pristine)">
+                        <p class="text-danger form-error alert1" ng-show="forms.formMigracao.fileImport.$error.required">Selecione um arquivo.</p>
+                    </div>
+                    <br>
+                    <div ng-if="content">
+                        <h2>Conteúdo do arquivo:</h2>
+                        <pre style="width:100%">{{content}}</pre>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--
+        <div class="row">
+            <div class="col-md-12">
+                <div class="pull-right">
+                    <button type="button" class="btn btn-primary clickright no-right" ladda="salvarEmpresaLoading" ng-click="migrarDados(fileImport, $event)">
+                        <i class="fa fa-refresh"></i> Migrar
+                    </button>
+                </div>
+            </div>
+        </div>
+        -->
+
+        <div class="row">
+            <div class="col-md-12" style="overflow:hidden">
+                <div ng-if="migracaoDados.headerArquivo.qtdRegistros">
+                    <p>Quantidade de registros lidos: <strong>{{migracaoDados.headerArquivo.qtdRegistros}}.</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12" style="overflow:hidden">
+                <div ng-if="migracaoDados.logMigracao">
+                    <h2>Andamento:</h2>
+                    <pre>{{migracaoDados.logMigracao}}</pre>
+                </div>
+            </div>
+
+            <!--
+            <div class="row" ng-show="migracaoDados.logMigracao">
+                <div class="col-xs-12">
+                    <table class="table table-hover">
+                        <thead>
+                            <tr>
+                                <th>Cliente</th>
+                                <th>Mensagem</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in migracaoDados.logRetorno" ng-class="{active: isActive($index)}" class="fadeIn">
+                                <td>
+                                    <span>{{item.nome}}</span>
+                                </td>
+                                <td>
+                                    <span>{{item.msg}}</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            -->
+        </div>
+    </div>
+</div>

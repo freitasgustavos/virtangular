@@ -1,0 +1,39 @@
+
+<div class="col-md-12">
+    <form role="form" name="forms.formAlterarSenha" id="forms.formAlterarSenha" class="form-validation" novalidate>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Senha Atual</label>
+                    <input type="password" name="usu_senha_atual" id="usu_senha_atual" class="form-control" placeholder="Digite sua senha atual" ng-model="meuPerfil.usu_senha_atual"  ng-class="{true : 'form-error'}[submitted && forms.formAlterarSenha.usu_senha_atual.$invalid]" required>
+                </div>
+                <div ng-show="submitted || (forms.formAlterarSenha.usu_senha_atual.$invalid && !forms.formAlterarSenha.usu_senha_atual.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="forms.formAlterarSenha.usu_senha_atual.$error.required">Digite sua senha atual.</p>
+                </div>
+            </div>
+         </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Nova Senha</label>
+                    <input type="password" name="usu_nova_senha" id="usu_nova_senha" class="form-control" maxlength="80" placeholder="Digite sua nova senha" ng-model="meuPerfil.usu_nova_senha" ng-class="{true : 'form-error'}[submitted && forms.formAlterarSenha.usu_nova_senha.$invalid]" required>
+                </div>
+                <div ng-show="submitted || (forms.formAlterarSenha.usu_nova_senha.$invalid && !forms.formAlterarSenha.usu_nova_senha.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="forms.formAlterarSenha.usu_nova_senha.$error.required">Digite sua nova senha.</p>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Repetir Nova Senha</label>
+                    <input type="password" name="usu_repetir_nova_senha" id="usu_repetir_nova_senha" class="form-control" placeholder="Digite novamente sua nova senha" ng-model="meuPerfil.usu_repetir_nova_senha" ng-class="{true : 'form-error'}[submitted && forms.formAlterarSenha.usu_repetir_nova_senha.$invalid]" required>
+                </div>
+                <div ng-show="submitted || (forms.formAlterarSenha.usu_repetir_nova_senha.$invalid && !forms.formAlterarSenha.usu_repetir_nova_senha.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="forms.formAlterarSenha.usu_repetir_nova_senha.$error.required">Digite novamente sua nova senha.</p>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

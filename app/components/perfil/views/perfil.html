@@ -1,0 +1,97 @@
+
+<!-- Listagem dos perfis. -->
+<div class="col-md-4 p-l-0 p-r-0">
+    <treasure-overlay-spinner active="spinnerList.active">
+        <div class="panel">
+            <div class="panel-header">
+                <h3>
+                    <i class="fa fa-list"></i>
+                    <strong>Listagem</strong> de Perfis
+                </h3>
+
+                <div class="control-btn">
+                    <button type="button" class="btn btn-primary btn-sm pull-right" ng-click="novoPerfil()" style="margin-right:2px">
+                        <i class="fa fa-plus"></i> Novo
+                    </button>
+                </div>
+
+                <form class="form-inverse space-down m-t-30" autocomplete="off" role="search">
+                    <div class="append-icon">
+                        <input type="text" class="form-control" placeholder="Pesquisar perfis..." ng-model="objFiltro.texto_perfil" ng-keyup="getPesquisar($event)">
+                        <i class="icon-magnifier"></i>
+                    </div>
+                </form>
+            </div>
+
+            <div class="panel-content panel-list" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200" style="min-height:795px;max-height:795px">
+                <div ng-include="'perfil/views/lista-perfil.html'"></div>
+            </div>
+
+            <div class="panel m-b-0" ng-if="arrPerfis.length">
+                <div class="col-md-12 box-paginacao">
+                    <div class="t-center p-10">
+                        <a ng-click="paginarPerfis()">
+                            <span>Listar mais...</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </treasure-overlay-spinner>
+</div>
+
+
+<!-- Painel inicial com manual: -->
+<div class="col-md-8 p-r-0" ng-class="{'animated virtux' : flagTutorial === true, 'animated oculto' : flagTutorial === false}">
+    <div class="panel-manual" ng-include="'home/views/tutorial.html'"></div>
+</div>
+
+
+<!-- Painel principal com formulário de cadastro e edição: -->
+<div class="col-md-8 p-r-0" ng-class="{'animated virtux' : flagTutorial === false, 'animated oculto' : flagTutorial === true}">
+    <treasure-overlay-spinner active="spinnerForm.active">
+        <div class="panel">
+            <div class="panel-header">
+                <div class="btn-reset">
+                    <button type="button" class="btn btn-sm btn-primary" ng-click="voltar()" id="btn-voltar-perfil">
+                        <i class="fa fa-arrow-left"></i> Voltar
+                    </button>
+                </div>
+
+                <h3 class="title-header">
+                    <i class="fa fa-info"></i>
+                    <strong>Dados</strong> do Perfil
+                </h3>
+
+                <div class="control-btn">
+                    <a class="panel-close btn-delete" ng-if="objPerfil.prf_cod_prf" ng-click="cancelarPerfil()" title="{{nomeBotao}}">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                    <button type="button" class="btn btn-primary btn-sm clickright no-right" ladda="salvarPerfilLoading" ng-click="salvarPerfil()">
+                        <i class="fa fa-check"></i> Salvar
+                    </button>
+                </div>
+            </div>
+
+            <div class="panel-content p-t-0" style="padding-bottom:8px">
+                <form role="form" name="forms.formPerfil" id="forms.formPerfil" class="form-validation" novalidate>
+                    <tabset class="tab-fade-in">
+                        <tab active="tabs[0].active" id="tab-perfil-principal">
+                            <tab-heading>Principal</tab-heading>
+                            <div class="panel-inner-less">
+                                <div ng-include="'perfil/views/aba-perfil-principal.html'"></div>
+                            </div>
+                        </tab>
+
+                        <tab active="tabs[1].active" id="tab-perfil-usuarios">
+                            <tab-heading>Usuários</tab-heading>
+                            <div class="panel-inner-less">
+                                <div ng-include="'perfil/views/aba-perfil-usuarios.html'"></div>
+                            </div>
+                        </tab>
+                    </tabset>
+                </form>
+            </div>
+        </div>
+    </treasure-overlay-spinner>
+</div>

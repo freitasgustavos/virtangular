@@ -1,0 +1,279 @@
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-body">
+            <h2 class="t-center">
+                <strong>TERMO DE ADESÃO AOS SERVIÇOS TÉCNICOS ESPECIALIZADOS DE EMISSÃO DE NOTAS FISCAIS ELETRÔNICAS</strong>
+            </h2>
+
+            <div class="col-md-12 p-r-10 p-l-10 m-t-10">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th colspan="2">
+                                <strong>ASSOCIADO ADERENTE: {{objEmpresa.emp_apelido_fantasia}}</strong>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td colspan="2">
+                                <strong>ENDEREÇO:</strong>
+                                <span>{{objEmpresa.emp_endereco}}, {{objEmpresa.emp_nro}}, {{objEmpresa.emp_bairro}}.</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>CNPJ/MF nº.:</strong>
+                                <span>{{objEmpresa.emp_cpf_cnpj}}</span>
+                            </td>
+                            <td>
+                                <strong>E-mail:</strong>
+                                <span>{{objEmpresa.emp_email}}</span>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td colspan="2">
+                                <strong>SÓCIO ADMINISTRADOR:</strong>
+                                <span>{{objEmpresa.emp_nome_razao}}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="col-md-12 p-r-10 p-l-10">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th colspan="2">
+                                <strong>CONTRATADA: {{objParceiro.nome}}</strong>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <strong>ENDEREÇO:</strong>
+                                <span>{{objParceiro.endereco}}.</span>
+                            </td>
+                            <td>
+                                {{objParceiro.cidade}}
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>CNPJ/MF nº.:</strong>
+                                <span>{{objParceiro.cnpj}}</span>
+                            </td>
+                            <td>
+                                <strong>Contato:</strong>
+                                <span>{{objParceiro.contato}}</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <p class="p-10 m-0">Termo de Adesão aos Serviços Técnicos Especializados na Emissão de Notas Fiscais Eletrônicas, documento que formaliza a adesão da Empresa Associada à <strong>{{objParceiro.alias}}</strong> a utilizar os benefícios do programa/software <strong>EMISSOR NFe</strong> e define as obrigações e responsabilidades entre <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> e {{objParceiro.nome}}.</p>
+
+            <p class="p-10 m-0">Para utilizar o programa Nota Fiscal Eletrônica – Nfe disponibilizado através deste site <span class="sublinhado">{{objParceiro.url_portal}}</span>, torna-se obrigatória a leitura e concordância com todos os termos abaixo e da plena capacidade civil e associativa do usuário em realizar a Adesão ao presente benefício oferecido pela {{objParceiro.alias}} através de parceria.</p>
+
+            <h3 class="t-center m-t-10">
+                <strong>Clausula I – DO OBJETO</strong>
+            </h3>
+
+            <p class="p-10 m-0">1.1 – Após o ACEITE ao presente <strong>TERMO DE ADESÃO</strong>, ficará disponibilizado ao <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> o acesso ao programa/software <strong>EMISSOR DE NOTA FISCAL ELETRÔNICA (NFe) - LOJISTA VIRTUAL</strong>, desenvolvido e disponibilizado aos Associados da {{objParceiro.alias}} através de parceria.</p>
+
+            <p class="p-10 m-0 paragrafo">1.1.2 – O <strong>Software Emissor NF-e</strong> é um programa que após acessado e criado a conta pelo contribuinte, <strong>que precisará possuir configuração de hardware e software mínima necessária</strong>, permitirá a emissão de <strong>Notas Fiscais eletrônicas (NF-e)</strong> para a correspondente Secretaria de Fazenda Estadual (SEFAZ). O Software compreende a geração do arquivo XML da Nota Fiscal eletrônica, meios para realizar a assinatura com o Certificado Digital </strong>em pleno funcionamento</strong> que o contribuinte possuir e a sua transmissão para a SEFAZ relacionada. Também permite o gerenciamento das NF-e's e o cancelamento das mesmas, a impressão do Documento Auxiliar da Nota Fiscal eletrônica (DANFE) para a circulação das mercadorias e outras funcionalidades acessórias para facilitar a criação da NF-e, tais como os cadastros de clientes, produtos e transportadoras.</p>
+
+            <p class="p-10 m-0">1.2 – O <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> poderá manifestar <span class="line-through">a</span> <strong>pela</strong> <span class="sublinhado">DESISTÊNCIA DO CONTRATO</span>, no <span class="sublinhado">prazo de 07 (sete) dias</span> a contar do seu aceite, nos termos do <span class="sublinhado">Art. 49 do Código de Defesa do Consumidor</span>, devendo a sua desistência/arrependimento ser formalizada através de campo específico no site <span class="sublinhado">{{objParceiro.url_portal}}</span>, em área destinada a este fim, dentro do prazo acima estabelecido.</p>
+
+            <p class="p-10 m-0">1.3 – Após manifestar <span class="sublinhado">o direito de arrependimento previsto no item acima, o <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> fica ciente que não poderá realizar nova</span> adesão ao programa <strong>EMISSOR DE NFe</strong>, disponibilizado pela <strong>{{objParceiro.alias}}, no prazo 03 (três) meses subsequentes a solicitação.</strong></p>
+
+            <p class="p-10 m-0">1.4 – Caso haja a prestação de serviços com valores a serem pagos à </strong>{{objParceiro.alias}}</strong>, os mesmos serão cobrados do <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> nos termos deste instrumento, mesmo havendo o exercício do direito de arrependimento pelo {{objEmpresa.emp_apelido_fantasia}}, considerando que o <strong>{{objEmpresa.emp_apelido_fantasia}} terá a oportunidade de utilizar com 01 (um) usuário e até 10 (dez) notas fiscais por mês sem qualquer custo, conforme tabela prevista na cláusula 2.1 deste contrato.</strong></p>
+
+            <p class="p-10 m-0">1.5 – Ao Associado <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> ficará disponível o presente Termo de Adesão para impressão na página do site, imediatamente após a contratação.</p>
+
+            <h3 class="t-center m-t-10">
+                <strong>Cláusula II – DO PREÇO, PAGAMENTO, UTILIZAÇÃO E DO REAJUSTE</strong>
+            </h3>
+
+            <p class="p-10 m-0">2.1 – O preço devido pelo <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> para a utilização dos serviços será conforme os planos descritos na tabela abaixo:</p>
+
+            <div class="col-md-12 p-r-10 p-l-10">
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            <th>
+                                <span>Plano de Adesão:</span> <br>
+                                <span>Emissor-NFe</span>
+                            </th>
+                            <th>Exclusivo {{objParceiro.alias}}</th>
+                            <th>Iniciante</th>
+                            <th>Básico</th>
+                            <th>Profissional</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                                <strong>Usuários</strong>
+                            </td>
+                            <td>1</td>
+                            <td>2</td>
+                            <td>5</td>
+                            <td>10</td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <strong>NFe emitidas por mês</strong>
+                            </td>
+                            <td>* Até 10</td>
+                            <td>* 100</td>
+                            <td>* 200</td>
+                            <td>* 500</td>
+                        </tr>
+                        <tr>
+                            <td>Mensalidade</td>
+                            <td>Grátis para associados {{objParceiro.alias}}</td>
+                            <td>R$ 50,00</td>
+                            <td>{{objParceiro.vlr_basico}}</td>
+                            <td>R$ 180,00</td>
+                        </tr>
+                        <tr>
+                            <td>Valor Unitário de NFe excedente</td>
+                            <td>R$ 3,00</td>
+                            <td>R$ 2,00</td>
+                            <td>R$ 1,00</td>
+                            <td>R$ 0,50</td>
+                        </tr>
+                    </tbody>
+                    <tfoot>
+                        <tr>
+                            <td colspan="5">
+                                <em>* o número de notas emitidas não é cumulativo.</em>
+                            </td>
+                        </tr>
+                    </tfoot>
+                </table>
+            </div>
+
+            <p class="p-10 m-0">2.2 – Pelos serviços objeto do presente instrumento, o <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> pagará mensalmente a <strong>{{objParceiro.alias}}</strong> o valor de acordo com o plano escolhido, apurado durante o mês de vigência de utilização do programa/software, ficando desde já pactuado entre as partes que o valor total será enviado mensalmente na fatura da <strong>{{objParceiro.alias}}</strong>.</p>
+
+            <p class="p-10 m-0">2.3 – O <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> poderá utilizar-se dos benefícios e serviços previstos neste Termo de Adesão somente enquanto permanecer associado à <strong>{{objParceiro.alias}}</strong>.</p>
+
+            <p class="p-10 m-0">2.4 – Para usufruir dos serviços e benefícios deste Termo, o <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> precisa estar adimplente com a <strong>{{objParceiro.alias}}</strong>.</p>
+
+            <p class="p-10 m-0">2.5 – O atraso no pagamento da fatura pelo prazo superior há 10 (dez) dias, contados da data do seu vencimento, autoriza a <strong>{{objParceiro.alias}}</strong>, independentemente de qualquer aviso, notificação ou interpelação, judicial e/ou extrajudicial, a suspender imediatamente os serviços objeto deste Termo de Adesão e a rescindir este instrumento, o que não implica em perdão do valor devido.</p>
+
+            <p class="p-10 m-0">2.6 – A exclusivo critério da <strong>{{objParceiro.alias}}</strong>, e somente após a quitação de todos os débitos pendentes e seus acréscimos, se restabelecerá a utilização dos serviços, no prazo de até 48 (quarenta e oito) horas após o pagamento respectivo.</p>
+
+            <p class="p-10 m-0">2.7 – O valor do serviço será reajustado anualmente e concomitantemente com o reajuste das contribuições e serviços da <strong>{{objParceiro.alias}}</strong>, podendo ainda ser reajustado a qualquer tempo mediante a verificação de majoração e elevação de tributos e contribuições, que altere a composição dos custos relativos ao objeto deste Termo de Adesão, <strong>bem como, se houver mudanças estruturais significativas na macroeconomia do país, como hiper-inflação, planos econômicos, dentre outros.</strong></p>
+
+            <p class="p-10 m-0 paragrafo">2.7.1 – Os referidos reajustes e novos valores praticados serão comunicados aos Associados com antecedência de 30 (trinta) dias e a nova tabela de valores será disponibilizada no site <span class="sublinhado">{{objParceiro.url_portal}}</span>, para ampla divulgação e conhecimento de todos, substituindo a partir de então a tabela de planos prevista no item 2.1 deste Termo de Adesão.</p>
+
+            <p class="p-10 m-0">2.8 – Em caso de atraso no pagamento, serão devidos juros de 1% (um por cento) ao mês, pro rata die, correção monetária pelo INPC e multa de 2% (dois por cento).</p>
+
+            <p class="p-10 m-0">2.9 – Caso haja migração de plano, o <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> irá pagar o valor total do novo plano a partir da data de migração do mesmo.</p>
+
+            <h3 class="t-center m-t-10">
+                <strong>Cláusula III – DA VIGÊNCIA E DA RESCISÃO</strong>
+            </h3>
+
+            <p class="p-10 m-0">3.1 – Este <span class="sublinhado">Termo de Adesão é firmado por prazo indeterminado</span>, podendo ser rescindido a qualquer momento, por qualquer das partes, sem ônus, bastando a comunicação prévia através do site <span class="sublinhado">{{objParceiro.url_portal}}</span>, com prazo mínimo de 15 (quinze) dias de antecedência.</p>
+
+            <p class="p-10 m-0">3.2 – O requerimento de falência, recuperação judicial, regime de liquidação extrajudicial ou o descumprimento de qualquer das cláusulas descritas, resolverá de imediato o presente instrumento, dispensando o cumprimento do prazo acima, <strong>salvo valores pendentes de pagamento.</strong></p>
+
+            <p class="p-10 m-0">3.3 – Na ocorrência de valores a serem pagos pela <strong>{{objEmpresa.emp_apelido_fantasia}}</strong>, estes deverão ser quitados antes da resolução final do presente termo, sob pena de incorrer a parte inadimplente, nas sanções judiciais devidas.</p>
+
+            <h3 class="t-center m-t-10">
+                <strong>Cláusula IV – DAS RESPONSABILIDADES DO {{objEmpresa.emp_apelido_fantasia}}</strong>
+            </h3>
+
+            <p class="p-10 m-0">4.1 – Compete ao <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> efetuar pontualmente o pagamento pelos serviços utilizados de emissão de Notas Fiscais Eletrônicas.</p>
+
+            <p class="p-10 m-0">4.2 – O <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> deverá estar atento aos esclarecimentos e informações disponibilizadas continuamente no site <span class="sublinhado">{{objParceiro.url_portal}}</span> e em caso de dúvida buscar auxilio no portal de atendimento disponibilizado pela <strong>CONTRATADA</strong>, para que haja sempre a adequada utilização dos serviços.</p>
+
+            <p class="p-10 m-0">4.3 – O <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> é responsável por realizar o BACKUP de suas informações cadastrais e fiscais constantes no <strong>EMISSOR-NFe</strong>, referentes às suas notas fiscais emitidas, ficando desde já esclarecido que a <strong>{{objParceiro.alias}}</strong> e sua parceira <strong>DESENVOLVEDORA</strong> do programa, não se responsabilizam pela guarda e conteúdo das informações inseridas no <em>software</em>, <strong>ressaltando, que não possuem qualquer ingerência sobre esse conteúdo, nem qualquer tipo de retenção ou manipulação.</strong></p>
+
+            <p class="p-10 m-0">4.4 – O <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> declara estar ciente que deverá guardar as informações referentes à emissão das Notas Fiscais Eletrônicas, pelo prazo previsto na legislação vigente.</p>
+
+            <p class="p-10 m-0">4.5 – O <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> está ciente de que para o correto funcionamento do <strong>EMISSOR-NFe</strong>, o mesmo deverá possuir computador e serviço de internet em perfeito funcionamento e conforme especificações previstas no Manual de Informações disponibilizado no site <span class="sublinhado">{{objParceiro.url_portal}}</span>.</p>
+
+            <p class="p-10 m-0">4.6 – A responsabilidade pelo recebimento e conhecimento dos comunicados é exclusiva do <strong>{{objEmpresa.emp_apelido_fantasia}}</strong>, portanto, é indispensável que o <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> esteja com os dados corretos e atualizados junto a <strong>{{objParceiro.alias}}</strong> e verifique constantemente seus endereços eletrônicos e o site <span class="sublinhado">{{objParceiro.url_portal}}</span>.</p>
+
+            <p class="p-10 m-0">4.7 – É igualmente da alçada do <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> deixar seu sistema de <em>anti-spam</em> configurado de modo que não interfiram no recebimento dos comunicados e materiais do Portal <span class="sublinhado">{{objParceiro.url_portal}}</span>, não sendo aceitável nenhuma escusa caso não tenha tido acesso a algum <em>e-mail</em> em virtude desse bloqueio ou filtro similar.</p>
+
+            <p class="p-10 m-0">4.8 – Ao fornecer dados e informações, o <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> se obriga a fazê-lo sempre com compromisso de veracidade e autenticidade, sob pena da aplicação das penas da lei, de indenizar a quem causar dano e de ter a conta de acesso ao site/Portal <span class="sublinhado">{{objParceiro.url_portal}}</span> excluída, ficando ainda ciente que não cabe qualquer responsabilidade a <strong>{{objParceiro.alias}}</strong> e sua parceira <strong>DESENVOLVEDORA</strong> responder por tais prejuízos.</p>
+
+            <p class="p-10 m-0">4.9 – É dever do <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> manter o sigilo dos dados de sua conta de acesso, sua senha e demais dispositivos de autenticação em relação a terceiros, não os divulgando ou compartilhando com quem quer que seja, sob pena da exclusão da conta e de ser o único responsável pelos danos que sobrevierem dessa divulgação indevida.</p>
+
+            <p class="p-10 m-0">4.10 – Caso o <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> suspeite que a confidencialidade de sua senha foi corrompida ou que houve o comprometimento de algum dispositivo de autenticação, este deverá proceder sua troca ou atualização imediatamente, evitando os transtornos e responsabilidades advindos de fato.</p>
+
+            <p class="p-10 m-0">4.11 – O <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> reconhece como válidos, legítimos e eficazes todos os atos jurídicos praticados mediante sua conta de acesso no Portal <span class="sublinhado">{{objParceiro.url_portal}}</span>, não podendo alegar repúdio quanto à forma no momento da contratação do presente serviço ou das operações realizadas posteriormente, <strong>bem como, falta de informação e esclarecimentos.</strong></p>
+
+            <p class="p-10 m-0">4.12 – O <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> se obriga a indenizar e manter a <strong>{{objParceiro.alias}}</strong> livre dos danos advindos de qualquer reivindicação ou solicitação decorrentes do mau uso da plataforma ou da violação ao presente Termo de Adesão, seja na esfera administrativa ou na esfera judicial.</p>
+
+            <p class="p-10 m-0">4.13 – Ao acessar este Portal, o <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> declara que irá respeitar todos os direitos de propriedade intelectual e os decorrentes da proteção de marcas, patentes e/ou desenhos industriais, depositados ou registrados em nome da <strong>{{objParceiro.alias}}</strong> e parceira <strong>DESENVOLVEDORA</strong> do <em>software</em>, bem como de todos os direitos referentes a terceiros que porventura estejam, ou estiveram, de alguma forma, disponíveis no Portal. O simples acesso ao Portal não confere a este qualquer direito ao uso dos nomes, títulos, palavras, frases, marcas, patentes, obras literárias, artísticas, lítero-musicais, imagens, dados e informações, dentre outras, que nele estejam ou estiveram disponíveis.</p>
+
+            <p class="p-10 m-0">4.14 – A <strong>{{objParceiro.alias}}</strong> não se responsabiliza nos casos em que houver exclusão ou modificação acidental dos dados pelo usuário ou de quem utilizar sua conta de acesso indevidamente, tal qual não possui nenhuma obrigação para restaurar os dados em seu estágio anterior.</p>
+
+            <p class="p-10 m-0">4.15 – Os valores já pagos pela utilização do programa não são passíveis de devolução, ainda que haja desistência de uso das funcionalidades pelo usuário.</p>
+
+            <p class="p-10 m-0">4.16 – É de responsabilidade do <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> o preenchimento do formulário no SIARE – Sistema Integrado de Administração da Receita Estadual, disponível no site da <strong>SECRETARIA DE FAZENDA DE MINAS GERAIS – SEFAZ/MG</strong>, através do link: <span class="sublinhado">https://www2.fazenda.mg.gov.br/sol/</span>, para que seja realizado o cadastramento e a autorização do <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> junto a SEFAZ/MG para emissão de Nota Fiscal Eletrônica.</p>
+
+            <h3 class="t-center m-t-10">
+                <strong>Cláusula V – ATENDIMENTO DO PORTAL {{objParceiro.sigla}} NFE</strong>
+            </h3>
+
+            <p class="p-10 m-0">5.1 – Caso haja alguma dúvida sobre as condições estabelecidas neste termo ou qualquer documento do website, o <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> deverá acessar o endereço eletrônico <span class="sublinhado">{{objParceiro.url_helper}}</span>.</p>
+
+            <p class="p-10 m-0">5.2 – Será disponibilizado através do endereço eletrônico <span class="sublinhado">{{objParceiro.url_portal}}</span> ao <strong>{{objEmpresa.emp_apelido_fantasia}}</strong>, em horário comercial compreendido das <strong>08 (oito) horas às 18 (dezoito) horas, de segunda a sexta-feira,</strong> exceto feriados, o canal de atendimento para dúvidas ou sugestões.</p>
+
+            <h3 class="t-center m-t-10">
+                <strong>Cláusula VI – MODIFICAÇÕES DESTE TERMOS DE ADESÃO</strong>
+            </h3>
+
+            <p class="p-10 m-0">6.1 – O presente Termo de Adesão, Uso e Condições de Navegação estão sujeitos a constante melhoria e aprimoramento. Assim, a <strong>{{objParceiro.alias}}</strong> se reserva o direito de modificar a qualquer momento, de forma unilateral, o presente documento e sua Política de Privacidade.</p>
+
+            <h3 class="t-center m-t-10">
+                <strong>Cláusula VII – DAS DISPOSIÇÕES GERAIS</strong>
+            </h3>
+
+            <p class="p-10 m-0">7.1 – A tolerância ao não cumprimento de qualquer das cláusulas aludidas do presente Termo de Adesão, configura mera liberalidade, não consistindo em novação, mas concessão especial e só para o ocorrido, não podendo a <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> invocar precedentes ou alterações das condições.</p>
+
+            <p class="p-10 m-0">7.2 – Fica desde já o <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> ciente, que tanto a <strong>{{objParceiro.alias}}</strong> quanto a <strong>DESENVOLVEDORA</strong> do programa, não são responsáveis pelo correto funcionamento dos serviços e portais, da Receita Estadual de Minas Gerais e da Receita Federal do Brasil, nem mesmo pelo computador e pelo serviço de internet do <strong>{{objEmpresa.emp_apelido_fantasia}}, bem como, indisponibilidade de sistemas, quedas de sinal de internet, dentre outros.</strong></p>
+
+            <p class="p-10 m-0">7.3 – A <strong>{{objParceiro.alias}}</strong> poderá suspender ou excluir as contas de acesso de seus Associados que descumprirem o pactuado no presente Termo de Adesão, que transgridam a lei pelo uso da plataforma <strong>EMISSOR NFe</strong> ou procedam de forma não ética.  Essa suspensão ou exclusão se dará a qualquer tempo e sem a necessidade de aviso prévio, não dando direito a nenhuma indenização ou ressarcimento, sob qualquer pretexto.</p>
+
+            <p class="p-10 m-0">7.4 – As condições contidas neste contrato não eximem, nem revogam os termos, responsabilidades e compromissos assumidos entre a <strong>{{objParceiro.alias}}</strong> e a <strong>{{objEmpresa.emp_apelido_fantasia}}</strong> no contrato de filiação, já subscrito anteriormente pelas partes, permanecendo inalteradas, e em plena vigência. <br> <br> As partes em comum acordo, elegem o foro da Comarca de Uberlândia/MG, como único competente para dirimir qualquer dúvida oriunda do presente instrumento.</p>
+
+            <p class="p-10 m-0">
+                <strong>{{objParceiro.alias}}</strong>
+                <br>
+                <strong>{{objEmpresa.emp_apelido_fantasia}}</strong>
+                <br>
+                <strong>Li todos as cláusulas e itens acima e concordo sem ressalvas.</strong>
+            </p>
+        </div>
+
+        <div class="modal-footer">
+            <div class="row">
+                <div class="col-md-6 t-left">
+                    <button type="button" class="btn btn-danger btn-embossed" ng-click="negar()" ladda="termoAdesaoNaoLoading" ng-disabled="termoAdesaoSimLoading">
+                        <span>Recusar</span>
+                    </button>
+                </div>
+                <div class="col-md-6 t-right">
+                    <button type="button" class="btn btn-default btn-embossed" ng-click="imprimir()">
+                        <span>Imprimir</span>
+                    </button>
+                    <button type="button" class="btn btn-primary btn-embossed m-r-0" ng-click="aceitar()" ladda="termoAdesaoSimLoading" ng-disabled="termoAdesaoNaoLoading">
+                        <span>Aceitar</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

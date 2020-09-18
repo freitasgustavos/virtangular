@@ -1,0 +1,125 @@
+<div class="col-md-12 form-append">
+    <div class="row">
+
+        <div class="form-group form-group-modal">
+            <label class="col-sm-3 control-label">Renavam</label>
+            <div class="col-sm-9">
+                <div ng-show="submitted || (forms.formsVeiculo.vei_renavam.$invalid && !forms.formsVeiculo.vei_renavam.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="forms.formsVeiculo.vei_renavam.$error.required">Digite o Renavam.</p>
+                </div>
+                <input name="vei_renavam" class="form-control" type="text" placeholder="Informe o Renavam..." number-only onclick="this.select()" ng-model="veiculo.vei_renavam" maxlength="11" ng-class="{true : 'form-error'}[submitted && forms.formsVeiculo.vei_renavam.$invalid]" required>
+            </div>
+        </div>
+
+        <div class="form-group form-group-modal">
+            <label class="col-sm-3 control-label">Placa</label>
+            <div class="col-sm-3">
+                <div ng-show="submitted || (forms.formsVeiculo.uf.$invalid && !forms.formsVeiculo.uf.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="forms.formsVeiculo.uf.$error.required">Informe a UF.</p>
+                </div>
+                <ui-select name="uf" ng-model="veiculo.vei_uf_linc" theme="select2" class="{{ {true : 'form-error'}[submitted && forms.formsVeiculo.uf.$invalid] }}" required>
+                    <ui-select-match placeholder="Escolha um estado...">{{$select.selected.uf}}</ui-select-match>
+                    <ui-select-choices repeat="mf.uf as mf in arrUF | filter: $select.search">
+                        <span ng-bind-html="mf.uf | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+            <div class="col-sm-6">
+                <div ng-show="submitted || (forms.formsVeiculo.vei_placa.$invalid && !forms.formsVeiculo.vei_placa.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="forms.formsVeiculo.vei_placa.$error.required">Informe a Placa.</p>
+                </div>
+                <input name="vei_placa" class="form-control" type="text" placeholder="Informe a placa..." restrict="[^a-z0-9\s]" ng-model="veiculo.vei_placa" maxlength="7" style="text-transform:uppercase" ng-class="{true : 'form-error'}[submitted && forms.formsVeiculo.vei_placa.$invalid]" required>
+            </div>
+        </div>
+
+        <div class="form-group form-group-modal">
+            <label class="col-sm-3 control-label">Chassi</label>
+            <div class="col-sm-9">
+                <div ng-show="submitted || (forms.formsVeiculo.vei_chassi.$invalid && !forms.formsVeiculo.vei_chassi.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="forms.formsVeiculo.vei_chassi.$error.required">Informe a Chassi.</p>
+                </div>
+                <input name="vei_chassi" class="form-control" type="text" placeholder="Informe o Chassi..." onclick="this.select()" ng-model="veiculo.vei_chassi" restrict="[^a-z0-9\s]" style="text-transform:uppercase" maxlength="17" ng-class="{true : 'form-error'}[submitted && forms.formsVeiculo.vei_chassi.$invalid]" required>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="m-20 m-r-0 m-l-0">Características:</h3>
+        </div>
+
+        <div class="form-group form-group-modal">
+            <label class="col-sm-3 control-label">Tipo</label>
+            <div class="col-sm-9">
+                <ui-select ng-model="veiculo.vei_tipo_veic_cte" theme="select2">
+                    <ui-select-match placeholder="Escolha o Tipo do Veículo...">{{$select.selected.nome}}</ui-select-match>
+                    <ui-select-choices repeat="tpVeic.id as tpVeic in arrTpVeic | filter: $select.search">
+                        <span ng-bind-html="tpVeic.nome | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+
+        <div class="form-group form-group-modal">
+            <label class="col-sm-3 control-label">Rodado</label>
+            <div class="col-sm-9">
+                <ui-select ng-model="veiculo.vei_tipo_rodado" theme="select2">
+                    <ui-select-match placeholder="Escolha a rodagem do veículo...">{{$select.selected.nome}}</ui-select-match>
+                    <ui-select-choices class="h-170-px" repeat="tpRodado.id as tpRodado in arrTpRodado | filter: $select.search">
+                        <span ng-bind-html="tpRodado.nome | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+
+        <div class="form-group form-group-modal">
+            <label class="col-sm-3 control-label">Carroceria</label>
+            <div class="col-sm-9">
+                <ui-select ng-model="veiculo.vei_tipo_carroc" theme="select2">
+                    <ui-select-match placeholder="Escolha a carroceria do veículo...">{{$select.selected.nome}}</ui-select-match>
+                    <ui-select-choices class="h-130-px" repeat="tpCarroceria.id as tpCarroceria in arrTpCarroceria | filter: $select.search">
+                        <span ng-bind-html="tpCarroceria.nome | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <h3 class="m-20 m-r-0 m-l-0">Carga:</h3>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="form-group form-group-modal">
+                <label>Tara</label>
+                <div ng-show="submitted || (forms.formsVeiculo.vei_tara.$invalid && !forms.formsVeiculo.vei_tara.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="forms.formsVeiculo.vei_tara.$error.required">Informe a Tara.</p>
+                </div>
+                <input name="vei_tara" class="form-control" type="text" placeholder="Informe a Tara em Kg..." number-only onclick="this.select()" ng-model="veiculo.vei_tara" maxlength="6"  ng-model="veiculo.vei_chassi" ng-class="{true : 'form-error'}[submitted && forms.formsVeiculo.vei_tara.$invalid]" required>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="form-group form-group-modal">
+                <label>Capacidade (Kg)</label>
+                <div ng-show="submitted || (forms.formsVeiculo.vei_cmkg.$invalid && !forms.formsVeiculo.vei_cmkg.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="forms.formsVeiculo.vei_cmkg.$error.required">Informe a Capacidade.</p>
+                </div>
+                <input name="vei_cmkg" class="form-control" type="text" placeholder="Informe a Capacidade em Kg..." number-only onclick="this.select()" ng-model="veiculo.vei_cmkg" maxlength="6" ng-class="{true : 'form-error'}[submitted && forms.formsVeiculo.vei_cmkg.$invalid]" required>
+            </div>
+        </div>
+
+        <div class="col-sm-4">
+            <div class="form-group form-group-modal">
+                <label>Capacidade (m³)</label>
+                <div ng-show="submitted || (forms.formsVeiculo.vei_cm3.$invalid && !forms.formsVeiculo.vei_cm3.$pristine)">
+                    <p class="text-danger form-error alert1" ng-show="forms.formsVeiculo.vei_cm3.$error.required">Informe a Capacidade.</p>
+                </div>
+                <input name="vei_cm3" class="form-control" type="text" placeholder="Informe a Capacidade em m³..." number-only onclick="this.select()" ng-model="veiculo.vei_cm3" maxlength="3" ng-class="{true : 'form-error'}[submitted && forms.formsVeiculo.vei_cmkg.$invalid]" required>
+            </div>
+        </div>
+
+    </div>
+</div>

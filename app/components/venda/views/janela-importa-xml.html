@@ -1,0 +1,64 @@
+<div class="modal-dialog modal-not-footer">
+    <form id="forms.formsImportaXML" name="forms.formsImportaXML" method="POST" autocomplete="off" role="form" novalidate>
+        <div class="modal-content">
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('reload')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    Importar arquivo <strong>XML</strong>
+
+                    <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="importaxmlLoading" ng-click="importaArquivo(XMLFile, $event)">
+                        <i class="fa fa-check"></i> &nbsp; Importar
+                    </button>
+                </h4>
+            </div>
+
+            <div class="modal-body" style="width:100%">
+                <div class="col-md-12 form-append">
+
+                    <div class="row">
+                        <div class="col-md-12 p-t-10 p-r-10">
+                            <div class="row m-t-10">
+                                <div class="col-md-4" style="overflow:hidden">
+                                    <div class="form-group">
+                                        <label>Selecione o arquivo</label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-8 p-r-10" style="overflow:hidden">
+                                    <div class="form-group">
+                                        <!-- <input type="file" ngf-select ng-model="XMLFile" on-read-file="showFileContent($fileContent)" ng-class="{true : 'form-error'}[submitted && forms.formsImportaXML.XMLFile.$error]" required> -->
+                                        <div class="form-upload">
+                                            <div class="row">
+                                                <div class="col-md-12">
+                                                    <input class="custom-file-input" type="file" ngf-select ng-model="XMLFile" id="XMLFile" name="XMLFile" accept=".xml" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div ng-show="submitted || (forms.formsImportaXML.XMLFile.$invalid && !forms.formsImportaXML.XMLFile.$pristine)">
+                                            <p class="text-danger form-error alert1" ng-show="forms.formsImportaXML.XMLFile.$error.required">Selecione um arquivo.</p>
+                                        </div>
+                                        <br>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-8">
+                                    <label>Informe o tipo de emissão da NFe Selecionada:</label>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="btn-group">
+                                        <label class="btn btn-sm btn-default" ng-model="objXml.tipo_emissao" btn-radio="'P'">Própria</label>
+                                        <label class="btn btn-sm btn-default" ng-model="objXml.tipo_emissao" btn-radio="'T'">Terceiros</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

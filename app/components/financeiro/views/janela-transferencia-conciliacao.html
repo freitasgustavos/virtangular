@@ -1,0 +1,216 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header p-b-0">
+            <h4 class="modal-title modal-title-button-sm">
+                <button type="button" class="btn btn-primary btn-embossed btn-sm pull-left m-0" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                <strong style="font-size:20px">Conciliação Bancária</strong>
+
+                <span class="pull-right">
+                    <button type="button" class="btn btn-primary btn-embossed btn-sm pull-right m-r-0" ladda="transferenciaConciliacaoModalLoading" ng-click="transferir()">
+                        <i class="fa fa-check"></i> &nbsp; Salvar
+                    </button>
+                </span>
+            </h4>
+        </div>
+
+        <div class="modal-body p-t-10" style="overflow:inherit!important">
+            <div class="panel-content">
+                <div class="col-md-12 form-append">
+                    <div class="row">
+                        <hr class="m-b-10 m-t-5">
+                    </div>
+                </div>
+
+                <div class="col-md-12 p-0">
+                    <form class="form-horizontal" method="POST" id="forms.formConciliacaoTransferenciaModal" name="forms.formConciliacaoTransferenciaModal" autocomplete="off" novalidate>
+                        <div class="row m-b-10">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label class="control-label">Cadastro <i class="obrigatorio">*</i></label>
+                                        <lv-autocomplete
+                                            ng-model="objTransferencia.pessoa"
+                                            clear-input="false"
+                                            trigger-list="true"
+                                            icon-class="fa fa-user"
+                                            search-limit="10"
+                                            on-select="onSelectPessoa"
+                                            place-holder="Pesquise por um cadastro..."
+                                            string-entity="cliente"
+                                            string-service="cliente"
+                                            display-property="cad_nome_razao"
+                                            display-complement="cad_cpf_cnpj"
+                                            confirm-add="false"
+                                            string-id="autocomplete-cadastro">
+                                        </lv-autocomplete>
+                                        <input id="tit_cad_cod_cad" name="tit_cad_cod_cad" type="hidden" ng-model="objTransferencia.tit_cad_cod_cad" required>
+
+                                        <div class="alert-small" ng-show="submitted || (forms.formConciliacaoTransferenciaModal.tit_cad_cod_cad.$invalid && !forms.formConciliacaoTransferenciaModal.tit_cad_cod_cad.$pristine)">
+                                            <p class="text-danger form-error alert1" ng-show="(forms.formConciliacaoTransferenciaModal.tit_cad_cod_cad.$error.required)">
+                                                O cadastro é um campo de preenchimento obrigatório.
+                                            </p>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <label class="control-label">Data de Lançamento</label>
+                                        <div class="append-icon">
+                                            <input class="form-control" maxlength="10" placeholder="Data de lançamento..." type="text" ng-model="objTransferencia.tit_dat_lan" data-mask="99/99/9999" datepicker1>
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-3">
+                                        <label class="control-label">Subtotal</label>
+                                        <div class="append-icon">
+                                            <input class="form-control" placeholder="Subtotal..." type="text" ng-model="objTransferencia.tit_doc_vlr_bruto" ui-money-mask="mdecimals" readonly="readonly">
+                                            <i class="fa fa-money"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m-b-10">
+                            <div class="col-sm-12 m-l-0">
+                                <label class="control-label">Descrição <i class="obrigatorio">*</i></label>
+                                <input class="form-control" id="tit_descricao" name="tit_descricao" maxlength="255" placeholder="Entre com uma descrição..." type="text" ng-model="objTransferencia.tit_descricao" required>
+
+                                <div class="alert-small" ng-show="submitted || (forms.formConciliacaoTransferenciaModal.tit_descricao.$invalid && !forms.formConciliacaoTransferenciaModal.tit_descricao.$pristine)">
+                                    <p class="text-danger form-error alert1" ng-show="forms.formConciliacaoTransferenciaModal.tit_descricao.$error.required">
+                                        Descrição é um campo obrigatório.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m-b-10">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-6 m-l-0">
+                                        <label class="control-label">
+                                            <span>Conta Financeira de Origem <i class="obrigatorio">*</i></span> &nbsp;
+                                            <small class="text-danger">(-) Despesa</small>
+                                        </label>
+
+                                        <div ng-if="objModalOpcoes.FLAG_ORIGEM">
+                                            <lv-autocomplete
+                                                ng-model="objTransferencia.contaFinanceiraOrigem"
+                                                clear-input="false"
+                                                trigger-list="true"
+                                                icon-class="fa fa-bank"
+                                                search-limit="10"
+                                                on-select="onSelectContaFinanceiraOrigem"
+                                                place-holder="Pesquise por uma conta financeira..."
+                                                string-entity="conta financeira"
+                                                string-service="contaFinan"
+                                                display-property="par_c01"
+                                                confirm-add="false"
+                                                string-id="autocomplete-conta-origem">
+                                            </lv-autocomplete>
+                                            <input type="hidden" id="tit_5010_conta_fin_origem" name="tit_5010_conta_fin_origem" ng-model="objTransferencia.tit_5010_conta_fin_origem" required>
+
+                                            <div class="alert-small" ng-show="submitted || (forms.formConciliacaoTransferenciaModal.tit_5010_conta_fin_origem.$invalid && !forms.formConciliacaoTransferenciaModal.tit_5010_conta_fin_origem.$pristine)">
+                                                <p class="text-danger form-error alert1" ng-show="(forms.formConciliacaoTransferenciaModal.tit_5010_conta_fin_origem.$error.required)">
+                                                    Conta financeira de origem é um campo de preenchimento obrigatório.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div ng-if="!objModalOpcoes.FLAG_ORIGEM">
+                                            <input class="form-control" placeholder="Pesquise por uma conta financeira.." type="text" ng-model="objTransferencia.contaFinanceiraOrigem" readonly="readonly">
+                                            <input type="hidden" name="tit_5010_conta_fin_origem" ng-model="objTransferencia.tit_5010_conta_fin_origem">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-sm-6 m-l-0">
+                                        <label class="control-label">
+                                            <span>Conta Financeira de Destino <i class="obrigatorio">*</i></span> &nbsp;
+                                            <small class="text-success">(+) Receita</small>
+                                        </label>
+
+                                        <div ng-if="objModalOpcoes.FLAG_DESTINO">
+                                            <lv-autocomplete
+                                                ng-model="objTransferencia.contaFinanceiraDestino"
+                                                clear-input="false"
+                                                trigger-list="true"
+                                                icon-class="fa fa-bank"
+                                                search-limit="10"
+                                                on-select="onSelectContaFinanceiraDestino"
+                                                place-holder="Pesquise por uma conta financeira..."
+                                                string-entity="conta financeira"
+                                                string-service="contaFinan"
+                                                display-property="par_c01"
+                                                confirm-add="false"
+                                                string-id="autocomplete-conta-destino">
+                                            </lv-autocomplete>
+                                            <input type="hidden" id="tit_5010_conta_fin_destino" name="tit_5010_conta_fin_destino" ng-model="objTransferencia.tit_5010_conta_fin_destino" required>
+
+                                            <div class="alert-small" ng-show="submitted || (forms.formConciliacaoTransferenciaModal.tit_5010_conta_fin_destino.$invalid && !forms.formConciliacaoTransferenciaModal.tit_5010_conta_fin_destino.$pristine)">
+                                                <p class="text-danger form-error alert1" ng-show="(forms.formConciliacaoTransferenciaModal.tit_5010_conta_fin_destino.$error.required)">
+                                                    Conta financeira de destino é um campo de preenchimento obrigatório.
+                                                </p>
+                                            </div>
+                                        </div>
+
+                                        <div ng-if="!objModalOpcoes.FLAG_DESTINO">
+                                            <input class="form-control" placeholder="Pesquise por uma conta financeira.." type="text" ng-model="objTransferencia.contaFinanceiraDestino" readonly="readonly">
+                                            <input type="hidden" name="tit_5010_conta_fin_destino" ng-model="objTransferencia.tit_5010_conta_fin_destino">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row m-b-10">
+                            <div class="col-sm-12">
+                                <div class="row">
+                                    <div class="col-sm-6">
+                                        <label class="control-label">Forma de Pagamento</label>
+                                        <lv-autocomplete
+                                            ng-model="objTransferencia.formaPagamento"
+                                            clear-input="false"
+                                            trigger-list="true"
+                                            icon-class="fa fa-dollar"
+                                            search-limit="10"
+                                            on-select="onSelectFormaPagamento"
+                                            place-holder="Pesquise por uma forma de pagamento..."
+                                            string-entity="forma de pagamento"
+                                            string-service="formaPgto"
+                                            display-property="par_c01"
+                                            confirm-add="false"
+                                            string-id="autocomplete-forma-pgto">
+                                        </lv-autocomplete>
+                                        <input type="hidden" id="tit_6060_forma_pagamento" name="tit_6060_forma_pagamento" ng-model="objTransferencia.tit_6060_forma_pagamento">
+                                    </div>
+
+                                    <div class="col-sm-6">
+                                        <label class="control-label">Centro de Custo</label>
+                                        <lv-autocomplete
+                                            ng-model="objTransferencia.centroCusto"
+                                            clear-input="false"
+                                            trigger-list="true"
+                                            icon-class="fa fa-tag"
+                                            search-limit="10"
+                                            on-select="onSelectCentroCusto"
+                                            place-holder="Pesquise por um centro de custo..."
+                                            string-entity="centro de custo"
+                                            string-service="centroCusto"
+                                            display-property="par_c01"
+                                            confirm-add="false"
+                                            string-id="autocomplete-cdc">
+                                        </lv-autocomplete>
+                                        <input type="hidden" id="tit_6050_cdc" name="tit_6050_cdc" ng-model="objTransferencia.tit_6050_cdc">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

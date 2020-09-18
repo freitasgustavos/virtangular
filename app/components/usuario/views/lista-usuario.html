@@ -1,0 +1,29 @@
+
+<table class="table table-hover" ng-show="usuarios.length">
+    <thead>
+        <tr>
+            <th width="70%">Usuário</th>
+            <th width="30%">Perfil</th>
+        </tr>
+    </thead>
+    <tbody infinite-scroll="listarUsuario()" infinite-scroll-distance="0" infinite-scroll-disabled="objInfiniteScroll.flagUsuarioBusy">
+        <tr ng-repeat="usuario in usuarios" class="c-pointer" ng-click="getUsuario(usuario.usu_cod_usu)" ng-class="{selected: usuario.usu_cod_usu === usuCodUsuSelected}">
+            <td>
+                <p class="m-b-0">{{usuario.usu_nome}}</p>
+                <small>{{usuario.usu_email}}</small>
+            </td>
+            <td>
+                <span>{{usuario.prf_nome_perfil}}</span>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+<div class="panel-content p-0">
+    <div ng-if="!usuarios.length && spinnerList.active === false">
+        <div class="alert alert-warning alert-fade font-small" role="alert">
+            <strong>Atenção:</strong> Nenhum registro encontrado!
+        </div>
+    </div>
+</div>

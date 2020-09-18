@@ -1,0 +1,777 @@
+
+
+<div id="panel-operacoes" class="col-md-4 p-l-0 p-r-0 panel-inner-itens">
+    <treasure-overlay-spinner active="spinnerList.active">
+        <div class="panel m-b-0">
+            <div class="panel-header">
+                <div ng-show="venda.fin_nro_lan || venda.clienteSelect">
+                    <h3 class="m-b-20" ng-if="venda.fin_6035_situacao != 81" style="max-width: 275px;">
+                        <i class="fa fa-list"></i>
+                        <strong>{{labelDetalhe}}</strong>
+                    </h3>
+                    <div class="control-btn">
+                        <button type="button" class="btn btn-primary btn-sm m-r-0 pull-right" title="Novo" event-focus="click" event-focus-id="fin_cad_cod_cad" ng-click="novaOperacao()">
+                            <i class="fa fa-plus"></i> Novo
+                        </button>
+                    </div>
+                </div>
+
+                <div ng-show="!venda.clienteSelect">
+                    <h3 class="m-b-20">
+                        <i class="fa fa-list"></i>
+                        <span>{{venda.nomeNatureza}}</span>
+                        <!--
+                            <strong ng-if="venda.codNatureza != '31'">
+                                <span ng-if="venda.codNatureza == '11'">Lista de</span>
+                                <span ng-if="venda.codNatureza != '11'">Listagem de</span>
+                            </strong>
+                        -->
+                    </h3>
+
+                    <div class="control-btn">
+                        <div class="btn-group box-dropdown">
+                            <div class="box-icon-filter">
+                                <a style="color:#5b5b5b" ng-click="showPanel()">
+                                    <i class="fa fa-filter i-filter" id="trigger-filter" tooltip-placement="left" tooltip="Refinar pesquisa"></i>
+                                </a>
+                            </div>
+                            <div class="box-toggle-dropdown box-toggle-dropdown-mini">
+                                <button type="button" class="btn btn-primary btn-sm dropdown-toggle m-r-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret"></span>
+                                </button>
+                                <span class="dropdown-arrow"></span>
+                                <ul class="dropdown-menu" role="menu">
+                                    <li>
+                                        <a href="javascript:void(0)" ng-click="getJanelaRelatorio()">
+                                            <i class="fa fa-print"></i> Imprimir
+                                        </a>
+                                    </li>
+                                    <li ng-if="venda.codNatureza != '11' && venda.codNatureza != '31'">
+                                        <a href="javascript:void(0)" ng-click="getJanelaImportaArquivoXML()">
+                                            <i class="fa fa-file-text-o"></i> Importar XML
+                                        </a>
+                                    </li>
+                                    <li ng-if="venda.codNatureza != '11' && venda.codNatureza != '31'">
+                                        <a href="javascript:void(0)" ng-click="getJanelaAtributoDocumento('IN')">
+                                            <i class="fa fa-close"></i> Inutilizar NF-e
+                                        </a>
+                                    </li>
+                                </ul>
+                            </div>
+                            <button type="button" class="btn btn-primary btn-sm m-l-0 m-r-15" title="Novo" event-focus="click" event-focus-id="fin_cad_cod_cad" ng-click="novaOperacao()" style="margin-right:4px">
+                                <i class="fa fa-plus"></i> Novo
+                            </button>
+                        </div>
+                    </div>
+
+                    <form class="form-inverse" autocomplete="off" role="search">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="row">
+                                    <div class="col-sm-12 m-b-5 after-tooltip">
+                                        <div class="input-group inside-tooltip">
+                                            <input type="text" class="form-control input-sm" placeholder="Pesquisar..." ng-model="pesquisarVenda.texto_venda_pesquisar" submit-form="btn-operacao" style="z-index:0">
+                                            <i class="fa fa-question-circle c-blue" rel="popover" popover-append-to-body="true" popover-trigger="mouseenter" popover-placement="right" popover="Pesquise por número de documento, chave da NF-e, razão social, CNPJ, CPF ou número de rastreio." popover-title="Dica importante:"></i>
+                                            <span class="input-group-btn">
+                                                <button class="btn btn-primary btn-sm btn-okay" id="btn-operacao" ng-click="getPesquisar()" type="button">OK</button>
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" ng-class="{'animated fadeIn' : hasFilter, 'animated fadeOutDown oculto' : !hasFilter}">
+                                <div class="panel panel-border-radius bg-white-gray m-b-0 m-t-10">
+                                    <div class="panel-header p-l-10">
+                                        <h5 class="m-b-0">
+                                            <strong>FILTROS ADICIONAIS</strong>
+                                        </h5>
+                                    </div>
+                                    <div class="panel-content panel-search">
+                                        <div class="row">
+                                            <!--
+                                            <div class="col-md-12 m-b-5" ng-if="arrFiltroEspDoc.length">
+                                                <div class="btn-group btn-box-filter m-0 w-l-100">
+                                                    <label ng-repeat="espDoc in arrFiltroEspDoc" class="btn btn-default" style="padding-right: 15px;padding-left: 15px;" ng-model="pesquisarVenda.fin_6030_esp_doc" btn-radio="'{{ espDoc.id_esp_doc }}'">{{ espDoc.label_esp_doc }}</label>
+                                                </div>
+                                            </div>
+                                            -->
+
+                                            <div class="col-md-12 m-b-5">
+                                                <div ng-if="arr_6035.length">
+                                                    <ul class="tags">
+                                                        <li ng-repeat="situacao in arr_6035">
+                                                            <a ng-click="manipularSituacoes(situacao)" ng-class="{'tag-active' : inSituacoes(situacao)}">{{situacao.par_c01}}</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12 m-b-5">
+                                                <div ng-if="arrFiltroEspDoc.length">
+                                                    <label>Espécie de Documento</label>
+                                                    <ui-select multiple ng-model="pesquisarVenda.especies">
+                                                        <ui-select-match placeholder="Selecione alguma espécie...">{{$item.label_esp_doc}}</ui-select-match>
+                                                        <ui-select-choices repeat="especie in arrFiltroEspDoc | propsFilter: {label_esp_doc: $select.search}">
+                                                            <div ng-if="!especie.isTag" ng-bind-html="especie.label_esp_doc | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12 m-b-5">
+                                                <div class="form-group m-b-0">
+                                                    <label>Usuário</label>
+                                                    <ui-select style="width:100%" ng-model="pesquisarVenda.fin_usu_cod_usuario" theme="select2">
+                                                        <ui-select-match placeholder="Selecione algum usuário...">
+                                                            {{$select.selected.usu_nome}}&nbsp;<i class="fa fa-remove" ng-click="limparUsuarioFiltro($event)"></i>
+                                                        </ui-select-match>
+                                                        <ui-select-choices repeat="usuario.usu_cod_usu as usuario in arrUsuarios | propsFilter : {usu_nome : $select.search}">
+                                                            <span ng-bind-html="usuario.usu_nome | highlight: $select.search"></span>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12 m-b-5">
+                                                <div class="form-group m-b-0">
+                                                    <label>Vendedor</label>
+                                                    <ui-select style="width:100%" ng-model="pesquisarVenda.vendedor" theme="select2">
+                                                        <ui-select-match placeholder="Selecione algum vendedor...">
+                                                            {{$select.selected.par_c01}}&nbsp;<i class="fa fa-remove" ng-click="limparVendedorFiltro($event)"></i>
+                                                        </ui-select-match>
+                                                        <ui-select-choices repeat="vendedor.par_pai as vendedor in arrVendedores | propsFilter : {par_c01 : $select.search}">
+                                                            <span ng-bind-html="vendedor.par_c01 | highlight: $select.search"></span>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12 m-b-5">
+                                                <div class="form-group m-b-0">
+                                                    <label>Ação</label>
+                                                    <ui-select multiple ng-model="pesquisarVenda.acoes">
+                                                        <ui-select-match placeholder="Selecione alguma ação...">{{$item.name}}</ui-select-match>
+                                                        <ui-select-choices repeat="acao in arrAcoes | propsFilter: {name: $select.search}">
+                                                            <div ng-if="!acao.isTag" ng-bind-html="acao.name | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12 m-b-5">
+                                                <div class="form-group m-b-0">
+                                                    <label>Fase</label>
+                                                    <ui-select multiple ng-model="pesquisarVenda.fases">
+                                                        <ui-select-match placeholder="Selecione alguma fase...">{{$item.par_c01}}</ui-select-match>
+                                                        <ui-select-choices repeat="fase in fase_escolhida | propsFilter: {par_c01: $select.search}">
+                                                            <div ng-if="!fase.isTag" ng-bind-html="fase.par_c01 | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12 m-b-5">
+                                                <div class="form-group m-b-0">
+                                                    <label>Forma de Pagamento</label>
+                                                    <ui-select multiple ng-model="pesquisarVenda.formasPagamento">
+                                                        <ui-select-match placeholder="Selecione alguma forma de pagamento...">{{$item.par_c01}}</ui-select-match>
+                                                        <ui-select-choices repeat="fp in arrFormasPagamento | propsFilter: {par_c01: $select.search}">
+                                                            <div ng-if="!fp.isTag" ng-bind-html="fp.par_c01 | highlight: $select.search"></div>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12 m-b-5">
+                                                <div class="box-daterange">
+                                                    <label>Data de lançamento</label>
+                                                    <div class="input-group">
+                                                        <input class="input-sm form-control" maxlength="10" placeholder="Data início..." ng-model="pesquisarVenda.dt_lan_inicio" type="text" data-mask="99/99/9999" datepicker1>
+                                                        <span class="input-group-addon">até</span>
+                                                        <input class="input-sm form-control" maxlength="10" placeholder="Data fim..." ng-model="pesquisarVenda.dt_lan_final" type="text" data-mask="99/99/9999" datepicker1 style="width:99%">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12 m-b-5">
+                                                <div class="box-daterange">
+                                                    <label>Número de documento</label>
+                                                    <div class="input-group">
+                                                        <input class="input-sm form-control" maxlength="32" toint2 placeholder="Número inicial..." ng-model="pesquisarVenda.doc_nro_inicio" type="text">
+                                                        <span class="input-group-addon">até</span>
+                                                        <input class="input-sm form-control" maxlength="32" toint2 placeholder="Número final..." ng-model="pesquisarVenda.doc_nro_final" type="text" style="width:99%">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-12">
+                                                <div class="box-daterange">
+                                                    <label>Produtos</label>
+                                                    <div class="input-group">
+                                                        <input class="input-sm form-control" maxlength="32" toint2 placeholder="Cód. produto início..." ng-model="pesquisarVenda.pro_cod_pro_inicio" type="text">
+                                                        <span class="input-group-addon">até</span>
+                                                        <input class="input-sm form-control" maxlength="32" toint2 placeholder="Cód. produto final..." ng-model="pesquisarVenda.pro_cod_pro_final" type="text" style="width:99%">
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <!--
+                                                <div class="col-md-12 t-right">
+                                                    <button type="button" class="btn btn-primary btn-sm m-0" title="Filtrar" ng-click="listarVendas()">
+                                                        <i class="fa fa-search"></i> &nbsp; Filtrar
+                                                    </button>
+                                                </div>
+                                            -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="panel no-bottom" ng-show="!venda.clienteSelect">
+                <div class="panel-content panel-content panel-malihu-venda p-t-0" ng-class="{'panel-venda-filtro' : hasFilter}" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200">
+                    <table class="table table-hover table-css" ng-if="arrVendas.length">
+                        <colgroup>
+                            <col width="10%">
+                            <!--<col width="25%">-->
+                            <col width="80%">
+                            <col width="10%">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>Data</th>
+                                <!--<th>Dóc.</th>-->
+                                <th>{{venda.labelTitular}}</th>
+                                <th class="text-right">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="v in arrVendas" ng-click="getOperacao(v.fin_nro_lan)" class="c-pointer">
+                                <td class="text-number font-mini">{{v.fin_dat_lan | dateFormat}}<br>{{v.strEspDoc}}-{{v.fin_doc_nro}}</td>
+                                <!--<td class="text-number font-mini">{{v.strEspDoc}}-{{v.fin_doc_nro}}</td>-->
+                                <td class="p-r-0">
+                                    <span tooltip-placement="top" tooltip="{{v.fin_cad_nome_razao}}">
+                                        {{v.fin_cad_nome_razao | strLimit:38}}
+                                    </span>
+                                    <br>
+                                    <div ng-if="venda.codNatureza != 11 && venda.fin_tip_emitente == 'P'">
+                                        <span nfe-acao="v" atributo="nomeSituacao"></span> &nbsp; <span ng-if="v.fin_tip_emissao == 4">DPEC</span>
+                                    </div>
+
+                                    <div ng-if="venda.codNatureza != 11 && venda.fin_tip_emitente == 'T'">
+                                        <span nfe-acao="v" atributo="nomeAcao"></span>
+                                    </div>
+
+                                    <div ng-if="v.fin_cod_acao == 10" style="margin-top:2px">
+                                        <span class="label label-danger">
+                                            <i class="fa fa-shopping-basket"></i>
+                                            <small>Não concluído</small>
+                                        </span>
+                                    </div>
+
+                                    <!--
+                                        <span class="label" ng-style="{'background-color' : v.situacao.par_c02}" tooltip-placement="top" tooltip="{{v.fin_nfe_motivo}}" ng-if="venda.codNatureza != 11 && venda.fin_tip_emitente == 'P'">
+                                            {{v.nomeSituacao}}<span ng-if="v.fin_tip_emissao == 4">DPEC</span>
+                                        </span>
+                                        <span class="label" ng-style="{'background-color' : v.situacao.par_c02}" tooltip-placement="top" tooltip="{{v.fin_nfe_motivo}}" ng-if="venda.codNatureza != 11 && venda.fin_tip_emitente == 'T'">
+                                            {{v.nomeAcao}}
+                                        </span>
+                                    -->
+                                </td>
+                                <td class="text-number text-right">
+                                    <span style="font-size:13px">{{v.fin_doc_vlr_liquido | currency}}</span>
+                                    <br>
+                                    <span class="label" ng-if="v.fin_6025_fase" ng-style="{'background-color' : v.fase.par_c02}" tooltip-placement="top" tooltip="Fase {{v.fase.par_c01}}">
+                                        {{v.fase.par_c01}}
+                                    </span>
+                                    <span class="label" ng-if="!v.fin_6025_fase">&nbsp;</span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="m-t-10 panel-total" ng-if="!arrVendas.length && spinnerList.active === false">
+                        <div class="alert alert-warning alert-fade" role="alert">
+                            <i class="fa fa-info-circle fa-2x"></i>
+                            <span class="alert-texto font-small">Nenhum registro encontrado!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="!venda.clienteSelect && arrVendas.length">
+                <div class="panel m-b-0">
+                    <div class="col-md-12 box-paginacao">
+                        <div class="t-center p-10">
+                            <a ng-click="paginarVendas()">
+                                <span>Listar mais...</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-footer" style="overflow:hidden">
+                    <div class="col-md-7 p-0">
+                        <div class="row p-l-20">
+                            <h6 class="m-0">
+                                <strong>{{arrVendas.length}}</strong> lançamentos.<br>
+                                <span ng-if="!pesquisarVenda.dt_lan_inicio && !pesquisarVenda.dt_lan_final">Filtro com datas não aplicado.</span>
+                                <span ng-if=" pesquisarVenda.dt_lan_inicio &&  pesquisarVenda.dt_lan_final">De {{pesquisarVenda.dt_lan_inicio}} até {{pesquisarVenda.dt_lan_final}}.</span>
+                                <span ng-if=" pesquisarVenda.dt_lan_inicio && !pesquisarVenda.dt_lan_final">A partir de {{pesquisarVenda.dt_lan_inicio}}.</span>
+                                <span ng-if="!pesquisarVenda.dt_lan_inicio &&  pesquisarVenda.dt_lan_final">Até {{pesquisarVenda.dt_lan_final}}.</span>
+                            </h6>
+                        </div>
+                    </div>
+                    <div class="col-md-5 p-0">
+                        <div cass="row p-r-10">
+                            <strong ng-if="venda.somaTotalVlrLiquido === 0">Totalizando...</strong>
+                            <h4 class="m-0 t-right" style="padding-top:5px" ng-if="venda.somaTotalVlrLiquido !== 0 && venda.somaTotalVlrLiquido !== null">
+                                <strong>{{venda.somaTotalVlrLiquido | currency}}</strong>
+                            </h4>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="panel" ng-show="venda.clienteSelect && venda.clienteSelect != ' '">
+            <div class="row">
+                <div class="col-md-12">
+                    <div ng-show="venda.clienteSelect" class="panel widget-member sample-show-hide clearfix m-t-0 m-b-0" style="background-color:rgb(90, 91, 111);color:#fff">
+                        <div class="col-xs-3">
+                            <!-- Avatar como imagem. -->
+                            <div ng-if="!cliente.imagem_atual">
+                                <div ng-if="cliente.cad_arquivo_foto != ''">
+                                    <img ng-src="../assets/global/images/avatars/sem_avatar.jpg" class="img-responsive" alt="{{cliente.cad_apelido_fantasia}}" style="cursor:pointer" ng-click="getFormUpload(cliente.cad_cod_cad)">
+                                </div>
+
+                                <div ng-if="cliente.cad_arquivo_foto == ''">
+                                    <img ng-src="../assets/global/images/avatars/avatar{{cliente.cad_arquivo_foto}}_big.png" class="pull-left img-responsive" alt="{{cliente.cad_apelido_fantasia}}">
+                                </div>
+                            </div>
+
+                            <!-- Imagem via upload de foto. -->
+                            <div ng-if="cliente.imagem_atual">
+                                <img ng-src="{{imageCache}}{{cliente.imagem_atual.mid_id}}" class="pull-left img-responsive img-md img-circle" alt="{{cliente.cad_apelido_fantasia}}">
+                            </div>
+                        </div>
+
+                        <div class="col-xs-9">
+                            <h3 class="m-t-0 member-name">
+                                <strong>{{venda.fin_cad_nome_razao}}</strong>
+                            </h3>
+                            <p class="member-job">{{cliente.cad_apelido_fantasia}}</p>
+                            <div class="row">
+                                <div class="col-xlg-6">
+                                    <p>
+                                        <i class="fa fa-envelope-o c-gray-light p-r-10"></i>
+                                        <span>{{cliente.contato.cto_email}}</span>
+                                    </p>
+                                    <p>
+                                        <i class="fa fa-phone c-gray-light p-r-10"></i>
+                                        <span>{{cliente.contato.cto_fone | tel}}&nbsp;{{cliente.contato.cto_celular | tel}}</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-show="venda.itens.length" class="widget-infobox sample-show-hide" style="float:none">
+                        <div class="col-xs-6 infobox box-info-item box-info-left">
+                            <div class="left">
+                                <i class="fa fa-shopping-cart bg-blue"></i>
+                            </div>
+                            <div class="right">
+                                <span class="pull-left">{{totalItens}}</span>
+                                <div class="txt">Quantidade</div>
+                            </div>
+                        </div>
+                        <div class="col-xs-6 infobox box-info-item box-info-right m-r-0">
+                            <div class="left">
+                                <i class="fa fa-money bg-green"></i>
+                            </div>
+                            <div class="right">
+                                <span class="pull-left">{{venda.somaTotalLiquido | currency | semCif}}</span>
+                                <div class="txt">Valor Total</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-12">
+                    <div ng-show="venda.itens.length" class="panel m-b-0 b-s-0" style="min-height:722px;max-height:722px">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Qtde.</th>
+                                    <th>Valor</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="item in venda.itens">
+                                    <td>{{item.ite_pro_descricao}}</td>
+                                    <td>{{item.ite_pro_qtd | toInt}}</td>
+                                    <td>{{item.ite_vlr_tot_liquido | currency}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </treasure-overlay-spinner>
+</div>
+
+<!-- Painel inicial com manual: -->
+<div class="col-md-8 p-r-0" ng-class="{'animated virtux' : flagTutorial === true, 'animated oculto' : flagTutorial === false}">
+    <div ng-include="'home/views/tutorial.html'" ></div>
+</div>
+
+
+<!-- Painel principal com formulário de cadastro e edição: -->
+<div class="col-md-8 p-r-0" ng-class="{'animated virtux' : flagTutorial === false, 'animated oculto' : flagTutorial === true}" >
+    <div class="panel">
+        <div class="panel-header panel-header-wizard">
+            <div class="btn-reset">
+                <button type="button" class="btn btn-sm btn-primary" ng-click="voltar()" style="margin-left:2px">
+                    <i class="fa fa-arrow-left"></i> Voltar
+                </button>
+            </div>
+
+            <h3 class="title-header" style="padding-left:45px">
+            <i class="fa fa-shopping-basket"></i>
+                <strong>{{venda.nomeNaturezaSing}}</strong>
+            </h3>
+
+            <div class="control-btn">
+                <div class="btn-group box-dropdown">
+                    <div ng-if="!venda.fin_nro_lan && venda.codNatureza != '11'" class="box-toggle-dropdown">
+                        <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <span class="caret m-l-0"></span>
+                        </button>
+                        <span class="dropdown-arrow"></span>
+                        <ul class="dropdown-menu" role="menu">
+                            <li>
+                                <a href="javascript:void(0)" ng-click="salvarFaturarEmitirNFe()" ng-if="venda.codNatureza != 31 && venda.fin_tip_emitente == 'P' && empresa.emp_tip_nota != 0">Emitir NF-e</a>
+                                <a href="javascript:void(0)" ng-click="getJanelaAtributoDocumento('SD')" ng-if="venda.codNatureza != 31 && venda.fin_tip_emitente == 'P' && venda.codNatureza == '1' && empresa.emp_tip_nota != 0">Emitir NF série D</a>
+
+                                <!--<a href="javascript:void(0)" ng-click="faturar()" ng-if="venda.codNatureza != 31">Faturar</a>-->
+                                <a href="javascript:void(0)" ng-click="faturarServico()" ng-if="venda.codNatureza == 31">Faturar</a>
+                            </li>
+                            <li>
+                                <a href="javascript:void(0)" ng-click="cancelarNovaOperacao()">Excluir</a>
+                            </li>
+                        </ul>
+                     </div>
+
+                    <div ng-if="venda.fin_nro_lan  && venda.codNatureza != '11' && venda.codSituacao != '91'" class="box-toggle-dropdown">
+                        <!-- Botões para ação de EDITAR -->
+                        <div ng-if="venda.acao == 0">
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret m-l-0"></span>
+                            </button>
+                            <span class="dropdown-arrow"></span>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="salvarFaturarEmitirNFe()" ng-if="venda.codNatureza != 31 && venda.fin_tip_emitente == 'P' && empresa.emp_tip_nota != 0">Emitir NF-e</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="getJanelaAtributoDocumento('SD')" ng-if="venda.codNatureza != 31 && venda.fin_tip_emitente == 'P' && venda.codNatureza == '1' && empresa.emp_tip_nota != 0">Emitir NF série D</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="geraPreviewDanfe()" ng-if="venda.codNatureza != 31 && venda.fin_tip_emitente == 'P'">Pré Visualizar</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="faturar()" ng-if="venda.codNatureza != 31 && venda.codNatureza != 1">Faturar</a>
+                                    <a href="javascript:void(0)" ng-click="faturarServico()" ng-if="venda.codNatureza == 31">Faturar</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="excluir()">Excluir</a>
+                                </li>
+
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="duplicarOperacao()">Duplicar documento</a>
+                                </li>
+                                <li ng-if="venda.codNatureza == 31 && venda.codSituacao == 0" class="divider"></li>
+                                <li ng-if="venda.codNatureza == 31 && venda.codSituacao == 0">
+                                    <a href="javascript:void(0)" ng-click="getJanelaEnviarEmail('orcamento')">Enviar e-mail</a>
+                                </li>
+                                <li ng-if="venda.codNatureza == 31 && venda.codSituacao == 0">
+                                    <a href="javascript:void(0)" ng-click="imprimirOrcamentoDAV('imprimir')">Imprimir</a>
+                                </li>
+                                <li ng-if="venda.codNatureza == 31 && venda.codSituacao == 0">
+                                    <a href="javascript:void(0)" ng-click="imprimirOrcamentoDAV('download')">Gerar PDF</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Botões para ação FATURAR -->
+                        <div ng-if="venda.acao == 1 && venda.fin_tip_emitente == 'P' && venda.codSituacao != '13'">
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret m-l-0"></span>
+                            </button>
+                            <span class="dropdown-arrow"></span>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="emitirNFe()" ng-if="venda.codSituacao != 12 && venda.codSituacao != 14 && venda.codNatureza != 31 && empresa.emp_tip_nota != 0">Emitir NF-e</a>
+                                    <a href="javascript:void(0)" ng-click="emitirNFe()" ng-if="venda.codSituacao == 12 || venda.codSituacao == 14 && venda.codNatureza != 31 ">Reenviar NF-e</a>
+                                    <a href="javascript:void(0)" ng-click="emitirNFSe()" ng-if="venda.codNatureza == 31">Emitir NFS-e</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="geraPreviewDanfe()" ng-if="venda.codNatureza != 31 && venda.fin_tip_emitente == 'P'">Pré Visualizar</a>
+                                </li>
+                                <li ng-if="(venda.codSituacao == 12 || venda.codSituacao == 14) && venda.codNatureza != 31 && !venda.mostrarExcluirExcessao">
+                                    <a href="javascript:void(0)" ng-click="inutilizarNfe()">Cancelar e Inutilizar</a>
+                                </li>
+                                <li ng-if="venda.codNatureza != 31 && venda.mostrarExcluirExcessao">
+                                    <a href="javascript:void(0)" ng-click="cancelar(1)">Excluir</a>
+                                </li>
+
+                                <!--CANCELAR SEM INUTILIZAR -->
+                                <li ng-if="venda.codSituacao != 12 && venda.codSituacao != 14 && venda.codNatureza == 31">
+                                    <a href="javascript:void(0)" ng-click="cancelar()">Cancelar</a>
+                                </li>
+
+                                <li ng-if="venda.codSituacao != 12 && venda.codSituacao != 14 && venda.codNatureza != 31">
+                                    <a href="javascript:void(0)" ng-click="inutilizarNfe()">Cancelar e Inutilizar</a>
+                                </li>
+                                <li ng-if="venda.op === 'venda' && flagBoleto && (venda.codSituacao != 12 && venda.codSituacao != 14)">
+                                    <a href="javascript:void(0)" ng-click="gerarBoleto()">Gerar Boleto</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="duplicarOperacao()">Duplicar documento</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Botões para ação CANCELADA. -->
+                        <div ng-if="venda.acao == 8 && venda.fin_tip_emitente == 'P' && venda.codNatureza != 31 && venda.fin_6035_situacao == '0'">
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret m-l-0"></span>
+                            </button>
+                            <span class="dropdown-arrow"></span>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="enviarEmail()">Enviar e-mail</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="imprimirDANFE()">Imprimir NF-e</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="duplicarOperacao()">Duplicar documento</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Botões para ação CONCLUÍDO. -->
+                        <div ng-if="venda.acao == 9 && venda.fin_tip_emitente == 'P' && venda.codNatureza != 31 && venda.codSituacao != '1206'">
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret m-l-0"></span>
+                            </button>
+                            <span class="dropdown-arrow"></span>
+                            <ul class="dropdown-menu" role="menu" ng-if="venda.fin_6030_esp_doc != 30 && venda.fin_6030_esp_doc != 65 && venda.fin_6030_esp_doc != 59">
+                                <li ng-if="empresa.emp_nfe_forma_emissao == 1 && venda.codSituacao == 90 && venda.fin_tip_emissao == 4">
+                                    <a href="javascript:void(0)" ng-click="reemitirNFeCont()">Reenviar NF-e (modo normal)</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="imprimirDANFE()" ng-if="venda.fin_6030_esp_doc != 2">Imprimir NF-e</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="getJanelaEnviarEmail('nfe')" ng-if="venda.fin_6030_esp_doc != 2">Enviar e-mail</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="cancelar(1)" ng-if="venda.fin_6030_esp_doc == 2">Excluir</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="getJanelaAtributoDocumento('CANCNF')" ng-if="venda.fin_6030_esp_doc != 2">Cancelar NF-e</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="duplicarOperacao()">Duplicar documento</a>
+                                </li>
+                                <li ng-if="venda.fin_nfe_finalidade != 2">
+                                    <a href="javascript:void(0)" ng-click="gerarNotaComplemento()">Nota de Complemento</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Botões para ação CONCLUÍDO. -->
+                        <div ng-if="venda.acao == 9 && venda.codSituacao == '1206'">
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret m-l-0"></span>
+                            </button>
+                            <span class="dropdown-arrow"></span>
+                            <ul class="dropdown-menu" role="menu">
+
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="atualizarStatusNFe(2)" ng-if="!venda.temDiferencaDup">Atualizar</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="cancelar(1)">Excluir</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="duplicarOperacao()">Duplicar documento</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Botões para ação do E-COMMERCE -->
+                        <div ng-if="venda.acao == 10 && venda.codNatureza == 1">
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret m-l-0"></span>
+                            </button>
+                            <span class="dropdown-arrow"></span>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="cancelar(0)">Excluir</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="salvarFaturarEmitirNFe()">Emitir NF-e</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="getJanelaAtributoDocumento('SD')" ng-if="venda.fin_tip_emitente == 'P' && empresa.emp_tip_nota != 0">Emitir NF série D</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="geraPreviewDanfe()" ng-if="venda.fin_tip_emitente == 'P'">Pré Visualizar</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="duplicarOperacao()">Duplicar documento</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div ng-if="venda.acao == 9 && venda.codNatureza == 31">
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret m-l-0"></span>
+                            </button>
+                            <span class="dropdown-arrow"></span>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="cancelarNfse()">Cancelar NFS-e</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="imprimirNfse()">Imprimir RPS</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="duplicarOperacao()">Duplicar documento</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div ng-if="venda.acao == 1 && venda.fin_tip_emitente == 'T'">
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret m-l-0"></span>
+                            </button>
+                            <span class="dropdown-arrow"></span>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="cancelar(1)">Excluir</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div ng-if="venda.acao == 1 && venda.fin_tip_emitente == 'P' && venda.codSituacao == '13' && venda.codNatureza != '31'">
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret m-l-0"></span>
+                            </button>
+                            <span class="dropdown-arrow"></span>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="emitirNFe()">Reenviar NF-e</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <div class="box-report" ng-if="venda.codNatureza == 11 && venda.fin_nro_lan">
+                        <!-- Botões para ORÇAMENTO CONCLUÍDO. -->
+                        <div>
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret m-l-0"></span>
+                            </button>
+                            <span class="dropdown-arrow"></span>
+                            <ul class="dropdown-menu" role="menu">
+                                <li ng-if="venda.fin_nro_lan">
+                                    <a href="javascript:void(0)" ng-click="excluir()">Excluir</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="getJanelaEnviarEmail('orcamento')">Enviar e-mail</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="imprimirOrcamentoDAV('imprimir')">Imprimir</a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="imprimirOrcamentoDAV('download')">Gerar PDF</a>
+                                </li>
+                                <li class="divider"></li>
+                                <li>
+                                    <!-- ng-click="geraPedidoVenda()" -->
+                                    <a href="javascript:void(0)" ng-click="gerarPedidos()">Gerar Pedido</a>clear
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <button type="button" class="btn btn-sm btn-primary m-l-0" ladda="salvarVendaLoading" ng-click="salvarVenda()" ng-if="venda.codSituacao != '91'">
+                        <i class="fa fa-check"></i> Salvar
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <div class="row box-wizard-operacoes">
+            <div class="panel-content panel-content-venda">
+                <form class="wizard" id="forms.form_venda" name="forms.form_venda" data-style="arrow" autocomplete="off" role="form">
+                    <div class="wizard-arrow">
+                        <fieldset>
+                            <legend legend-value></legend>
+                            <div class="panel-inner-less box-operacoes-cliente">
+                                <div ng-include="'venda/views/aba-venda-cliente.html'"></div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend legend-itens></legend>
+                            <div class="panel-inner-less">
+                                <div ng-include="'venda/views/aba-venda-itens.html'" class="malihu-list" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200"></div>
+                            </div>
+                        </fieldset>
+
+                        <fieldset>
+                            <legend>3 - Conclusão</legend>
+                            <div class="panel-inner-less">
+                                <div ng-include="'venda/views/aba-venda-totais.html'"></div>
+                            </div>
+                        </fieldset>
+                    </div>
+
+                    <div ng-if="venda.fin_nro_lan" class="pull-right box-nota">
+                        <div class="box-half">
+                            <strong>
+                                <span ng-if="venda.fin_6030_esp_doc == 55">Nota</span>
+                                <span ng-if="venda.fin_6030_esp_doc != 55 && venda.fin_6030_esp_doc != 88">Pedido</span>
+                                <span ng-if="venda.fin_6030_esp_doc == 88">NFS-e</span>
+                            </strong>
+                        </div>
+                        <div class="box-half">
+                            <div class="box-total">
+                                <strong>{{venda.fin_doc_nro}}</strong>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <footer class="box-documento">
+                    <p class="t-right">
+                        documento em modo de {{venda.descAcao}} em <a href="javascript:void(0)" ng-click="getJanelaAtributoDocumento('D')">{{venda.fin_dat_lan}}</a>
+                        <span ng-if="venda.op == 'venda' || venda.op == 'orcamento'">por <a href="javascript:void(0)" ng-click="getJanelaAtributoDocumento('V')">{{venda.vendedorSelect}}</a></span>.
+                    </p>
+                </footer>
+            </div>
+        </div>
+    </div>
+</div>

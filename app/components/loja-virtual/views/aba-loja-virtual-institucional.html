@@ -1,0 +1,147 @@
+
+<div class="col-md-4 p-l-0">
+    <div class="panel">
+        <div class="panel-header">
+            <h3 class="m-t-0" style="margin-left:5px">
+                <i class="fa fa-list"></i>
+                <strong>Listagem</strong> de páginas
+            </h3>
+
+            <!-- Adicionar nova página. -->
+            <div class="control-btn">
+                <button type="button" class="btn btn-primary btn-sm pull-right no-right" ng-click="novaPagina()" style="margin-top:-10px">
+                    <i class="fa fa-plus"></i> &nbsp; Novo
+                </button>
+            </div>
+        </div>
+
+        <!-- Listagem de páginas. -->
+        <div class="panel no-bottom">
+            <div class="malihu-list panel-content panel-list" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200">
+                <div ng-include="'loja-virtual/views/lista-loja-virtual-institucional.html'"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="col-md-8 portlets p-r-0">
+    <div class="panel">
+        <div class="panel-header">
+            <h3 class="title-header m-t-0">
+                <i class="fa fa-info"></i>
+                <strong>Dados</strong> da página
+            </h3>
+
+            <div class="control-btn" style="margin-top:-10px">
+                <a class="panel-close btn-delete" ng-click="cancelarPagina()" title="{{nomeBotao}}">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+                <button type="button" class="btn btn-primary btn-sm clickright" ladda="salvarPaginaLoading" ng-click="salvarPagina()" style="margin-right:2px">
+                    <i class="fa fa-check"></i> &nbsp; Salvar
+                </button>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12 m-t-10">
+                    <form role="form" name="forms.formPagina" id="forms.formPagina" class="form-validation" autocomplete="off" novalidate>
+                        <div ng-if="pagina.con_tipo_pos_tpl != 2">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Nível</label>
+                                    <select ng-disabled="pagina.con_cod_con" class="form-control ng-pristine ng-untouched ng-valid" name="con_nivel" id="con_nivel" ng-model="pagina.con_nivel" ng-options="nivel.con_cod_con as nivel.con_pagina for nivel in lista_nivel_pagina | filter: {con_tipo_pos_tpl: '!2', orderBy: con_pagina}" ng-change="getOrdem()">
+                                        <option value="" selected>Raiz</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label>Ordenação</label>
+                                    <input type="text" maxlength="5" name="con_ordem" id="con_ordem" class="form-control" placeholder="Digite a ordem da página..." ng-model="pagina.con_ordem" number-range minvalue="0" maxvalue="100" required>
+                                </div>
+                                <div ng-show="submitted || (forms.formPagina.con_ordem.$invalid && !forms.formPagina.con_ordem.$pristine)" class="ng-hide">
+                                    <p class="text-danger form-error alert1" ng-show="(forms.formPagina.con_ordem.$error.required)">Digite a ordem.</p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Nome da Página <i class="obrigatorio">*</i></label>
+                                    <input name="con_pagina" id="con_pagina" maxlength="255" class="form-control" placeholder="Digite a descrição da pagina..." ng-model="pagina.con_pagina" ng-class="{true : 'form-error'}[submitted && forms.formPagina.con_pagina.$invalid]" required type="text">
+                                </div>
+                                <div ng-show="submitted || (forms.formPagina.con_pagina.$invalid && !forms.formPagina.con_pagina.$pristine)" class="ng-hide">
+                                    <p class="text-danger form-error alert1" ng-show="(forms.formPagina.con_pagina.$error.required)">Digite o nome da pagina.</p>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12 m-t-10">
+                                <div class="form-group">
+                                    <label>Tem conteúdo?</label>
+                                    <label class="switch m-t-0 m-l-10">
+                                        <input class="switch-input" type="checkbox" ng-model="pagina.con_flag_conteudo">
+                                        <span class="switch-label" data-on="Sim" data-off="Não"></span>
+                                        <span class="switch-handle"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" ng-show="pagina.con_flag_conteudo">
+                                <div class="form-group">
+                                    <label>Conteúdo</label>
+                                    <textarea class="form-control" rows="5" id="con_conteudo" name="con_conteudo" ng-model="pagina.con_conteudo" ckeditor="editorOptions"></textarea>
+                                </div>
+                            </div>
+
+                            <input type="hidden" ng-model="pagina.con_tipo_pos_tpl" ng-value="1">
+                            <input type="hidden" name="con_cod_con" ng-model="pagina.con_cod_con">
+                        </div>
+
+
+                        <div ng-if="pagina.con_tipo_pos_tpl == 2">
+                            <div class="row">
+                                <div class="col-md-12 m-t-20">
+                                    <div class="form-group">
+                                        <label>Ativo?</label>
+                                        <label class="switch m-t-0 m-l-10">
+                                            <input class="switch-input" type="checkbox" ng-model="pagina.con_status_aux">
+                                            <span class="switch-label" data-on="Sim" data-off="Não"></span>
+                                            <span class="switch-handle"></span>
+                                        </label>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Módulo</label>
+                                        <input class="form-control" value="Boxes Topo" ng-disabled="true">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Título</label>
+                                        <input class="form-control" name="con_pagina2" id="con_pagina2" placeholder="Digite o título do box..." ng-model="pagina.con_pagina" ng-class="{true : 'form-error'}[submitted && forms.formPagina.con_pagina2.$invalid]" required>
+                                    </div>
+                                    <div ng-show="submitted || (forms.formPagina.con_pagina2.$invalid && !forms.formPagina.con_pagina2.$pristine)">
+                                        <p class="text-danger form-error alert1" ng-show="(forms.formPagina.con_pagina2.$error.required)">Digite o título.</p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label>Descrição</label>
+                                        <input class="form-control" name="con_desc" id="con_desc" placeholder="Digite a descrição do box..." ng-model="pagina.con_conteudo">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <input type="hidden" ng-model="pagina.con_tipo_pos_tpl" ng-value="2">
+                            <input type="hidden" ng-model="pagina.con_cod_con" name="con_cod_con">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

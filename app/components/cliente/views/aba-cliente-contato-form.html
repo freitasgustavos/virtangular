@@ -1,0 +1,76 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title modal-title-button">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                <strong>Dados</strong> do Contato
+
+                <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarContatoLoading" ng-click="salvarContato()">
+                    <i class="fa fa-check"></i> &nbsp; Salvar
+                </button>
+
+                <span ng-if="cto_cod_cto" class="pull-right">
+                    <a class="panel-close m-r-20 btn-delete" title="Excluir" ng-click="cancelarContato(contato.cto_cad_cod_cad, contato.cto_cod_cto)">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </span>
+            </h4>
+        </div>
+
+
+        <div class="modal-body">
+            <p>Preencha o contato nos campos adequados.</p>
+            <form name="forms.fClienteContato" class="form-validation" novalidate autocomplete="off" ng-submit="salvarContato()">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label  class="control-label">Nome</label>
+                            <input name="cto_nome" type="text" class="form-control" placeholder="Digite o Nome" ng-class="{true: 'form-error'}[submitted && forms.fClienteContato.cto_nome.$invalid]" ng-model="contato.cto_nome" required>
+                        </div>
+
+                        <div ng-show="submitted && forms.fClienteContato.cto_nome.$invalid">
+                            <p class="text-danger form-error alert1" ng-show="forms.fClienteContato.cto_nome.$error.required">Digite o Nome do Contato.</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">E-mail</label>
+                            <input type="text" class="form-control" placeholder="Digite o E-mail" ng-model="contato.cto_email">
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Telefone</label>
+                            <input name="end_endereco" type="text" class="form-control" placeholder="Digite o Telefone" ng-model="contato.cto_fone" ui-br-phone-number >
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label class="control-label">Celular</label>
+                            <input type="text" class="form-control" placeholder="Digite o Celular" ng-model="contato.cto_celular" ui-br-phone-number>
+                        </div>
+                    </div>
+                </div>
+
+                <!--
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Observação</label>
+                                <textarea class="form-control" placeholder="Digite o complemento" ng-model="contato.cto_descricao"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                -->
+
+                <input type="hidden" name="cto_cod_cto" ng-model="contato.cto_cod_cto">
+                <input type="hidden" name="cto_cad_cod_cad" ng-model="contato.cto_cad_cod_cad">
+            </form>
+        </div>
+    </div>
+</div>

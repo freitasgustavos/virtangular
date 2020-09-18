@@ -1,0 +1,54 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title modal-title-button">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                <strong>Dados</strong> da Carta de Correção (CC-e)
+
+                <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarCceLoading" ng-click="salvarCteCce()">
+                    <i class="fa fa-check"></i> &nbsp; Salvar e Enviar
+                </button>
+
+            </h4>
+        </div>
+
+        <div class="modal-body">
+            <!-- O formulário é apenas mostrado quando o modo de edição é habilitado. -->
+            <div id="box-edicao" class="sample-show-hide">
+                <form name="forms.fCteCce" class="form-validation" novalidate autocomplete="off" ng-submit="salvarCteCce()">
+
+                    <div class="row m-b-10">
+                        <div class="col-md-6">
+                            <div class="form-group m-b-0" id="box-venda-item">
+                                <label class="control-label">Campo a corrigir</label>
+                                <select id="campo_corrigir" name="campo_corrigir" class="form-control" ng-model="cce.campoCorrigir">
+                                    <option ng-repeat="c in arrCamposCorrigir" value="{{ c.campo }}">{{ c.rotulo }}</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-1" style="margin-top: 27px !important;">
+                            <div class="form-group">
+                                <button type="button" class="btn btn-primary btn-sm m-0" ng-click="incluirCampo(cce.campoCorrigir)">
+                                    <i class="glyphicon glyphicon-plus-sign" style="font-size:20px"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-b-10">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Correção</label>
+                                <textarea class="form-control" placeholder="Digite a correção" ng-model="cce.obs_descricao" style="height:100px"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

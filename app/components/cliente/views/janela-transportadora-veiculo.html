@@ -1,0 +1,32 @@
+<div class="modal-dialog modal-not-footer">
+    <form id="forms.formsVeiculo" name="forms.formsVeiculo" method="POST" autocomplete="off" role="form" novalidate>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>Editar</strong> Veículo
+
+                    <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarVeiculoLoading" ng-click="salvarVeiculo()">
+                        <i class="fa fa-check"></i> &nbsp; Salvar
+                    </button>
+
+                <span class="pull-right" ng-show="veiculo.vei_cod_vei">
+                    <a class="panel-close m-r-20 btn-delete" title="Remover" ng-click="cancelarVeiculo()">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </span>
+                </h4>
+            </div>
+
+            <div class="modal-body" style="width:100%">
+                <div ng-include="'transporte/views/aba-transporte-veiculo.html'"></div>
+            </div>
+
+            <div class="modal-footer text-center">
+            </div>
+        </div>
+    </form>
+</div>

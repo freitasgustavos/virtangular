@@ -1,0 +1,48 @@
+<div class="modal-dialog modal-not-footer">
+    <form id="forms.formsRelatorio" name="forms.formsRelatorio" method="POST" autocomplete="off" role="form">
+        <div class="modal-content">
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>Relatórios</strong>
+
+                    <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="imprimirRelatorioLoading" ng-click="gerarRelatorio()">
+                        <i class="fa fa-print"></i> &nbsp; Imprimir
+                    </button>
+                </h4>
+            </div>
+
+            <div class="modal-body" style="width:100%">
+                <div class="col-md-12 form-append">
+                    <div class="row">
+                        <ul class="todo-list">
+                            <li class="primary">
+                                <span class="span-check">
+                                    <input type="radio" icheck name="tpRelatorio" id="tpCompleto" ng-model="tpRelatorio" class="iradio-text" ng-value="'C'" data-radio="iradio_minimal-blue">
+                                    <label for="tpCompleto">Relatório Completo de Produtos</label>
+                                </span>
+                            </li>
+                            <li class="primary">
+                                <span class="span-check">
+                                    <input type="radio" icheck name="tpRelatorio" id="tpComSaldo" ng-model="tpRelatorio" class="iradio-text" ng-value="'S'" data-radio="iradio_minimal-blue">
+                                    <label for="tpComSaldo">Relatório dos Produtos com Saldo</label>
+                                </span>
+                            </li>
+                            <li class="primary">
+                                <span class="span-check">
+                                    <input type="radio" icheck name="tpRelatorio" id="tpSaldoZerado" ng-model="tpRelatorio" class="iradio-text" ng-value="'Z'" data-radio="iradio_minimal-blue">
+                                    <label for="tpSaldoZerado">Relatório dos Produtos com Saldo Zerado</label>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer text-center"></div>
+        </div>
+    </form>
+</div>

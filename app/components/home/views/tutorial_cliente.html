@@ -1,0 +1,19 @@
+<div class="panel">
+    <div>
+        <div class="col-xs-12" ng-if="!ehInutilizado">
+            <a ng-if="modelType == 'cliente'" href="../app/ImportacaoModels/MigrarCadastroCliente.xls"><img src="../app/images/download_model_small.png" width="100%"></a>
+            <a ng-if="modelType == 'produto'" href="../app/ImportacaoModels/MigrarCadastroProduto.xls"><img src="../app/images/download_model_small.png" width="100%"></a>
+            <div style="margin-bottom: 15px"></div>
+            <div class="well">
+                <form action="" class="dropzone" dropzone="dropzoneConfig" id="dropzone">
+                    <div class="dz-default dz-message"></div>
+                </form>
+            </div>
+
+            <script type="text/javascript">
+                Dropzone.autoDiscover = false;
+                $('.dz-message').attr('style', 'background-image: url(../app/images/drop_box_area.png);');
+            </script>
+        </div>
+    </div>
+</div>

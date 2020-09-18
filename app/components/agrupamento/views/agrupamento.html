@@ -1,0 +1,82 @@
+
+<div class="col-md-5 p-l-0 p-r-0">
+    <div class="panel">
+        <div class="panel-header">
+            <h3 class="m-b-20">
+                <i class="fa fa-list"></i>
+                <strong>Listagem</strong> de agrupamentos
+            </h3>
+
+            <div class="control-btn">
+                <button type="button" class="btn btn-primary btn-sm pull-right" event-focus="click" event-focus-id="agp_descricao_longa" ng-click="novoAgrupamento()" id="bt-novo-agrupamento" style="margin-right:2px">
+                    <i class="fa fa-plus"></i> Novo
+                </button>
+            </div>
+
+            <form class="form-inverse space-down m-t-30" autocomplete="off" role="search">
+                <div class="append-icon">
+                    <input type="text" class="form-control" placeholder="Pesquisar agrupamentos" ng-model="pesquisaAgrupamento.texto_agrupamento_pesquisar" ng-change="getPesquisar()">
+                    <i class="icon-magnifier"></i>
+                </div>
+            </form>
+        </div>
+
+        <div class="panel-content panel-list m-b-0" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200">
+            <div ng-include="'agrupamento/views/lista-agrupamento.html'"></div>
+        </div>
+
+        <div class="panel-footer" style="background-color:#fff">
+            <span>&nbsp;</span>
+        </div>
+    </div>
+</div>
+
+
+<!-- Painel inicial com manual: -->
+<div class="col-md-7 p-r-0" ng-class="{'animated virtux' : flagTutorial === true, 'animated oculto' : flagTutorial === false}">
+    <div class="panel-manual" ng-include="'home/views/tutorial.html'"></div>
+</div>
+
+
+<!-- Painel principal com formulário de cadastro e edição: -->
+<div class="col-md-7 p-r-0" ng-class="{'animated virtux' : flagTutorial === false, 'animated oculto' : flagTutorial === true}">
+    <div class="panel">
+        <div class="panel-header">
+            <div class="btn-reset">
+                <button type="button" class="btn btn-sm btn-primary" ng-click="voltar()">
+                    <i class="fa fa-arrow-left"></i> Voltar
+                </button>
+            </div>
+
+            <h3 class="title-header">
+                <span class="m-r-5">
+                    <i class="fa fa-info"></i>
+                    <strong>Dados</strong> do agrupamento
+                </span>
+                <strong ng-if="agrupamento.agp_cod_agp" style="color:#319DB5">#{{agrupamento.agp_cod_agp}}</strong>
+            </h3>
+
+            <div class="control-btn">
+                <a class="panel-close btn-delete btn-trash" ng-click="cancelarAgrupamento()" title="{{nomeBotao}}">
+                    <i class="fa fa-trash-o"></i>
+                </a>
+                <button type="button" class="btn btn-sm btn-primary clickright" ladda="salvaAgrupamentoLoading" ng-show="botaoSalvar" ng-click="salvarAgrupamento(agrupamento.agp_cod_agp)" id="bt-salvar-agrupamento" style="margin-right:2px">
+                    <i class="fa fa-check"></i> Salvar
+                </button>
+            </div>
+        </div>
+
+        <div class="panel-content p-t-0 p-b-0">
+            <form role="form" name="forms.formAgrupamento" id="forms.formAgrupamento" class="form-validation m-b-20" novalidate>
+                <tabset class="tab-fade-in">
+                    <tab active="tabs[0].active">
+                        <tab-heading>Principal</tab-heading>
+                        <div class="panel-inner">
+                            <div ng-include="'agrupamento/views/aba-agrupamento-principal.html'"></div>
+                        </div>
+                    </tab>
+                </tabset>
+            </form>
+        </div>
+    </div>
+</div>

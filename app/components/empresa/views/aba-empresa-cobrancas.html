@@ -1,0 +1,409 @@
+
+<form role="form" name="forms.formEmpresaCobranca" class="form-validation" autocomplete="off" novalidate>
+    <div class="row">
+        <div class="col-md-12 portlets">
+            <div class="panel-header">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="title-header">
+                            <i class="fa fa-money"></i>
+                            <strong>Cobranças</strong>
+                        </h3>
+
+                        <div class="control-btn">
+                            <button type="button" class="btn btn-primary btn-sm btn-tab clickright" ladda="salvarEmpresaCobrancasLoading" ng-click="salvarEmpresa('forms.formEmpresaCobranca')">
+                                <i class="fa fa-check"></i> Salvar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-12 m-t-0">
+                <div class="row">
+                    <div class="col-md-12">
+                        <h3 class="m-t-20">
+                            <strong>
+                                <span>Cobranças Automática</span>
+                            </strong>
+                        </h3>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="m-t-10">Ativo:</label>
+                        <label class="switch">
+                            <input class="switch-input" name="emp_ativo_auto_cob" id="emp_ativo_auto_cob" type="checkbox" ng-model="empresa.emp_ativo_auto_cob">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+
+                    <!-- Por enquanto esta em fase de testes os contratos e cobranças automáticas. -->
+                    <div ng-show="(objUsuario.ident_emp == 8905 || objUsuario.ident_emp == 83979 || objUsuario.ident_emp == 95681) && (empresa.emp_ativo_auto_cob)" class="sample-show-hide">
+                        <div class="col-md-10">
+                            <h3 class="m-t-10">
+                                <strong>Instruções</strong>
+                                <small class="tip-header m-l-0">ADICIONE DOMICÍLIOS BANCÁRIOS</small>
+                            </h3>
+                        </div>
+
+                        <div class="col-md-2">
+                            <p></p>
+                        </div>
+
+                        <div class="col-md-10">
+                            <div class="panel">
+                                <div class="panel-header-form panel-form">
+                                    <h5>
+                                        <strong>Configuração</strong> de Conta Bancária
+                                    </h5>
+                                    <div class="control-btn">
+                                        <button style="margin-top:-5px" type="button" class="btn btn-primary btn-sm" id="btn-nova-conta" ng-click="adicionarContaBancaria()" ng-if="!arrBancoContas.length">
+                                            <i class="fa fa-plus"></i> &nbsp; Nova
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="form-group">
+                                        <div ng-if="!arrBancoContas.length">
+                                            <div class="alert alert-warning alert-fade m-b-0" role="alert">
+                                                <i class="fa fa-info-circle fa-2x"></i>
+                                                <span class="alert-texto font-small">Nenhuma conta bancária encontrada!</span>
+                                            </div>
+                                        </div>
+                                        <div ng-if="arrBancoContas.length">
+                                            <table class="table table-hover font-mini m-b-0" id="grid-banco-contas">
+                                                <colgroup>
+                                                    <col width="25%">
+                                                    <col width="10%">
+                                                    <col width="10%">
+                                                    <col width="35%">
+                                                    <col width="10%">
+                                                    <col width="10%">
+                                                </colgroup>
+                                                <thead>
+                                                    <tr>
+                                                        <th>Banco</th>
+                                                        <th>Conta</th>
+                                                        <th>Agência</th>
+                                                        <th>Responsável</th>
+                                                        <th>Situação</th>
+                                                        <th class="text-center">Ações</th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    <tr ng-repeat="item in arrBancoContas">
+                                                        <td>
+                                                            <span bank-name="item">{{item.bco_cod_banco}}</span>
+                                                        </td>
+                                                        <td>{{item.bco_conta}}</td>
+                                                        <td>{{item.bco_agencia}}</td>
+                                                        <td>{{item.bco_responsavel}}</td>
+                                                        <td>
+                                                            <span ng-switch on="item.bco_iugu_status_conta">
+                                                                <label ng-switch-when="0">
+                                                                    <span class="label label-danger">PENDENTE</span>
+                                                                </label>
+                                                                <label ng-switch-when="1">
+                                                                    <span class="label label-warning">EM VERIFICAÇÃO</span>
+                                                                </label>
+                                                                <label ng-switch-when="2">
+                                                                    <span class="label label-success">ATIVA</span>
+                                                                </label>
+                                                            </span>
+                                                        </td>
+                                                        <td class="text-center">
+                                                            <button type="button" class="btn btn-sm btn-primary m-0 c-pointer" tooltip-placement="left" tooltip="Clique aqui para verificar os dados da sua conta!" ng-click="verificarContaBancaria(item)">
+                                                                <i class="fa fa-refresh" style="font-size:12px!important" aria-hidden="true"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <small>Sua conta precisa de aprovação para começar a utilização das cobranças automáticas. Prazo de um dia útil.</small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <h3 class="m-t-20">
+                            <strong>
+                                <span>Cielo</span>
+                                <small class="small-link">
+                                    <a href="https://minhaconta.cielo.com.br/wps/portal/est2/login" target="_blank">ACESSAR</a>
+                                </small>
+                            </strong>
+                        </h3>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="m-t-10">Ativo:</label>
+                        <label class="switch">
+                            <input class="switch-input" name="emp_ativo_cielo" id="emp_ativo_cielo" type="checkbox" ng-model="empresa.emp_ativo_cielo">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+
+                    <div ng-show="empresa.emp_ativo_cielo" class="sample-show-hide">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label>MID ID (Cielo)</label>
+                                <input class="form-control" maxlength="100" placeholder="MID ID (Cielo)" name="emp_cielo_mid" id="emp_cielo_mid" ng-model="empresa.emp_cielo_mid" type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label>Cód. Estabelecimento (Cielo)</label>
+                                <input class="form-control" maxlength="20" placeholder="Cód. Estabelecimento (Cielo)" name="emp_cielo_estab" id="emp_cielo_estab" ng-model="empresa.emp_cielo_estab" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <h3 class="m-t-20">
+                            <strong>
+                                <span>PagSeguro</span>
+                                <small class="small-link">
+                                    <a href="https://pagseguro.uol.com.br/" target="_blank">ACESSAR</a>
+                                </small>
+                            </strong>
+                        </h3>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="m-t-10">Ativo:</label>
+                        <label class="switch">
+                            <input class="switch-input" name="emp_ativo_pagseg" id="emp_ativo_pagseg" type="checkbox" ng-model="empresa.emp_ativo_pagseg">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+
+                    <div ng-show="empresa.emp_ativo_pagseg" class="sample-show-hide">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label>E-mail PagSeguro</label>
+                                <input class="form-control" placeholder="E-mail PagSeguro" maxlength="255" name="emp_email_pagseg" id="emp_email_pagseg" ng-model="empresa.emp_email_pagseg" type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label>Token PagSeguro</label>
+                                <input class="form-control" placeholder="Token PagSeguro" maxlength="500" name="emp_token_pagseg" id="emp_token_pagseg" ng-model="empresa.emp_token_pagseg" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-12">
+                        <h3 class="m-t-20">
+                            <strong>
+                                <span>GerenciaNet Boletos</span>
+                                <small class="small-link">
+                                    <a href="https://accounts.gerencianet.com.br/cadastro/app/fortunus/lojistavirtual" target="_blank">ACESSAR</a>
+                                </small>
+                            </strong>
+                        </h3>
+                    </div>
+
+                    <div class="col-md-2">
+                        <label class="m-t-10">Ativo:</label>
+                        <label class="switch">
+                            <input class="switch-input" name="emp_ativo_gn" id="emp_ativo_gn" type="checkbox" ng-model="empresa.emp_ativo_gn">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+
+                    <div ng-show="empresa.emp_ativo_gn" class="sample-show-hide">
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label>ID do Cliente</label>
+                                <input class="form-control" placeholder="ID do Cliente" maxlength="100" name="emp_gn_id" id="emp_gn_id" ng-model="empresa.emp_gn_id" type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label>Chave do Cliente</label>
+                                <input class="form-control" placeholder="Chave do Cliente" maxlength="100" name="emp_gn_secret" id="emp_gn_secret" ng-model="empresa.emp_gn_secret" type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div ng-show="empresa.emp_ativo_gn" class="sample-show-hide">
+                        <div class="col-md-2">
+                            <p></p>
+                        </div>
+
+                        <div class="col-md-10">
+                            <h3 class="m-t-10">
+                                <strong>Instruções</strong>
+                                <small class="tip-header m-l-0">ADICIONE INSTRUÇÕES AOS BOLETOS BANCÁRIOS</small>
+                            </h3>
+                        </div>
+
+                        <div class="col-md-2">
+                            <p></p>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="panel">
+                                <div class="panel-header-form panel-form">
+                                    <h5>
+                                        <strong>Configuração</strong> de Juros
+                                    </h5>
+                                    <div class="control-btn">
+                                        <label class="switch">
+                                            <input class="switch-input" type="checkbox" name="emp_gn_juros" id="emp_gn_juros" ng-model="empresa.emp_gn_juros" ng-change="setInstrucao('J')">
+                                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                                            <span class="switch-handle"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="form-group">
+                                        <label>Juros ao dia</label>
+                                        <div class="append-icon">
+                                            <input class="form-control" placeholder="Juros ao dia..." name="emp_gn_vlr_juros" id="emp_gn_vlr_juros" ng-model="empresa.emp_gn_vlr_juros" ng-keyup="upInstrucao('J')" ng-disabled="!empresa.emp_gn_juros" type="text" ui-percentage-mask="3" onclick="this.select()">
+                                            <i>%</i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <small>Use valor máximo de 0,033%, exceto se estiver previsto em contrato, neste caso o máximo é 0,33%.</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="panel">
+                                <div class="panel-header-form panel-form">
+                                    <h5>
+                                        <strong>Configuração</strong> de Multa
+                                    </h5>
+                                    <div class="control-btn">
+                                        <label class="switch">
+                                            <input class="switch-input" type="checkbox" name="emp_gn_multa" id="emp_gn_multa" ng-model="empresa.emp_gn_multa" ng-change="setInstrucao('M')">
+                                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                                            <span class="switch-handle"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="form-group">
+                                        <label>Multa</label>
+                                        <div class="append-icon">
+                                            <input class="form-control" placeholder="Multa..." name="emp_gn_vlr_multa" id="emp_gn_vlr_multa" ng-model="empresa.emp_gn_vlr_multa" ng-keyup="upInstrucao('M')" ng-disabled="!empresa.emp_gn_multa" type="text" ui-percentage-mask="2" onclick="this.select()">
+                                            <i>%</i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <small>Use valor máximo de 2,0%, exceto se estiver previsto em contrato, neste caso o máximo é 10,0%.</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <p></p>
+                        </div>
+
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <label>Instrução 1</label>
+                                <input class="form-control" placeholder="Primeira instrução..." name="emp_gn_obs1" id="emp_gn_obs1" maxlength="80" ng-model="empresa.emp_gn_obs1" type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <p></p>
+                        </div>
+
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <label>Instrução 2</label>
+                                <input class="form-control" placeholder="Segunda instrução..." name="emp_gn_obs2" id="emp_gn_obs2" maxlength="80" ng-model="empresa.emp_gn_obs2" type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <p></p>
+                        </div>
+
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <label>Instrução 3</label>
+                                <input class="form-control" placeholder="Terceira instrução..." name="emp_gn_obs3" id="emp_gn_obs3" maxlength="80" ng-model="empresa.emp_gn_obs3" type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <p></p>
+                        </div>
+
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <label>Instrução 4</label>
+                                <input class="form-control" placeholder="Quarta instrução..." name="emp_gn_obs4" id="emp_gn_obs4" maxlength="80" ng-model="empresa.emp_gn_obs4" type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-2">
+                            <p></p>
+                        </div>
+
+                        <!--
+                        <div class="col-md-10">
+                            <h3 class="m-t-10">
+                                <strong>Geração Automática</strong>
+                                <small class="tip-header m-l-0">GERAÇÃO AUTOMÁTICA DOS BOLETOS</small>
+                            </h3>
+                        </div>
+
+                        <div class="col-md-2">
+                            <p></p>
+                        </div>
+
+                        <div class="col-md-10">
+                            <div class="panel">
+                                <div class="panel-header-form panel-form">
+                                    <h5>
+                                        <strong>Configuração</strong> PARA GERAÇÃO
+                                    </h5>
+                                    <div class="control-btn">
+                                        <label class="switch">
+                                            <input class="switch-input" type="checkbox" name="emp_ativo_gn_auto" id="emp_ativo_gn_auto" ng-click="setQtdeDias()" ng-model="empresa.emp_ativo_gn_auto">
+                                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                                            <span class="switch-handle"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                                <div class="panel-content">
+                                    <div class="form-group">
+                                        <label>Quantidade de dias</label>
+                                        <div class="append-icon">
+                                            <input class="form-control" placeholder="Quantidade de dias..." maxlength="4" name="emp_gn_qtd_dias" id="emp_gn_qtd_dias" ng-model="empresa.emp_gn_qtd_dias" ng-disabled="!empresa.emp_ativo_gn_auto" type="text" number-only onclick="this.select()">
+                                            <i class="fa fa-sort-numeric-desc"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="panel-footer">
+                                    <small>Quantidade de dias faltando para a data de vencimento para geração automática dos boletos.</small>
+                                </div>
+                            </div>
+                        </div>
+                        -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="pt-br" class="no-js">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+
+        <title>Lojista Virtual</title>
+
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../assets/global/css/font-google.css" media="all" type="text/css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700,900" type="text/css">
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600,700" type="text/css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+        <link rel="stylesheet" href="../assets/global/plugins/slick/slick.css" media="all" type="text/css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-minicolors/2.2.4/jquery.minicolors.min.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.css">
+
+        <!-- build:css css/style.css -->
+            <link media="all" rel="stylesheet" type="text/css" href="assets/global/plugins/mcustom-scrollbar/mcustom_scrollbar.min.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/global/plugins/animation-css/animate.min.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/global/css/style.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/global/css/login.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/global/css/theme.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/global/css/ui.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/global/plugins/step-form-wizard/css/step-form-wizard.min.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/global/plugins/step-form-wizard/plugins/parsley/parsley.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/global/plugins/magnific/magnific-popup.min.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/global/plugins/hover-effects/hover-effects.min.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/global/plugins/input-text/style.min.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/bower_components/angular-ui-select/dist/select.min.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/bower_components/malihu-custom-scrollbar-plugin/jquery.mCustomScrollbar.min.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/bower_components/jquery-minicolors/jquery.minicolors.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/bower_components/ladda/dist/ladda-themeless.min.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/bower_components/angular-spinner/treasure-overlay-spinner.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/css/angular-theme.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/admin/layout1/css/layout.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/bower_components/slick-carousel/slick/slick.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/global/plugins/angular.treeview-master/css/angular.treeview.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/bower_components/angular-chart.js-master/js/angular-chart.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/bower_components/fullcalendar/dist2/fullcalendar.css">
+            <link media="all" rel="stylesheet" type="text/css" href="assets/global/plugins/dropzone/dropzone.min.css">
+        <!-- endbuild -->
+    </head>
+
+    <body ng-app="newApp" ng-controller="MainCtrl" class="fixed-topbar fixed-sidebar theme-sdtl color-default dashboard submenu-hover">
+        <!-- Spinner da aplicação. -->
+        <div ng-spinner-loader class="page-spinner-loader">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+
+
+        <!-- Layout para login. -->
+        <div class="account2" ng-if="!objLogin.isLogado" ng-controller="LoginCtrl">
+            <div ng-include src="'../layout-login.html'"></div>
+        </div>
+
+
+        <!-- Layout para a aplicação. -->
+        <div ng-if="objLogin.isLogado">
+            <section class="content-master">
+                <!-- Barra lateral, sidebar. -->
+                <div class="sidebar" mh-scrollbar mcs-theme="light-thin" mcs-scroll-inertia="200">
+                    <div class="logopanel">
+                        <h1>
+                            <a ng-switch on="objUsuario.ident_emp" href="#/">
+                                <span ng-switch-when="37428">
+                                    <img ng-src="../app/images/logomarca/logo-lojista-ofertas-white.jpg" alt="{{objUsuario.sol_nome}}">
+                                </span>
+                                <span ng-switch-default>
+                                    <img ng-src="../app/images/logomarca/{{objUsuario.sol_logo}}" alt="{{objUsuario.sol_nome}}">
+                                </span>
+                            </a>
+                        </h1>
+                    </div>
+                    <div class="sidebar-inner">
+                        <ul class="nav nav-sidebar" id="lv-menu-vertical" ng-if="::getVerificaMenu()">
+                            <li class="nav-only">
+                                <a href="#/">
+                                    <i class="fa fa-home"></i>
+                                    <span>Principal</span>
+                                </a>
+                            </li>
+
+                            <!-- Remover empresas quando solucionar questão da solução de CTE -->
+                            <li class="nav-parent" ng-if="(getPermissao('26') || getPermissao('11') || getPermissao('27') || getPermissao('30')) && (objUsuario.ident_emp != 27196 && objUsuario.ident_emp != 68636 && objUsuario.ident_emp != 95499 && objUsuario.ident_emp != 34561)" id="lv-menu-vendas">
+                                <a href="#">
+                                    <i class="fa fa-tags fa-small"></i>
+                                    <span>Vendas</span>
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul class="children collapse">
+                                    <li ng-if="::getPermissao('26')">
+                                        <a onclick="location.href='#orcamento'" href="#orcamento">Orçamentos</a>
+                                    </li>
+                                    <li ng-if="::getPermissao('11')">
+                                        <a onclick="location.href='#venda'" href="#venda">Venda (NF-e)</a>
+                                    </li>
+                                    <li ng-if="::getPermissao('27')">
+                                        <a onclick="location.href='#devolucao-venda'" href="#devolucao-venda">Devolução Venda</a>
+                                    </li>
+                                    <li ng-if="::getPermissao('30')">
+                                        <a onclick="location.href='#outras-saidas'" href="#outras-saidas">Outras Saídas</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!-- Remover empresas quando solucionar questão da solução de CTE -->
+                            <li class="nav-parent" ng-if="(getPermissao('16') || getPermissao('31') || getPermissao('29')) && (objUsuario.ident_emp != 27196 && objUsuario.ident_emp != 68636 && objUsuario.ident_emp != 95499 && objUsuario.ident_emp != 34561)" id="lv-menu-compras">
+                                <a href="#">
+                                    <i class="fa fa-shopping-cart fa-small"></i>
+                                    <span>Compras</span>
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul class="children collapse">
+                                    <li ng-if="::getPermissao('16')">
+                                        <a onclick="location.href='#compra'" href="#compra">Compra</a>
+                                    </li>
+                                    <li ng-if="::getPermissao('31')">
+                                        <a onclick="location.href='#devolucao-compra'" href="#devolucao-compra">Devolução Compra</a>
+                                    </li>
+                                    <li ng-if="::getPermissao('29')">
+                                        <a onclick="location.href='#outras-entradas'" href="#outras-entradas">Outras Entradas</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-parent" ng-if="getPermissao('34') && getPermissaoSol('16')" id="lv-menu-servicos">
+                                <a href="#">
+                                    <i class="fa fa-database fa-small"></i>
+                                    <span>Serviços</span>
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul class="children collapse">
+                                    <li>
+                                        <a onclick="location.href='#servico'" href="#servico">Cadastro</a>
+                                    </li>
+                                    <li>
+                                        <a onclick="location.href='#prest-servico'" href="#prest-servico">Prestação</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-parent" ng-if="::getPermissaoSol('21') && (getPermissao('56') || getPermissao('55'))" id="lv-menu-producao">
+                                <a href="#">
+                                    <i class="fa fa-sitemap fa-small"></i>
+                                    <span>Produção</span>
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul class="children collapse">
+                                    <li ng-if="::getPermissao('56')">
+                                        <a onclick="location.href='#saida-insumos'" href="#saida-insumos">Saída de Insumos</a>
+                                    </li>
+                                    <li ng-if="::getPermissao('55')">
+                                        <a onclick="location.href='#entrada-producao'" href="#entrada-producao" title="Entrada Produção">Entrada Produção</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-parent" ng-if="::getPermissaoSol('22') && getPermissao('48')" id="lv-menu-transporte">
+                                <a href="#">
+                                    <i class="fa fa-truck" aria-hidden="true"></i>
+                                    <span>Transporte</span>
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul class="children collapse">
+                                    <li>
+                                        <a onclick="location.href='#transporte/frete'" href="#transporte/frete">Frete (CT-e)</a>
+                                    </li>
+                                    <li>
+                                        <a onclick="location.href='#transporte/veiculos'" href="#transporte/veiculos">Veículos</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-parent" ng-if="::getPermissao('13') && (getPermissaoSol('2') || getPermissaoSol('11'))" id="lv-menu-financeiro">
+                                <a href="#">
+                                    <i class="fa fa-dollar"></i>
+                                    <span>Finanças</span>
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul class="children collapse">
+                                    <li>
+                                        <a onclick="location.href='#financeiro/receber'" href="#financeiro/receber">Receitas</a>
+                                    </li>
+                                    <li>
+                                        <a onclick="location.href='#financeiro/pagar'" href="#financeiro/pagar">Despesas</a>
+                                    </li>
+                                    <li>
+                                        <a onclick="location.href='#financeiro/extrato'" href="#financeiro/extrato">Extrato</a>
+                                    </li>
+                                    <li>
+                                        <a onclick="location.href='#conciliacao'" href="#conciliacao">Conciliação</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-parent" ng-if="::getPermissao('25') || getPermissao('14') || getPermissao('43')" id="lv-menu-cadastros">
+                                <a href="#">
+                                    <i class="fa fa-user fa-small"></i>
+                                    <span>Cadastros</span>
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul class="children collapse">
+                                    <li ng-if="::getPermissao('25')">
+                                        <a onclick="location.href='#cliente'" href="#cliente" id="clientmnu">Cliente</a>
+                                    </li>
+                                    <li ng-if="::getPermissao('14')">
+                                        <a onclick="location.href='#fornecedor'" href="#fornecedor">Fornecedor</a>
+                                    </li>
+                                    <li ng-if="::getPermissao('43')">
+                                        <a onclick="location.href='#transportadora'" href="#transportadora">Transportadora</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-parent" ng-if="::getPermissao('15')" id="lv-menu-produtos">
+                                <a href="#">
+                                    <i class="fa fa-cube fa-small"></i>
+                                    <span>Produtos</span>
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul class="children collapse">
+                                    <li>
+                                        <a onclick="location.href='#produto'" href="#produto">Produtos</a>
+                                    </li>
+                                    <li ng-if="::getPermissao('20')">
+                                        <a onclick="location.href='#categoria-marca'" href="#categoria-marca">Categorização</a>
+                                    </li>
+                                    <li ng-if="::getPermissao('19')">
+                                        <a onclick="location.href='#agrupamento'" href="#agrupamento">Agrupamentos</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-parent" ng-if="::getPermissao('40') && (getPermissaoSol('10') || getPermissaoSol('2'))" id="lv-menu-fiscal">
+                                <a href="#">
+                                    <i class="fa fa-university fa-small"></i>
+                                    <span>Fiscal</span>
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul class="children collapse">
+                                    <li ng-if="::getPermissao('59') && getPermissaoSol('2')">
+                                        <a onclick="location.href='#fiscal/1'" href="#fiscal/1">Sintegra</a>
+                                    </li>
+                                    <li ng-if="::getPermissao('59') && (getPermissaoPlan('14') || getPermissaoPlan('15') || getPermissaoPlan('16'))">
+                                        <a onclick="location.href='#fiscal/3'" href="#fiscal/3">Sped Fiscal</a>
+                                    </li>
+                                    <li ng-if="::getPermissao('58')">
+                                        <a onclick="location.href='#fiscal/2'" href="#fiscal/2">Exportar Dados</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-parent" ng-if="::getPermissao('24')" id="lv-menu-relatorios">
+                                <a href="#">
+                                    <i class="fa fa-file-excel-o fa-small"></i>
+                                    <span>Relatórios</span>
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul class="children collapse">
+                                    <li>
+                                        <a onclick="location.href='#relatorio/1'" href="#relatorio/1" id="lv-menu-item-cadastros">Cadastros</a>
+                                    </li>
+                                    <li>
+                                        <a onclick="location.href='#relatorio/2'" href="#relatorio/2" id="lv-menu-item-produtos">Produtos</a>
+                                    </li>
+                                    <li>
+                                        <a onclick="location.href='#relatorio/3'" href="#relatorio/3" id="lv-menu-item-administrativo">Administrativo</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <li class="nav-parent" ng-if="::getPermissao('22')" id="lv-menu-empresa">
+                                <a href="#">
+                                    <i class="fa fa-industry fa-small"></i>
+                                    <span>Empresa</span>
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul class="children collapse">
+                                    <li>
+                                        <a onclick="location.href='#empresa/1'" href="#empresa/1">Dados da Empresa</a>
+                                    </li>
+                                    <li ng-if="getPermissaoSol('10') || getPermissaoSol('2')">
+                                        <a onclick="location.href='#empresa/2'" href="#empresa/2">Certificados</a>
+                                    </li>
+                                    <li ng-if="getPermissaoSol('10') || getPermissaoSol('2')">
+                                        <a onclick="location.href='#empresa/3'" href="#empresa/3">Tributos</a>
+                                    </li>
+                                    <li ng-if="getPermissaoSol('2') || getPermissaoSol('11')">
+                                        <a onclick="location.href='#empresa/4'" href="#empresa/4">Cobranças</a>
+                                    </li>
+                                    <li>
+                                        <a onclick="location.href='#empresa/5'" href="#empresa/5">Migração</a>
+                                    </li>
+                                </ul>
+                            </li>
+
+                            <!--
+                            <li class="nav-parent" id="lv-menu-wizard">
+                                <a href="#">
+                                    <i class="fa fa-cog"></i>
+                                    <span>Wizards</span>
+                                    <span class="fa arrow"></span>
+                                </a>
+                                <ul class="children collapse">
+                                    <li>
+                                        <a ng-click="setRootWizard(1)">Wizard 1</a>
+                                    </li>
+                                    <li>
+                                        <a ng-click="setRootWizard(2)">Wizard 2</a>
+                                    </li>
+                                </ul>
+                            </li>
+                            -->
+
+                            <li class="nav-only" id="lv-menu-ecommerce">
+                                <a onclick="location.href='#loja-virtual'">
+                                    <i class="fa fa-shopping-basket fa-small"></i>
+                                    <span>Loja Virtual</span>
+                                </a>
+                            </li>
+                        </ul>
+
+                        <!-- Gatilho para chamar intro.js no angular -->
+                        <div class="lv-wizards">
+                            <div ng-intro-options="objRootWizard"
+                                 ng-intro-method="CallMeRoot"
+                                 ng-intro-oncomplete="CompletedEventRoot"
+                                 ng-intro-onexit="ExitEventRoot"
+                                 ng-intro-onchange="ChangeEventRoot"
+                                 ng-intro-onbeforechange="BeforeChangeEventRoot"
+                                 ng-intro-onafterchange="AfterChangeEventRoot"
+                                 ng-intro-autostart="false">
+                            </div>
+                            <a class="btn oculto" id="btn-gatilho-dashboard" ng-click="CallMeRoot()">Gatilho do Dashboard</a>
+                        </div>
+
+                        <div class="box-meu-plano" ng-if="objUsuario.meu_plano">
+                            <div ng-switch on="objUsuario.meu_plano.tit_situacao">
+                                <div ng-switch-when="VENCENDO">
+                                    <div class="box-vencimento">
+                                        <p>Seu sistema vai expirar em {{objUsuario.meu_plano.tit_qtde_dias}} dias.</p>
+                                        <span>
+                                            <a href="#meu-plano">Clique aqui para ativar</a>
+                                        </span>
+                                        <div ng-switch on="objUsuario.meu_plano.tit_qtde_dias">
+                                            <div class="progress" ng-switch-when="1">
+                                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100" style="width:80%">
+                                                    <span class="sr-only">80%</span>
+                                                </div>
+                                            </div>
+                                            <div class="progress" ng-switch-when="2">
+                                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width:60%">
+                                                    <span class="sr-only">60%</span>
+                                                </div>
+                                            </div>
+                                            <div class="progress" ng-switch-when="3">
+                                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="40" aria-valuemin="0" aria-valuemax="100" style="width:40%">
+                                                    <span class="sr-only">40%</span>
+                                                </div>
+                                            </div>
+                                            <div class="progress" ng-switch-when="4">
+                                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="20" aria-valuemin="0" aria-valuemax="100" style="width:20%">
+                                                    <span class="sr-only">20%</span>
+                                                </div>
+                                            </div>
+                                            <div class="progress" ng-switch-when="5">
+                                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100" style="width:0%">
+                                                    <span class="sr-only">0%</span>
+                                                </div>
+                                            </div>
+                                            <div class="progress" ng-switch-default>
+                                                <div class="progress-bar progress-bar-danger" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width:100%">
+                                                    <span class="sr-only">100%</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div ng-switch-when="VENCIDO">
+                                    <div class="box-vencimento">
+                                        <p>Aguardando confirmação de pagamento.</p>
+                                    </div>
+                                </div>
+                                <div ng-switch-when="EXPIRADO">
+                                    <div class="box-expirado">
+                                        <span>Seu sistema expirou</span>
+                                        <p>Favor entrar em contato com nossa equipe pelo Chat de Atendimento.</p>
+                                        <a ng-if="::getPermissao('54')" class="oculto" id="trigger-plano" href="#meu-plano">
+                                            <span>Meu plano</span>
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="sidebar-footer clearfix" ng-if="objUsuario.is_cdl">
+                            <a class="pull-left footer-settings box-spc" href="http://www.cdludi.org.br" target="_blank">
+                                <span style="margin-bottom:20px;">Consultar SPC</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Fim da barra lateral, sidebar. -->
+
+
+                <!-- Conteúdo central da aplicação. -->
+                <div class="main-content">
+                    <!-- Topbar. -->
+                    <div class="topbar">
+                        <!-- Topbar left. -->
+                        <div class="header-left">
+                            <div class="topnav">
+                                <a class="menutoggle" href="#" data-toggle="sidebar-collapsed">
+                                    <span class="menu__handle" ng-class="{'oculto' : !isMobile}">
+                                        <span>Menu</span>
+                                    </span>
+                                </a>
+                                <h4 class="pull-right" ng-class="{'oculto' : isMobile}">{{::getTituloApp()}}</h4>
+                            </div>
+                        </div>
+                        <!-- Fim do topbar left. -->
+
+                        <!-- Topbar right. -->
+                        <div class="header-right">
+                            <!-- Dropdown do usuário. -->
+                            <ul class="header-menu nav navbar-nav">
+                                <li class="dropdown" id="user-header">
+                                    <a href="javascript:void(0)" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                        <i class="fa fa-user fa-4x fa-white"></i>
+                                        <span class="username">Olá, {{objUsuario.usu_nome}}</span>
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li>
+                                            <a onclick="location.href='#meu-perfil'" href="#meu-perfil">
+                                                <i class="fa fa-user"></i>
+                                                <span>Meu perfil</span>
+                                            </a>
+                                        </li>
+                                        <li ng-if="::getPermissao('54') && objUsuario.is_cdl === false">
+                                            <a onclick="location.href='#meu-plano'" href="#meu-plano">
+                                                <i class="fa fa-newspaper-o fa-small"></i>
+                                                <span>Meu plano</span>
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a title="Sair" ng-click="logout()">
+                                                <i class="fa fa-sign-out"></i>
+                                                <span>Sair</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                            </ul>
+                            <!-- Fim do dropdown para o usuário. -->
+
+                            <ul class="header-menu nav navbar-nav">
+                                <li class="normal-header" id="btn-ecommerce">
+                                    <i class="icon-ecommerce" lv-link-ecommerce dominio="{{objUsuario.emp.emp_dominio}}"></i>
+                                </li>
+
+                                <li class="dropdown normal-header">
+                                    <a href="javascript:void(0)" data-toggle="dropdown" data-hover="dropdown" data-close-others="false">
+                                        <i class="fa fa-cog fa-white"></i>
+                                    </a>
+                                    <ul class="dropdown-menu drop-letter-black">
+                                        <li ng-if="::getPermissao('35')">
+                                            <a href="#usuario">
+                                                <i class="fa fa-user"></i>
+                                                <span>Usuários</span>
+                                            </a>
+                                        </li>
+                                        <li ng-if="::getPermissao('38')">
+                                            <a href="#perfil">
+                                                <i class="fa fa-group"></i>
+                                                <span>Perfis</span>
+                                            </a>
+                                        </li>
+                                        <li ng-if="::getPermissao('18')">
+                                            <a href="#parametro">
+                                                <i class="fa fa-cogs"></i>
+                                                <span>Parâmetros</span>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+
+                                <!-- Dropdown de notificações. -->
+                                <li class="dropdown" id="notifications-header">
+                                    <a href="javascript:void(0)" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" ng-click="atualizarLeuNotBadge()">
+                                        <i class="fa fa-bell fa-white"></i>
+                                        <span class="badge badge-danger badge-header" ng-show="arrContNaoLeuBadge.length">{{arrContNaoLeuBadge.length}}</span>
+                                    </a>
+                                    <ul ng-if="arrNotificacao.lenght" class="dropdown-menu" id="dropdown-notificacao"
+                                        mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200">
+                                        <li>
+                                            <ul>
+                                                <li ng-repeat="notificacao in arrNotificacao">
+                                                    <a href="{{notificacao.not_link_redirect}} ">
+                                                        <i class="fa fa-star p-r-10 f-18 c-red"></i>
+                                                        {{notificacao.not_desc}}
+                                                        <span class="dropdown-time">15 mins</span>
+                                                    </a>
+                                                </li>
+                                            </ul>
+                                        </li>
+
+                                        <li class="dropdown-footer clearfix lista-notificacao">
+                                            <a data-target="#" class="pull-left">Ver todas notificações</a>
+                                            <a data-target="#" class="pull-right">
+                                                <i class="fa fa-check"></i>
+                                            </a>
+                                        </li>
+                                    </ul>
+                                </li>
+                                <!-- Fim do dropdown para as notificações. -->
+
+                                <li ng-if="::getPermissao('23')" class="normal-header">
+                                    <a title="Agenda" href="#/agenda">
+                                        <i class="fa fa-calendar fa-4x fa-white"></i>
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- Fim do topbar right. -->
+                    </div>
+                    <!-- Fim do topbar. -->
+
+
+                    <!-- Conteúdo a ser embutido de acordo com a rota. -->
+                    <div ng-view class="at-view-slide-in-left page-content"></div>
+                </div>
+                <!-- Fim do conteúdo central da aplicação. -->
+            </section>
+        </div>
+
+        <!-- Spinner da aplicação. -->
+        <div class="loader-overlay">
+            <div class="spinner">
+                <div class="bounce1"></div>
+                <div class="bounce2"></div>
+                <div class="bounce3"></div>
+            </div>
+        </div>
+
+        <!-- Chat -->
+        <div ng-bind-html="scriptChat"></div>
+        <!-- ./Chat -->
+
+        <!-- Wizard <div ng-bind-html="scriptWizard"></div> -->
+        <!-- HotJar <div ng-bind-html="scriptHotJar"></div> -->
+    </body>
+
+
+    <!--[if IE 9]>
+        <script src="../assets/global/plugins/xdomain/xdomain.min.js"></script>
+        <script>window.isIE9 = true;</script>
+    <![endif]-->
+
+
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-resource.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-cookies.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-sanitize.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-animate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-touch.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-route.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-filter/0.5.16/angular-filter.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/danialfarid-angular-file-upload/11.2.0/ng-file-upload-all.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/malihu-custom-scrollbar-plugin/3.1.5/jquery.mCustomScrollbar.concat.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.3.1/jquery.maskedinput.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-mask/1.8.7/mask.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/checklist-model/0.11.0/checklist-model.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-loading-bar/0.9.0/loading-bar.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.11.2/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/modernizr/2.6.2/modernizr.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.12.0/moment.min.js"></script>
+
+
+    <!-- build:js js/libs.js -->
+        <script src="assets/global/plugins/base64/base64.min.js"></script>
+        <script src="assets/bower_components/angular-bootstrap/ui-bootstrap-tpls-0-14-3.js"></script>
+        <script src="assets/bower_components/angular-prompt/dist/angular-prompt.js"></script>
+        <script src="assets/bower_components/angular-spinner/treasure-overlay-spinner.min.js"></script>
+        <script src="assets/bower_components/angular-input-masks/angular-input-masks.min.js"></script>
+        <script src="assets/bower_components/angular-minicolors/angular-minicolors.js"></script>
+        <script src="assets/bower_components/ladda/js/spin.js"></script>
+        <script src="assets/bower_components/ladda/js/ladda.js"></script>
+        <script src="assets/bower_components/angular-ladda/dist/angular-ladda.min.js"></script>
+        <script src="assets/bower_components/jquery-minicolors/jquery.minicolors.min.js"></script>
+        <script src="assets/global/plugins/slick/slick.min.js"></script>
+        <script src="assets/global/plugins/step-form-wizard/js/step-form-wizard.min.js"></script>
+        <script src="assets/bower_components/slick-carousel/slick/slick.min.js"></script>
+        <script src="assets/bower_components/angular-credit-cards/release/angular-credit-cards.js"></script>
+    <!-- endbuild -->
+
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-socket-io/0.7.0/socket.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-notification/1.1.1/angular-notification.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-clipboard/1.5.0/angular-clipboard.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-noty/2.4.0/packaged/jquery.noty.packaged.min.js"></script>
+
+
+    <!-- build:js js/app.js -->
+        <script src="app/app.js"></script>
+        <script src="app/components/angular/Config.js"></script>
+        <script src="assets/bower_components/angular-slick/dist/slick.min.js"></script>
+        <script src="assets/bower_components/wizard/wizard.min.js"></script>
+        <script src="assets/bower_components/wizard/angular-wizard.js"></script>
+        <script src="assets/bower_components/angular-ui-calendar/src/calendar.js"></script>
+        <script src="assets/bower_components/fullcalendar/dist2/fullcalendar.min.js"></script>
+        <script src="assets/bower_components/fullcalendar/dist2/gcal.js"></script>
+        <script src="app/components/home/controllers/MainCtrl.js"></script>
+        <script src="app/components/angular/Services.js"></script>
+        <script src="app/components/angular/Factories.js"></script>
+        <script src="app/components/angular/Directives.js"></script>
+        <script src="app/components/angular/Filters.js"></script>
+        <script src="app/components/angular/Storage.js"></script>
+        <script src="app/components/angular/Wizard.js"></script>
+        <script src="app/components/angular/helpers/StaticFactories.js"></script>
+        <script src="app/components/home/controllers/HomeCtrl.js"></script>
+        <script src="app/components/home/controllers/WizardCtrl.js"></script>
+        <script src="app/components/home/controllers/HomeModalCtrl.js"></script>
+        <script src="app/components/cliente/controllers/ClienteCtrl.js"></script>
+        <script src="app/components/cliente/controllers/ClienteModalCtrl.js"></script>
+        <script src="app/components/cliente/controllers/DropzoneCtrl.js"></script>
+        <script src="app/components/cliente/services/ClienteService.js"></script>
+        <script src="app/components/venda/controllers/VendaCtrl.js"></script>
+        <script src="app/components/venda/controllers/VendaModalCtrl.js"></script>
+        <script src="app/components/venda/services/VendaService.js"></script>
+        <script src="app/components/venda/controllers/ListaVendaCtrl.js"></script>
+        <script src="app/components/transporte/controllers/TransporteCtrl.js"></script>
+        <script src="app/components/transporte/controllers/TransporteModalCtrl.js"></script>
+        <script src="app/components/transporte/services/TransporteService.js"></script>
+        <script src="app/components/produto/controllers/ProdutoCtrl.js"></script>
+        <script src="app/components/produto/controllers/ProdutoModalController.js"></script>
+        <script src="app/components/agrupamento/controllers/AgrupamentoCtrl.js"></script>
+        <script src="app/components/agrupamento/services/AgrupamentoService.js"></script>
+        <script src="app/components/agrupamento/controllers/AgrupamentoModalController.js"></script>
+        <script src="app/components/cupom-desconto/controllers/CupomCtrl.js"></script>
+        <script src="app/components/cupom-desconto/services/CupomService.js"></script>
+        <script src="app/components/produto/services/ProdutoService.js"></script>
+        <script src="app/components/fatura/controllers/FaturaCtrl.js"></script>
+        <script src="app/components/fatura/services/FaturaService.js"></script>
+        <script src="app/components/login/controllers/LoginCtrl.js"></script>
+        <script src="app/components/login/services/LoginService.js"></script>
+        <script src="app/components/teste/controllers/TesteCtrl.js"></script>
+        <script src="app/components/loja-virtual/controllers/LojaVirtualCtrl.js"></script>
+        <script src="app/components/loja-virtual/controllers/LojaVirtualModalCtrl.js"></script>
+        <script src="app/components/loja-virtual/services/LojaVirtualService.js"></script>
+        <script src="app/components/usuario/controllers/UsuarioCtrl.js"></script>
+        <script src="app/components/usuario/controllers/UsuarioModalController.js"></script>
+        <script src="app/components/usuario/services/UsuarioService.js"></script>
+        <script src="app/components/empresa/controllers/EmpresaCtrl.js"></script>
+        <script src="app/components/empresa/controllers/EmpresaModalCtrl.js"></script>
+        <script src="app/components/empresa/services/EmpresaService.js"></script>
+        <script src="app/components/fiscal/controllers/FiscalCtrl.js"></script>
+        <script src="app/components/fiscal/controllers/FiscalModalCtrl.js"></script>
+        <script src="app/components/fiscal/services/FiscalService.js"></script>
+        <script src="app/components/financeiro/controllers/FinanceiroCtrl.js"></script>
+        <script src="app/components/financeiro/controllers/FinanceiroModalCtrl.js"></script>
+        <script src="app/components/financeiro/controllers/ConciliacaoCtrl.js"></script>
+        <script src="app/components/financeiro/controllers/ConciliacaoModalCtrl.js"></script>
+        <script src="app/components/financeiro/services/FinanceiroService.js"></script>
+        <script src="app/components/meu-perfil/controllers/MeuPerfilCtrl.js"></script>
+        <script src="app/components/parametro/controllers/ParametroCtrl.js"></script>
+        <script src="app/components/categoria-marca/controllers/CategoriaMarcaCtrl.js"></script>
+        <script src="app/components/categoria-marca/controllers/CategoriaMarcaModalCtrl.js"></script>
+        <script src="app/components/agenda/controllers/AgendaCtrl.js"></script>
+        <script src="app/components/perfil/controllers/PerfilCtrl.js"></script>
+        <script src="app/components/meu-plano/controllers/MeuPlanoCtrl.js"></script>
+        <script src="app/components/relatorio/controllers/RelatorioCtrl.js"></script>
+        <script src="app/components/relatorio/services/RelatorioService.js"></script>
+        <script src="app/components/meu-plano/services/PlanoService.js"></script>
+        <script src="app/components/producao/controllers/ProducaoCtrl.js"></script>
+        <script src="app/components/contrato/controllers/ContratoCtrl.js"></script>
+        <script src="app/components/contrato/services/ContratoService.js"></script>
+        <script src="app/components/cobranca/controllers/CobrancaCtrl.js"></script>
+        <!-- inject:templates:js --><!-- endinject -->
+    <!-- endbuild -->
+
+
+    <script src="../tmp/templates.js"></script>
+    <script src="../app/components/angular/JwtVirtux.js"></script>
+    <script src="../app/components/angular/Template.js"></script>
+    <script src="../assets/global/plugins/cke-editor/ckeditor.js"></script>
+    <script src="../assets/bower_components/chartjs/Chart.min.js"></script>
+    <script src="../assets/bower_components/angular-chart.js-master/js/angular-chart.js"></script>
+    <script src="../assets/global/plugins/angular.treeview-master/angular.treeview.min.js"></script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/maphilight/1.3.1/jquery.maphilight.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.6/ngStorage.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-i18n/1.2.5/angular-locale_pt-br.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-select/0.13.2/select.min.js"></script>
+    <script src="https://cdn.rawgit.com/auth0/angular-storage/master/dist/angular-storage.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/1.7.3/socket.io.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ng-ckeditor/0.2.1/ng-ckeditor.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/dropzone/5.1.1/min/dropzone.min.js"></script>
+
+
+    <!-- Hotjar Tracking Code for app.lojistavirtual.com.br -->
+    <script>
+        (function(h,o,t,j,a,r){
+            h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+            h._hjSettings={hjid:443534,hjsv:5};
+            a=o.getElementsByTagName('head')[0];
+            r=o.createElement('script');r.async=1;
+            r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+            a.appendChild(r);
+        })(window,document,'//static.hotjar.com/c/hotjar-','.js?sv=');
+    </script>
+</html>

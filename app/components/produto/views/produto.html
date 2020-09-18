@@ -1,0 +1,380 @@
+
+<div class="col-md-5 p-l-0 p-r-0">
+    <treasure-overlay-spinner active="spinnerList.active">
+        <div class="panel">
+            <div class="panel-header">
+                <h3 class="m-b-20">
+                    <i class="fa fa-list"></i>
+                    <strong>Listagem</strong> de {{objBundleTela.labels.L001}}
+                </h3>
+
+                <!-- Adicionar novo produto ou serviço. -->
+                <div class="control-btn">
+                    <div class="btn-group box-dropdown">
+                        <div class="box-icon-filter" ng-class="{'oculto' : pro_eh_servico === 1}">
+                            <i class="fa fa-filter i-filter" id="trigger-filter" ng-click="hasFilter = !hasFilter" tooltip-placement="left" tooltip="Refinar pesquisa"></i>
+                        </div>
+
+                        <div class="box-toggle-dropdown box-toggle-dropdown-mini">
+                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle m-r-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret"></span>
+                            </button>
+                            <span class="dropdown-arrow"></span>
+                            <ul class="dropdown-menu" role="menu">
+                                <li ng-if="pro_eh_servico === 0">
+                                    <a href="javascript:void(0)" ng-click="getJanelaRelatorio()">
+                                        <i class="fa fa-print"></i> Imprimir
+                                    </a>
+                                </li>
+                                <li ng-if="pro_eh_servico === 1">
+                                    <a href="javascript:void(0)" ng-click="gerarRelatorio()">
+                                        <i class="fa fa-print"></i> Imprimir
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="listarTodosProdutos(true)">
+                                        <i class="fa fa-table"></i> Listar Todos
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-sm m-l-0 m-r-15" event-focus="click" event-focus-id="pro_descricao_longa" ng-click="novoProduto()" id="bt-novo-produto">
+                            <i class="fa fa-plus"></i> Novo
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Pesquisar por produtos. -->
+                <form class="form-inverse space-down m-t-30" autocomplete="off" role="search">
+                    <div class="row">
+                        <div ng-class="{'col-md-6' : flagEmissor === false, 'col-md-12' : flagEmissor === true}">
+                            <div class="append-icon" class="col-md-6">
+                                <input type="text" class="form-control" placeholder="{{objBundleTela.labels.L003}}" ng-model="pesquisaProduto.texto_produto_pesquisar" ng-keyup="getPesquisar($event)">
+                                <i class="icon-magnifier"></i>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6" ng-if="flagEmissor === false">
+                            <div class="append-icon" class="col-md-6">
+                                <ui-select name="categoria_produto_pesquisar" id="categoria_produto_pesquisar" class="form-control" ng-model="pesquisaProduto.categoria_produto_pesquisar" theme="select2" ng-change="listarProdutos()">
+                                    <ui-select-match allow-clear="true" placeholder="Selecione a categoria">
+                                        {{$select.selected.gru_descricao}}
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="produtoGrupo.gru_cod_gru as produtoGrupo in arrProdutoGrupoFiltro | filter: $select.search">
+                                        <span ng-bind-html="produtoGrupo.gru_descricao | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" ng-class="{'animated fadeIn' : hasFilter, 'animated fadeOutDown oculto' : !hasFilter}">
+                            <div class="panel panel-border-radius bg-white-gray m-b-0 m-t-10">
+                                <div class="panel-header p-l-10">
+                                    <h5 class="m-b-0">
+                                        <strong>FILTROS ADICIONAIS</strong>
+                                    </h5>
+                                </div>
+                                <div class="panel-content panel-search">
+                                    <div class="row">
+                                        <div class="col-md-12 m-b-5">
+                                            <div class="btn-group btn-box-filter m-0 w-l-100">
+                                                <label class="btn btn-default btn-sm" style="width:25%" ng-model="pesquisaProduto.pro_status" btn-radio="'A'">Ativos</label>
+                                                <label class="btn btn-default btn-sm" style="width:25%" ng-model="pesquisaProduto.pro_status" btn-radio="'I'">Inativos</label>
+                                                <label class="btn btn-default btn-sm" style="width:25%" ng-model="pesquisaProduto.pro_status" btn-radio="'T'">Todos</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 m-b-5">
+                                            <div class="btn-group btn-box-filter m-0 w-l-100">
+                                                <label class="btn btn-default btn-sm" style="width:25%" ng-model="pesquisaProduto.pro_flag_ncm" btn-radio="'C'">Com NCM</label>
+                                                <label class="btn btn-default btn-sm" style="width:25%" ng-model="pesquisaProduto.pro_flag_ncm" btn-radio="'S'">Sem NCM</label>
+                                                <label class="btn btn-default btn-sm" style="width:25%" ng-model="pesquisaProduto.pro_flag_ncm" btn-radio="'T'">Todos</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 m-b-5">
+                                            <div class="btn-group btn-box-filter m-0 w-l-100">
+                                                <label class="btn btn-default btn-sm" style="width:25%" ng-model="pesquisaProduto.pro_flag_mid" btn-radio="'C'">Com Fotos</label>
+                                                <label class="btn btn-default btn-sm" style="width:25%" ng-model="pesquisaProduto.pro_flag_mid" btn-radio="'S'">Sem Fotos</label>
+                                                <label class="btn btn-default btn-sm" style="width:25%" ng-model="pesquisaProduto.pro_flag_mid" btn-radio="'T'">Todos</label>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 m-b-5">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group m-b-0">
+                                                        <label>Marcação</label>
+                                                        <ui-select style="width:100%" ng-model="pesquisaProduto.pro_cod_marcacao" theme="select2">
+                                                            <ui-select-match placeholder="Selecione uma marcação...">{{$select.selected.mar_descricao_marca}}</ui-select-match>
+                                                            <ui-select-choices repeat="mar.mar_cod_marca as mar in arrMarcacoes | filter: $select.search">
+                                                                <span ng-bind-html="mar.mar_descricao_marca | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6" ng-if="flgCst">
+                                                    <div class="form-group m-b-0">
+                                                        <label>CST (Situação Tributária)</label>
+                                                        <ui-select class="form-control" ng-model="pesquisaProduto.pro_cst" theme="select2">
+                                                            <ui-select-match placeholder="Selecione o CST...">{{$select.selected.id}} - {{$select.selected.nome}}</ui-select-match>
+                                                            <ui-select-choices repeat="cst.id as cst in arrCst | filter: $select.search">
+                                                                <span ng-bind-html="cst.id + ' - ' +cst.nome | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6" ng-if="flgCsosn">
+                                                    <div class="form-group m-b-0">
+                                                        <label>CSOSN (Situação Tributária)</label>
+                                                        <ui-select class="form-control" ng-model="pesquisaProduto.pro_cso" theme="select2">
+                                                            <ui-select-match placeholder="Selecione o CSOSN...">{{$select.selected.id}} - {{$select.selected.nome}}</ui-select-match>
+                                                            <ui-select-choices repeat="cso.id as cso in arrCsosn | filter: $select.search">
+                                                                <span ng-bind-html="cso.id + ' - ' + cso.nome | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 m-b-5">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group m-b-0">
+                                                        <label>Tipo de Produção</label>
+                                                        <ui-select style="width:100%" ng-model="pesquisaProduto.pro_tip_producao" theme="select2">
+                                                            <ui-select-match placeholder="Selecione um tipo de produção...">{{$select.selected.nome}}</ui-select-match>
+                                                            <ui-select-choices repeat="tpProducao.id as tpProducao in arrTipProducao | filter: $select.search">
+                                                                <span ng-bind-html="tpProducao.nome | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+
+                                                <div class="col-md-6">
+                                                    <div class="form-group m-b-0">
+                                                        <label>Saldo</label>
+                                                        <ui-select style="width:100%" ng-model="pesquisaProduto.pro_flag_saldo" theme="select2">
+                                                            <ui-select-match placeholder="Selecione um tipo de saldo...">{{$select.selected.nome}}</ui-select-match>
+                                                            <ui-select-choices repeat="tip.id as tip in arrTipSaldos | filter: $select.search">
+                                                                <span ng-bind-html="tip.nome | highlight: $select.search"></span>
+                                                            </ui-select-choices>
+                                                        </ui-select>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 m-b-5">
+                                            <div class="box-daterange">
+                                                <label>Código</label>
+                                                <div class="input-group">
+                                                    <input class="input-sm form-control" maxlength="10" toint2 placeholder="Cód. produto início..." ng-model="pesquisaProduto.pro_cod_pro_inicio" type="text">
+                                                    <span class="input-group-addon">até</span>
+                                                    <input class="input-sm form-control" maxlength="10" toint2 placeholder="Cód. produto final..." ng-model="pesquisaProduto.pro_cod_pro_final" type="text" style="width:99%">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 m-b-20">
+                                            <div class="box-daterange">
+                                                <label>Data de cadastro</label>
+                                                <div class="input-group">
+                                                    <input class="input-sm form-control" maxlength="10" placeholder="Data início..." ng-model="pesquisaProduto.pro_dat_cadastro_inicio" type="text" data-mask="99/99/9999" datepicker1>
+                                                    <span class="input-group-addon">até</span>
+                                                    <input class="input-sm form-control" maxlength="10" placeholder="Data fim..." ng-model="pesquisaProduto.pro_dat_cadastro_final" type="text" data-mask="99/99/9999" datepicker1 style="width:99%">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="col-md-6">
+                                                <div class="row">
+                                                    <span class="text-danger cancel-link" ng-click="limparPesquisa()">
+                                                        <span><small>Cancelar Filtros</small></span>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-6">
+                                                <div class="row t-right">
+                                                    <button type="button" class="btn btn-primary btn-sm m-0" title="Filtrar" ng-click="triggerPesquisar()">
+                                                        <i class="fa fa-search"></i> &nbsp; Filtrar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Listagem dos produtos e serviços. -->
+            <div class="panel-content panel-malihu" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200">
+                <div ng-include="'produto/views/lista-produto.html'"></div>
+            </div>
+
+            <div class="panel m-b-0 m-t-5" ng-if="arrProdutos.length">
+                <div class="col-md-12 box-paginacao" ng-show="!flagListAll">
+                    <div class="t-center p-10">
+                        <a ng-click="paginarProdutos()">
+                            <span>Listar mais...</span>
+                        </a>
+                    </div>
+                </div>
+                <div class="col-md-12 m-t-10">
+                    <div class="row">
+                        <div class="col-md-4 m-t-5">
+                            <strong>
+                                <small>Qtde. registro(s): {{arrProdutos.length}}</small>
+                            </strong>
+                        </div>
+                        <div class="col-md-8">
+                            <div class="btn-group pull-right m-r-0">
+                                <label class="btn btn-sm btn-default " ng-click="setColuna(1)">Normal</label>
+                                <label class="btn btn-sm btn-default " ng-click="setColuna(2)" ng-if="flagEmissor === false">Estoque</label>
+                                <label class="btn btn-sm btn-default " ng-click="setColuna(3)">Ativos</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </treasure-overlay-spinner>
+</div>
+
+
+<!-- Painel inicial com manual: -->
+<div class="col-md-7 p-r-0" ng-class="{'animated virtux' : flagTutorial === true, 'animated oculto' : flagTutorial === false}">
+    <div class="panel-manual" ng-include="'home/views/tutorial.html'"></div>
+</div>
+
+
+<!-- Painel principal com formulário de cadastro e edição: -->
+<div  class="col-md-7 p-r-0" ng-class="{'animated virtux' : flagTutorial === false, 'animated  oculto' : flagTutorial === true}">
+    <treasure-overlay-spinner active="spinnerForm.active">
+        <div class="panel">
+            <div class="panel-header">
+                <div class="btn-reset">
+                    <button type="button" class="btn btn-sm btn-primary" ng-click="voltar()">
+                        <i class="fa fa-arrow-left"></i> Voltar
+                    </button>
+                </div>
+
+                <h3 class="title-header">
+                    <span class="m-r-5">
+                        <i class="fa fa-info"></i>
+                        <strong>Dados</strong> do {{objBundleTela.labels.L002}}
+                    </span>
+
+                    <strong ng-if="produto.pro_cod_pro" style="color:#319DB5">#{{proCodProSelected}}</strong>
+                    <strong ng-if="(produto.pro_cod_pro && getPermissaoSol('9')) && produto.pro_cod_sinc" style="color:#5B5B5B;margin-left:10px">#{{produto.pro_cod_sinc}}</strong>
+                </h3>
+
+                <!-- Botão para inserção. -->
+                <div class="control-btn" ng-if="!produto.pro_cod_pro">
+                    <button type="button" class="btn btn-primary btn-sm clickright no-right" ladda="salvarProdutoLoading" ng-click="triggerSalvarProduto()">
+                        <i class="fa fa-check"></i> Salvar
+                    </button>
+                </div>
+
+                <!-- Botão para atualização. -->
+                <div class="control-btn" ng-if="produto.pro_cod_pro">
+                    <a class="panel-close m-r-10 btn-search btn-filter" ng-click="cancelarProduto()" title="{{nomeBotao}}">
+                        <i class="fa fa-trash-o icon-trash"></i>
+                    </a>
+                    <div class="btn-group box-dropdown f-l m-l-5">
+                        <div class="box-toggle-dropdown">
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle br-white" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret m-l-0"></span>
+                            </button>
+                            <span class="dropdown-arrow"></span>
+                            <ul class="dropdown-menu" role="menu" style="left:-155%!important">
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="duplicarProduto()">
+                                        <i class="fa fa-clone"></i> {{objBundleTela.labels.L005}}
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm pull-right no-right btn-save-dropdown" ladda="salvarProdutoLoading" ng-click="triggerSalvarProduto()">
+                        <i class="fa fa-check"></i>&nbsp;Salvar
+                    </button>
+                </div>
+            </div>
+
+            <div class="panel-content">
+                <form role="form" name="forms.formProduto" id="forms.formProduto" class="form-validation" autocomplete="off" novalidate>
+                    <div class="pull-right" ng-show="!getPermissaoSol('9') || produto.pro_cod_pro">
+                        <label class="m-t-10">Ativo:</label>
+                        <label class="switch">
+                            <input class="switch-input" name="pro_eh_inativo" id="pro_eh_inativo" type="checkbox" ng-model="produto.pro_eh_inativo_aux">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+
+                    <!-- ABAS PARA CADASTRO DE PRODUTO -->
+                    <div ng-if="!pro_eh_servico">
+                        <tabset class="tab-fade-in">
+                            <tab active="tabs[0].active" id="tab-produto-principal">
+                                <tab-heading>Principal</tab-heading>
+                                <div class="panel-inner" id="tab-0">
+                                    <div ng-include="'produto/views/aba-produto-principal.html'"></div>
+                                </div>
+                            </tab>
+
+                            <tab active="tabs[1].active" ng-if="::getPermissaoSol('7') && pro_eh_servico === 0" ng-click="initCKeditor()" id="tab-produto-ecommerce">
+                                <tab-heading>E-commerce</tab-heading>
+                                <div class="panel-inner" id="tab-1">
+                                    <div ng-include="'produto/views/aba-loja-virtual.html'"></div>
+                                </div>
+                            </tab>
+
+                            <tab active="tabs[2].active" id="tab-produto-estoque">
+                                <tab-heading>{{objBundleTela.labels.L004}}</tab-heading>
+                                <div class="panel-inner" id="tab-2">
+                                    <div class="portlets" ng-if="produto.pro_cod_pro != null">
+                                        <div ng-include="'produto/views/aba-produto-precificacao.html'"></div>
+                                    </div>
+
+                                    <div class="portlets" ng-if="produto.pro_cod_pro == null">
+                                        <div class="alert alert-info media fade in no-bottom">
+                                            <i class="fa fa-info-circle fa-2x"></i>
+                                            <span class="alert-texto font-small">Salve antes de prosseguir.</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </tab>
+
+                            <tab active="tabs[3].active" id="tab-produto-imposto">
+                                <tab-heading>Impostos</tab-heading>
+                                <div class="panel-inner" id="tab-3">
+                                    <div ng-include="'produto/views/aba-produto-tributo.html'"></div>
+                                </div>
+                            </tab>
+                        </tabset>
+                    </div>
+
+                    <!-- ABAS PARA CADASTRO DE SERVIÇO -->
+                    <div ng-if="pro_eh_servico">
+                        <tabset class="tab-fade-in">
+                            <tab active="tabs[0].active">
+                                <tab-heading>Principal</tab-heading>
+                                <div class="panel-inner panel-inner-servico" id="tab-cadastro-servico">
+                                    <div ng-include="'produto/views/aba-servico-principal.html'"></div>
+                                </div>
+                            </tab>
+                        </tabset>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </treasure-overlay-spinner>
+</div>

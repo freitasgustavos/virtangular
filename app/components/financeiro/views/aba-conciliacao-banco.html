@@ -1,0 +1,35 @@
+
+<div ng-if="equals({}, objBancoConta)">
+    <div class="col-xs-12">
+        <div class="alert alert-info alert-fade m-b-0">
+            <p class="alert-texto font-small">
+                <i class="fa fa-info-circle p-r-5"></i>
+                <span>Caro usuário, nenhuma conta bancária cadastrada até o devido momento!</span>
+                <span><a class="c-pointer" ng-click="openJanelaBanco()">Clique aqui</a> para cadastrar uma nova.</span>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div ng-if="!equals({}, objBancoConta)">
+    <div class="col-xs-3">
+        <img class="img-responsive" ng-src="../app/images/bancos/001.png" src="../app/images/bancos/001.png">
+    </div>
+    <div class="col-xs-9">
+        <h3 class="m-t-0 m-b-5 member-name">
+            <strong class="ng-binding">Banco Itaú</strong>
+        </h3>
+        <div class="row">
+            <div class="col-xlg-6">
+                <p class="m-b-0">
+                    <i class="fa fa-envelope-o p-r-10"></i>
+                    <span class="ng-binding">Conta: 0000</span>
+                </p>
+                <p class="m-b-0">
+                    <i class="fa fa-building p-r-10"></i>
+                    <span class="ng-binding">Agência: 0000</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

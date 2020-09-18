@@ -1,0 +1,124 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title modal-title-button">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('reload')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                <strong>Dados</strong> do Banner
+
+                <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarBannerLoading" ng-click="salvarBanner(picFile, $event)">
+                    <i class="fa fa-check"></i> &nbsp; Salvar
+                </button>
+
+                <span ng-if="objBanner.mid_nro" class="pull-right">
+                    <a class="panel-close m-r-10 btn-delete" title="Cancelar" ng-click="cancelarBanner()">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </span>
+            </h4>
+        </div>
+        <div class="modal-body">
+            <form method="POST" enctype="multipart/form-data" id="forms.formBanner" name="forms.formBanner" autocomplete="off" novalidate>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="label-switch">Status:</label>
+                            <label class="switch">
+                                <input class="switch-input" name="mid_status" id="mid_status" type="checkbox" ng-model="objBanner.mid_status_aux">
+                                <span class="switch-label" data-on="On" data-off="Off"></span>
+                                <span class="switch-handle"></span>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="mid_descricao">Descrição do Banner</label>
+                            <input name="mid_descricao" id="mid_descricao" class="form-control" maxlength="255" placeholder="Digite uma descrição..." type="text" ng-model="objBanner.mid_descricao" >
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" ng-if="objBanner.mid_posicao != 'E1'">
+                    <input type="hidden" name="mid_tip_mid" ng-model="objBanner.mid_tip_mid">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label for="mid_link_two">Link para Redirecionamento</label>
+                            <input name="mid_link_two" id="mid_link_two" class="form-control" placeholder="Digite um link de redirecionamento..." type="text" ng-model="objBanner.mid_link">
+                        </div>
+                        <div ng-show="submitted || (forms.formBanner.mid_link_two.$invalid && !forms.formBanner.mid_link_two.$pristine)">
+                            <p class="text-danger form-error alert1" ng-show="forms.formBanner.mid_link_two.$error.url">Digite um link válido.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" ng-if="objBanner.mid_posicao == 'E1'">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="mid_tip_mid" class="label-switch">Tipo de Mídia:</label>
+                            <select class="form-control" id="mid_tip_mid" name="mid_tip_mid" ng-model="objBanner.mid_tip_mid" style="padding:6px">
+                                <option value="2" selected>Imagem</option>
+                                <option value="1">Vídeo</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label for="mid_link" ng-if="objBanner.mid_tip_mid == 1">Link do vídeo</label>
+                            <label for="mid_link" ng-if="objBanner.mid_tip_mid != 1">Link para Redirecionamento</label>
+                            <input name="mid_link" id="mid_link" class="form-control" placeholder="Digite um link de redirecionamento..." type="text" ng-model="objBanner.mid_link">
+                        </div>
+                        <div ng-show="submitted || (forms.formBanner.mid_link.$invalid && !forms.formBanner.mid_link.$pristine)">
+                            <p class="text-danger form-error alert1" ng-show="forms.formBanner.mid_link.$error.url">Digite um link válido.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row m-t-5" ng-show="objBanner.mid_tip_mid == 2" >
+                    <div class="col-md-12">
+                        <span class="pull-left">
+                            <label style="display:block">
+                                <span>Imagem do Banner</span> <br>
+                                <span class="c-gray">Dimensão aproximada: {{objBanner.mid_dimensao}}.</span>
+                            </label>
+                            <span class="btn btn-primary btn-embossed btn-file">
+                                <span class="fileinput-new">
+                                    <i class="fa fa-upload"></i>&nbsp; Escolher...
+                                </span>
+                                <input type="file" ngf-select ng-model="picFile" name="picFile" onchange="angular.element(this).scope().setFile(this)" accept="image/*">
+                            </span>
+                        </span>
+                        <div class="form-upload">
+                            <div ng-if="picFile">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div id="pic-file" class="fileinput-new thumbnail m-b-10" data-provides="fileinput">
+                                            <img ngf-src="picFile" class="product">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row" ng-show="objBanner.mid_tip_mid == 2">
+                    <div class="col-md-12">
+                        <div ng-if="objBanner.has_foto">
+                            <div class="fileinput-new thumbnail">
+                                <img ng-src="{{imageCache}}{{objBanner.mid_id}}" class="product">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <input type="hidden" ng-model="objBanner.mid_posicao">
+            </form>
+        </div>
+    </div>
+</div>

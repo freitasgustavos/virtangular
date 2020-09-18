@@ -1,0 +1,106 @@
+
+<div class="row m-t-10">
+    <div class="col-md-6" ng-if="!pro_eh_servico">
+        <div class="form-group">
+            <label class="w-l-100">
+                <span class="f-l">Classificação Fiscal (NCM)</span>
+                <span class="f-r label-link font-small">
+                    <a ng-click="openModalNCM()">Configurar</a>
+                </span>
+            </label>
+            <input name="pro_ncm" class="form-control" ui-mask="9999.99.99" maxlength="10" ng-model="produto.pro_ncm" type="text">
+        </div>
+    </div>
+
+    <div class="col-md-6" ng-if="produto.pro_cst == 10 || produto.pro_cst == 30 || produto.pro_cst == 60 || produto.pro_cst == 70 || produto.pro_cso == 201 || produto.pro_cso == 202 || produto.pro_cso == 203 || produto.pro_cso == 500">
+        <div class="form-group">
+            <label>CEST</label>
+            <input name="pro_cest" class="form-control" ui-mask="99.999.99" ng-model="produto.pro_cest" type="text">
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Origem</label>
+            <ui-select class="form-control" ng-model="produto.pro_cs_origem" theme="select2">
+                <ui-select-match placeholder="Selecione a Origem">{{$select.selected.id}} - {{$select.selected.nome}}</ui-select-match>
+                <ui-select-choices repeat="origem.id as origem in arrOrigem | filter: $select.search">
+                    <span ng-bind-html="origem.id +' - '+ origem.nome | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+
+    <div class="col-md-6" ng-if="flgCst">
+        <div class="form-group">
+            <label>CST (Situação Tributária)</label>
+            <ui-select class="form-control" ng-model="produto.pro_cst" theme="select2">
+                <ui-select-match placeholder="Selecione o CST (Situação Tributária)">{{$select.selected.id}} - {{$select.selected.nome}}</ui-select-match>
+                <ui-select-choices repeat="cst.id as cst in arrCst | filter: $select.search">
+                    <span ng-bind-html="cst.id + ' - ' + cst.nome | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+
+    <div class="col-md-6" ng-if="flgCsosn">
+        <div class="form-group">
+            <label>CSOSN (Situação Tributária)</label>
+            <ui-select class="form-control" ng-model="produto.pro_cso" theme="select2">
+                <ui-select-match placeholder="Selecione o CSOSN (Situação Tributária)">{{$select.selected.id}} - {{$select.selected.nome}}</ui-select-match>
+                <ui-select-choices repeat="cso.id as cso in arrCsosn | filter: $select.search">
+                    <span ng-bind-html="cso.id + ' - ' + cso.nome | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Tipo de Produção</label>
+            <ui-select class="form-control" ng-model="produto.pro_tip_producao" theme="select2">
+                <ui-select-match placeholder="Selecione o Tipo de Produção">{{$select.selected.nome}}</ui-select-match>
+                <ui-select-choices repeat="tip.id as tip in arrTipProducao | filter: $select.search">
+                    <span ng-bind-html="tip.nome | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+
+    <div class="col-md-6" ng-if="!pro_eh_servico">
+        <div class="form-group">
+            <label class="w-l-100">
+                <span class="f-l">Tipo Específico</span>
+                <span class="f-r label-link font-small">
+                    <a ng-click="openModalTipoProduto()">Configurar</a>
+                </span>
+            </label>
+        </div>
+        <div class="form-group box-tipo-especifico">
+            <ui-select class="form-control" ng-model="produto.pro_tip_especifico" theme="select2" ng-change="onChangeTipo()">
+                <ui-select-match placeholder="Selecione um Tipo Específico">{{$select.selected.nome}}</ui-select-match>
+                <ui-select-choices repeat="esp.id as esp in arrTipEspecifico | filter: $select.search">
+                    <span ng-bind-html="esp.nome | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+</div>
+
+<div class="row" ng-show="getPermissaoSol('17')">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Alíquota ICMS Próprio</label>
+            <div class=" input-group pull-left">
+                <input class="form-control clear-disabled" size="10" type="text"  ng-model="produto.pro_icms_perc_aliq" onclick="this.select()" ui-negative-number ui-number-mask="mdecimals" style="z-index:0">
+                <span class="input-group-addon">%</span>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" name="pro_cod_pro" ng-model="produto.pro_cod_pro">

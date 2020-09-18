@@ -1,0 +1,276 @@
+
+<div ng-class="{'animated fadeIn' : objComponentes.search, 'animated fadeOutDown oculto' : !objComponentes.search}">
+    <uib-accordion close-others="true">
+        <div uib-accordion-group class="panel-default" heading="Filtros Adicionais" is-open="true">
+            <div class="row">
+                <div class="col-md-12">
+                    <p>
+                        <strong>Elabore os filtros para a geração do relatório de {{objRelatorio.par_c01}}:</strong>
+                    </p>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="form-group">
+                                <p><strong>Situação</strong></p>
+                                <div class="input-group">
+                                    <div class="icheck-inline">
+                                        <label for="na-0" style="display:block">
+                                            <input class="icheck" id="na-0" data-checklist-model="objFiltro.list_001" data-checklist-value="0" icheck type="checkbox">
+                                            <span>Ativo</span>
+                                        </label>
+                                        <label for="na-1" style="display:block">
+                                            <input class="icheck" id="na-1" data-checklist-model="objFiltro.list_001" data-checklist-value="1" icheck type="checkbox">
+                                            <span>Inativo</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group">
+                                <p><strong>Preço</strong></p>
+                                <div class="input-group">
+                                    <div class="icheck-inline">
+                                        <label for="pp-0" style="display:block">
+                                            <input id="pp-0" icheck name="radio-preco" ng-model="objFiltro.code_008" class="iradio-text" ng-value="0" data-radio="iradio_minimal-blue" type="radio">
+                                            <span>Nenhum</span>
+                                        </label>
+                                        <label for="pp-1" style="display:block">
+                                            <input id="pp-1" icheck name="radio-preco" ng-model="objFiltro.code_008" class="iradio-text" ng-value="1" data-radio="iradio_minimal-blue" type="radio">
+                                            <span>Custo</span>
+                                        </label>
+                                        <label for="pp-2" style="display:block">
+                                            <input id="pp-2" icheck name="radio-preco" ng-model="objFiltro.code_008" class="iradio-text" ng-value="5" data-radio="iradio_minimal-blue" type="radio">
+                                            <span>Venda</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-10">
+                            <div class="form-group">
+                                <label>Ordenação</label>
+                                <ui-select class="form-control" ng-model="objFiltro.order_001" theme="select2">
+                                    <ui-select-match placeholder="Selecione por qual campo deseja ordenar o relatório...">
+                                        {{$select.selected.name}}
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in arrOrdenacao.order001 | filter: $select.search">
+                                        <span ng-bind-html="item.name | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label>Código de barras</label>
+                                <input class="form-control" ng-model="objFiltro.string_001" maxlength="20" placeholder="Código de barras..." type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="form-group">
+                                <label>Tipo de produção</label>
+                                <ui-select class="form-control" ng-model="objFiltro.code_003" theme="select2">
+                                    <ui-select-match placeholder="Selecione o tipo de produção...">
+                                        {{$select.selected.nome}}&nbsp;<i class="fa fa-remove" ng-click="limparTipoNatureza($event)"></i>
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="tp.id as tp in arrTiposProducao | filter: $select.search">
+                                        <span ng-bind-html="tp.nome | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="form-group m-b-0">
+                                <label>Dt. cadastro ínicio</label>
+                                <input class="form-control" ng-model="objFiltro.date_001" maxlength="10" placeholder="Dt. cadastro ínicio..." data-mask="99/99/9999" datepicker1 type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-5">
+                            <div class="form-group m-b-0">
+                                <label>Dt. cadastro final</label>
+                                <input class="form-control" ng-model="objFiltro.date_002" maxlength="10" placeholder="Dt. cadastro ínicio..." data-mask="99/99/9999" datepicker1 type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-t-5">
+                        <div class="col-md-12 m-b-0 t-right">
+                            <span class="text-danger cancel-link" ng-click="limparPesquisa()">
+                                <span>Cancelar Filtros</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </uib-accordion>
+</div>
+
+<div class="col-md-12">
+    <div class="row">
+        <uib-accordion close-others="true">
+            <div uib-accordion-group class="panel-default panel-grid" heading="Prévia do Relatório" is-open="true">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div ng-if="arrRegistros !== null">
+                            <table class="table table-hover font-mini m-b-0" id="grid-relatorio-produtos">
+                                <!-- Grid normal sem os preços e totalizadores dos produtos. -->
+                                <table class="table table-hover font-mini m-b-0" id="grid-relatorio-produtos-normal" ng-if="objFiltro.code_008 == 0">
+                                    <colgroup>
+                                        <col width="12%">
+                                        <col width="20%">
+                                        <col width="30%">
+                                        <col width="8%">
+                                        <col width="16%">
+                                        <col width="14%">
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th>Código</th>
+                                            <th>Cód. de Barras</th>
+                                            <th>Descrição</th>
+                                            <th>Ativo</th>
+                                            <th>Categoria</th>
+                                            <th class="text-right">Quantidade</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in arrRegistros" class="c-pointer">
+                                            <td>{{item.pro_cod_pro}}</td>
+                                            <td>{{item.pro_cod_bar}}</td>
+                                            <td>{{item.pro_descricao_longa}}</td>
+                                            <td>
+                                                <span ng-switch on="item.pro_eh_inativo">
+                                                    <div ng-switch-when="0">
+                                                        <span class="label label-success">SIM</span>
+                                                    </div>
+                                                    <div ng-switch-when="1">
+                                                        <span class="label label-danger">NÃO</span>
+                                                    </div>
+                                                </span>
+                                            </td>
+                                            <td>{{item.pro_gru_desc_gru}}</td>
+                                            <td class="text-right">
+                                                <span get-estoque="item" value="{{item.pro_qtd_atual}}"></span>
+                                                <span>{{item.pro_unidade}}</span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="3" class="va-top">
+                                                <span>{{arrRegistros.length}} registro(s) encontrado(s).</span>
+                                            </th>
+                                            <th colspan="3">
+                                                <span class="row-total">
+                                                    <span class="row-label">QUANTIDADE</span>
+                                                    <span class="row-info">{{totalizarSaldo()}}</span>
+                                                </span>
+                                            </th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+
+                                <!-- Grid contendo o preço selecionado pelo usuário para geração do relatório. -->
+                                <table class="table table-hover font-mini m-b-0" id="grid-relatorio-produtos-precos" ng-if="objFiltro.code_008 != 0">
+                                    <colgroup>
+                                        <col width="8%">
+                                        <col width="10%">
+                                        <col width="30%">
+                                        <col width="10%">
+                                        <col width="12%">
+                                        <col width="10%">
+                                        <col width="10%">
+                                        <col width="10%">
+                                    </colgroup>
+                                    <thead>
+                                        <tr>
+                                            <th>Código</th>
+                                            <th>Cód. de Barras</th>
+                                            <th>Descrição</th>
+                                            <th class="text-center">Ativo</th>
+                                            <th>Categoria</th>
+                                            <th class="text-right">Quantidade</th>
+                                            <th class="text-right">
+                                                <span ng-switch on="objFiltro.code_008">
+                                                    <strong ng-switch-when="1">Preço Custo</strong>
+                                                    <strong ng-switch-when="5">Preço Venda</strong>
+                                                </span>
+                                            </th>
+                                            <th class="text-right">Valor Total</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr ng-repeat="item in arrRegistros" class="c-pointer">
+                                            <td>{{item.pro_cod_pro}}</td>
+                                            <td>{{item.pro_cod_bar}}</td>
+                                            <td>{{item.pro_descricao_longa}}</td>
+                                            <td class="text-center">
+                                                <span ng-switch on="item.pro_eh_inativo">
+                                                    <span ng-switch-when="0">
+                                                        <span class="label label-success">SIM</span>
+                                                    </span>
+                                                    <span ng-switch-when="1">
+                                                        <span class="label label-danger">NÃO</span>
+                                                    </span>
+                                                </span>
+                                            </td>
+                                            <td>{{item.pro_gru_desc_gru}}</td>
+                                            <td class="text-right">
+                                                <span get-estoque="item" value="{{item.pro_qtd_atual}}"></span>
+                                                <span>{{item.pro_unidade}}</span>
+                                            </td>
+                                            <td class="text-right">
+                                                <span ng-switch on="objFiltro.code_008">
+                                                    <span ng-switch-when="1">{{item.pro_preco1 | customCurrency}}</span>
+                                                    <span ng-switch-when="5">{{item.pro_preco5 | customCurrency}}</span>
+                                                </span>
+                                            </td>
+                                            <td class="text-right">
+                                                <span ng-switch on="objFiltro.code_008">
+                                                    <span ng-switch-when="1">{{item.pro_preco1 * item.pro_qtd_atual | customCurrency}}</span>
+                                                    <span ng-switch-when="5">{{item.pro_preco5 * item.pro_qtd_atual | customCurrency}}</span>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                    <tfoot>
+                                        <tr>
+                                            <th colspan="3" class="va-top">
+                                                <span>{{arrRegistros.length}} registro(s) encontrado(s).</span>
+                                            </th>
+                                            <th colspan="3">
+                                                <span class="row-total">
+                                                    <span class="row-label">QUANTIDADE</span>
+                                                    <span class="row-info">{{totalizarSaldo()}}</span>
+                                                </span>
+                                            </th>
+                                            <th colspan="2">
+                                                <span ng-switch on="objFiltro.code_008" class="row-total">
+                                                    <span class="row-label">VALOR TOTAL</span>
+                                                    <span ng-switch-when="1" class="row-info">{{arrTotais[0].pro_total1 | customCurrency}}</span>
+                                                    <span ng-switch-when="5" class="row-info">{{arrTotais[0].pro_total5 | customCurrency}}</span>
+                                                </span>
+                                            </th>
+                                        </tr>
+                                    </tfoot>
+                                </table>
+                            </table>
+                        </div>
+                        <div ng-if="arrRegistros === null">
+                            <div class="alert alert-warning alert-fade m-b-0">
+                                <i class="fa fa-info-circle fa-2x p-r-10"></i>
+                                <span class="alert-texto">Nenhum registro encontrado!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </uib-accordion>
+    </div>
+</div>

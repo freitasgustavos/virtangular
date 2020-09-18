@@ -1,0 +1,445 @@
+<div class="modal-dialog modal-lg">
+    <form method="POST" enctype="multipart/form-data" id="formUpload" name="formUpload" novalidate>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    Importando <strong>NF-e</strong>
+
+                    <!-- Botão para salvar. -->
+                    <span class="pull-right">
+                        <button ng-disabled="!importar" ng-click="salvarNFe()" ladda="importaNFeLoading" class="btn btn-primary btn-embossed  bnt-square pull-right m-r-0" type="button">
+                            <i class="fa fa-check"></i> &nbsp; Importar
+                        </button>
+                    </span>
+                </h4>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row">
+                    <div class="col-lg-12 portlets ui-sortable">
+                        <div class="panel">
+                            <div class="panel-content">
+
+                                <!-- Dados da nota -->
+                                <div class="panel-header panel-controls">
+                                    <h3>
+                                        <i class="fa fa-file-text-o"></i> Dados da <strong> Nota #{{objImportaNFe.cabeca.nNF}}</strong>
+                                        <small class="c-primary">
+                                            #{{objImportaNFe.cabeca.chave}}
+                                        </small>
+                                    </h3>
+                                    <div class="row">
+                                        <div class="col-md-1">
+                                            <strong><span>CFOP</span></strong>
+                                        </div>
+                                        <div class="col-md-3" style="margin-left: -25px;width: 35%">
+
+                                            <ui-select style="height: 27px;" name="fin_cfo_cfop" id="fin_cfo_cfop" class="form-control" ng-model="objImportaNFe.fin_cfo_cfop" theme="select2" >
+                                                <ui-select-match style="height: 27px;" placeholder="Selecione">{{$select.selected.cfo_cfop}} - {{$select.selected.cfo_descricao}}</ui-select-match>
+                                                <ui-select-choices repeat="cfo.cfo_cfop as cfo in listaCfo |  propsFilter: {cfo_cfop: $select.search, cfo_descricao:$select.search}">
+                                                    <span ng-bind-html="cfo.cfo_cfop +' - '+cfo.cfo_descricao | highlight: $select.search"></span>
+                                                </ui-select-choices>
+                                            </ui-select>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <p class="c-primary text-center">
+                                                <span>Emissão: <strong>{{ dataNFeToBR(objImportaNFe.cabeca.dhEmi) }}</strong></span>
+                                            </p>
+                                        </div>
+                                        <div class="col-md-3">
+                                            <p class="c-primary text-center">
+                                                <span>Saída: <strong>{{ dataNFeToBR(objImportaNFe.cabeca.dhSaiEnt)}}</strong></span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Emitente da nota -->
+                                <div class="panel-header panel-controls">
+
+                                    <h3>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <i class="fa fa-building"></i> Dados do <strong>Emitente</strong>
+                                                <small class="c-primary" ng-if="objImportaNFe.emitente.cad_cod_cad">
+                                                    #{{objImportaNFe.emitente.cad_cod_cad}}
+                                                </small>
+                                            </div>
+                                            <div class="col-md-1" ng-if="objImportaNFe.emitente.notFound">
+                                                <span style="cursor: pointer" ng-click="getObjPessoa(objImportaNFe.emitente)" href="" class="alert alert-danger" data-toggle="tooltip" title="Emitente não cadastrado! Clique para cadastrar"><i class="fa fa-exclamation-triangle"></i></span>
+                                            </div>
+                                            <div class="col-md-2" ng-if="objImportaNFe.emitente.notFound">
+                                                <select class="form-control" ng-model="objImportaNFe.emitente.cad_cli_for">
+                                                    <option value="1">Cliente</option>
+                                                    <option value="2">Fornecedor</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </h3>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="emitente_nome">Nome </label>
+                                            <input id="emitente_nome" name="emitente_nome" class="form-control" maxlength="255" placeholder="Nome..." ng-model="objImportaNFe.emitente.xNome" type="text">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>CPF/CNPJ</label>
+                                            <input ng-show="objImportaNFe.emitente.CNPJ" name="emitente_cnpj" type="text" maxlength="14" class="form-control" placeholder="CNPJ..." ng-model="objImportaNFe.emitente.CNPJ" ui-br-cnpj-mask>
+                                            <input ng-show="objImportaNFe.emitente.CPF" name="emitente_cpf" type="text" maxlength="14" class="form-control" placeholder="CPF..." ng-model="objImportaNFe.emitente.CPF" ui-br-cpf-mask>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="emitente_ie">Inscrição Estadual</label>
+                                            <input name="emitente_ie" id="emitente_ie" class="form-control" maxlength="20" placeholder="Incrição estadual..." ng-model="objImportaNFe.emitente.IE" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Destinatário da nota -->
+                                <div class="panel-header panel-controls">
+                                    <h3>
+                                        <div class="row">
+                                            <div class="col-md-4">
+                                                <i class="fa fa-building"></i> Dados do <strong>Destinatário</strong>
+                                                <small class="c-primary" ng-if="objImportaNFe.destinatario.cad_cod_cad">
+                                                    #{{objImportaNFe.destinatario.cad_cod_cad}}
+                                                </small>
+                                            </div>
+                                            <div class="col-md-1" ng-if="objImportaNFe.destinatario.notFound">
+                                                <span style="cursor: pointer" ng-click="getObjPessoa(objImportaNFe.destinatario)" href="" class="alert alert-danger" data-toggle="tooltip" title="Destinatario não cadastrado! Clique para cadastrar"><i class="fa fa-exclamation-triangle"></i></span>
+                                            </div>
+                                            <div class="col-md-2" ng-if="objImportaNFe.destinatario.notFound">
+                                                <select class="form-control" ng-model="objImportaNFe.destinatario.cad_cli_for">
+                                                    <option value="1">Cliente</option>
+                                                    <option value="2">Fornecedor</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </h3>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label for="destinatario_nome">Nome </label>
+                                            <input id="destinatario_nome" name="destinatario_nome" class="form-control" maxlength="255" placeholder="Nome..." ng-model="objImportaNFe.destinatario.xNome" type="text">
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label>CPF/CNPJ</label>
+                                            <input ng-show="objImportaNFe.destinatario.CNPJ" name="destinatario_cnpj" type="text" maxlength="14" class="form-control" placeholder="CNPJ..." ng-model="objImportaNFe.destinatario.CNPJ" ui-br-cnpj-mask>
+                                            <input ng-show="objImportaNFe.destinatario.CPF" name="destinatario_cpf" type="text" maxlength="14" class="form-control" placeholder="CPF..." ng-model="objImportaNFe.destinatario.CPF" ui-br-cpf-mask>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-group">
+                                            <label for="destinatario_ie">Inscrição Estadual</label>
+                                            <input name="destinatario_ie" id="destinatario_ie" class="form-control" maxlength="20" placeholder="Incrição estadual..." ng-model="objImportaNFe.destinatario.IE" type="text">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!-- Produtos da nota -->
+                                <div ng-show="objImportaNFe.itens.length">
+                                    <div class="panel-header panel-controls">
+                                        <div class="row">
+                                            <div class="col-md-6">
+                                                <h3><i class="fa fa-cubes"></i> <strong>Produtos </strong> da nota</h3>
+                                            </div>
+
+                                            <div class="col-md-6">
+                                                <div class="pull-right">
+                                                    <label class="m-t-10">Conversão:</label>
+                                                    <label class="switch">
+                                                        <input class="switch-input" name="eh_conversao_ativo" id="eh_conversao_ativo" type="checkbox" ng-model="eh_conversao_ativo">
+                                                        <span class="switch-label" data-on="On" data-off="Off"></span>
+                                                        <span class="switch-handle"></span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <table class="table table-hover text-center">
+                                        <thead>
+                                        <tr>
+                                            <th align="center">Cód.</th>
+                                            <th align="center">Nome</th>
+                                            <th align="center">Unidade</th>
+                                            <th align="center">Qtd.</th>
+                                            <th align="center">Valor</th>
+                                            <th align="center">Total</th>
+                                            <th align="center">CFOP</th>
+                                            <th align="center">Status</th>
+                                            <th align="center">Trocar</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr ng-repeat="item in objImportaNFe.itens" ng-class="statusItemClass(item.prod)" class="fadeIn">
+                                            <td>
+                                                <div>
+                                                    <span>{{item.prod.cProd}}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <span>{{item.prod.xProd.substr(0,40)}}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div ng-show="eh_conversao_ativo">
+                                                    <ui-select style="height: 27px;" name="uCom" id="uCom" class="form-control" ng-model="item.prod.uCom" theme="select2" >
+                                                        <ui-select-match style="height: 27px;" placeholder="Selecione">{{$select.selected.id}} - {{$select.selected.nome}}</ui-select-match>
+                                                        <ui-select-choices repeat="unidade.id as unidade in listaUnidades |  propsFilter: {id: $select.search, nome:$select.search}">
+                                                            <span ng-bind-html="unidade.id +' - '+ unidade.nome | highlight: $select.search"></span>
+                                                        </ui-select-choices>
+                                                    </ui-select>
+                                                </div>
+
+                                                <div ng-show="!eh_conversao_ativo">
+                                                    <span>{{ item.prod.uCom }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div class="input-group" ng-show="eh_conversao_ativo">
+                                                    <input type="text" class="form-control" ng-model="item.prod.qCom" size="2" placeholder="Quantidade" onclick="this.select()">
+                                                    <span class="input-group-btn">
+                                                        <button class="btn btn-primary btn-ok" type="button" ng-click="converteQTD(item)">OK</button>
+                                                    </span>
+                                                </div>
+
+                                                <div ng-show="!eh_conversao_ativo">
+                                                    <span>{{ toFloat(item.prod.qCom) }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <span>{{ toFloat(item.prod.vUnCom) }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <span>{{ toFloat(item.prod.vProd) }}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <span>{{item.prod.CFOP}}</span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <span style="cursor: pointer" ng-click="getObjProduto(item)" ng-if="item.prod.notFound" class="alert alert-danger" data-toggle="tooltip" title="Produto não cadastrado! Clique para cadastrar"><i class="fa fa-exclamation-triangle"></i></span>
+                                                    <span ng-if="!item.prod.notFound" class="alert alert-success"><i class="fa fa-check-circle"></i></span>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <div>
+                                                    <span style="cursor: pointer" ng-click="getJanelaTrocaProduto(item)" class="alert alert-info" data-toggle="tooltip" title="Alterar o produto na NFe!"><i class="fa fa-retweet"></i></span>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                                <!-- Financeiro da nota -->
+                                <div ng-show="objImportaNFe.cobranca">
+                                    <div class="panel-header panel-controls">
+                                        <h3><i class="fa fa-money"></i> <strong>Financeiro </strong> da nota</h3>
+                                    </div>
+
+                                    <div class="row">
+                                        <div class="col-md-4">
+                                            <p>Fatura: <strong>{{ objImportaNFe.cobranca.fat.nFat }}</strong></p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p>Valor Original: <strong>{{ toFloat(objImportaNFe.cobranca.fat.vOrig) }}</strong></p>
+                                        </div>
+                                        <div class="col-md-4">
+                                            <p>Valor Original: <strong>{{ toFloat(objImportaNFe.cobranca.fat.vLiq) }}</strong></p>
+                                        </div>
+                                    </div>
+
+                                    <div ng-if="objImportaNFe.cobranca.dup.length">
+                                        <table class="table table-hover">
+                                            <thead>
+                                            <tr>
+                                                <th>Duplicata.</th>
+                                                <th>Vencimento</th>
+                                                <th>Valor</th>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <tr ng-repeat="duplicata in objImportaNFe.cobranca.dup" class="fadeIn">
+                                                <td>
+                                                    <div>
+                                                        <span>{{duplicata.nDup}}</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <span>{{ dataBr(duplicata.dVenc) }}</span>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <div>
+                                                        <span>{{ toFloat(duplicata.vDup) }}</span>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                                <!-- Totais da nota -->
+                                <div class="panel-header panel-controls">
+                                    <h3><i class="fa fa-money"></i> <strong>Totais</strong> da nota</h3>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="totais_bc">BC ICMS</label>
+                                            <input id="totais_bc" name="totais_bc" class="form-control" maxlength="10" placeholder="bc..." ng-model="objImportaNFe.totais.ICMSTot.vBC" type="text" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="totais_icms">VALOR ICMS</label>
+                                            <input name="totais_icms" id="totais_icms" class="form-control" maxlength="20" placeholder="Incrição estadual..." ng-model="objImportaNFe.totais.ICMSTot.vICMS" type="text" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="totais_bcst">BC ST</label>
+                                            <input name="totais_bcst" id="totais_bcst" type="text" maxlength="14" class="form-control" placeholder="bcst..." ng-model="objImportaNFe.totais.ICMSTot.vBCST" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="totais_st">VALOR ST</label>
+                                            <input name="totais_st" id="totais_st" class="form-control" maxlength="20" placeholder="Incrição estadual..." ng-model="objImportaNFe.totais.ICMSTot.vST" type="text" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="totais_pis">PIS</label>
+                                            <input name="totais_pis" id="totais_pis" class="form-control" maxlength="20" placeholder="Incrição estadual..." ng-model="objImportaNFe.totais.ICMSTot.vPIS" type="text" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="totais_produtos">Produtos</label>
+                                            <input name="totais_produtos" id="totais_produtos" class="form-control" maxlength="20" placeholder="Incrição estadual..." ng-model="objImportaNFe.totais.ICMSTot.vProd" type="text" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="totais_frete">Frete</label>
+                                            <input name="totais_frete" id="totais_frete" class="form-control" maxlength="20" placeholder="Incrição estadual..." ng-model="objImportaNFe.totais.ICMSTot.vFrete" type="text" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="totais_seguro">Seguro </label>
+                                            <input id="totais_seguro" name="totais_seguro" class="form-control" maxlength="10" placeholder="bc..." ng-model="objImportaNFe.totais.ICMSTot.vSeg" type="text" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="totais_desc">Desconto</label>
+                                            <input name="totais_desc" id="totais_desc" class="form-control" maxlength="20" placeholder="Incrição estadual..." ng-model="objImportaNFe.totais.ICMSTot.vDesc" type="text"  disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="totais_outro">Outro</label>
+                                            <input name="totais_outro" id="totais_outro" class="form-control" maxlength="20" placeholder="Incrição estadual..." ng-model="objImportaNFe.totais.ICMSTot.vOutro" type="text" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="totais_ipi">IPI </label>
+                                            <input id="totais_ipi" name="totais_ipi" class="form-control" maxlength="10" placeholder="bc..." ng-model="objImportaNFe.totais.ICMSTot.vIPI" type="text" disabled>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <div class="form-group">
+                                            <label for="totais_cofins">COFINS</label>
+                                            <input name="totais_cofins" id="totais_cofins" class="form-control" maxlength="20" placeholder="Incrição estadual..." ng-model="objImportaNFe.totais.ICMSTot.vCOFINS" type="text" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-2 pull-right">
+                                        <div class="form-group">
+                                            <label for="totais_total">NF - TOTAL</label>
+                                            <input name="totais_total" id="totais_total" type="text" maxlength="14" class="form-control" placeholder="bcst..." ng-model="objImportaNFe.totais.ICMSTot.vNF" disabled>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <!--<div class="row">-->
+                                    <!--<div class="col-md-2">-->
+                                        <!--<div class="form-group">-->
+                                            <!--<label for="totais_total_tributos">Total Tributos</label>-->
+                                            <!--<input name="totais_total_tributos" id="totais_total_tributos" type="text" maxlength="14" class="form-control" placeholder="bcst..." ng-model="objImportaNFe.totais.ICMSTot.vTotTrib" disabled>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                <!--</div>-->
+
+                                <!-- Informações complementares da nota -->
+                                <div class="panel-header panel-controls">
+                                    <h3><i class="fa fa-info-circle"></i> <strong>Informações</strong> Complementares</h3>
+                                </div>
+
+                                <div class="row" ng-if="objImportaNFe.infAdic.infCpl">
+                                    <div class="col-md-12">
+                                        <textarea rows="5" class="form-control" ng-model="objImportaNFe.infAdic.infCpl"></textarea>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer text-center">
+                <div class="col-sm-12">
+                    <h4 class="modal-title modal-title-button">
+                        <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                            <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                        </button>
+
+                        <!-- Botão para salvar. -->
+                        <span class="pull-right">
+                            <button ng-disabled="!importar" ng-click="salvarNFe()" ladda="importaNFeLoading" class="btn btn-primary btn-embossed  bnt-square pull-right m-r-0" type="button">
+                                <i class="fa fa-check"></i> &nbsp; Importar
+                            </button>
+                        </span>
+                    </h4>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

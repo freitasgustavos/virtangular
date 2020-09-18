@@ -1,0 +1,49 @@
+<div class="modal-dialog modal-not-footer">
+    <form id="forms.formsRelatorio" name="forms.formsRelatorio" method="POST" autocomplete="off" role="form">
+        <div class="modal-content">
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>Relatórios</strong>
+
+                    <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="imprimirRelatorioLoading" ng-click="gerarRelatorio()">
+                        <i class="fa fa-print"></i> &nbsp; Imprimir
+                    </button>
+                </h4>
+            </div>
+
+            <div class="modal-body" style="width:100%">
+                <div class="col-md-12 form-append">
+                    <div class="row">
+                        <ul class="todo-list">
+                            <li class="primary">
+                                <span class="span-check">
+                                    <input type="radio" icheck name="tpRelatorio" id="tpAnalitico" ng-model="tpRelatorio" class="iradio-text" ng-value="'A'" data-radio="iradio_minimal-blue">
+                                    <label for="tpAnalitico">Relatório de {{objFiltro.desc_natureza}} e seus Itens</label>
+                                </span>
+                            </li>
+                            <li class="primary">
+                                <span class="span-check">
+                                    <input type="radio" icheck name="tpRelatorio" id="tpSintetico" ng-model="tpRelatorio" class="iradio-text" ng-value="'S'" data-radio="iradio_minimal-blue">
+                                    <label for="tpSintetico">Relatório de {{objFiltro.desc_natureza}}</label>
+                                </span>
+                            </li>
+                            <li class="primary" ng-show="objFiltro.cod_natureza != 15 && objFiltro.cod_natureza != 16">
+                                <span class="span-check">
+                                    <input type="radio" icheck name="tpRelatorio" id="tpItens" ng-model="tpRelatorio" class="iradio-text" ng-value="'I'" data-radio="iradio_minimal-blue">
+                                    <label for="tpItens">Relatório dos Itens Totalizados</label>
+                                </span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer text-center">
+            </div>
+        </div>
+    </form>
+</div>

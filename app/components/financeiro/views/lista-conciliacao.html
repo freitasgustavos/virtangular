@@ -1,0 +1,21 @@
+
+<div ng-if="arrExtratoFinan.length === 0">
+    <div class="alert alert-warning alert-fade m-t-5">
+        <i class="fa fa-info-circle fa-2x p-r-10"></i>
+        <span class="alert-texto font-small">Nenhum registro encontrado!</span>
+    </div>
+</div>
+
+<div ng-if="arrExtratoFinan.length > 0">
+    <div class="row box-ef" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200">
+        <!-- Desfazer conciliação. -->
+        <div ng-if="codAcaoPrincipal === 22">
+            <div ng-include="'financeiro/views/grid-conciliacao-oculta.html'"></div>
+        </div>
+
+        <!-- Conciliação feita pelo próprio usuário ou listagem normal dos extratos (bancário e financeiro). -->
+        <div ng-if="codAcaoPrincipal === 11 || codAcaoPrincipal === 99">
+            <div ng-include="'financeiro/views/grid-conciliacao-normal.html'"></div>
+        </div>
+    </div>
+</div>

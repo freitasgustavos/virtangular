@@ -1,0 +1,48 @@
+
+<div class="col-md-12 p-r-0 p-l-0 content-agenda">
+    <div class="panel">
+        <div class="panel-header">
+            <h3>
+                <i class="fa fa-calendar"></i>
+                <strong>Agenda</strong>
+            </h3>
+        </div>
+
+        <treasure-overlay-spinner active="spinner.active">
+            <div class="panel-content">
+                <div class="row">
+                    <div class="col-md-4">
+                        <div class="form-group m-b-0">
+                            <label>Calendário</label>
+                            <ui-select class="ui-select-calendario" ng-model="objFiltro.ano_2010_calendario" theme="select2" ng-change="onChangeCalendario(true)">
+                                <ui-select-match placeholder="Escolha um calendário...">
+                                    {{$select.selected.par_c01}}&nbsp;<i class="fa fa-remove" ng-click="limparCalendario($event)"></i>
+                                </ui-select-match>
+                                <ui-select-choices repeat="item.par_pai as item in listaPerfilAgenda | filter: $select.search">
+                                    <span ng-bind-html="item.par_c01 | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group m-b-0">
+                            <label>Situação</label>
+                            <ui-select class="ui-select-calendario" ng-model="objFiltro.ano_status" theme="select2" ng-change="onChangeCalendario(true)">
+                                <ui-select-match placeholder="Escolha uma situação...">
+                                    {{$select.selected.nome}}&nbsp;<i class="fa fa-remove" ng-click="limparSituacao($event)"></i>
+                                </ui-select-match>
+                                <ui-select-choices repeat="item.id as item in arrStatus | filter: $select.search">
+                                    <span ng-bind-html="item.nome | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-content">
+                <div id="calendar" ui-calendar="uiConfig2.calendar" class="span8 calendar" ng-model="eventSources" calendar="calendar"></div>
+            </div>
+        </treasure-overlay-spinner>
+    </div>
+</div>

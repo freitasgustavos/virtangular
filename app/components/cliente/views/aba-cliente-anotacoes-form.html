@@ -1,0 +1,73 @@
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h4 class="modal-title modal-title-button">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                <strong>Dados</strong> da Anotação
+
+                <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarAnotacaoLoading" ng-click="salvarAnotacao()">
+                    <i class="fa fa-check"></i> &nbsp; Salvar
+                </button>
+
+                <button ng-if="ano_seq_ano" type="button" class="btn btn-warning btn-embossed bnt-square pull-right" ng-click="imprimirAnotacao()">
+                    <i class="fa fa-check"></i> &nbsp; Imprimir
+                </button>
+
+                <span ng-if="ano_seq_ano" class="pull-right">
+                    <a class="panel-close m-r-20 btn-delete" title="Excluir" ng-click="cancelarAnotacao(anotacao.ano_cad_cod_cad, anotacao.ano_seq_ano)">
+                        <i class="fa fa-trash-o"></i>
+                    </a>
+                </span>
+            </h4>
+        </div>
+
+        <div class="modal-body">
+            <!-- O formulário é apenas mostrado quando o modo de edição é habilitado. -->
+            <div id="box-edicao" ng-if="isEdicao" class="sample-show-hide">
+                <form name="forms.fClienteAnotacao" class="form-validation" novalidate autocomplete="off" ng-submit="salvarAnotacao()">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Título</label>
+                                <input name="ano_titulo" maxlength="255" type="text" class="form-control" placeholder="Digite o título" ng-model="anotacao.ano_titulo">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <label class="control-label">Descrição</label>
+                                <textarea class="form-control" placeholder="Digite a descrição" ng-model="anotacao.ano_historico" style="height:100px" ckeditor="editorOptions"></textarea>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" name="ano_seq_ano" ng-model="anotacao.ano_seq_ano">
+                    <input type="hidden" name="ano_cad_cod_cad" ng-model="anotacao.ano_cad_cod_cad">
+                </form>
+            </div>
+
+            <div id="box-leitura" ng-if="!isEdicao" ng-click="ativarEdicao()" class="sample-show-hide">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Título</label> &nbsp; <i class="hidden icon-pencil"></i>
+                            <p>{{anotacao.ano_titulo}}</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label class="control-label">Descrição</label> &nbsp; <i class="hidden fa fa-pencil"></i>
+                            <p ng-bind-html="getHTMLAnotacao(anotacao.ano_historico)"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

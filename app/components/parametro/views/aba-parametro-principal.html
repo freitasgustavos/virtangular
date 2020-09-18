@@ -1,0 +1,33 @@
+
+<div class="row">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="p-l-0" width="5%">Nro</th>
+                <th width="15%">Parâmetro</th>
+                <th width="28%">Valor</th>
+                <th width="48%">Observações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="campo in campos">
+                <td>{{campo.rot_par_campo | strReplace:'par_'}}</td>
+                <td>
+                    <span ng-if="campo.rot_par_campo == 'par_c01'">Descrição</span>
+                    <span ng-if="campo.rot_par_campo != 'par_c01'">{{campo.rot_pergunta}}</span>
+                </td>
+                <td>
+                    <span ng-switch on="campo.rot_pergunta">
+                        <span ng-switch-when="Cor">
+                            <input type="text" style="width:80%" class="form-control" id="par_c02_cor" name="par_c02_cor" placeholder="Cor..." minicolors="customSettings" ng-model="param[campo.rot_par_campo]">
+                        </span>
+                        <span ng-switch-default>
+                            <input type="text" style="width:80%" class="form-control" id="{{campo.rot_par_campo}}" ng-model="param[campo.rot_par_campo]">
+                        </span>
+                    </span>
+                </td>
+                <td>{{campo.rot_dica}}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>

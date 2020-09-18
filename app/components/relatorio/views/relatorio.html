@@ -1,0 +1,81 @@
+
+<div id="box-empresa">
+    <div class="col-md-3 p-l-0 p-r-0">
+        <div class="panel m-b-0">
+            <div class="panel-header m-t-5">
+                <h3>
+                    <i class="fa fa-file-excel-o"></i>
+                    <strong>{{arrRelatorios[0].par_c01}}</strong>
+                </h3>
+            </div>
+            <div class="panel-content panel-scroll p-t-0">
+                <ul class="product-tabs m-b-20">
+                    <li ng-repeat="relatorio in arrRelatorios" ng-if="relatorio.par_filho" id="link-relatorio-{{$index}}" ng-class="{'active' : relatorio.par_filho === objRelatorio.par_filho}">
+                        <a ng-click="setRelatorio(relatorio)">
+                            <i class="{{relatorio.par_c02}}"></i>
+                            <span>{{relatorio.par_c01}}</span>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-9 p-r-0">
+        <treasure-overlay-spinner active="spinnerList.active">
+            <div class="panel m-b-0">
+                <div class="tabs-container">
+                    <div class="product-tabs-content tab-content" id="box-dados-empresa" ng-show="pai">
+                        <form role="form" name="forms.formRelatorio" id="forms.formRelatorio" class="form-validation" autocomplete="off" novalidate>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="panel-header">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <h3>
+                                                    <i class="{{objRelatorio.par_c02}}"></i>
+                                                    <strong>{{objRelatorio.par_c01}}</strong>
+                                                </h3>
+                                                <div class="control-btn">
+                                                    <button type="button" class="btn btn-success btn-sm m-r-0" ng-click="gerarRelatorio('excel')">
+                                                        <i class="fa fa-file-excel-o"></i> Gerar Excel
+                                                    </button>
+                                                    <button type="button" class="btn btn-danger btn-sm m-r-0" ng-click="gerarRelatorio('pdf')">
+                                                        <i class="fa fa-file-pdf-o"></i> Gerar PDF
+                                                    </button>
+                                                    <button type="button" class="btn btn-primary btn-sm m-r-0" ng-click="pesquisar()">
+                                                        <i class="fa fa-search"></i> Filtrar
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-12 m-t-15">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <label>Pesquisa principal:</label>
+                                                <div class="input-group">
+                                                    <input class="form-control form-white" maxlength="100" placeholder="Pesquisa rápida..." ng-model="objFiltro.criterias" type="text">
+                                                    <span class="input-group-addon c-pointer" ng-click="objComponentes.search = !objComponentes.search">
+                                                        <i class="fa fa-filter p-0"></i>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="row box-import-relatorio" id="box-grid-relatorio">
+                                            <div class="col-md-12 m-t-20">
+                                                <div ng-include="objRelatorio.template"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </treasure-overlay-spinner>
+    </div>
+</div>

@@ -1,0 +1,29 @@
+
+<div ng-show="arrCupons.length">
+    <table class="table table-hover font-small m-b-0">
+        <thead>
+            <tr>
+                <th>Cód.</th>
+                <th>Campanha</th>
+                <th>Cupom</th>
+                <th>Restam</th>
+                <th>Validade</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="cupom in arrCupons" class="c-pointer" ng-click="getCupom(cupom.cup_nro_cup)" ng-class="{selected: cupom.cup_nro_cup === cupCodCupSelected}">
+                <td><span>{{cupom.cup_nro_cup}}</span></td>
+                <td><span>{{cupom.cup_descricao}}</span></td>
+                <td><span>{{cupom.cup_codigo_cupom}}</span></td>
+                <td><span>{{cupom.cup_qtd_expiracao}}</span></td>
+                <td><span>{{cupom.cup_dat_expiracao}}</span></td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+<div ng-show="!arrCupons.length && spinnerList.active === false">
+    <div class="alert alert-warning m-10 alert-fade" role="alert">
+        <p class="font-small"><strong>Atenção:</strong> Nenhum registro encontrado!</p>
+    </div>
+</div>

@@ -1,0 +1,78 @@
+<div class="container" id="login-block">
+    <div class="account-img">
+        <img class="account-img" alt="{{nomeSolucao}}" ng-src="../app/images/{{imgLogin}}">
+    </div>
+
+    <div class="account-info">
+        <h3 class="text-center text-login m-b-0">
+            Crie uma nova senha
+        </h3>
+        <h3 class="text-center text-login m-b-0">
+            para a sua conta
+        </h3>
+
+        <ul>
+            <li>
+                <i class="fa fa-key"></i> Combine letras e números
+            </li>
+            <li>
+                <i class="fa fa-user"></i> Não use informações pessoais
+            </li>
+            <li>
+                <i class="fa fa-cog"></i> Utilize no mínimo 5 caracteres
+            </li>
+        </ul>
+    </div>
+
+    <div class="account-form">
+        <div class="cssFade">
+            <form class="form-password" id="formRecuperar" name="forms.formRecuperar" method="POST" novalidate>
+                <h3 class="m-b-30 m-t-20">
+                    <strong>Faça a troca</strong> de sua senha
+                </h3>
+
+                <div ng-if="flags.flagValidarToken">
+                    <div class="alert alert-danger" style="margin-bottom:10px">
+                        <p>{{msgValidarToken}}</p>
+                    </div>
+                </div>
+
+                <div ng-if="!flags.flagValidarToken">
+                    <!-- Mensagem de erro ao tentar modificar a senha do usuário. -->
+                    <div ng-show="objRespostaSalvar" class="cssFade">
+                        <div class="{{objRespostaSalvar.classe}}" role="alert" style="margin-bottom:10px">
+                            <p>{{objRespostaSalvar.mensagem}}</p>
+                        </div>
+                    </div>
+
+                    <div class="append-icon m-b-10">
+                        <input class="form-control form-white password" name="senha" maxlength="20" placeholder="Digite a senha..." title="Senha" type="password" required ng-minlength="5" ng-model="objRecuperar.senha">
+                        <i class="icon-lock"></i>
+
+                        <div ng-show="forms.formRecuperar.submitted || (forms.formRecuperar.senha.$invalid && !forms.formRecuperar.senha.$pristine)">
+                            <div class="validation-advice" ng-show="forms.formRecuperar.senha.$error.required">O campo senha é de preenchimento obrigatório.</div>
+                            <div class="validation-advice" ng-show="forms.formRecuperar.senha.$error.minlength">A senha deve ter mais do que 5 caracteres.</div>
+                        </div>
+                    </div>
+
+                    <div class="append-icon m-b-30">
+                        <input class="form-control form-white password" name="confirmacao" maxlength="20" placeholder="Confirme sua senha..." title="Confirme sua senha" type="password" required ng-minlength="5" ng-model="objRecuperar.confirmacao" compare-to="objRecuperar.senha">
+                        <i class="icon-lock" style="padding-right:10px"></i>
+
+                        <div ng-show="forms.formRecuperar.submitted || (forms.formRecuperar.confirmacao.$invalid && !forms.formRecuperar.confirmacao.$pristine)">
+                            <div style="padding-bottom:0" class="validation-advice" ng-show="forms.formRecuperar.confirmacao.$error.required">A confirmação da senha é de preenchimento obrigatório.</div>
+                            <div style="padding-bottom:0" class="validation-advice" ng-show="forms.formRecuperar.confirmacao.$error.compareTo">A senha não confere.</div>
+                            <div style="padding-bottom:0" class="validation-advice" ng-show="forms.formRecuperar.confirmacao.$error.minlength">A senha deve ter mais do que 5 caracteres.</div>
+                        </div>
+                    </div>
+
+                    <button class="btn btn-dark pull-right m-r-0" name="submit-form2" id="submit-form" type="button" ladda="loginUsuarioLoading" ng-click="salvar()">Salvar Senha</button>
+
+                    <span class="forgot-password pull-left">
+                        <a href="http://app.virtux.com.br/" title="Cancelar">Cancelar</a>
+                    </span>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

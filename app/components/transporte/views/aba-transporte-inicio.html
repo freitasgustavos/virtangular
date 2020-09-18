@@ -1,0 +1,287 @@
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Remetente: <i class="obrigatorio">*</i></label>
+            <div class="append-icon append-typeahead">
+                <lv-autocomplete
+                        ng-model="frete.cte_cad_nome_remetente"
+                        clear-input="false"
+                        trigger-list="true"
+                        icon-class="fa fa-user"
+                        search-limit="10"
+                        on-select="onSelectRemetente"
+                        add-select-item="addPessoa"
+                        place-holder="Selecione o Remetente"
+                        string-entity="Remetente"
+                        string-service="cliente"
+                        display-property="cad_nome_razao"
+                        display-complement="cad_cpf_cnpj"
+                        confirm-add="true"
+                        string-id="autocomplete-remetente">
+                </lv-autocomplete>
+
+                <input type="hidden" ng-model="frete.cte_cad_cod_rem">
+
+                <!-- Botão para edição dos dados do cadastro. -->
+                <div ng-show="frete.cte_cad_nome_remetente && frete.cte_cad_nome_remetente != ' ' && frete.cte_cad_cod_rem">
+                    <small class="link-append lv-plugin" ng-click="getJanelaCadastro(frete.cte_cad_cod_rem,'rem')">Editar</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Expedidor: </label>
+            <div class="append-icon append-typeahead">
+                <lv-autocomplete
+                        ng-model="frete.cte_cad_nome_expedidor"
+                        clear-input="false"
+                        trigger-list="true"
+                        icon-class="fa fa-user"
+                        search-limit="10"
+                        on-select="onSelectExpedidor"
+                        add-select-item="addPessoa"
+                        place-holder="Selecione o Expedidor"
+                        string-entity="Emitente"
+                        string-service="cliente"
+                        display-property="cad_nome_razao"
+                        display-complement="cad_cpf_cnpj"
+                        confirm-add="true"
+                        string-id="autocomplete-emitente">
+                </lv-autocomplete>
+
+                <input type="hidden" ng-model="frete.cte_cad_cod_exp">
+
+                <!-- Botão para edição dos dados do cadastro. -->
+                <div ng-show="frete.cte_cad_nome_expedidor && frete.cte_cad_nome_expedidor != ' ' && frete.cte_cad_cod_exp">
+                    <small class="link-append lv-plugin" ng-click="getJanelaCadastro(frete.cte_cad_cod_exp,'exp')">Editar</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Destinatário: <i class="obrigatorio">*</i></label>
+            <div class="append-icon append-typeahead">
+                <lv-autocomplete
+                        ng-model="frete.cte_cad_nome_destinatario"
+                        clear-input="false"
+                        trigger-list="true"
+                        icon-class="fa fa-user"
+                        obj-search="objFiltroCliente"
+                        search-limit="10"
+                        on-select="onSelectDestinatario"
+                        add-select-item="addPessoa"
+                        place-holder="Selecione o Destinatário"
+                        string-entity="Destinatario"
+                        string-service="cliente"
+                        display-property="cad_nome_razao"
+                        display-complement="cad_cpf_cnpj"
+                        confirm-add="true"
+                        string-id="autocomplete-cliente">
+                </lv-autocomplete>
+
+                <input type="hidden" ng-model="frete.cte_cad_cod_dest">
+
+                <!-- Botão para edição dos dados do cadastro. -->
+                <div ng-show="frete.cte_cad_nome_destinatario && frete.cte_cad_nome_destinatario != ' ' && frete.cte_cad_cod_dest">
+                    <small class="link-append lv-plugin" ng-click="getJanelaCadastro(frete.cte_cad_cod_dest,'dest')">Editar</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Recebedor: </label>
+            <div class="append-icon append-typeahead">
+                <lv-autocomplete
+                        ng-model="frete.cte_cad_nome_recebedor"
+                        clear-input="false"
+                        trigger-list="true"
+                        icon-class="fa fa-user"
+                        search-limit="10"
+                        on-select="onSelectRecebedor"
+                        add-select-item="addPessoa"
+                        place-holder="Selecione o Recebedor"
+                        string-entity="Recebedor"
+                        string-service="cliente"
+                        display-property="cad_nome_razao"
+                        display-complement="cad_cpf_cnpj"
+                        confirm-add="true"
+                        string-id="autocomplete-cliente">
+                </lv-autocomplete>
+
+                <input type="hidden" ng-model="frete.cte_cad_cod_rec">
+
+                <!-- Botão para edição dos dados do cadastro. -->
+                <div ng-show="frete.cte_cad_nome_recebedor && frete.cte_cad_nome_recebedor != ' ' && frete.cte_cad_cod_rec">
+                    <small class="link-append lv-plugin" ng-click="getJanelaCadastro(frete.cte_cad_cod_rec,'rec')">Editar</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Tomador: <i class="obrigatorio">*</i></label>
+            <div class="append-icon append-typeahead">
+                <select class="form-control" ng-options="tom.id as tom.descricao for tom in arrTomador" ng-model="frete.cte_toma_serv">
+                    <option style="display:none" value="">---</option>
+                </select>
+
+                <input type="hidden" ng-model="frete.cte_toma_serv">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6" ng-if="frete.cte_toma_serv == 4">
+        <div class="form-group">
+            <label>Tomador: <i class="obrigatorio">*</i></label>
+            <div class="append-icon append-typeahead">
+                <lv-autocomplete
+                        ng-model="frete.cte_cad_nome_tomador"
+                        clear-input="false"
+                        trigger-list="true"
+                        icon-class="fa fa-user"
+                        search-limit="10"
+                        on-select="onSelectTomador"
+                        add-select-item="addPessoa"
+                        place-holder="Selecione o Tomador"
+                        string-entity="Tomador"
+                        string-service="cliente"
+                        display-property="cad_nome_razao"
+                        display-complement="cad_cpf_cnpj"
+                        confirm-add="true"
+                        string-id="autocomplete-cliente">
+                </lv-autocomplete>
+
+                <input type="hidden" ng-model="frete.cte_cad_cod_tom">
+
+                <!-- Botão para edição dos dados do cadastro. -->
+                <div ng-show="frete.cte_cad_nome_tomador && frete.cte_cad_nome_tomador != ' ' && frete.cte_cad_cod_tom">
+                    <small class="link-append lv-plugin" ng-click="getJanelaCadastro(frete.cte_cad_cod_tom,'tom')">Editar</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Motorista:</label>
+            <div class="append-icon append-typeahead">
+                <lv-autocomplete
+                        ng-model="frete.cte_cad_nome_motorista"
+                        clear-input="false"
+                        trigger-list="true"
+                        icon-class="fa fa-user"
+                        obj-search="objFiltroMotorista"
+                        search-limit="10"
+                        on-select="onSelectMotorista"
+                        add-select-item="addPessoa"
+                        place-holder="Selecione o Motorista"
+                        string-entity="Motorista"
+                        string-service="cliente"
+                        display-property="cad_nome_razao"
+                        display-complement="cad_cpf_cnpj"
+                        confirm-add="true"
+                        string-id="autocomplete-cliente">
+                </lv-autocomplete>
+
+                <input type="hidden" ng-model="frete.cte_cad_cod_mot">
+
+                <!-- Botão para edição dos dados do cadastro. -->
+                <div ng-show="frete.cte_cad_nome_motorista && frete.cte_cad_nome_motorista != ' ' && frete.cte_cad_cod_mot">
+                    <small class="link-append lv-plugin" ng-click="getJanelaCadastro(frete.cte_cad_cod_mot,'mot')">Editar</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="m-20 m-r-0 m-l-0">Dados do veículo</h3>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Veículo</label>
+                    <div class="append-icon append-typeahead">
+                        <lv-autocomplete
+                                ng-model="selectedVeiculo"
+                                clear-input="false"
+                                trigger-list="true"
+                                icon-class="fa fa-user"
+                                search-limit="10"
+                                on-select="onSelectVeiculo"
+                                add-select-item="addVeiculo"
+                                place-holder="Selecione o Veículo"
+                                string-entity="Veiculo"
+                                string-service="veiculo"
+                                display-property="vei_placa"
+                                display-complement="vei_label_propriedade"
+                                confirm-add="true"
+                                string-id="autocomplete-cliente">
+                        </lv-autocomplete>
+
+                        <input type="hidden" ng-model="frete.cte_vei_cod_vei">
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <!--<div class="col-md-6">-->
+
+                <!--<div class="form-group">-->
+                <!--<label>RNTRC <i class="obrigatorio">*</i></label>-->
+                <!--<div class="inside-tooltip">-->
+                <!--<input type="text" name="cte_rodo_rntrc" id="cte_rodo_rntrc" class="form-control" ng-model="frete.cte_rodo_rntrc" placeholder="Informe o RNTRC" number-only maxlength="8" onclick="this.select()" style="width:98%">-->
+                <!--<i class="fa fa-question-circle c-blue" rel="popover" popover-append-to-body="true" popover-trigger="mouseenter" popover-placement="left" popover="Acesse os parametros e cadastre o RNTRC uma única vez!" popover-title="Dica:"></i>-->
+                <!--</div>-->
+                <!--</div>-->
+                <!--</div>-->
+
+                <div class="col-md-12">
+                    <div class="form-group m-b-10">
+                        <label>CIOT</label>
+                        <div class="p-r-0 input-group">
+                            <input type="text" class="form-control" ng-model="frete.cte_rodo_ciot" number-only maxlength="12" placeholder="Informe o CIOT" onclick="this.select()">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-10">
+                <div class="form-group">
+                    <label>Observações</label>
+                    <input type="text" class="form-control" ng-model="frete.cte_caract_serv" placeholder="Informe as Observações">
+                </div>
+            </div>
+
+            <div class="col-md-2">
+                <div class="form-group">
+                    <div class="pull-right">
+                        <label class="m-t-10 m-b-0">Lotação:</label>
+                        <label class="switch">
+                            <input class="switch-input" name="pro_eh_inativo" id="pro_eh_inativo" type="checkbox" ng-model="frete.cte_rodo_lota">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,133 @@
+<div class="modal-dialog modal-not-footer">
+    <form id="forms.formsTransporte" name="forms.formsTransporte" method="POST" autocomplete="off" role="form" novalidate>
+        <div class="modal-content">
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('reload')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>Editar</strong> Transporte
+
+                    <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarTransporteLoading" ng-click="salvarTransporte()">
+                        <i class="fa fa-check"></i> &nbsp; Salvar
+                    </button>
+
+                    <span class="pull-right">
+                        <a class="panel-close m-r-20 btn-delete" title="Remover" ng-click="cancelarTransporte(objModal.$index)">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                    </span>
+                </h4>
+            </div>
+
+            <div class="modal-body" style="width:100%">
+                <div class="col-md-12 form-append">
+                    <div class="row">
+                        <div class="form-group form-group-modal">
+                            <label class="col-sm-3 control-label">Transportadora <i class="obrigatorio">*</i></label>
+                            <div class="col-sm-9">
+                                <lv-autocomplete
+                                    ng-model="objVenda.transportadoraSelect"
+                                    clear-input="false"
+                                    trigger-list="true"
+                                    icon-class="fa fa-bus"
+                                    obj-search="objFiltroTransportadora"
+                                    search-limit="20"
+                                    on-select="onSelectTransportadora"
+                                    place-holder="Selecione uma transportadora..."
+                                    string-entity="transportadora"
+                                    string-service="cliente"
+                                    confirm-add="false"
+                                    display-property="cad_nome_razao"
+                                    string-id="autocomplete-transportadora">
+                                </lv-autocomplete>
+
+                                <div ng-show="objVenda.fin_2070_cod_transp">
+                                    <small class="link-append lv-plugin" ng-click="getJanelaEdicaoTransporte(objVenda.fin_2070_cod_transp)">Editar</small>
+                                </div>
+
+                                <input type="hidden" name="fin_2070_cod_transp" id="fin_2070_cod_transp" ng-model="objVenda.fin_2070_cod_transp" required>
+
+                                <div class="alert-small" ng-show="submitted || (forms.formsTransporte.fin_2070_cod_transp.$invalid && !forms.formsTransporte.fin_2070_cod_transp.$pristine)">
+                                    <p class="text-danger form-error alert1" ng-show="forms.formsTransporte.fin_2070_cod_transp.$error.required">
+                                        O campo transportadora é de preenchimento obrigatório.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-modal">
+                            <label class="col-sm-3 control-label">Modalidade Frete</label>
+                            <div class="col-sm-9">
+                                <ui-select ng-model="objVenda.fin_mod_frete" theme="select2">
+                                    <ui-select-match placeholder="Escolha uma modalidade de frete...">{{$select.selected.nome}}</ui-select-match>
+                                    <ui-select-choices repeat="mf.id as mf in arrModFrete | filter: $select.search">
+                                        <span ng-bind-html="mf.nome | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-modal m-b-0 m-t-10">
+                            <label class="col-sm-3 control-label">Placa do Veículo <i class="obrigatorio">*</i></label>
+                            <div class="col-sm-3">
+                                <ui-select ng-model="objTransporte.tpt_veic_uf" theme="select2">
+                                    <ui-select-match placeholder="Escolha um estado...">{{$select.selected.uf}}</ui-select-match>
+                                    <ui-select-choices repeat="mf.uf as mf in arrUF | filter: $select.search">
+                                        <span ng-bind-html="mf.uf | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                            <div class="col-sm-6">
+                                <input class="form-control m-b-5" id="tpt_veic_placa" name="tpt_veic_placa" type="text" placeholder="Entre com a placa..." ng-model="objTransporte.tpt_veic_placa" maxlength="7" required style="text-transform:uppercase">
+                                <div class="alert-small" ng-show="submitted || (forms.formsTransporte.tpt_veic_placa.$invalid && !forms.formsTransporte.tpt_veic_placa.$pristine)">
+                                    <p class="text-danger form-error alert1" ng-show="forms.formsTransporte.tpt_veic_placa.$error.required">
+                                        Placa é um campo obrigatório.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <h3 class="m-20 m-r-0 m-l-0">Volume:</h3>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group form-group-modal">
+                                <label>Quantidade</label>
+                                <input class="form-control" type="text" placeholder="Entre com a quantidade..." number-only onclick="this.select()" ng-model="objTransporte.tpt_vol_qtd" maxlength="10">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group form-group-modal">
+                                <label>Espécie</label>
+                                <input class="form-control" type="text" placeholder="Entre com a espécie..." ng-model="objTransporte.tpt_vol_especie" maxlength="20" allow-pattern="(\d|[ a-zçÇ,/-])">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group form-group-modal">
+                                <label>Peso Líquido (kg)</label>
+                                <input class="form-control" type="text" placeholder="Entre com o peso líquido..." ui-number-mask="3" onclick="this.select()" ng-model="objTransporte.tpt_vol_peso_liq" maxlength="15">
+                            </div>
+                        </div>
+
+                        <div class="col-sm-6">
+                            <div class="form-group form-group-modal">
+                                <label>Peso Bruto (kg)</label>
+                                <input class="form-control" type="text" placeholder="Entre com o peso bruto..." ui-number-mask="3" onclick="this.select()" ng-model="objTransporte.tpt_vol_peso_bruto" maxlength="15">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer text-center">
+            </div>
+        </div>
+    </form>
+</div>

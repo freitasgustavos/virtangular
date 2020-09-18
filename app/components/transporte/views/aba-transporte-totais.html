@@ -1,0 +1,595 @@
+<tabset class="tab-fade-in">
+    <tab active="tabs[2].active">
+        <tab-heading>Informações</tab-heading>
+
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Modalidade:</label>
+                    <select class="form-control" ng-model="frete.cte_tip_modalidade">
+                        <option ng-repeat="modalidade in arrModalidadesFrete" value="{{ modalidade.id }}">{{ modalidade.descricao }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Tipo de Serviço:</label>
+                    <select class="form-control" ng-model="frete.cte_tipo_servico">
+                        <option ng-repeat="tipoServico in arrTipoServicoFrete" value="{{ tipoServico.id }}">{{ tipoServico.descricao }}</option>
+                    </select>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>Tipo do CTe:</label>
+                    <select class="form-control" ng-model="frete.cte_tip_cte">
+                        <option ng-repeat="tipoCTe in arrTipoCTe" value="{{ tipoCTe.id }}">{{ tipoCTe.descricao }}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-sm-12">
+                <h3 class="m-20 m-r-0 m-l-0">Valores</h3>
+            </div>
+            <div class="col-md-3">
+                <div class="form-group m-b-10">
+                    <label class="control-label p-r-0">Frete:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Valor do frete" ng-model="frete.cte_doc_vlr_prest" ui-money-mask="mdecimals" onclick="this.select()" ng-blur="getTotalFrete()">
+                        <span class="input-group-addon">
+                            <i class="fa fa-money"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group m-b-10">
+                    <label class="control-label p-r-0">Seguro:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Valor do frete" ng-model="frete.cte_vlr_seguro" ui-money-mask="mdecimals" onclick="this.select()" ng-blur="getTotalFrete()">
+                        <span class="input-group-addon">
+                            <i class="fa fa-money"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group m-b-10">
+                    <label class="control-label p-r-0">Pedágio:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Valor do frete" ng-model="frete.cte_vlr_pedagio" ui-money-mask="mdecimals" onclick="this.select()" ng-blur="getTotalFrete()">
+                        <span class="input-group-addon">
+                            <i class="fa fa-money"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group m-b-10">
+                    <label class="control-label p-r-0">Outros:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Valor do frete" ng-model="frete.cte_vlr_outros" ui-money-mask="mdecimals" onclick="this.select()" ng-blur="getTotalFrete()">
+                        <span class="input-group-addon">
+                            <i class="fa fa-money"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Índice IBPT(%)</label>
+                    <div class="input-group pull-left">
+                        <input class="form-control clear-disabled" maxlength="10" type="text" ng-model="frete.cte_aliq_ibpt" onclick="this.select()" ui-negative-number ui-number-mask="mdecimals" ng-change="getTotalIbpt()" style="z-index:0">
+                        <span class="input-group-addon">%</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-group">
+                    <label>Valor IBPT</label>
+                    <div class="input-group pull-left">
+                        <input class="form-control clear-disabled" readonly="readonly" maxlength="10" type="text" ng-model="frete.cte_vlr_ibpt" onclick="this.select()" ui-money-mask="mdecimals" style="z-index:0">
+                        <span class="input-group-addon"><i class="fa fa-money"></i></span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 col-md-offset-3">
+                <div class="form-group m-b-10">
+                    <label class="control-label p-r-0">TOTAL:</label>
+                    <div class="input-group">
+                        <input type="text" class="form-control" readonly="readonly" placeholder="Valor do frete" ng-model="frete.cte_doc_vlr_rec" ui-money-mask="mdecimals" onclick="this.select()" ng-blur="getTotalFrete()">
+                        <span class="input-group-addon">
+                            <i class="fa fa-money"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row m-t-10 m-b-10">
+            <div class="col-sm-12">
+                <h3 class="m-20 m-r-0 m-l-0">CFOP</h3>
+            </div>
+
+            <div class="col-sm-12">
+                <ui-select name="fin_cfo_cfop" id="fin_cfo_cfop" class="form-control" ng-model="frete.fin_cfo_cfop" theme="select2" >
+                    <ui-select-match style="height: 27px;" placeholder="Selecione">{{$select.selected.cfo_cfop}} - {{$select.selected.cfo_descricao}}</ui-select-match>
+                    <ui-select-choices repeat="cfo.cfo_cfop as cfo in listaCfo |  propsFilter: {cfo_cfop: $select.search, cfo_descricao:$select.search}">
+                        <span ng-bind-html="cfo.cfo_cfop +' - '+cfo.cfo_descricao | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+
+        <!-- TABELA DE IMPOSTOSO DO FRETE -->
+        <div class="row">
+            <!--<div class="col-md-2 col-md-offset-10">-->
+            <!--<button class="btn btn-primary btn-sm m-0" ng-click="editTributoFrete()">-->
+            <!--Novo Imposto-->
+            <!--</button>-->
+            <!--</div>-->
+            <div class="col-md-12" ng-if="frete.tributos.length > 0">
+                <table class="table table-striped table-hover table-mini">
+                    <thead>
+                    <tr>
+                        <th class="text-left">Imposto</th>
+                        <th class="text-center" ng-if="empresa.tipCs == 1">CSO</th>
+                        <th class="text-center" ng-if="empresa.tipCs == 2">CST</th>
+                        <th class="text-right">Base de Cálculo</th>
+                        <th class="text-right">Aliquota</th>
+                        <th class="text-right">Valor Imposto</th>
+                        <th class="text-center">Retido?</th>
+                        <th class="text-center">Não Tributado</th>
+                        <th class="text-right">Valor Contábil</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="(k, tributo) in frete.tributos" ng-click="editTributoFrete(tributo, k, $index)" style="cursor:pointer">
+                        <td class="text-left">{{tributo.nomeImposto}}</td>
+                        <td class="text-center" ng-if="empresa.tipCs == 1">{{tributo.tri_cso}}</td>
+                        <td class="text-center" ng-if="empresa.tipCs == 2">{{tributo.tri_cst}}</td>
+                        <td class="text-right"><span class="label label-default">{{tributo.tri_bc_perc_mva}}%</span>&nbsp;{{tributo.tri_bc_vlr_liquido | currency}}</td>
+                        <td class="text-right">{{tributo.tri_aliq_perc}}</td>
+                        <td class="text-right"><span class="c-primary"><strong>{{tributo.tri_imp_vlr_liquido | currency}}</strong></span></td>
+                        <td class="text-center"><span ng-if="tributo.tri_eh_retido == 1">Sim</span><span ng-if="tributo.tri_eh_retido == 0">Não</span></td>
+                        <td class="text-right">{{tributo.tri_naotrib_vlr | currency}}</td>
+                        <td class="text-right">{{tributo.tri_contabil_vlr | currency}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row" ng-if="frete.cte_tip_modalidade == 1">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="m-20 m-r-0 m-l-0">Dados do seguro</h3>
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Seguradora:</label>
+                            <div class="append-icon append-typeahead">
+                                <lv-autocomplete
+                                        ng-model="frete.cte_cad_nome_seguradora"
+                                        clear-input="false"
+                                        trigger-list="true"
+                                        icon-class="fa fa-user"
+                                        search-limit="10"
+                                        on-select="onSelectSeguradora"
+                                        add-select-item="addPessoa"
+                                        place-holder="Selecione a Seguradora"
+                                        string-entity="Remetente"
+                                        string-service="cliente"
+                                        display-property="cad_nome_razao"
+                                        display-complement="cad_cpf_cnpj"
+                                        confirm-add="true"
+                                        string-id="autocomplete-remetente">
+                                </lv-autocomplete>
+
+                                <input type="hidden" ng-model="frete.cte_cad_cod_seg">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Apólice:</label>
+                            <div class="append-icon append-typeahead">
+                                <input type="text" class="form-control" placeholder="Apólice do seguro" ng-model="frete.cte_nro_apolice_seguro" number-only maxlength="20" onclick="this.select()">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-4">
+                        <div class="form-group">
+                            <label>Resnponsável:</label>
+                            <div class="append-icon append-typeahead">
+                                <select class="form-control" ng-model="frete.cte_responsavel_seguro">
+                                    <option ng-repeat="resp in arrResponsavelSeguro" value="{{ resp.id }}">{{ resp.descricao }}</option>
+                                </select>
+
+                                <input type="hidden" ng-model="frete.cte_responsavel_seguro">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr />
+
+        <div class="row">
+            <div class="col-md-12">
+                <h3 class="m-20 m-r-0 m-l-0">Observações</h3>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Informações Complementares:</label>
+                    <textarea class="form-control" maxlength="2000" placeholder="Digite alguma informação complementar..." cols="3" rows="3" ng-model="frete.fin_observacao"></textarea>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Observações Fisco:</label>
+                    <textarea class="form-control" maxlength="60" placeholder="Digite alguma informação complementar..." cols="3" rows="3" ng-model="frete.fin_inf_complementar"></textarea>
+                </div>
+            </div>
+        </div>
+    </tab>
+
+    <tab active="tabs[3].active">
+        <tab-heading>Recebimento</tab-heading>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Centro de Custo</label>
+                    <lv-autocomplete
+                            ng-model="frete.centroCustoSelect"
+                            clear-input="false"
+                            trigger-list="true"
+                            icon-class="fa fa-tag"
+                            obj-search="objDropdown.objCentroCusto"
+                            search-limit="10"
+                            on-select="onSelectCentroCustoFrete"
+                            add-select-item="addCentroCustoFrete"
+                            place-holder="Pesquise por um centro de custo..."
+                            string-entity="centro de custo"
+                            string-service="centroCusto"
+                            display-property="par_c01"
+                            confirm-add="true"
+                            string-id="autocomplete-centro">
+                    </lv-autocomplete>
+
+                    <input type="hidden" ng-model="frete.fin_6050_cdc">
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="form-group form-calculo">
+                    <label>Valor Total</label>
+                    <div class="box-total">
+                        <div class="col-md-12 p-r-0 p-l-0">
+                            <div class="row">
+                                <div class="col-sm-6"></div>
+                                <div class="col-sm-6 text-right">
+                                    <strong style="font-size:24px">{{frete.cte_doc_vlr_rec | currency:'R$'}}&nbsp;&nbsp;</strong>
+                                    <i class="fa fa-money p-0"></i>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-md-6">
+                <label>Conta Financeira</label><br>
+                <lv-autocomplete
+                        ng-model="frete.contaFinanceiraSelect"
+                        clear-input="false"
+                        trigger-list="true"
+                        icon-class="fa fa-bank"
+                        search-limit="10"
+                        on-select="onSelectContaFinanceiraFrete"
+                        add-select-item="addContaFinanceiraFrete"
+                        place-holder="Pesquise por uma conta financeira..."
+                        string-entity="conta financeira"
+                        string-service="contaFinan"
+                        display-property="par_c01"
+                        confirm-add="true"
+                        string-id="autocomplete-conta">
+                </lv-autocomplete>
+
+                <input type="hidden" ng-model="frete.fin_5010_conta_fin">
+            </div>
+
+            <div class="col-md-6" ng-if="frete.fin_tip_emitente == 'P' && frete.fin_6020_natureza != 11 && frete.fin_6020_natureza != 31">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="form-group">
+                            <label>Situação CT-e</label>
+                            <div class="box-total">
+                                <div class="col-md-12 p-r-0 p-l-0">
+                                    <div class="row">
+                                        <div class="col-sm-6"><strong>{{frete.fin_nome_situacao}} <span>{{countDownA3}}</span></strong></div>
+                                        <div class="col-sm-6 text-right">
+                                            <button type="button" ladda="salvarFreteLoading" class="btn btn-success btn-sm m-r-0 pull-right" title="Emitir CT-e" ng-click="salvarFaturarEmitirCTe()" ng-if="(!frete.codSituacao || frete.codSituacao == 0)">Emitir CT-e</button>
+                                            <button type="button" ladda="salvarFreteLoading" class="btn btn-success btn-sm m-r-0 pull-right" title="Emitir CT-e" ng-click="salvarFaturarEmitirCTe()" ng-if="(frete.codSituacao == 12 || frete.codSituacao == 14)">Reenviar CT-e</button>
+                                            <button type="button" ladda="salvarFreteLoading" class="btn btn-success btn-sm m-r-0 pull-right" title="Atualizar CT-e" ng-click="atualizarStatusCTe()" ng-if="frete.codSituacao == 13">Atualizar CT-e</button>
+                                            <button type="button" class="btn btn-success btn-sm m-r-0 pull-right" title="Imprimir CT-e" ng-click="imprimirDACTE()" ng-if="frete.codSituacao == 90">Imprimir CT-e</button>
+                                            <button type="button" class="btn btn-success btn-sm m-r-0 pull-right" title="Imprimir Cancelamento" ng-click="imprimirDACTE()" ng-if="frete.codSituacao == 99">Imprimir Cancelamento</button>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-sm-12">{{frete.fin_nfe_motivo}}</div>
+                                        <br>
+                                        <div class="col-sm-12" ng-if="frete.fin_nfe_chave" style="font-size: 12px"><br>chave: {{frete.fin_nfe_chave}}</div>
+
+                                        <div class="col-sm-6" ng-if="frete.codSituacao == 90 || frete.codSituacao == 1206"><br><a href="javascript:void(0)" ng-click="baixarXml()">Baixar XML</a></div>
+                                        <div class="col-sm-12" ng-if="frete.codSituacao == 14"><br><a href="javascript:void(0)" ng-click="baixarXml()">Baixar XML</a></div>
+                                        <div class="col-sm-6 text-right" ng-if="frete.codSituacao == 1206"><br><a href="javascript:void(0)" ng-click="getJanelaComoProceder()">Como proceder?</a></div>
+                                        <div class="col-sm-4" ng-if="frete.codSituacao == 99" style="font-size: 12px"><br><a href="javascript:void(0)" ng-click="getXmlCancelado()">XML Cancelamento</a></div>
+                                        <div class="col-sm-4" ng-if="frete.codSituacao == 99" style="font-size: 12px"><br><a href="javascript:void(0)" ng-click="baixarXml()">XML CT-e</a></div>
+                                        <div class="col-sm-4" ng-if="frete.codSituacao == 99" style="font-size: 12px"><br><a href="javascript:void(0)" ng-click="imprimirDACTE('autorizado')">Imprimir DACTE</a></div>
+
+                                    </div>
+                                </div>
+                                <!--
+                                    <div class="append-icon append-typeahead">
+                                        <input class="form-control input-disabled" type="text" readonly ng-model="frete.fin_nome_situacao">
+                                        <small ng-show="frete.fin_nro_lan && frete.fin_6035_situacao == 13" class="link-append" ng-click="atualizarStatusCTe()">Atualizar</small>
+                                        <small ng-show="frete.fin_cod_acao == 1 && (frete.fin_6035_situacao == 0 || frete.fin_6035_situacao == 12 || frete.fin_6035_situacao == 14)" class="link-append" ng-click="emitirNFe()">Enviar</small>
+                                    </div>
+                                -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div ng-if="frete.fin_tip_emitente == 'T'">
+                <div class="col-md-4" >
+                    <div class="form-group">
+                        <label>Chave CT-e</label>
+                        <input class="form-control" type="text" placeholder="Entre com o número da chave..." ng-model="frete.fin_nfe_chave" ng-keyup="sobreporNroDoc()">
+                    </div>
+                </div>
+
+                <div class="col-md-2" >
+                    <div class="form-group">
+                        <label>Nro. Doc</label>
+                        <input class="form-control" type="text" placeholder="Entre com o número do documento..." ng-model="frete.cte_fin_doc_nro">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-6">
+                &nbsp;
+            </div>
+            <div class="col-md-6" ng-if="frete.codNatureza == '3' || frete.codNatureza == '4' || (frete.codNatureza == '6' && frete.fin_tip_emitente == 'T')">
+                <div class="form-group">
+                    <label>Chave de Referência:</label>
+                    <textarea class="form-control" placeholder="Digite as chaves..." cols="3" rows="3" ng-model="frete.refObs"></textarea>
+                </div>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Forma de Pagamento</label>
+                            <lv-autocomplete
+                                    ng-model="frete.formaPagamentoSelect"
+                                    clear-input="false"
+                                    trigger-list="true"
+                                    icon-class="fa fa-dollar"
+                                    search-limit="10"
+                                    on-select="onSelectFormaPagamentoFrete"
+                                    add-select-item="addFormaPagamentoFrete"
+                                    place-holder="Pesquise por uma forma de pagamento..."
+                                    string-entity="forma de pagamento"
+                                    string-service="formaPgto"
+                                    display-property="par_c01"
+                                    confirm-add="true"
+                                    string-id="autocomplete-forma">
+                            </lv-autocomplete>
+
+                            <input type="hidden" ng-model="frete.fin_6060_forma_pagamento">
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Pagamento</label>
+                            <div class="skin skin-square m-t-10">
+                                <div class="input-group">
+                                    <label class="lbl-inline m-r-10">
+                                        <input type="radio" icheck ng-model="frete.fin_av_ap" class="iradio-text" value="0" data-radio="iradio_minimal-blue" ng-change='frete.fin_av_ap = 0'> À vista
+                                    </label>
+                                    <label class="lbl-inline">
+                                        <input type="radio" icheck ng-model="frete.fin_av_ap" class="iradio-text" value="1" data-radio="iradio_minimal-blue" ng-change='setMensalFrete()'> A prazo
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6 sample-show-hide" ng-show="frete.fin_av_ap == 1">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="form-group">
+                            <label>Periodicidade</label>
+                            <ui-select class="form-control" ng-model="frete.fin_cod_periodicidade" theme="select2" ng-change="setPeriodicidadeFrete()">
+                                <ui-select-match placeholder="Periodicidade...">{{$select.selected.descricao}}</ui-select-match>
+                                <ui-select-choices repeat="item.id as item in objPeriodicidade | filter: $select.search">
+                                    <span ng-bind-html="item.descricao | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-5">
+                        <div class="form-group">
+                            <label>Ocorrência</label>
+                            <div class="inside-tooltip">
+                                <!-- frete.campo_gera_parcelas -->
+                                <input id="qtde_parcelas" name="qtde_parcelas" class="form-control" placeholder="Ocorrência..." ng-model="frete.qtde_parcelas" style="width:98%">
+                                <i class="fa fa-question-circle c-blue" rel="popover" popover-append-to-body="true" popover-trigger="mouseenter" popover-placement="right" popover="2x, 4x ou 10 20 30" popover-title="Exemplos:"></i>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1">
+                        <div class="form-group-input">
+                            <!-- gerarParcelas() -->
+                            <button type="button" class="btn btn-primary btn-ok" ng-click="parcelarFrete()">OK</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="sample-show-hide" ng-show="frete.fin_av_ap == 1">
+            <hr class="m-b-10 m-t-10">
+            <div class="row" ng-if="arrParcelas.length">
+                <div class="col-md-12">
+                    <h3 class="m-t-15">Parcelamento:</h3>
+                </div>
+                <div class="col-md-6" ng-repeat="parcela in arrParcelas" ng-if="parcela.length">
+                    <table class="table table-striped table-hover font-mini table-padding table-parcelas">
+                        <thead>
+                        <tr>
+                            <th width="15%">VENC.</th>
+                            <th width="28%">PARC.</th>
+                            <th width="16%">VALOR</th>
+                            <th width="28%">FORMA PGTO.</th>
+                            <th class="t-center" width="8%">QUIT.</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr ng-repeat="item in parcela" class="c-pointer" ng-click="editParcelaFrete(item)" ng-class="{active: item.tit_fatura_seq === parcelaSelecionada.tit_fatura_seq && item.tit_fatura_seq != undefined}">
+                            <td>{{item.tit_dat_vct}}</td>
+                            <td>
+                            <span class="table-span" tooltip-placement="top" tooltip="{{item.tit_descricao}}">
+                                {{item.tit_descricao | strLimit:10}}
+                            </span>
+                            </td>
+                            <td>{{item.tit_doc_vlr_liquido | currency}}</td>
+                            <td>
+                            <span ng-if="item.tit_6060_forma_pagamento" class="table-span" tooltip-placement="top" tooltip="{{item.tit_6060_desc_forma_pgto}}">
+                                {{item.tit_6060_desc_forma_pgto | strLimit:10}}
+                            </span>
+                                <span ng-if="!item.tit_6060_forma_pagamento">-</span>
+                            </td>
+                            <td class="t-center">
+                                <div ng-switch on="item.tit_faturado">
+                                    <div ng-switch-when="0" class="t-center">
+                                        <i class="fa fa-times-circle-o c-red" tooltip-placement="top" tooltip="Em débito"></i>
+                                    </div>
+                                    <div ng-switch-when="3" class="t-center">
+                                        <i class="glyphicon glyphicon-ok-circle c-green" tooltip-placement="top" tooltip="Pago"></i>
+                                    </div>
+                                    <div ng-switch-when="999" class="t-center">
+                                        <i class="glyphicon glyphicon-exclamation-sign c-orange" tooltip-placement="top" tooltip="Vencido"></i>
+                                    </div>
+                                    <div ng-switch-default class="t-center">
+                                        <i class="fa fa-times-circle-o c-red" tooltip-placement="top" tooltip="Pago"></i>
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <div class="row" ng-if="frete.codSituacao == 90">
+            <div class="col-md-12">
+                <div class="row">
+                    <div class="col-sm-12">
+                        <h3 class="m-20 m-r-0 m-l-0">Carta de Correção (CC-e):</h3>
+                    </div>
+                    <div class="control-btn">
+
+                        <div class="box-report" style="margin-right: -12px;" ng-if="arrFreteObs.length > 0 && !liberaNovaCce">
+                            <div>
+                                <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <span class="caret m-l-0"></span>
+                                </button>
+                                <span class="dropdown-arrow"></span>
+                                <ul class="dropdown-menu" style="top:0;left:0;" role="menu">
+                                    <li>
+                                        <a href="javascript:void(0)" ng-click="imprimirCceFrete()">Imprimir CCe</a>
+                                    </li>
+                                    <li>
+                                        <a href="javascript:void(0)" ng-click="getXmlCceFrete()">Baixar Xml CCe</a>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                        <button type="button" data-toggle="modal" class="btn btn-primary btn-sm pull-right" ng-disabled="liberaNovaCce" ng-click="getFormCceCte()">
+                            <i class="fa fa-plus"></i> &nbsp; Novo
+                        </button>
+                    </div>
+                    <div class="panel-header panel-controls" >
+                        <h3 tooltip-placement="bottom" tooltip="Preencha qualquer anotação que desejar para esse cliente" style="float:left">
+                            <i class="fa fa-table"></i>
+                            <strong>Lista</strong> de Justificativas
+                        </h3>
+                    </div>
+                    <div class="panel-content" ng-if="arrFreteObs.length > 0">
+                        <table class="table table-striped grid-anotacoes" style="font-size:12px">
+                            <thead>
+                            <tr>
+                                <th>Data</th>
+                                <th>Seq</th>
+                                <th>Descrição</th>
+                                <th>Status</th>
+                                <th>&nbsp;</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr ng-repeat="vObs in arrFreteObs" id="anotacao-{{$index}}" class="c-pointer">
+                                <td>{{vObs.obs_dat_cadastro | dateFormat}}</td>
+                                <td>{{vObs.obs_seq}}</td>
+                                <td>{{vObs.obs_descricao | strLimit : 40}}</td>
+                                <td>{{vObs.obs_str_retorno}}</td>
+                                <td><button type="button" class="btn btn-primary btn-sm" ng-click="getFormCceCte(vObs.obs_seq)" ng-if="vObs.obs_btenvia"><i class="fa fa-edit"></i></button></td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </tab>
+</tabset>

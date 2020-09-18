@@ -1,0 +1,263 @@
+
+<div id="panel-operacoes" class="col-md-4 p-l-0 p-r-0">
+    <treasure-overlay-spinner active="spinnerList.active">
+        <div class="panel m-b-0">
+            <div class="panel-header">
+                <h3 class="m-b-20">
+                    <i class="fa fa-list"></i>
+                    <span>{{objTela.nome_natureza}}</span>
+                </h3>
+
+                <div class="control-btn">
+                    <div class="btn-group box-dropdown">
+                        <div class="box-icon-filter">
+                            <a style="color:#5b5b5b" ng-click="showPanel()">
+                                <i class="fa fa-filter i-filter" tooltip-placement="left" tooltip="Refinar pesquisa"></i>
+                            </a>
+                        </div>
+                        <div class="box-toggle-dropdown box-toggle-dropdown-mini">
+                            <button type="button" class="btn btn-primary btn-sm dropdown-toggle m-r-0" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret"></span>
+                            </button>
+                            <span class="dropdown-arrow"></span>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="getJanelaRelatorio()">
+                                        <i class="fa fa-print"></i> Imprimir
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-primary btn-sm m-l-0 m-r-15" title="Novo" ng-click="novo()" style="margin-right:4px">
+                            <i class="fa fa-plus"></i> Novo
+                        </button>
+                    </div>
+                </div>
+
+                <form class="form-inverse" autocomplete="off" role="search">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="row">
+                                <div class="col-sm-12 m-b-5 after-tooltip">
+                                    <div class="input-group inside-tooltip">
+                                        <input type="text" class="form-control input-sm" placeholder="Pesquisar..." ng-model="objPesquisa.texto_venda_pesquisar" submit-form="btn-operacao" style="z-index:0">
+                                        <i class="fa fa-question-circle c-blue" rel="popover" popover-append-to-body="true" popover-trigger="mouseenter" popover-placement="right" popover="Pesquise pelo número de documento" popover-title="Dica importante:"></i>
+                                        <span class="input-group-btn">
+                                            <button class="btn btn-primary btn-sm btn-okay" id="btn-operacao" ng-click="getPesquisar()" type="button">OK</button>
+                                        </span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12" ng-class="{'animated fadeIn' : hasFilter, 'animated fadeOutDown oculto' : !hasFilter}">
+                            <div class="panel panel-border-radius bg-white-gray m-b-0 m-t-10">
+                                <div class="panel-header p-l-10">
+                                    <h5 class="m-b-0">
+                                        <strong>FILTROS ADICIONAIS</strong>
+                                    </h5>
+                                </div>
+                                <div class="panel-content panel-search">
+                                    <div class="row">
+                                        <div class="col-md-12 m-b-5">
+                                            <div class="form-group m-b-0">
+                                                <label>Situação</label>
+                                                <ui-select multiple ng-model="objPesquisa.acoes">
+                                                    <ui-select-match placeholder="Selecione alguma situação...">{{$item.name}}</ui-select-match>
+                                                    <ui-select-choices repeat="acao in arrAcoes | propsFilter: {name: $select.search}">
+                                                        <div ng-if="!acao.isTag" ng-bind-html="acao.name | highlight: $select.search"></div>
+                                                    </ui-select-choices>
+                                                </ui-select>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 m-b-5">
+                                            <div class="box-daterange">
+                                                <label>Data de lançamento</label>
+                                                <div class="input-group">
+                                                    <input class="input-sm form-control" maxlength="10" placeholder="Data início..." ng-model="objPesquisa.dt_lan_inicio" type="text" data-mask="99/99/9999" datepicker1>
+                                                    <span class="input-group-addon">até</span>
+                                                    <input class="input-sm form-control" maxlength="10" placeholder="Data fim..." ng-model="objPesquisa.dt_lan_final" type="text" data-mask="99/99/9999" datepicker1 style="width:99%">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12 m-b-5">
+                                            <div class="box-daterange">
+                                                <label>Número de documento</label>
+                                                <div class="input-group">
+                                                    <input class="input-sm form-control" maxlength="10" toint2 placeholder="Número inicial..." ng-model="objPesquisa.doc_nro_inicio" type="text">
+                                                    <span class="input-group-addon">até</span>
+                                                    <input class="input-sm form-control" maxlength="10" toint2 placeholder="Número final..." ng-model="objPesquisa.doc_nro_final" type="text" style="width:99%">
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div class="col-md-12">
+                                            <div class="box-daterange">
+                                                <label>Produtos</label>
+                                                <div class="input-group">
+                                                    <input class="input-sm form-control" maxlength="10" toint2 placeholder="Cód. produto início..." ng-model="objPesquisa.pro_cod_pro_inicio" type="text">
+                                                    <span class="input-group-addon">até</span>
+                                                    <input class="input-sm form-control" maxlength="10" toint2 placeholder="Cód. produto final..." ng-model="objPesquisa.pro_cod_pro_final" type="text" style="width:99%">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <div class="panel no-bottom">
+                <div class="panel-content panel-content p-t-0" ng-class="{'panel-venda-filtro' : hasFilter}" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200" style="padding:15px;min-height:758px;max-height:758px">
+                    <table class="table table-hover m-b-0 font-small" ng-if="arrRegistros.length">
+                        <colgroup>
+                            <col width="15%">
+                            <col width="10%">
+                            <col width="60%">
+                            <col width="15%">
+                        </colgroup>
+                        <thead>
+                            <tr>
+                                <th>DATA</th>
+                                <th>DOC</th>
+                                <th>COMENTÁRIO</th>
+                                <th class="text-right">SITUAÇÃO</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="item in arrRegistros" ng-click="getProducao(item.fin_nro_lan)" class="c-pointer" ng-class="{'active' : isActive(item)}">
+                                <td style="font-size:10px">{{item.fin_dat_lan | dateFormat}}</td>
+                                <td>{{item.fin_doc_nro}}</td>
+                                <td>
+                                    <span tooltip-placement="top" tooltip="{{item.fin_comentario}}">
+                                        {{item.fin_comentario | strLimit : 30}}
+                                    </span>
+                                </td>
+                                <td class="text-right">
+                                    <div class="f-r" ng-switch on="item.fin_cod_acao">
+                                        <span ng-switch-when="0">
+                                            <span class="label" style="background-color:#696969">
+                                                <small>PENDENTE</small>
+                                            </span>
+                                        </span>
+                                        <span ng-switch-when="1">
+                                            <span class="label" style="background-color:#028001">
+                                                <small>LANÇADO</small>
+                                            </span>
+                                        </span>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+
+                    <div class="m-t-10 panel-total" ng-if="!arrRegistros.length && spinnerList.active === false">
+                        <div class="alert alert-warning alert-fade" role="alert">
+                            <i class="fa fa-info-circle fa-2x"></i>
+                            <span class="alert-texto font-small">Nenhum registro encontrado!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div ng-show="arrRegistros.length">
+                <div class="panel m-b-0">
+                    <div class="col-md-12 box-paginacao">
+                        <div class="t-center p-10">
+                            <a ng-click="paginar()">
+                                <span>Listar mais...</span>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="panel-footer" style="overflow:hidden">
+                    <div class="col-md-7 p-0">
+                        <div class="row p-l-20">
+                            <h6 class="m-0">
+                                <strong>{{arrRegistros.length}}</strong> lançamentos.<br>
+                                <span ng-if="!objPesquisa.dt_lan_inicio && !objPesquisa.dt_lan_final">Filtro com datas não aplicado.</span>
+                                <span ng-if=" objPesquisa.dt_lan_inicio &&  objPesquisa.dt_lan_final">De {{objPesquisa.dt_lan_inicio}} até {{objPesquisa.dt_lan_final}}.</span>
+                                <span ng-if=" objPesquisa.dt_lan_inicio && !objPesquisa.dt_lan_final">A partir de {{objPesquisa.dt_lan_inicio}}.</span>
+                                <span ng-if="!objPesquisa.dt_lan_inicio &&  objPesquisa.dt_lan_final">Até {{objPesquisa.dt_lan_final}}.</span>
+                            </h6>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </treasure-overlay-spinner>
+</div>
+
+
+<!-- Painel inicial com manual. -->
+<div class="col-md-8 p-r-0" ng-class="{'animated virtux' : flagTutorial === true, 'animated oculto' : flagTutorial === false}">
+    <div ng-include="'home/views/tutorial.html'" ></div>
+</div>
+
+
+<!-- Painel principal com formulário de cadastro e edição. -->
+<div class="col-md-8 p-r-0" ng-class="{'animated virtux' : flagTutorial === false, 'animated oculto' : flagTutorial === true}" >
+    <div class="panel">
+        <div class="panel-header panel-header-wizard">
+            <div class="btn-reset">
+                <button type="button" class="btn btn-sm btn-primary" ng-click="voltar()" style="margin-left:2px">
+                    <i class="fa fa-arrow-left"></i> Voltar
+                </button>
+            </div>
+
+            <h3 class="title-header" style="padding-left:60px">
+                <i class="fa {{objTela.icone_natureza}}"></i>
+                <strong>{{objTela.nome_natureza}}</strong>
+            </h3>
+
+            <div class="control-btn">
+                <div class="btn-group box-dropdown">
+                    <div ng-if="objProducao.fin_nro_lan">
+                        <div class="box-toggle-dropdown" ng-if="objProducao.fin_cod_acao === 0">
+                            <button type="button" class="btn btn-sm btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                <span class="caret m-l-0"></span>
+                            </button>
+                            <span class="dropdown-arrow"></span>
+                            <ul class="dropdown-menu" role="menu">
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="faturar()">
+                                        <i class="fa fa-download"></i> Faturar
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="javascript:void(0)" ng-click="excluir()">
+                                        <i class="fa fa-trash-o"></i> Excluir
+                                    </a>
+                                </li>
+                            </ul>
+                        </div>
+                        <button type="button" class="btn btn-sm btn-primary m-l-0" ladda="salvarVendaLoading" ng-click="salvar()">
+                            <i class="fa fa-check"></i> Salvar
+                        </button>
+                    </div>
+
+                    <div ng-if="!objProducao.fin_nro_lan">
+                        <button type="button" class="btn btn-sm btn-primary m-l-0" ladda="salvarVendaLoading" ng-click="salvar()">
+                            <i class="fa fa-check"></i> Salvar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row box-wizard-operacoes">
+            <div class="panel-content panel-content-venda">
+                <form id="forms.formProducao" name="forms.formProducao" data-style="arrow" autocomplete="off" role="form">
+                    <div class="panel-inner-producao" style="min-height:852px">
+                        <div ng-include="'producao/views/aba-producao-itens.html'"></div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

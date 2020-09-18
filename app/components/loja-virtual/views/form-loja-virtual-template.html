@@ -1,0 +1,309 @@
+
+<div class="alert alert-info fade in" ng-show="!template.parteTemplate">
+    <i class="fa fa-info-circle fa-2x icon-alert"></i>
+    <p class="alert-texto font-small">Clique no local apropriado do seu template, ao lado esquerdo, para que possa configurá-lo ou escolha outro template nas setinhas.</p>
+</div>
+
+
+<div ng-include="template.parteTemplate"></div>
+
+
+<script type="text/ng-template" id="inicio"></script>
+
+
+<script type="text/ng-template" id="topo">
+    <div class="row">
+        <div class="col-md-12">
+            <table class="table table-striped">
+                <thead>
+                    <tr>
+                        <th>Título</th>
+                        <th>Descrição</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><input type="text" class="form-control" ng-model="template.tem_titulo1_topo"></td>
+                        <td><input type="text" class="form-control" ng-model="template.tem_desc1_topo"></td>
+                        <td>
+                            <label class="switch">
+                            <input class="switch-input" name="tem_st1_topo" id="tem_st1_topo" type="checkbox" ng-model="template.tem_st1_topo_aux">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                            </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="form-control" ng-model="template.tem_titulo2_topo"></td>
+                        <td><input type="text" class="form-control" ng-model="template.tem_desc2_topo"></td>
+                        <td><label class="switch">
+                            <input class="switch-input" name="tem_st2_topo" id="tem_st2_topo" type="checkbox" ng-model="template.tem_st2_topo_aux">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td><input type="text" class="form-control" ng-model="template.tem_titulo3_topo"></td>
+                        <td><input type="text" class="form-control" ng-model="template.tem_desc3_topo"></td>
+                        <td><label class="switch">
+                            <input class="switch-input" name="tem_st3_topo" id="tem_st3_topo" type="checkbox" ng-model="template.tem_st3_topo_aux">
+                            <span class="switch-label" data-on="On" data-off="Off"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="menu"></script>
+
+
+<script type="text/ng-template" id="banner">
+    <div class="control-btn">
+        <button type="button" class="btn btn-primary btn-sm pull-right" ng-click="getBanner()" style="margin-right:8px">
+            <i class="fa fa-plus"></i> &nbsp; Novo
+        </button>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div ng-show="arrBannersA1.length == 0">
+                <div class="alert alert-info alert-fade" role="alert">
+                    <i class="fa fa-info-circle fa-2x icon-alert"></i>
+                    <p class="alert-texto font-small">
+                        <strong>Ajuda:</strong> Clique no botão novo localizado logo acima e em seguida prencha o formulário para efetuar o cadastro de um novo banner em sua loja virtual.
+                    </p>
+                </div>
+            </div>
+            <div ng-show="arrBannersA1.length">
+                <table class="table table-hover table-css m-b-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Banner</th>
+                            <th>Descricao</th>
+                            <th>Link</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="banner in arrBannersA1" style="cursor:pointer" ng-click="getBanner(banner.mid_nro)" ng-class="{'selected' : banner.mid_nro === objBanner.mid_nro}" ng-include="'table-ban'"></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="banner-categoria">
+    <div class="control-btn">
+        <button type="button" class="btn btn-primary btn-sm pull-right" ng-click="getBanner()" style="margin-right:8px">
+            <i class="fa fa-plus"></i> &nbsp; Novo
+        </button>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div ng-show="arrBannersA2.length == 0">
+                <div class="alert alert-info alert-fade" role="alert">
+                    <i class="fa fa-info-circle fa-2x icon-alert"></i>
+                    <p class="alert-texto font-small">
+                        <strong>Ajuda:</strong> Clique no botão novo localizado logo acima e em seguida prencha o formulário para efetuar o cadastro de um novo banner em sua loja virtual.
+                    </p>
+                </div>
+            </div>
+            <div ng-show="arrBannersA2.length">
+                <table class="table table-hover table-css m-b-0">
+                    <thead>
+                        <tr>
+                            <th>#</th>
+                            <th>Banner</th>
+                            <th>Descricao</th>
+                            <th>Link</th>
+                            <th class="text-center">Status</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="banner in arrBannersA2" style="cursor:pointer" ng-click="getBanner(banner.mid_nro)" ng-class="{'selected' : banner.mid_nro === objBanner.mid_nro}" ng-include="'table-ban'"></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="banner-rodape">
+    <div class="control-btn">
+        <button type="button" class="btn btn-primary btn-sm pull-right" ng-click="getBanner()" style="margin-right:8px">
+            <i class="fa fa-plus"></i> &nbsp; Novo
+        </button>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div ng-show="arrBannersB1.length == 0">
+                <div class="alert alert-info alert-fade" role="alert">
+                    <i class="fa fa-info-circle fa-2x icon-alert"></i>
+                    <p class="alert-texto font-small">
+                        <strong>Ajuda:</strong> Clique no botão novo localizado logo acima e em seguida prencha o formulário para efetuar o cadastro de um novo banner em sua loja virtual.
+                    </p>
+                </div>
+            </div>
+            <div ng-show="arrBannersB1.length">
+                <table class="table table-hover table-css m-b-0">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Banner</th>
+                        <th>Descricao</th>
+                        <th>Link</th>
+                        <th class="text-center">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="banner in arrBannersB1" class="c-pointer" ng-click="getBanner(banner.mid_nro)" ng-class="{'selected' : banner.mid_nro === objBanner.mid_nro}" ng-include="'table-ban'"></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="table-ban">
+    <td>{{banner.mid_nro}}</td>
+    <td ng-if="banner.mid_tip_mid == 2">
+        <img class="img-md img-thumbnail" ng-src="{{imageCache}}{{banner.mid_id}}&thumb=1" alt="Banner">
+    </td>
+    <td ng-if="banner.mid_tip_mid == 1" ng-click="$event.stopPropagation()">
+        <a class="link-video" href="{{banner.mid_link}}" target="_blank">
+            <i class="fa fa-youtube fa-4x"></i>
+        </a>
+    </td>
+    <td>
+        <span class="table-span" tooltip-placement="top" tooltip="{{banner.mid_descricao}}">
+            {{banner.mid_descricao | strLimit:30}}
+        </span>
+    </td>
+    <td>
+        <span class="table-span" tooltip-placement="top" tooltip="{{banner.mid_link}}">
+            {{banner.mid_link | strLimit:30}}
+        </span>
+    </td>
+    <td class="text-center">
+        <span class="label label-success" ng-if="banner.mid_status">Ativo</span>
+        <span class="label label-danger" ng-if="!banner.mid_status">Inativo</span>
+    </td>
+</script>
+
+
+<script type="text/ng-template" id="produto"></script>
+
+
+<script type="text/ng-template" id="clientes"></script>
+
+
+<script type="text/ng-template" id="rodape"></script>
+
+
+<script type="text/ng-template" id="newsletter">
+    <div class="row">
+        <div class="col-md-12">
+            <form role="form" name="forms.formPagina" class="form-validation" novalidate>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label> Ativo?</label>
+                        <label class="switch m-t-0 m-l-10">
+                            <input class="switch-input" type="checkbox" ng-click="show=!show" ng-model="template.tem_ativo_newsletter_aux">
+                            <span class="switch-label" data-on="Sim" data-off="Não"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="cloud-word">
+    <div class="row">
+        <div class="col-md-12">
+            <form role="form" name="forms.formPagina" class="form-validation" novalidate>
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label> Ativo?</label>
+                        <label class="switch m-t-0 m-l-10">
+                            <input class="switch-input" type="checkbox" ng-click="show=!show" ng-model="template.tem_ativo_words_aux">
+                            <span class="switch-label" data-on="Sim" data-off="Não"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="banner-sidebar">
+    <div class="control-btn">
+        <button type="button" class="btn btn-primary btn-sm pull-right" ng-click="getBanner()" style="margin-right:8px">
+            <i class="fa fa-plus"></i> &nbsp; Novo
+        </button>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            <div ng-show="arrBannersE1.length == 0">
+                <div class="alert alert-info alert-fade" role="alert">
+                    <i class="fa fa-info-circle fa-2x icon-alert"></i>
+                    <p class="alert-texto font-small">
+                        <strong>Ajuda:</strong> Clique no botão novo localizado logo acima e em seguida prencha o formulário para efetuar o cadastro de um novo banner em sua loja virtual.
+                    </p>
+                </div>
+            </div>
+            <div ng-show="arrBannersE1.length">
+                <table class="table table-hover table-css m-b-0">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Banner</th>
+                        <th>Descricao</th>
+                        <th>Link</th>
+                        <th class="text-center">Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="banner in arrBannersE1" style="cursor:pointer" ng-click="getBanner(banner.mid_nro)" ng-class="{'selected' : banner.mid_nro === objBanner.mid_nro}" ng-include="'table-ban'"></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</script>
+
+
+<script type="text/ng-template" id="fotos-instagram">
+    <div class="row">
+        <div class="col-md-12">
+            <form role="form" name="forms.formPagina" class="form-validation" novalidate>
+
+                <div class="col-md-12">
+                    <div class="form-group">
+                        <label> Ativo?</label>
+                        <label class="switch m-t-0 m-l-10">
+                            <input class="switch-input" type="checkbox" ng-click="show=!show" ng-model="template.tem_ativo_instagram_aux">
+                            <span class="switch-label" data-on="Sim" data-off="Não"></span>
+                            <span class="switch-handle"></span>
+                        </label>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</script>

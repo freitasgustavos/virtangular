@@ -1,0 +1,248 @@
+
+<div ng-class="{'animated fadeIn' : objComponentes.search, 'animated fadeOutDown oculto' : !objComponentes.search}">
+    <uib-accordion close-others="true">
+        <div uib-accordion-group class="panel-default" heading="Filtros Adicionais" is-open="true">
+            <div class="row">
+                <div class="col-md-12">
+                    <p>
+                        <strong>Elabore os filtros para a geração do relatório de {{objRelatorio.par_c01}}:</strong>
+                    </p>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <p><strong>Tipo de Cadastro</strong></p>
+                                <div class="input-group">
+                                    <div class="icheck-inline">
+                                        <label ng-repeat="tipo in arrTiposCadastro" for="tc-{{tipo.id}}">
+                                            <input class="icheck" id="tc-{{tipo.id}}" data-checklist-model="objFiltro.list_003" data-checklist-value="tipo.id" icheck type="checkbox">
+                                            <span>{{tipo.name}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <p><strong>Status de Cadastro</strong></p>
+                                <div class="input-group">
+                                    <div class="icheck-inline">
+                                        <label ng-repeat="status in arrStatusCadastro" for="st-{{status.id}}">
+                                            <input class="icheck" id="st-{{status.id}}" data-checklist-model="objFiltro.list_002" data-checklist-value="status.id" icheck type="checkbox">
+                                            <span>{{status.name}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="form-group" style="margin: -15px 0 0 0" ng-if="objFiltro.list_001 === 2">
+                                <p><strong>Contribuinte ICMS</strong></p>
+                                <div class="input-group">
+                                    <div class="icheck-inline">
+                                        <label ng-repeat="contrib in arrContribIcms" for="contr-{{contrib.id}}">
+                                            <input class="icheck" id="contr-{{contrib.id}}" data-checklist-model="objFiltro.list_005" data-checklist-value="contrib.id" icheck type="checkbox">
+                                            <span>{{contrib.name}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <p class="m-b-0"><label>Pessoa</label></p>
+                            <div class="btn-group btn-box-filter m-0">
+                                <label class="btn btn-sm btn-default" ng-model="objFiltro.list_001" btn-radio="1">Física</label>
+                                <label class="btn btn-sm btn-default" ng-model="objFiltro.list_001" btn-radio="2" ng-click="objFiltro.list_004 = ''">Jurídica</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3" ng-if="objFiltro.list_001 === 1">
+                            <p><label>Sexo</label></p>
+                            <div class="btn-group btn-box-filter m-0">
+                                <label class="btn btn-sm btn-default" ng-model="objFiltro.list_004" btn-radio="'F'">Feminino</label>
+                                <label class="btn btn-sm btn-default" ng-model="objFiltro.list_004" btn-radio="'M'">Masculino</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label>Estado</label>
+                                <ui-select class="form-control" ng-model="objFiltro.sub_001" theme="select2" ng-change="getCidadesPorUf()">
+                                    <ui-select-match placeholder="Selecione um estado">{{$select.selected.nome}}</ui-select-match>
+                                    <ui-select-choices repeat="uf.id + '#' + uf.uf as uf in arrEstados.records | filter: $select.search">
+                                        <span ng-bind-html="uf.nome | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group">
+                                <label class="control-label">Cidade</label>
+                                <ui-select class="form-control" ng-model="objFiltro.sub_002" theme="select2">
+                                    <ui-select-match placeholder="Selecione uma cidade">{{$select.selected.nome}}</ui-select-match>
+                                    <ui-select-choices repeat="cidade.id + '#' + cidade.nome as cidade in arrCidades | filter: $select.search">
+                                        <span ng-bind-html="cidade.nome | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group m-b-0">
+                                <label>Código ínicio</label>
+                                <input class="form-control" ng-model="objFiltro.code_001" maxlength="10" placeholder="Código ínicio..." valid-number type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group m-b-0">
+                                <label>Código final</label>
+                                <input class="form-control" ng-model="objFiltro.code_002" maxlength="10" placeholder="Código final..." valid-number type="text">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group m-b-0">
+                                <label>Dt. cadastro ínicio</label>
+                                <input class="form-control" ng-model="objFiltro.date_001" maxlength="10" placeholder="Dt. cadastro ínicio..." data-mask="99/99/9999" datepicker1 type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group m-b-0">
+                                <label>Dt. cadastro final</label>
+                                <input class="form-control" ng-model="objFiltro.date_002" maxlength="10" placeholder="Dt. cadastro final..." data-mask="99/99/9999" datepicker1 type="text">
+                            </div>
+                        </div>
+
+                        <div ng-if="objFiltro.list_001 === 1">
+                            <div class="col-md-3">
+                                <div class="form-group m-b-0">
+                                    <label>Dt. nascimento ínicio</label>
+                                    <input class="form-control" ng-model="objFiltro.date_003" maxlength="10" placeholder="Dt. nascimento ínicio..." data-mask="99/99/9999" datepicker1 type="text">
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-group m-b-0">
+                                    <label>Dt. nascimento final</label>
+                                    <input class="form-control" ng-model="objFiltro.date_004" maxlength="10" placeholder="Dt. nascimento final..." data-mask="99/99/9999" datepicker1 type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-t-5">
+                        <div class="col-md-12 m-b-0 t-right">
+                            <span class="text-danger cancel-link" ng-click="limparPesquisa()">
+                                <span>Cancelar Filtros</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </uib-accordion>
+</div>
+
+<div class="col-md-12">
+    <div class="row">
+        <uib-accordion close-others="true">
+            <div uib-accordion-group class="panel-default panel-grid" heading="Prévia do Relatório" is-open="true">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div ng-if="arrRegistros !== null">
+                            <table class="table table-hover font-mini m-b-0" id="grid-relatorio-cadastros">
+                                <colgroup>
+                                    <col width="8%">
+                                    <col width="18%">
+                                    <col width="26%">
+                                    <col width="26%">
+                                    <col width="12%">
+                                    <col width="10%">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>CPF/CNPJ</th>
+                                        <th>Nome/Razão Social</th>
+                                        <th>Apelido/Nome Fantasia</th>
+                                        <th>Tipo de Cadastro</th>
+                                        <th>Data de Cadastro</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in arrRegistros" class="c-pointer">
+                                        <td>{{item.cad_cod_cad}}</td>
+                                        <td>
+                                            <span ng-if="item.cad_cpf_cnpj">
+                                                <div ng-switch on="item.cad_pf_pj">
+                                                    <span ng-switch-when="1">{{item.cad_cpf_cnpj | cpf}}</span>
+                                                    <span ng-switch-when="2">{{item.cad_cpf_cnpj | cnpj}}</span>
+                                                </div>
+                                            </span>
+                                        </td>
+                                        <td>{{item.cad_nome_razao}}</td>
+                                        <td>{{item.cad_apelido_fantasia}}</td>
+                                        <td>
+                                            <div ng-switch on="item.cad_tip_cli_for">
+                                                <div ng-switch-when="1">
+                                                    <span class="label label-primary">CLIENTE</span>
+                                                </div>
+                                                <div ng-switch-when="2">
+                                                    <span class="label label-success">FORNECEDOR</span>
+                                                </div>
+                                                <div ng-switch-when="3">
+                                                    <span class="label label-info">TRANSPORTADORA</span>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>{{item.cad_dat_cadastro | dateFormat}}</td>
+                                    </tr>
+                                </tbody>
+                                <tfoot>
+                                    <tr>
+                                        <th colspan="4" class="va-top">
+                                            <span>{{arrRegistros.length}} registro(s) encontrado(s).</span>
+                                        </th>
+                                        <th colspan="2">
+                                            <span class="row-total">
+                                                <span class="row-label">Ativos</span>
+                                                <span class="row-info">{{arrTotais[0].pqtde_ativos}}</span>
+                                            </span>
+                                            <span class="row-total">
+                                                <span class="row-label">Inativos</span>
+                                                <span class="row-info">{{arrTotais[0].pqtde_inativos}}</span>
+                                            </span>
+                                            <span class="row-total">
+                                                <span class="row-label">Físicas</span>
+                                                <span class="row-info">{{arrTotais[0].pqtde_fisicas}}</span>
+                                            </span>
+                                            <span class="row-total">
+                                                <span class="row-label">Jurídicas</span>
+                                                <span class="row-info">{{arrTotais[0].pqtde_juridicas}}</span>
+                                            </span>
+                                        </th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                        </div>
+                        <div ng-if="arrRegistros === null">
+                            <div class="alert alert-warning alert-fade m-b-0">
+                                <i class="fa fa-info-circle fa-2x p-r-10"></i>
+                                <span class="alert-texto">Nenhum registro encontrado!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </uib-accordion>
+    </div>
+</div>

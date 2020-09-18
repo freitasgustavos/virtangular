@@ -1,0 +1,257 @@
+
+<!-- Listagem para o títulos a receber e pagar. -->
+<div ng-if="objPesquisa.sistema != 3">
+    <div class="panel-content panel-content-search">
+        <div ng-if="!arrContas.length && flagMsg">
+            <div class="alert alert-warning alert-fade m-b-10 m-t-10" role="alert">
+                <strong>Atenção:</strong> Nenhum registro encontrado.
+            </div>
+        </div>
+
+        <div ng-if="arrContas.length">
+            <table class="table table-hover table-css m-b-0 font-small" id="grid-contas" style="overflow-x:none">
+                <thead>
+                    <tr>
+                        <th class="td-fa p-5 p-l-0 c-pointer" td-checked ng-click="selecionarTodos()">
+                            <i class="fa fa-square-o"></i>
+                        </th>
+                        <th class="c-order" ng-click="ordenarPor('tit_dat_int_timestamp')">
+                            <span>Data</span>
+                            <span class="sort-order" ng-show="objOrdenacao.coluna === 'tit_dat_int_timestamp'" ng-class="{'reverse' : objOrdenacao.reverso}"></span>
+                        </th>
+                        <th class="c-order" ng-click="ordenarPor('tit_fatura_nro')">
+                            <strong>DOC.</strong>
+                            <span class="sort-order" ng-show="objOrdenacao.coluna === 'tit_fatura_nro'" ng-class="{'reverse' : objOrdenacao.reverso}"></span>
+                        </th>
+                        <th class="no-order">
+                            <span>Parc.</span>
+                        </th>
+                        <th class="c-order" ng-click="ordenarPor('tit_cad_nome_razao')">
+                            <span>Descrição</span>
+                            <span class="sort-order" ng-show="objOrdenacao.coluna === 'tit_cad_nome_razao'" ng-class="{'reverse' : objOrdenacao.reverso}"></span>
+                        </th>
+                        <th class="c-order" ng-click="ordenarPor('tit_desc_conta')">
+                            <span>Conta</span>
+                            <span class="sort-order" ng-show="objOrdenacao.coluna === 'tit_desc_conta'" ng-class="{'reverse' : objOrdenacao.reverso}"></span>
+                        </th>
+                        <th class="c-order text-right" ng-click="ordenarPor('tit_doc_vlr_liquido_float')">
+                            <span>Total</span>
+                            <span class="sort-order" ng-show="objOrdenacao.coluna === 'tit_doc_vlr_liquido_float'" ng-class="{'reverse' : objOrdenacao.reverso}"></span>
+                        </th>
+                        <th class="no-order text-center">
+                            <span>Meio</span>
+                        </th>
+                        <th class="no-order text-center">
+                            <span>PG</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="conta in resultContas = (arrContas | filterBy : ['tit_descricao', 'tit_cad_nome_razao', 'tit_fatura_nro'] : objPesquisa.criterio | orderBy : objOrdenacao.coluna : objOrdenacao.reverso)" ng-click="getConta(conta.tit_fin_nro_lan, conta.tit_fatura_seq)" ng-class="isSelecionado(conta)" class="c-pointer">
+
+                        <!-- Marcar ou desmarcar conta para ações em cascata. -->
+                        <td class="td-fa p-5" td-checked ng-click="selecionar($event, conta)">
+                            <i class="fa fa-square-o"></i>
+                        </td>
+
+                        <td>
+                            <!-- Conta em débito. -->
+                            <span class="table-span" ng-if="conta.tit_faturado == 0">
+                                <span my-element="conta.tit_dat_vct" tooltip-placement="right" tooltip="Vencimento em {{conta.tit_dat_vct | dateFormat}}."></span>
+                            </span>
+
+                            <!-- Conta quitada. -->
+                            <span class="table-span" ng-if="conta.tit_faturado == 3">
+                                <span ng-if="!conta.tit_dat_pgt">-</span>
+
+                                <span ng-if="conta.tit_dat_pgt" tooltip-placement="right" tooltip="Quitado em {{conta.tit_dat_pgt | dateFormat}} às {{conta.tit_dat_pgt | hourFormat}}.">
+                                    {{conta.tit_dat_pgt | dateFormat}}
+                                </span>
+                            </span>
+
+                            <!-- Centro de custo. -->
+                            <span class="label label-primary" tooltip-placement="top" tooltip="{{conta.tit_centro_custo}}">
+                                {{conta.tit_centro_custo | strLimit:30}}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span is-vencida="conta" atributo="tit_fatura_nro"></span>
+                        </td>
+
+                        <td>
+                            <span is-vencida="conta" atributo="tit_fatura_seq"></span>/<span is-vencida="conta" atributo="tit_qtde_parcelas"></span>
+                            <br>
+                            <span ng-if="conta.tit_qtd_mid > 0">
+                                <i class="fa fa-paperclip p-r-0 p-l-5"></i>
+                            </span>
+                        </td>
+
+                        <td>
+                            <span class="table-span" tooltip-placement="top" tooltip="{{conta.tit_cad_nome_razao}}">
+                                <span is-vencida="conta" atributo="tit_cad_nome_razao"></span>
+                            </span>
+                            <span class="label label-default label-border" tooltip-placement="top" tooltip="{{conta.tit_descricao}}">
+                                {{conta.tit_descricao | strLimit:30}}
+                            </span>
+                        </td>
+
+                        <td>
+                            <span is-vencida="conta" atributo="tit_desc_conta"></span>
+                        </td>
+
+                        <td class="text-right">{{conta.tit_doc_vlr_liquido | customCurrency}}</td>
+
+                        <td class="text-icon">
+                            <div if="conta.tit_forma_pgto">
+                                <div ng-if="conta.tit_icon_pgto_boleto === true">
+                                    <img ng-src="../app/images/barcode.png" tooltip-placement="top" tooltip="Boleto Gerado" class="img-boleto-ok">
+                                </div>
+                                <div ng-if="conta.tit_icon_pgto_boleto === false">
+                                    <span get-icon="conta" atributo="tit_forma_pgto"></span>
+
+                                    <!-- <i class="fa {{conta.tit_icon_forma_pgto}}" tooltip-placement="top" tooltip="{{conta.tit_forma_pgto}}"></i> -->
+                                </div>
+                            </div>
+                        </td>
+
+                        <td class="text-right text-icon" ng-click="$event.stopPropagation()">
+                            <div ng-if="conta.tit_con_cod_con == null">
+                                <div ng-switch on="conta.tit_faturado">
+                                    <div ng-switch-when="0">
+                                        <i class="fa fa-times-circle text-debito" ng-click="quitarConta(conta)"></i>
+                                    </div>
+                                    <div ng-switch-when="3">
+                                        <i class="fa fa-check-circle text-pago"></i>
+                                    </div>
+                                    <div ng-switch-default>
+                                        <i class="fa fa-times-circle text-debito" ng-click="quitarConta(conta)"></i>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-if="conta.tit_con_cod_con != null">
+                                <i class="fa fa-copyright text-conciliado" tooltip-placement="left" tooltip="Conciliado"></i>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="panel-overflow" ng-if="arrContas.length">
+                <div class="col-md-12 box-paginacao-big">
+                    <div class="t-center p-10">
+                        <a ng-click="paginarConta()">
+                            <span>Listar mais...</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-overflow m-b-10 m-t-10">
+                <div class="pull-right">
+                    <strong>TOTAL:</strong>
+                    <span>{{resultContas | sumByKey:'tit_doc_vlr_liquido' | customCurrency}}</span>
+                </div>
+                <div class="pull-left">
+                    <span>{{resultContas.length}} lançamento(s).</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!-- Listagem para o extrato. -->
+<div ng-if="objPesquisa.sistema == 3">
+    <div class="panel-content p-t-0">
+        <div ng-if="!arrContas.length && flagMsg">
+            <div class="alert alert-warning alert-fade m-b-10 m-t-10" role="alert">
+                <strong>Atenção:</strong> Nenhum registro encontrado.
+            </div>
+        </div>
+
+        <div ng-if="arrContas.length">
+            <table class="table table-hover table-css m-b-10 font-small" id="grid-extrato">
+                <thead>
+                    <tr>
+                        <th>Data</th>
+                        <th>
+                            <strong>DOC</strong>
+                        </th>
+                        <th>Parc.</th>
+                        <th>Descrição</th>
+                        <th>Conta</th>
+                        <th class="text-right">Subtotal</th>
+                        <th class="text-right">
+                            <span class="span-th-price">Acréscimos</span>
+                            <span class="span-th-price">Descontos</span>
+                        </th>
+                        <th class="text-right">Crédito / Débito</th>
+                        <th class="text-right">Saldo</th>
+                    </tr>
+                    <tr>
+                        <th colspan="7"></th>
+                        <th colspan="3" class="text-right">
+                            <span class="c-purple">{{extratoSaldo.saldo | customCurrency}}</span>
+                        </th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr>
+                        <th colspan="7"></th>
+                        <th colspan="3" class="text-right">
+                            <span class="c-purple">{{extratoSaldo.novo_saldo | customCurrency}}</span>
+                        </th>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr ng-repeat="extrato in filtered = (arrContas | filter: objPesquisa.criterio)" ng-click="getExtrato(extrato)" class="c-pointer">
+                        <td>
+                            <span class="table-span">
+                                {{extrato.tit_dat_pgt | dateFormat}}
+                            </span>
+                            <span class="label label-primary" tooltip-placement="top" tooltip="{{extrato.tit_centro_custo}}">
+                                {{extrato.tit_centro_custo}}
+                            </span>
+                        </td>
+                        <td>{{extrato.tit_fatura_nro}}</td>
+                        <td>{{extrato.tit_fatura_seq}}/{{extrato.tit_qtde_parcelas}}</td>
+                        <td>
+                            <span class="table-span" tooltip-placement="top" tooltip="{{extrato.tit_descricao}}">
+                                {{extrato.tit_descricao | strLimit:20}}
+                            </span>
+                            <span class="label label-default label-border" tooltip-placement="top" tooltip="{{extrato.tit_venda.fin_cad_nome_razao}}">
+                                {{extrato.tit_venda.fin_cad_nome_razao | strLimit:20}}
+                            </span>
+                        </td>
+                        <td>{{extrato.tit_desc_conta}}</td>
+                        <td class="text-right">
+                            <span>{{extrato.tit_doc_vlr_bruto | customCurrency}}</span>
+                        </td>
+                        <td class="text-right">
+                            <span class="span-td-price">+ {{extrato.tit_doc_vlr_despesas | customCurrency}}</span>
+                            <span class="span-td-price">- {{extrato.tit_doc_vlr_descontos | customCurrency}}</span>
+                        </td>
+                        <td class="text-right">
+                            <strong class="font-money {{extrato.tit_saldo.tit_css_saldo}}" ng-if="extrato.tit_saldo.tit_vlr_credito != null">
+                                + {{extrato.tit_saldo.tit_vlr_credito | customCurrency}}
+                            </strong>
+                            <strong class="font-money {{extrato.tit_saldo.tit_css_saldo}}" ng-if="extrato.tit_saldo.tit_vlr_debito != null">
+                                - {{extrato.tit_saldo.tit_vlr_debito | customCurrency}}
+                            </strong>
+                        </td>
+                        <td class="text-right">
+                            <strong class="font-money">{{extrato.tit_saldo.tit_vlr_saldo | customCurrency}}</strong>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="panel-overflow m-b-10">
+                <div class="pull-left">
+                    <span>{{filtered.length}} lançamento(s).</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

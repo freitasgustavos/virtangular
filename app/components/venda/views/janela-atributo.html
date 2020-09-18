@@ -1,0 +1,193 @@
+<script type="text/ng-template" id="vendedorTpl.html">
+    <a tabindex="-1" style="{{((match.model.id == '1#1') ? 'background-color:#1D7777;color:#fff' : '')+';cursor:pointer;'}}">
+        <i ng-class="((match.model.id == '1#1') ? 'icon-plus' : 'icon-user')"></i>
+        <span ng-bind-html="match.model.par_c01 | uibTypeaheadHighlight:query"></span>
+    </a>
+</script>
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <form role="form" name="forms.formAtributos" id="forms.formAtributos" class="form-validation" autocomplete="off" novalidate>
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>{{objModal.label}}</strong>
+
+                    <button class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" type="button" ladda="atributoLoading" ng-click="finalizar()">
+                        <i class="fa fa-check"></i> &nbsp; <span>{{objModal.labelSalvar}}</span>
+                    </button>
+                </h4>
+            </div>
+
+            <div class="modal-body m-b-20 m-t-20" style="overflow:inherit;min-height: 220px;">
+                <div class="panel-content" style="overflow:inherit">
+                    <div class="row">
+                        <div ng-if="objModal.campo === 'D'">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Data de Lançamento <i class="obrigatorio">*</i></label>
+                                    <input type="text" name="fin_dat_lan_aux" id="fin_dat_lan_aux" class="form-control" placeholder="Entre com a data de lançamento..." ng-model="objModal.valor" data-mask="99/99/9999" datepicker1 ng-class="{true : 'form-error'}[submitted && forms.formAtributos.fin_dat_lan_aux.$invalid]" required>
+                                </div>
+                                <div ng-show="submitted || (forms.formAtributos.fin_dat_lan_aux.$invalid && !forms.formAtributos.fin_dat_lan_aux.$pristine)">
+                                    <p class="text-danger form-error alert1" ng-show="(forms.formAtributos.fin_dat_lan_aux.$error.required)">Entre com uma data de lançamento.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Data de Emissão (NF-e) ou Competência <i class="obrigatorio">*</i></label>
+                                    <input type="text" name="fin_dat_emi_aux" id="fin_dat_emi_aux" class="form-control" placeholder="Entre com a data de emissão da NF-e..." ng-model="objModal.valorEmi" data-mask="99/99/9999" datepicker1 ng-class="{true : 'form-error'}[submitted && forms.formAtributos.fin_dat_emi_aux.$invalid]" required>
+                                </div>
+                                <div ng-show="submitted || (forms.formAtributos.fin_dat_emi_aux.$invalid && !forms.formAtributos.fin_dat_emi_aux.$pristine)">
+                                    <p class="text-danger form-error alert1" ng-show="(forms.formAtributos.fin_dat_emi_aux.$error.required)">Entre com uma data de Emissão da NF-e.</p>
+                                </div>
+                            </div>
+                            <div class="col-md-9">
+                                <div class="form-group">
+                                    <label>Data de Saída </label>
+                                    <input type="text" name="fin_dat_sai_aux" id="fin_dat_sai_aux" class="form-control" placeholder="Entre com a data de saída..." ng-model="objModal.valorDataSai" data-mask="99/99/9999" datepicker1 ng-class="{true : 'form-error'}[submitted && forms.formAtributos.fin_dat_sai_aux.$invalid]" >
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label>Hora de Saída </label>
+                                    <input type="text" name="fin_dat_sai_aux2" id="fin_dat_sai_aux2" class="form-control" ng-model="objModal.valorHoraSai" ui-mask="99:99" onclick="this.select()">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- VENDEDOR -->
+                        <div ng-if="objModal.campo === 'V'">
+                            <div class="col-md-12" ng-if="objModal.v.vendedor">
+                                <div class="form-group">
+                                    <label>Definir <span class="obrigatorio">{{objModal.v.vendedorSelect}}</span> como Vendedor padrão para esse usuário</label>
+                                    <label class="switch" style="    margin-top: -2px;">
+                                        <input class="switch-input"  name="vendedor_padrao_tmp" id="vendedor_padrao_tmp" type="checkbox" ng-model="objModal.vendedor_padrao_tmp">
+                                        <span class="switch-label" data-on="Sim" data-off="Não"></span>
+                                        <span class="switch-handle"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12" ng-if="!objModal.v.vendedor">
+                                <span>Por favor selecione um vendedor para defini-lo como padrão.</span>
+                            </div>
+                        </div>
+
+                        <div ng-if="objModal.campo === 'CF'">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>CFOP {{objModal.fin_cfo_cfop}}</label>
+                                    <input type="text" name="cfo_descricao" id="cfo_descricao" class="form-control" ng-model="objModal.valorCfop" >
+                                </div>
+                            </div>
+
+                            <div class="col-md-12" >
+                                <div class="form-group">
+                                    <label>Definir este CFOP como padrão para {{params.v.nomeNaturezaSing}}</label>
+                                    <label class="switch" style="    margin-top: -2px;">
+                                        <input class="switch-input"  name="cfop_padrao_tmp" id="cfop_padrao_tmp" type="checkbox" ng-model="objModal.cfop_padrao_tmp">
+                                        <span class="switch-label" data-on="Sim" data-off="Não"></span>
+                                        <span class="switch-handle"></span>
+                                    </label>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div ng-if="objModal.campo === 'IN'">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Faixa a ser Inutilizada</label>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <input type="text" name="nro_inutilizar_ini" id="nro_inutilizar_ini" class="form-control" ng-model="objModal.nro_inutilizar_ini" placeholder="Inicio">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <input type="text" name="nro_inutilizar_fim" id="nro_inutilizar_fim" class="form-control" ng-model="objModal.nro_inutilizar_fim" placeholder="Fim">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-if="objModal.campo === 'CC'">
+                            <div class="col-md-12" ng-if="objModal.v.fin_6050_cdc">
+                                <div class="form-group">
+                                    <label>Definir <span class="obrigatorio">{{objModal.v.centroCustoSelect}}</span> como Centro de Custo padrão para {{params.v.nomeNaturezaSing}}</label>
+                                    <label class="switch" style="    margin-top: -2px;">
+                                        <input class="switch-input"  name="cc_padrao_tmp" id="cc_padrao_tmp" type="checkbox" ng-model="objModal.cc_padrao_tmp">
+                                        <span class="switch-label" data-on="Sim" data-off="Não"></span>
+                                        <span class="switch-handle"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12" ng-if="!objModal.v.fin_6050_cdc">
+                                <span>Por favor selecione um centro de custo para defini-lo como padrão.</span>
+                            </div>
+                        </div>
+
+                        <div ng-if="objModal.campo === 'CFIN'">
+                            <div class="col-md-12" ng-if="objModal.v.fin_5010_conta_fin">
+                                <div class="form-group">
+                                    <label>Definir <span class="obrigatorio">{{objModal.v.contaFinanceiraSelect}}</span> como Conta Financeira padrão para {{params.v.nomeNaturezaSing}}</label>
+                                    <label class="switch" style="    margin-top: -2px;">
+                                        <input class="switch-input"  name="cfin_padrao_tmp" id="cfin_padrao_tmp" type="checkbox" ng-model="objModal.cfin_padrao_tmp">
+                                        <span class="switch-label" data-on="Sim" data-off="Não"></span>
+                                        <span class="switch-handle"></span>
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-12" ng-if="!objModal.v.fin_5010_conta_fin">
+                                <span>Por favor selecione uma conta financeira para definí-la como padrão.</span>
+                            </div>
+                        </div>
+
+                        <div ng-if="objModal.campo === 'INFCPL'">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="m-b-10">Informação padrão para sair após as mensagens automáticas para {{params.v.nomeNaturezaSing}}</label>
+                                    <textarea class="form-control" placeholder="Digite alguma informação complementar da nota..." cols="3" rows="5" ng-model="objModal.infcpl_padrao_tmp"  maxlength="499"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div ng-if="objModal.campo === 'SD'">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label>Doc. Nro</label>
+                                    <input type="text" name="doc_nro" id="doc_nro" class="form-control" ng-model="objModal.fin_doc_nro" >
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div ng-if="objModal.campo === 'CANCNF'">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <label class="m-b-10">Informe a justificativa para o cancelamento da NFe:</label>
+                                    <textarea class="form-control" placeholder="Informe o justificativa para do cancelamento da NFe..." cols="3" rows="5" ng-model="objModal.fin_comentario_tmp"  maxlength="255"></textarea>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div >
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <p>&nbsp;&nbsp;&nbsp;</p>
+                                    <p>&nbsp;&nbsp;&nbsp;</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer text-center">
+                <div class="col-sm-12"></div>
+            </div>
+        </form>
+    </div>
+</div>

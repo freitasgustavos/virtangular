@@ -1,0 +1,90 @@
+<div class="modal-dialog modal-not-footer">
+    <form class="form-horizontal" method="POST" id="forms.formPgtoParcial" name="forms.formPgtoParcial" autocomplete="off" novalidate>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="icon-close"></i> &nbsp; Cancelar
+                    </button>
+
+                    <strong>Pagamento Parcial</strong>
+
+                    <!-- Botão para salvar. -->
+                    <span class="pull-right">
+                        <button class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" ladda="salvarPgtoParcialLoading" ng-click="salvar()" type="button">
+                            <i class="fa fa-check"></i> &nbsp; Pagar
+                        </button>
+                    </span>
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="col-md-12">
+                    <div class="row">
+                        <p class="m-b-20">Preencha o formulário abaixo para efeuar o pagamento parcial do título escolhido.</p>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Total</label>
+                            <div class="col-sm-9">
+                                <div class="append-icon">
+                                    <input class="form-control" type="text" placeholder="Valor total..." readonly="readonly" ng-model="objPgtoParcial.tit_doc_vlr_bruto" ui-money-mask="mdecimals" onclick="this.select()">
+                                    <i class="fa fa-money"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="vlr_quitado">Quitar <i class="obrigatorio">*</i></label>
+                            <div class="col-sm-9">
+                                <div class="append-icon">
+                                    <input class="form-control" type="text" name="vlr_quitado" id="vlr_quitado" placeholder="Valor a ser quitado..." ng-model="objTela.vlr_quitado" ng-change="getRestante()" ui-money-mask="mdecimals" onclick="this.select()" required>
+                                    <i class="fa fa-money"></i>
+                                </div>
+                                <div class="alert-small" ng-show="submitted || (forms.formPgtoParcial.vlr_quitado.$invalid && !forms.formPgtoParcial.vlr_quitado.$pristine)">
+                                    <p class="text-danger form-error alert1" ng-show="(forms.formPgtoParcial.vlr_quitado.$error.required)">
+                                        O campo valor a ser quitado é de preenchimento obrigatório.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label">Restante</label>
+                            <div class="col-sm-9">
+                                <div class="append-icon">
+                                    <input class="form-control clear-disabled hasDatepicker" type="text" placeholder="Valor restante..." readonly="readonly" ng-model="objTela.vlr_restante" ui-money-mask="mdecimals" onclick="this.select()">
+                                    <i class="fa fa-money"></i>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-3 control-label" for="dt_vct_nova">Para Vencer <i class="obrigatorio">*</i></label>
+                            <div class="col-sm-9">
+                                <div class="append-icon">
+                                    <input class="form-control" name="dt_vct_nova" id="dt_vct_nova" maxlength="10" placeholder="Data para vencer..." type="text" ng-model="objTela.dt_vct_nova" data-mask="99/99/9999" datepicker1 required>
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <div class="alert-small" ng-show="submitted || (forms.formPgtoParcial.dt_vct_nova.$invalid && !forms.formPgtoParcial.dt_vct_nova.$pristine)">
+                                    <p class="text-danger form-error alert1" ng-show="(forms.formPgtoParcial.dt_vct_nova.$error.required)">
+                                        O campo data para vencer é de preenchimento obrigatório.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                    <i class="icon-close"></i> &nbsp; Cancelar
+                </button>
+
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" ladda="salvarPgtoParcialLoading" ng-click="salvar()">
+                    <i class="fa fa-check"></i> &nbsp; Pagar
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

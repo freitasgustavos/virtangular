@@ -1,0 +1,256 @@
+
+<div class="modal-dialog modal-lg">
+    <form class="form-horizontal" method="POST" id="forms.formBancoModal" name="forms.formBancoModal" autocomplete="off" novalidate>
+        <div class="modal-content">
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button-sm">
+                    <button type="button" class="btn btn-primary btn-embossed btn-sm pull-left m-0" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong style="font-size:20px">{{strTituloTela}}</strong>
+
+                    <span class="pull-right">
+                        <a class="panel-close btn-delete btn-trash text-danger" ng-if="objBancoConta.bco_cod_bco" ng-click="cancelarBanco()">
+                            <i class="fa fa-trash-o"></i>
+                        </a>
+                        <button type="button" class="btn btn-primary btn-embossed btn-sm pull-right m-r-0" ladda="salvarBancoLoading" ng-click="salvarBanco()">
+                            <i class="fa fa-check"></i> &nbsp; Salvar
+                        </button>
+                    </span>
+                </h4>
+            </div>
+
+            <div class="modal-body p-t-20" style="overflow:inherit!important">
+                <div class="panel-content">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <img ng-src="{{strImagemTela}}" class="img-lg img-thumbnail">
+                        </div>
+
+                        <div class="col-md-10 m-b-10" ng-if="!objBancoConta.bco_cod_bco">
+                            <label class="control-label">Banco <i class="obrigatorio">*</i></label>
+                            <input id="bco_cod_banco" name="bco_cod_banco" ng-model="objBancoConta.bco_cod_banco_aux" type="hidden" required>
+
+                            <ui-select class="form-control" ng-model="objBancoConta.bco_cod_banco" ng-change="onChangeBanco()" theme="select2">
+                                <ui-select-match placeholder="Selecione um banco">{{$select.selected.ban_descricao}}</ui-select-match>
+                                <ui-select-choices repeat="banco.ban_cod_ban as banco in arrBancos | filter: $select.search">
+                                    <span ng-bind-html="banco.ban_descricao | highlight: $select.search"></span>
+                                </ui-select-choices>
+                            </ui-select>
+
+                            <div class="alert-small" ng-show="submitted || (forms.formBancoModal.bco_cod_banco.$invalid && !forms.formBancoModal.bco_cod_banco.$pristine)">
+                                <p class="text-danger form-error alert1" ng-show="forms.formBancoModal.bco_cod_banco.$error.required">
+                                    Banco é um campo obrigatório.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-10 m-b-10" ng-if="objBancoConta.bco_cod_bco">
+                            <label class="control-label">Banco <i class="obrigatorio">*</i></label>
+                            <input class="form-control" maxlength="255" name="bco_cod_banco" ng-model="objBancoConta.banco.ban_descricao" placeholder="Entre com o banco..." type="text" readonly required>
+                        </div>
+
+                        <div ng-switch on="objBancoConta.bco_cod_banco_aux">
+                            <div ng-switch-when="101">
+                                <div class="col-md-4">
+                                    <label class="control-label" for="bco_agencia">Usuário <i class="obrigatorio">*</i></label>
+                                    <input class="form-control" id="bco_usuario" maxlength="100" name="bco_usuario" ng-model="objBancoConta.bco_usuario" placeholder="Entre com o usuário..." type="text" required>
+
+                                    <div class="alert-small" ng-show="submitted || (forms.formBancoModal.bco_usuario.$invalid && !forms.formBancoModal.bco_usuario.$pristine)">
+                                        <p class="text-danger form-error alert1" ng-show="forms.formBancoModal.bco_usuario.$error.required">
+                                            Usuário é um campo obrigatório.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-6">
+                                    <label class="control-label" for="bco_num_estabelecimento">Número do Estabelecimento <i class="obrigatorio">*</i></label>
+                                    <input class="form-control" id="bco_num_estabelecimento" maxlength="10" name="bco_num_estabelecimento" ng-model="objBancoConta.bco_num_estabelecimento" placeholder="Entre com o número do estabelecimento..." type="text" required>
+
+                                    <div class="alert-small" ng-show="submitted || (forms.formBancoModal.bco_num_estabelecimento.$invalid && !forms.formBancoModal.bco_num_estabelecimento.$pristine)">
+                                        <p class="text-danger form-error alert1" ng-show="forms.formBancoModal.bco_num_estabelecimento.$error.required">
+                                            Número do Estabelecimento é um campo obrigatório.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div ng-switch-default>
+                                <div class="col-md-4">
+                                    <label class="control-label" for="bco_agencia">Agência <i class="obrigatorio">*</i></label>
+                                    <input class="form-control" id="bco_agencia" maxlength="20" name="bco_agencia" ng-model="objBancoConta.bco_agencia" placeholder="Entre com a agência..." type="text" only-hyphen-number required>
+
+                                    <div class="alert-small" ng-show="submitted || (forms.formBancoModal.bco_agencia.$invalid && !forms.formBancoModal.bco_agencia.$pristine)">
+                                        <p class="text-danger form-error alert1" ng-show="forms.formBancoModal.bco_agencia.$error.required">
+                                            Agência é um campo obrigatório.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="control-label" for="bco_conta">Conta <i class="obrigatorio">*</i></label>
+                                    <input class="form-control" id="bco_conta" maxlength="20" name="bco_conta" ng-model="objBancoConta.bco_conta" placeholder="Entre com a conta..." type="text" required>
+
+                                    <div class="alert-small" ng-show="submitted || (forms.formBancoModal.bco_conta.$invalid && !forms.formBancoModal.bco_conta.$pristine)">
+                                        <p class="text-danger form-error alert1" ng-show="forms.formBancoModal.bco_conta.$error.required">
+                                            Conta é um campo obrigatório.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <div class="col-md-3">
+                                    <label class="control-label" for="bco_tipo">Tipo <i class="obrigatorio">*</i></label>
+                                    <input id="bco_tipo" name="bco_tipo" ng-model="objBancoConta.bco_tipo_aux" type="hidden" required>
+
+                                    <ui-select class="form-control" ng-model="objBancoConta.bco_tipo" ng-change="onChangeTipo()" theme="select2">
+                                        <ui-select-match placeholder="Selecione um tipo">{{$select.selected.name}}</ui-select-match>
+                                        <ui-select-choices repeat="tipo.id as tipo in arrTipos | filter: $select.search">
+                                            <span ng-bind-html="tipo.name | highlight: $select.search"></span>
+                                        </ui-select-choices>
+                                    </ui-select>
+
+                                    <div class="alert-small" ng-show="submitted || (forms.formBancoModal.bco_tipo.$invalid && !forms.formBancoModal.bco_tipo.$pristine)">
+                                        <p class="text-danger form-error alert1" ng-show="forms.formBancoModal.bco_tipo.$error.required">
+                                            Tipo é um campo obrigatório.
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-t-10 m-b-10">
+                        <div class="col-md-6 m-l-0">
+                            <label class="control-label" for="bco_responsavel">Responsável <i class="obrigatorio">*</i></label>
+                            <input class="form-control" id="bco_responsavel" maxlength="255" name="bco_responsavel" ng-model="objBancoConta.bco_responsavel" placeholder="Entre com o responsável..." type="text" allow-pattern="(\d|[ a-zçÇ,/-])" required>
+
+                            <div class="alert-small" ng-show="submitted || (forms.formBancoModal.bco_responsavel.$invalid && !forms.formBancoModal.bco_responsavel.$pristine)">
+                                <p class="text-danger form-error alert1" ng-show="forms.formBancoModal.bco_responsavel.$error.required">
+                                    Responsável é um campo obrigatório.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="control-label" for="bco_titular_cpf">CPF do Titular <i class="obrigatorio">*</i></label>
+                            <input class="form-control" id="bco_titular_cpf" maxlength="80" name="bco_titular_cpf" ng-model="objBancoConta.bco_titular_cpf" placeholder="Entre com o CPF do titular..." type="text" ui-br-cpf-mask required>
+
+                            <div class="alert-small" ng-show="submitted || (forms.formBancoModal.bco_titular_cpf.$invalid && !forms.formBancoModal.bco_titular_cpf.$pristine)">
+                                <p class="text-danger form-error alert1">
+                                    <span ng-show="forms.formBancoModal.bco_titular_cpf.$error.cpf">O CPF fornecido é inválido.</span>
+                                    <span ng-show="forms.formBancoModal.bco_titular_cpf.$error.required">CPF é um campo obrigatório.</span>
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-t-10">
+                        <div class="col-md-6" ng-if="!objBancoConta.bco_cod_bco">
+                            <div class="col-md-12 m-l-0">
+                                <div class="row">
+                                    <label class="control-label">Conta Financeira <i class="obrigatorio">*</i></label>
+                                    <lv-autocomplete
+                                        ng-model="objBancoConta.contaFinanceira"
+                                        clear-input="false"
+                                        trigger-list="true"
+                                        icon-class="fa fa-bank"
+                                        search-limit="10"
+                                        on-select="onSelectContaFinanceira"
+                                        add-select-item="addContaFinanceira"
+                                        place-holder="Pesquise por uma conta financeira..."
+                                        string-entity="conta financeira"
+                                        string-service="contaFinan"
+                                        display-property="par_c01"
+                                        confirm-add="true"
+                                        string-id="autocomplete-conta">
+                                    </lv-autocomplete>
+                                </div>
+
+                                <input id="bco_5010_conta_fin" name="bco_5010_conta_fin" ng-model="objBancoConta.bco_5010_conta_fin" type="hidden" required>
+                            </div>
+                            <div ng-show="submitted || (forms.formBancoModal.bco_5010_conta_fin.$invalid && !forms.formBancoModal.bco_5010_conta_fin.$pristine)">
+                                <p class="text-danger form-error alert1" ng-show="forms.formBancoModal.bco_5010_conta_fin.$error.required">
+                                    Conta financeira é um campo obrigatório.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6" ng-if="objBancoConta.bco_cod_bco">
+                            <label class="control-label">Conta Financeira <i class="obrigatorio">*</i></label>
+                            <input class="form-control" maxlength="255" name="bco_5010_conta_fin" ng-model="objBancoConta.contaFinanceira" type="text" readonly>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label class="control-label">Forma de Pagamento</label>
+                            <lv-autocomplete
+                                ng-model="objBancoConta.formaPagamento"
+                                clear-input="false"
+                                trigger-list="true"
+                                icon-class="fa fa-dollar"
+                                search-limit="10"
+                                on-select="onSelectFormaPagamento"
+                                place-holder="Pesquise por uma forma de pagamento..."
+                                string-entity="forma de pagamento"
+                                string-service="formaPgto"
+                                display-property="par_c01"
+                                confirm-add="false"
+                                trigger-blur="true"
+                                string-id="autocomplete-pgto">
+                            </lv-autocomplete>
+
+                            <input id="bco_6060_forma_pagamento" name="bco_6060_forma_pagamento" ng-model="objBancoConta.bco_6060_forma_pagamento" type="hidden" required>
+                        </div>
+                    </div>
+
+                    <div class="row m-t-10 m-b-10">
+                        <div class="col-md-6">
+                            <label class="control-label" for="bco_titular_email">E-mail do Titular <i class="obrigatorio">*</i></label>
+                            <input class="form-control" id="bco_titular_email" maxlength="255" name="bco_titular_email" ng-model="objBancoConta.bco_titular_email" placeholder="Entre com o e-mail do titular..." type="text" required>
+
+                            <div class="alert-small" ng-show="submitted || (forms.formBancoModal.bco_titular_email.$invalid && !forms.formBancoModal.bco_titular_email.$pristine)">
+                                <p class="text-danger form-error alert1" ng-show="forms.formBancoModal.bco_titular_email.$error.required">
+                                    E-mail do titular é um campo obrigatório.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="control-label" for="bco_senha">Senha <i class="obrigatorio">*</i></label>
+                            <input class="form-control" id="bco_senha" name="bco_senha" maxlength="20" ng-model="objBancoConta.bco_senha" type="password" placeholder="Entre com a senha..." required>
+
+                            <div class="alert-small" ng-show="submitted || (forms.formBancoModal.bco_senha.$invalid && !forms.formBancoModal.bco_senha.$pristine)">
+                                <p class="text-danger form-error alert1" ng-show="forms.formBancoModal.bco_senha.$error.required">
+                                    Senha é um campo obrigatório.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label class="control-label" for="bco_senha_confirmacao">Confirme sua Senha <i class="obrigatorio">*</i></label>
+                            <input class="form-control" id="bco_senha_confirmacao" name="bco_senha_confirmacao" maxlength="20" ng-model="objBancoConta.bco_senha_confirmacao" placeholder="Confirme a sua senha..." type="password" compare-to="objBancoConta.bco_senha" required>
+
+                            <div class="alert-small" ng-show="submitted || (forms.formBancoModal.bco_senha_confirmacao.$invalid && !forms.formBancoModal.bco_senha_confirmacao.$pristine)">
+                                <p class="text-danger form-error alert1">
+                                    <span ng-show="forms.formBancoModal.bco_senha_confirmacao.$error.required">A confirmação da senha é obrigatória.</span>
+                                    <span ng-show="forms.formBancoModal.bco_senha_confirmacao.$error.compareTo">A senha não confere.</span>
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="col-md-12">
+                            <div class="row">
+                                <label ng-click="autorizarAcesso()" class="label-square c-pointer">
+                                    <i ng-if="canAutorizado === false" class="fa fa-square-o" style="font-size:18px"></i>
+                                    <i ng-if="canAutorizado === true" class="fa fa-check-square-o" style="font-size:18px"></i>
+                                    <span class="m-l-10">
+                                        <strong>Autorizo</strong> o Lojista Virtual em meu nome, a acessar meus dados financeiros pessoais <strong>em modo de visualização</strong>.
+                                    </span>
+                                </label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

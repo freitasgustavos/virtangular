@@ -1,0 +1,110 @@
+
+<div class="panel"  ng-if="ehInutilizado" style="height: 810px;">
+    <div class="col-md-12">
+        <div class="panel-header panel-header-wizard">
+            <div class="btn-reset">
+                <button type="button" class="btn btn-sm btn-primary" ng-click="voltar()" style="margin-left:2px">
+                    <i class="fa fa-arrow-left"></i> Voltar
+                </button>
+            </div>
+
+            <h3 class="title-header" ng-if="espDoc == 55">
+                <i class="fa fa-shopping-basket"></i>
+                <strong>NOTA INUTILIZADA</strong>
+            </h3>
+            <h3 class="title-header" ng-if="espDoc == 57">
+                <i class="fa fa-truck"></i>
+                <strong>CONHECIMENTO INUTILIZADO</strong>
+            </h3>
+         </div>
+
+        <div class="row m-t-15">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Nro. do Documento</label>
+                    <div class="profil-info">
+                        <input class="form-control" placeholder="Código de rastreamento..." maxlength="40" type="text" ng-model="nroInutilizada" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row m-t-15" ng-if="chaveInutilizada">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Chave</label>
+                    <div class="profil-info">
+                        <input class="form-control" placeholder="Código de rastreamento..." maxlength="40" type="text" ng-model="chaveInutilizada" disabled>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <div class="row m-t-15">
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Data de Inutilização</label>
+                    <div class="profil-info">
+                        <input class="form-control" placeholder="Código de rastreamento..." maxlength="40" type="text" ng-model="dataInutilizacao" disabled>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script type="text/ng-template" id="/tplImagemParceiros.html">
+    <div class="row">
+        <div class="col-md-12 t-center" ng-if="!objUsuario.is_cdl">
+            <img class="img-tutorial" alt="Teste" src="../app/images/bg-painel-lojista.png">
+        </div>
+        <div class="col-md-12 t-center" ng-if="objUsuario.is_cdl">
+            <img class="img-tutorial" alt="Teste" src="../app/images/bg-painel-cdl.png">
+        </div>
+    </div>
+</script>
+
+
+<div class="panel" ng-if="!ehInutilizado">
+    <div class="panel-tutorial">
+        <div class="col-md-12">
+            <div class="row">
+                <div class="col-md-6 p-10 t-left box-texto-manual">
+                    <div class="row">
+                        <div class="col-md-4 p-r-0">
+                            <img class="img-manual img-seta" alt="Manual" src="../app/images/seta.png">
+                        </div>
+                        <div class="col-md-6 p-l-0">
+                            <h3 class="titulo-manual">{{labelTutorial}}</h3>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6 p-10 t-right">
+                    <img class="img-manual" alt="Manual" src="../app/images/btn-manual.png" ng-click="redirectManual(siglaTutorial)">
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-12" ng-if="!ehInutilizado && venda.codNatureza != 2">
+            <div ng-include src="'/tplImagemParceiros.html'"></div>
+        </div>
+
+        <div class="col-xs-12" style="top:80px" ng-if="!ehInutilizado && venda.codNatureza == 2">
+            <div ng-if="getPermissaoSolRestrita('10') && getPermissaoPlan('9')">
+                <div ng-include src="'/tplImagemParceiros.html'"></div>
+            </div>
+
+            <div ng-if="!getPermissaoSolRestrita('10') && !getPermissaoPlan('9')">
+                <div class="well">
+                    <form action="" class="dropzone" dropzone="dropzoneConfig" id="dropzone">
+                        <div class="dz-default dz-message"></div>
+                    </form>
+                </div>
+                <script type="text/javascript">
+                    Dropzone.autoDiscover = false;
+                </script>
+            </div>
+        </div>
+    </div>
+</div>

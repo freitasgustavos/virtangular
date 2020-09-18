@@ -1,0 +1,83 @@
+
+<div class="col-md-12">
+    <div class="panel" style="min-height:984px">
+        <div class="panel-content">
+            <div class="col-md-12">
+                <div class="row">
+                    <h5>Começar o Tour</h5>
+
+                    <div ng-intro-options="IntroOptions"
+                         ng-intro-method="CallMe"
+                         ng-intro-oncomplete="CompletedEvent"
+                         ng-intro-onexit="ExitEvent"
+                         ng-intro-onchange="ChangeEvent"
+                         ng-intro-onbeforechange="BeforeChangeEvent"
+                         ng-intro-onafterchange="AfterChangeEvent"
+                         ng-intro-autostart="ShouldAutoStart">
+                    </div>
+
+                    <div class="masthead">
+                        <ul id="step5" class="nav nav-pills pull-right">
+                            <li>Lojista Virtual</li>
+                            <li>Github</a></li>
+                        </ul>
+                        <h3 class="muted">ng-intro</h3>
+                    </div>
+
+                    <p class="col-md-12">
+                        <p id="step4" class="lead">Lojista Virtual</p>
+                        <a class="btn btn-large btn-success" ng-click="CallMe()">Demonstração</a>
+                        <a class="btn btn-large btn-success" ng-click="CallMe(5)">Passo 5</a>
+                    </p>
+
+                    <div class="row-fluid marketing">
+                        <div id="step2" class="span6">
+                            <h4>Setup</h4>
+                            <p>Include the JS and CSS files for intro.js, and angular-intro.min.js.  Add the module <code>angular-intro</code> to your app declaration.</p>
+                            <h4>Options</h4>
+                            <p>Set the options like so: <code>ng-intro-options="IntroOptions"</code>. Define <code>$scope.IntroOptions</code> in your controller.  The format is exactly the same as the <a href="https://github.com/usablica/intro.js#options">original</a>.</p>
+                            <h4>Method name</h4>
+                            <p>Pick a method name, <code>ng-intro-method="CallMe"</code>. You can invoke the intro from elsewhere by calling <code>CallMe();</code>.  You can also specify a step number using <code>CallMe(3);</code>. To autostart, use <code>ng-intro-autostart="true"</code></p>
+                            <h4>Callbacks</h4>
+                            <p>You can get callbacks to your controller using the <code>ng-intro-oncomplete</code>, <code>ng-intro-onexit</code>, <code>ng-intro-onchange</code>, <code>ng-intro-onbeforechange</code> and <code>ng-intro-onafterchange</code> directives.</p>
+                            <p>See <a href="https://github.com/mendhak/angular-intro.js/blob/master/example/index.html">index.html</a> and <a href="https://github.com/mendhak/angular-intro.js/blob/master/example/app.js">app.js</a> for usage code.</p>
+                        </div>
+
+                        <div id="step3" class="span6">
+                            <h4>Exemplo</h4>
+                            <p>
+                                <span>Set the options and method name:</span>
+		                        <pre>&lt;div ng-controller="MyController"
+                                    ng-intro-options="IntroOptions"
+                                    ng-intro-method="CallMe" ...
+		                        </pre>
+                            </p>
+                            <p>
+                                <span>Options in the controller</span>
+		                        <pre>
+                                $scope.IntroOptions = {
+                                    steps:[
+                                    {
+                                        element: '#step1',
+                                        intro: "First tooltip"
+                                    },
+                                    {
+                                        element: '#step4',
+                                        intro: "Second tooltip",
+                                        position: 'right'
+                                    }]
+                                }
+		                        </pre>
+                            </p>
+                            <p>
+                                <span>Call it either way</span>
+                                <pre>&lt;button ng-click="CallMe();"&gt;Go&lt;/button&gt;</pre>
+                                <pre>$scope.CallMe();</pre>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

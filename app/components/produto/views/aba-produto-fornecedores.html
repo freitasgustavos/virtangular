@@ -1,0 +1,84 @@
+
+<div class="row">
+    <div class="col-md-11 p-l-0">
+        <div class="form-group m-b-0">
+            <label>Fornecedor</label>
+            <div class="append-icon append-typeahead">
+                <lv-autocomplete
+                    ng-model="fornecedorSelect"
+                    clear-input="true"
+                    trigger-list="true"
+                    icon-class="fa fa-user"
+                    obj-search="objFiltroFornecedorEQV"
+                    search-limit="10"
+                    on-select="onSelectFornecedorEQV"
+                    add-select-item="addFornecedorEQV"
+                    place-holder="Selecione o Fornecedor"
+                    string-entity="Fornecedor"
+                    string-service="cliente"
+                    confirm-add="true"
+                    display-property="cad_nome_razao"
+                    display-complement="cad_cpf_cnpj"
+                    string-id="autocomplete-fornecedor">
+                </lv-autocomplete>
+            </div>
+        </div>
+    </div>
+
+    <!-- Botão para inserção do fornecedor selecionado no objeto. -->
+    <div class="col-md-1 p-r-0 p-l-0">
+        <div class="form-group">
+            <label>Lançar</label>
+            <br>
+            <button class="btn btn-primary btn-sm m-0" ng-click="addFornecedorEqv(fornecedorEqv)" ng-disabled="!fornecedorEqv.cad_cod_cad">
+                <i class="glyphicon glyphicon-plus-sign" style="font-size:20px"></i>
+            </button>
+        </div>
+    </div>
+</div>
+
+    <div class="row" ng-show="objFornecedorEqv.length">
+        <table class="table table-hover">
+            <thead>
+            <tr>
+                <th>Cód.</th>
+                <th>Nome</th>
+                <th>Código equivalente</th>
+                <th>Remover</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr ng-repeat="fornecedor in objFornecedorEqv" ng-class="{active: isActive($index)}" class="fadeIn">
+                <td>
+                    <div>
+                        <span>{{fornecedor.cad_cod_cad}}</span>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <span>{{fornecedor.cad_nome_razao}}</span>
+                    </div>
+                </td>
+                <td>
+                    <div>
+                        <input name="eqv_cod_equivalente" id="eqv_cod_equivalente" maxlength="40" class="form-control" placeholder="Informe o código equivalente" ng-model="fornecedor.eqv_cod_equivalente" ng-class="{true : 'form-error'}[submitted && forms.formProduto.eqv_cod_equivalente.$invalid]" required type="text">
+                    </div>
+                </td>
+                <td>
+                    <div class="text-center">
+                        <a style="cursor:pointer" ng-click="removeFornecedorEQV(fornecedor)" data-toggle="tooltip" title="Remove este fornecedor!"><span><i class="fa fa-times" aria-hidden="true"></i></span></a>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="row" ng-show="!objFornecedorEqv.length">
+    <div class="alert alert-warning m-t-10">
+        <p class="font-small m-b-0">
+            <strong>Atenção:</strong> Este {{objBundleTela.labels.L002}} não possui fornecedores cadastrados!
+        </p>
+    </div>
+</div>

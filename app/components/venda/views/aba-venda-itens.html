@@ -1,0 +1,310 @@
+
+<!-- CFOP e Tipo de Emissão. -->
+<div class="row m-b-10" ng-if="venda.codNatureza != 11 && venda.codNatureza != 31">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-4 p-r-0">
+                <strong>
+                    <span>
+                        <small style="font-size:13px">CFOP Principal</small> <br>
+                        <small class="c-pointer">
+                            <a href="javascript:void(0)" ng-click="getJanelaAtributoDocumento('CF')">Editar</a>
+                        </small>
+                    </span>
+                </strong>
+            </div>
+            <div class="col-md-8 p-0">
+                <ui-select name="fin_cfo_cfop" id="fin_cfo_cfop" class="form-control" ng-model="venda.fin_cfo_cfop" theme="select2" ng-change="mudarCfop()">
+                    <ui-select-match placeholder="SELECIONE UM CFOP">{{$select.selected.cfo_cfop}} - {{$select.selected.cfo_descricao}}</ui-select-match>
+                    <ui-select-choices repeat="cfo.cfo_cfop as cfo in listaCfo |  propsFilter: {cfo_cfop : $select.search, cfo_descricao:$select.search}">
+                        <span ng-bind-html="cfo.cfo_cfop + ' - ' + cfo.cfo_descricao | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-2 text-center" ng-if="venda.codNatureza == 1 || venda.codNatureza == 2 || venda.codNatureza == 3 || venda.codNatureza == 4 || venda.codNatureza == 5 || venda.codNatureza == 6">
+        <span class="c-pointer">
+            <a href="javascript:void(0)" ng-click="trocarTipContr()">
+                <small class="text-tipo">{{tipContrib}}</small>
+            </a>
+        </span>
+    </div>
+
+    <div class="col-md-4 p-0" ng-if="venda.codNatureza != 11 && venda.codNatureza != 1 && venda.codNatureza != 31 && !getPermissaoSolRestrita('10') && !getPermissaoPlan('9')">
+        <div class="row">
+            <div class="col-md-3 p-r-0">
+                <strong>
+                    <span>
+                        <small style="font-size:13px">Tipo de Emissão</small>
+                    </span>
+                </strong>
+            </div>
+            <div class="col-md-9 text-right p-0">
+                <ui-select name="fin_tip_emitente" id="fin_tip_emitente" class="form-control" ng-model="venda.fin_tip_emitente" theme="select2" style="width:90%">
+                    <ui-select-match placeholder="Selecione">{{$select.selected.nome}}</ui-select-match>
+                    <ui-select-choices repeat="te.id as te in arrTipoEmissao |  propsFilter : {nome: $select.search}">
+                        <span ng-bind-html="te.nome | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row" ng-class="venda.itens.length > 0 ? 'row-normal' : 'row-height'">
+    <div class="col-md-12 m-b-10 form-item">
+        <div class="col-md-2 p-r-0 p-0 m-0">
+            <div ng-if="newItem.id" class="text-center">
+                <img ng-src="{{produto.fotoProduto}}" class="img-responsive img-mw img-thumbnail m-t-0">
+            </div>
+
+            <div ng-if="!newItem.id" class="text-center box-no-image">
+                <img ng-src="../app/images/sem-imagem.jpg" class="img-responsive img-mw img-thumbnail m-t-0">
+            </div>
+        </div>
+
+        <div class="col-md-5 p-r-0 p-0 m-0 box-autocomplete">
+            <div class="form-group m-b-0" id="box-venda-item">
+                <label class="form-label-itens">
+                    <span class="pull-left" ng-if="venda.codNatureza != 31">Item</span>
+                    <span class="pull-left" ng-if="venda.codNatureza == 31">Serviço</span>
+
+                    <!-- Código do produto. -->
+                    <small class="pull-right c-primary" style="margin-top:2px" ng-if="newItem.id">
+                        #{{newItem.ite_pro_cod_pro}}
+                    </small>
+                </label>
+
+                <lv-autocomplete
+                    ng-model="newItem.ite_pro_descricao"
+                    clear-input="false"
+                    trigger-list="true"
+                    icon-class="fa fa-cube"
+                    obj-search="objFiltroProduto"
+                    search-limit="30"
+                    on-select="onSelectProduto"
+                    on-enter="addItem"
+                    add-select-item="addProduto"
+                    place-holder="Pesquise por um {{labelProduto}}"
+                    string-entity="{{labelProduto}}"
+                    string-service="produto"
+                    display-property="pro_descricao_longa"
+                    confirm-add="true"
+                    trigger-blur="true"
+                    string-id="autocomplete-itens">
+                </lv-autocomplete>
+
+                <!-- Quantidade em estoque e categoria. -->
+                <div class="m-t-5" ng-if="newItem.id && newItem.ite_pro_descricao != ''">
+                    <small class="link-append lv-plugin" ng-if="!newItem.pro_eh_complemento_imposto">
+                        <a ng-click="getJanelaProduto(newItem.ite_pro_cod_pro)">Editar</a>
+                    </small>
+                    <small class="m-r-10" ng-if="newItem.gru_descricao != ''">
+                        <i class="fa fa-tags"></i> {{newItem.gru_descricao}}
+                    </small>
+                    <div class="box-disponivel" ng-if="!getPermissaoSolRestrita(10) && venda.codNatureza !== 31  && !newItem.pro_eh_complemento_imposto">
+                        <small ng-if="newItem.pro_estoque >= 0">
+                            <i class="fa fa-inbox"></i>Disponível: {{newItem.pro_str_etoque}}
+                        </small>
+                        <small class="c-red" ng-if="atingiuEstoqueMinimo">
+                            <i class="fa fa-exclamation-circle"></i>Estoque mínimo atingido.
+                        </small>
+                        <small class="c-red m-l-5" ng-if="newItem.pro_estoque <= 0">
+                            <i class="fa fa-info-circle"></i>Produto indisponível.
+                        </small>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div ng-if="!newItem.pro_eh_complemento_imposto">
+            <div class="col-md-1 p-r-0">
+                <div class="form-group">
+                    <label>Qtd</label>
+                    <input id="new_qtde_id" name="new_qtde_id" type="text" class="form-control" placeholder="Digite a quantidade" ng-model="newItem.ite_pro_qtd" valid-number onclick="this.select()" ng-disabled="venda.disabled" ng-change="comparaEstoqueMinimo()">
+
+                    <!-- Unidade do produto. -->
+                    <div class="m-t-5" ng-if="newItem.id">
+                        <small ng-if="newItem.produto.pro_unidade != null">
+                            <i class="fa fa-dropbox"></i> {{newItem.produto.pro_unidade}}
+                        </small>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-3 p-r-0">
+                <div class="form-group">
+                    <label>Valor</label>
+                    <div class="p-r-0 input-group" style="width:90%" ng-if="inputs.ite_vlr_uni_bruto">
+                        <input id="new_vlr_bruto" name="new_vlr_bruto" type="text" class="form-control" placeholder="Digite o valor" ng-model="newItem.ite_vlr_uni_bruto" ui-money-mask="mdecimals" onclick="this.select()" ng-disabled="venda.disabled">
+                        <span class="input-group-addon c-pointer" ng-click="alterarInputDecimal('ite_vlr_uni_bruto')">
+                            <i class="fa fa-money p-0"></i>
+                        </span>
+                    </div>
+
+                    <div class="p-r-0 input-group" style="width:90%" ng-if="!inputs.ite_vlr_uni_bruto">
+                        <input id="new_vlr_bruto" name="new_vlr_bruto" type="text" class="form-control" placeholder="Digite o valor" ng-model="newItem.ite_vlr_uni_bruto" valid-number onclick="this.select()" ng-disabled="venda.disabled">
+                        <span class="input-group-addon c-pointer" ng-click="alterarInputDecimal('ite_vlr_uni_bruto')">
+                            <i class="fa fa-money p-0"></i>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-md-1 p-r-0 m-0 p-0 pull-right">
+            <div class="form-group">
+                <label>Lançar</label>
+                <br>
+                <button class="btn btn-primary btn-sm m-0" ng-click="addItem(flagAddItem)" ng-disabled="!newItem.id && liberarAddItem">
+                    <i class="glyphicon glyphicon-plus-sign" style="font-size:20px"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-if="venda.itens.length > 0">
+    <table class="table table-striped table-hover table-mini">
+        <thead>
+            <tr>
+                <th ng-if="venda.codNatureza != 31">
+                    <span class="label-link" ng-if="tipo_codigo === 'CN'">
+                        <a ng-click="trocarCodigo()">
+                            <small>Código</small>
+                        </a>
+                    </span>
+                    <span class="label-link" ng-if="tipo_codigo === 'CB'">
+                        <a ng-click="trocarCodigo()">
+                            <small>Cód. de Barras</small>
+                        </a>
+                    </span>
+                </th>
+                <th ng-if="venda.codNatureza == 31">Código</th>
+                <th>Descrição</th>
+                <th class="text-right" ng-if="venda.codNatureza != 11 && venda.codNatureza != 31">CFOP</th>
+                <th class="text-right" ng-if="venda.codNatureza != 11 && venda.codNatureza != 31">CSO/CST</th>
+                <th>Qtd</th>
+                <th class="text-right">Unitário</th>
+                <th class="text-right">Valor</th>
+                <th class="text-right">Desconto</th>
+                <th class="text-right">Total</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="(k, item) in venda.itens" ng-click="editContact(item, k, $index)" ng-class="{active: isActive($index)}" class="c-pointer">
+                <td ng-if="venda.codNatureza != 31">
+                    <span ng-if="tipo_codigo === 'CN'">{{item.ite_pro_cod_pro}}</span>
+                    <span ng-if="tipo_codigo === 'CB'">{{item.ite_pro_cod_bar}}</span>
+                </td>
+                <td ng-if="venda.codNatureza == 31">{{item.ite_pro_cod_pro}}</td>
+                <td>{{item.ite_pro_descricao | strLimit : 60}}</td>
+                <td class="text-right" ng-if="venda.codNatureza != 11 && venda.codNatureza != 31">{{item.ite_cfo_cfop}}</td>
+                <td class="text-right" ng-if="venda.codNatureza != 11 && venda.codNatureza != 31">{{item.ite_valor_cs}}</td>
+                <td>{{item.ite_pro_qtd | toFloatDesc}} <span style="text-transform:uppercase">{{item.produto.pro_unidade}}</span></td>
+                <td class="text-right">{{item.ite_vlr_uni_bruto | currency}}</td>
+                <td class="text-right">{{item.ite_vlr_tot_bruto | currency}}</td>
+                <td class="text-right">{{item.ite_vlr_tot_desconto | currency}}</td>
+                <td class="text-right">{{item.ite_vlr_tot_liquido | currency}}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <input type="hidden" class="form-control" ng-model="venda.selected.id">
+    <div class="row">
+        <div class="col-md-12 form-calculo">
+            <div class="row">
+                <div class="col-md-3" style="overflow:hidden">
+                    <div class="form-group m-b-10">
+                        <label class="control-label p-r-0">Sub-total</label>
+                        <div class="p-r-0 input-group">
+                            <input type="text" readonly="readonly" class="form-control" ng-model="venda.fin_doc_vlr_bruto" ui-money-mask="mdecimals" onclick="this.select()">
+                            <span class="input-group-addon">
+                                <i class="fa fa-money p-0"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group m-b-10">
+                        <label class="control-label p-r-0"></label>
+                        <div class="p-r-0 input-group">
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3" style="overflow:hidden">
+                    <div class="form-group m-b-10" ng-if="venda.codNatureza != 31">
+                        <label class="form-label-itens p-r-0">
+                            <span class="pull-left">Frete</span>
+                            <span class="pull-right" ng-if="::getPermissao('43')" ng-if="venda.fin_nfe_finalidade != 2">
+                                <small class="c-pointer">
+                                    <a ng-click="getJanelaTransporte()">Transporte</a>
+                                </small>
+                            </span>
+                        </label>
+                        <div class="p-r-0 input-group">
+                            <input type="text" class="form-control" ng-blur="confirmarRatear('frete')" ng-model="venda.somaFrete" ui-money-mask="mdecimals" onclick="this.select()">
+                            <span class="input-group-addon">
+                                <i class="fa fa-money p-0"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group m-b-10">
+                        <label class="control-label p-r-0">
+                            <small>Impostos Retidos (ST, IPI)</small>:
+                        </label>
+                        <div class="p-r-0 input-group">
+                            <input type="text" readonly="readonly" class="form-control" ng-model="venda.somaImpostosRetidos" ui-money-mask="mdecimals" onclick="this.select()">
+                            <span class="input-group-addon">
+                                <i class="fa fa-money p-0"></i>
+                            </span>
+                        </div>
+                    </div>
+                    <div class="form-group m-b-10" ng-if="venda.codNatureza == 31">
+                        <label class="control-label p-r-0"></label>
+                        <div class="p-r-0 input-group">
+                            <br>
+                            <br>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3">
+                    <div class="form-group m-b-10 box-dropdown-select2">
+                        <label class="control-label p-r-0">Descontos:</label>
+                        <div class="p-r-0 input-group">
+                            <!-- venda.fin_doc_vlr_descontos -->
+                            <input type="text" class="form-control" id="iddesc" ng-blur="confirmarRatear('desconto')" ng-model="venda.somaDesconto" ui-money-mask="mdecimals" onclick="this.select()">
+                            <span class="input-group-addon">
+                                <i class="fa fa-money p-0"></i>
+                            </span>
+                        </div>
+                    </div>
+
+                    <div class="form-group m-b-10">
+                        <label class="control-label p-r-0">Despesas:</label>
+                        <div class="p-r-0 input-group">
+                            <!-- venda.fin_doc_vlr_acrescimos -->
+                            <input type="text" class="form-control" ng-blur="confirmarRatear('despesa')" ng-model="venda.somaDespesas" ui-money-mask="mdecimals" onclick="this.select()">
+                            <span class="input-group-addon">
+                                <i class="fa fa-money p-0"></i>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3 col-valor-total" style="min-height:162px">
+                    <label class="control-label m-t-20">Total Final:</label>
+                    <div class="valor-total">
+                        <span>{{venda.somaTotalLiquido | currency:'R$'}}</span>
+                        <!-- <small>{{venda.somaDesconto | currency:'R$'}}</small> -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

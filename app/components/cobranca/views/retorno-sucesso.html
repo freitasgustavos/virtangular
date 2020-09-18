@@ -1,0 +1,114 @@
+
+<div class="col-md-12 p-l-0 p-r-0">
+    <div class="panel p-10" style="min-height:1000px">
+        <div class="panel-header">
+            <h2 class="m-b-0">
+                <i class="fa fa-info-circle"></i>
+                <strong>Dados</strong> da Cobrança
+            </h2>
+            <div class="control-btn">
+                <button type="button" class="btn btn-primary btn-sm" ng-click="goTo('/')" style="margin-top:15px">
+                    <i class="fa fa-check"></i> &nbsp; Página Principal
+                </button>
+            </div>
+        </div>
+        <div class="panel-body no-bottom p-t-10">
+            <div class="row">
+                <div class="col-lg-12 col-sm-12">
+                    <div class="panel widget-member2" style="background-color:#fafafa">
+                        <div class="row">
+                            <div class="col-lg-12 col-xs-9">
+                                <div class="clearfix">
+                                    <h3 class="m-10" style="text-transform:uppercase;border-bottom:1px #000 dotted;padding-bottom:5px;margin-bottom:10px">
+                                        <strong>{{objTransacao.tra_desc_transacao}}</strong>
+                                    </h3>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-xs-3 m-t-10">
+                                <div class="clearfix">
+                                    <div class="col-sm-12">
+                                        <p class="m-5">
+                                            <i class="fa fa-code c-gray-light p-r-10"></i>
+                                            <span><strong>Código:</strong> #{{objTransacao.tra_tid}}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="clearfix">
+                                    <div class="col-sm-12">
+                                        <p class="m-5">
+                                            <i class="fa fa-money c-gray-light p-r-10"></i>
+                                            <span><strong>Valor:</strong> {{objTransacao.tra_valor_transacao | customCurrency}}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="clearfix">
+                                    <div class="col-sm-12">
+                                        <p class="m-5">
+                                            <i class="fa fa-envelope-o c-gray-light p-r-10"></i>
+                                            <span><strong>E-mail:</strong> {{objTransacao.tra_email_destino}}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="clearfix">
+                                    <div class="col-sm-12">
+                                        <p class="m-5">
+                                            <i class="fa fa-university c-gray-light p-r-10"></i>
+                                            <span>
+                                                <strong>Forma de Pagamento:</strong>
+                                                <span ng-if="objTransacao.tra_barcode == '' || objTransacao.tra_barcode == null">Cartão de Crédito</span>
+                                                <span ng-if="objTransacao.tra_barcode != '' || objTransacao.tra_barcode != null">Boleto Bancário</span>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="clearfix">
+                                    <div class="col-sm-12">
+                                        <p class="m-5">
+                                            <i class="fa fa-calendar c-gray-light p-r-10"></i>
+                                            <span><strong>Data de Vencimento:</strong> {{objTransacao.tra_dat_expiracao_format}}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="clearfix" ng-if="objTransacao.tra_barcode != '' || objTransacao.tra_barcode != null">
+                                    <div class="col-sm-12">
+                                        <p class="m-5">
+                                            <i class="fa fa-barcode c-gray-light p-r-10"></i>
+                                            <span><strong>Linha Digitável:</strong> {{objTransacao.tra_barcode}}</span>
+                                        </p>
+                                    </div>
+                                </div>
+                                <div class="clearfix">
+                                    <div class="col-sm-12">
+                                        <p class="m-5">
+                                            <i class="fa fa-link c-gray-light p-r-10"></i>
+                                            <a style="cursor:pointer" href="{{objTransacao.tra_link}}" title="Link de Pagamento" target="_blank">
+                                                <span style="font-size:12px;text-transform:uppercase">Link para acessar a página de pagamento</span>
+                                            </a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-lg-6 col-xs-3 m-t-10">
+                                <div ng-if="objTela.tipo === 'expirou'">
+                                    <p class="alert alert-danger alert-fade m-t-10">
+                                        <i class="fa fa-info-circle fa-2x p-r-10" style="float:left;margin:10px 10px 0"></i>
+                                        <span class="alert-texto font-small">Caro usuário, esta cobrança já se encontra vencida! Recomendamos que entre em contato com o suporte para mais detalhes a respeito do problema!</span>
+                                    </p>
+                                </div>
+
+                                <div ng-if="objTela.tipo === 'retorno'">
+                                    <p class="alert alert-info alert-fade m-t-10">
+                                        <i class="fa fa-info-circle fa-2x p-r-10" style="float:left;margin:10px 10px 0"></i>
+                                        <span class="alert-texto font-small">Caro usuário, você receberá um e-mail após a confirmação do pagamento desta cobrança! Qualquer dúvida entre em contato com o suporte para mais detalhes!</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

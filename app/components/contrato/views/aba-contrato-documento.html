@@ -1,0 +1,140 @@
+
+<div class="row">
+    <div class="col-md-9">
+        <div class="form-group">
+            <label for="ctt_descricao">Descrição</label>
+            <input class="form-control" id="ctt_descricao" placeholder="Entre com a descrição..." ng-model="objContrato.ctt_descricao" maxlength="255" type="text">
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group">
+            <label for="ctt_doc_cod_doc">Número do Contrato</label>
+            <input class="form-control" id="ctt_doc_cod_doc" placeholder="Número do contrato..." ng-model="objContrato.ctt_doc_cod_doc" number-only maxlength="12" type="text">
+        </div>
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col-md-9">
+        <div class="form-group m-b-0">
+            <label>Cliente <i class="obrigatorio">*</i></label>
+            <div class="append-icon append-typeahead">
+                <lv-autocomplete
+                    ng-model="objContrato.strCliente"
+                    clear-input="false"
+                    trigger-list="true"
+                    icon-class="fa fa-user"
+                    search-limit="10"
+                    obj-search="objFiltroCliente"
+                    on-select="onSelectCliente"
+                    place-holder="Pesquise por um cliente..."
+                    string-entity="cliente"
+                    string-service="cliente"
+                    display-property="cad_nome_razao"
+                    display-complement="cad_cpf_cnpj"
+                    confirm-add="false"
+                    string-id="autocomplete-cliente">
+                </lv-autocomplete>
+                <input type="hidden" ng-model="objContrato.ctt_cad_cod_cad">
+
+                <div ng-show="objContrato.strCliente && objContrato.strCliente != '' && objCliente.cad_cod_cad">
+                    <small class="link-append lv-plugin" ng-click="openModalCliente(objCliente.cad_cod_cad)">Editar</small>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group m-b-0">
+            <label>Tipo de Cobrança</label>
+            <ui-select style="width:100%" ng-model="objContrato.ctt_tip_cobranca" ng-change="onChangeTipoCobranca()" theme="select2">
+                <ui-select-match placeholder="Escolha um tipo...">{{$select.selected.name}}</ui-select-match>
+                <ui-select-choices repeat="tipo.id as tipo in arrTipoCobranca | propsFilter : {name : $select.search}">
+                    <span ng-bind-html="tipo.name | highlight: $select.search"></span>
+                </ui-select-choices>
+            </ui-select>
+        </div>
+    </div>
+</div>
+
+
+<div class="row m-t-15" ng-show="objContrato.strCliente && objContrato.strCliente != ''">
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>Contato</label>
+            <div class="profil-info">
+                <i class="fa fa-user"></i>
+                <span tooltip-placement="top" tooltip="{{objCliente.cad_nome_razao}}">{{objCliente.cad_nome_razao | strLimit : 20}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>E-mail</label>
+            <div class="profil-info">
+                <i class="icon-envelope"></i>{{objCliente.contato.cto_email}}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>Telefone</label>
+            <div class="profil-info">
+                <i class="fa fa-phone phone"></i>{{objCliente.contato.cto_fone | telefone}}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>Celular</label>
+            <div class="profil-info">
+                <i class="fa fa-phone phone"></i>{{objCliente.contato.cto_celular | telefone}}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>{{(objCliente.cad_pf_pj == 1) ? 'CPF' : 'CNPJ'}}</label>
+            <div class="profil-info">
+                <i class="icon-credit-card"></i>{{objCliente.cad_cpf_cnpj}}
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4">
+        <div class="form-group">
+            <label>{{(objCliente.cad_pf_pj == 1) ? 'RG' : 'IE'}}</label>
+            <div class="profil-info">
+                <i class="fa fa-eye"></i>{{objCliente.cad_rg_iest}}
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="row m-t-15" ng-show="objContrato.ctt_cod_ctt">
+    <div class="col-xs-12">
+        <div class="well m-b-0">
+            <div class="dropzone dropzone-half" dropzone="dropzoneConfig" id="dropzone-contrato">
+                <div class="dz-default dz-message dz-contrato"><strong>Arraste aqui</strong> o documento contendo o contrato!</div>
+            </div>
+        </div>
+        <script type="text/javascript">
+            Dropzone.autoDiscover = false;
+        </script>
+    </div>
+    <div class="col-xs-12" ng-if="objContrato.objMidia">
+        <div class="text-right m-t-10">
+            <span class="text-muted font-mini">
+                <strong>Observação:</strong>
+                <span>Este contrato já possui um documento anexado.</span>
+            </span>
+        </div>
+    </div>
+</div>

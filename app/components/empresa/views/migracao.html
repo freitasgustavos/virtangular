@@ -1,0 +1,272 @@
+
+<div class="col-md-3 p-l-0 p-r-0">
+    <div class="panel">
+        <div class="panel-header">
+            <h3 class="m-b-20">
+                <i class="fa fa-list"></i>
+                <strong>Importação </strong> de dados
+            </h3>
+        </div>
+
+        <!-- Menu de navegação lateral. -->
+        <div class="panel-content panel-inner-less m-b-5" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200">
+            <div ng-include="'empresa/views/menu-migracao.html'"></div>
+        </div>
+    </div>
+</div>
+
+<div class="col-md-9 p-r-0">
+    <div class="panel">
+        <form method="POST" enctype="multipart/form-data" id="forms.formMigracao" name="forms.formMigracao" autocomplete="off" novalidate>
+            <div class="panel-header">
+                <div class="btn-reset">
+                    <a class="btn btn-sm btn-primary" href="javascript:void(0)" onclick="location.href='#empresa'">
+                        <i class="fa fa-arrow-left"></i> Voltar
+                    </a>
+                </div>
+
+                <h3 class="title-header">
+                    <span class="m-r-5">
+                        <i class="fa fa-refresh"></i>
+                        <strong>Migração</strong> de
+                    </span>
+                    <strong style="color:#319DB5"># {{migracaoDados.migracaoLabel}}</strong>
+                </h3>
+
+                <div class="control-btn" ng-if="!logScreen || migracaoDados.tipoMigracao == 4">
+                    <button type="button" class="btn btn-sm btn-primary clickright" ladda="salvarEmpresaLoading" ng-click="migrarDados(fileImport, $event)" style="margin-right:2px">
+                        <i class="fa fa-refresh"></i> Migrar
+                    </button>
+                    <button type="button" class="btn btn-sm btn-primary clickright" ladda="salvarEmpresaLoading" ng-click="fazerBackup()" style="margin-right:2px">
+                        <i class="fa fa-download"></i> Fazer backup
+                    </button>
+                </div>
+                <div class="control-btn" ng-if="logScreen && migracaoDados.telaLiberada && migracaoDados.tipoMigracao != 4">
+                    <button type="button" class="btn btn-sm btn-primary clickright" ladda="salvarEmpresaLoading" ng-click="novaMigracao()" style="margin-right:2px">
+                        <i class="fa fa-plus"></i> Nova Migração
+                    </button>
+                    <button type="button" class="btn btn-sm btn-primary clickright" ladda="salvarEmpresaLoading" ng-click="fazerBackup()" style="margin-right:2px">
+                        <i class="fa fa-download"></i> Fazer backup
+                    </button>
+                </div>
+            </div>
+
+            <div class="panel-content panel-inner-less" style="padding-bottom:5px!important" ng-if="!logScreen && migracaoDados.telaLiberada && migracaoDados.tipoMigracao != 4">
+                <div class="col-lg-6">
+                    <span>Siga os passos abaixo para migrar seus dados</span>
+                    <br/><br/><br/>
+
+                    <div class="row">
+                        <div class="col-md-3">1) Escolha o layout:</div>
+                        <div class="col-md-5" style="overflow:hidden">
+                            <div class="form-group">
+                                <select id="layoutMigracao" class="form-control" ng-model="migracaoDados.layoutMigracao" ng-change="setExtensaoMigracao(migracaoDados.layoutMigracao)">
+                                    <option value="0">-- SELECIONE UM LAYOUT --</option>
+                                    <option value="5">Virtux (.xls ou .xlsx)</option>
+                                    <option value="1">SEFAZ (.txt)</option>
+                                </select>
+                            </div>
+                        </div>
+                        <br/>
+                    </div>
+                    <p ng-if="migracaoDados == null || migracaoDados.migracaoLabel == 'CLIENTE'">2) <a href="../app/ImportacaoModels/MigrarCadastroCliente.xls">Clique aqui</a> para baixar o modelo com layout</p>
+                    <p ng-if="migracaoDados.migracaoLabel == 'PRODUTO'">2) <a href="../app/ImportacaoModels/MigrarCadastroProduto.xls">Clique aqui</a> para baixar o modelo com layout</p>
+                    <p ng-if="migracaoDados.migracaoLabel == 'FINANÇAS'">2) <a href="../app/ImportacaoModels/MigrarCadastroCliente.xls">Clique aqui</a> para baixar o modelo com layout</p>
+                    <p>3) Para que não de nenhum erro durante a migração, considere as seguintes regras:
+                    <p style="padding-left:4em">a) Não altere a primeira linha, pois ela é cabeçalho de importação.</p>
+                    <p style="padding-left:4em">b) Não altere a ordem e nem exclua nenhuma coluna.</p>
+                    <p style="padding-left:4em">c) Caso alguma coluna não tenha informação, basta deixá-la vazia, exceto as colunas de código, pois elas serão utilizadas como chave.</p>
+                    <p style="padding-left:4em">d) Não deixe uma linha por completa em branco, isso pode ser encarado como fim do arquivo.</p>
+                    <p style="padding-left:4em">e) Serão importados no máximo 5000 registros, acima disto, deverá ser realizada outras migrações.</p>
+                    </p>
+                    <p>4) Após validar sua planilha, selecione o arquivo para migração</p>
+                    <div class="row m-t-10">
+                        <div class="col-md-3" style="overflow:hidden">
+                            <div class="form-group">
+                                <label>Selecione o arquivo</label>
+                            </div>
+                        </div>
+
+                        <div class="col-md-9 p-r-10" style="overflow:hidden">
+                            <div class="form-group">
+                                <!-- <input type="file" ngf-select ng-model="fileImport" on-read-file="showFileContent($fileContent)" ng-class="{true : 'form-error'}[submitted && forms.formMigracao.fileImport.$error]" required> -->
+                                <div class="form-upload">
+                                    <div class="row">
+                                        <div class="col-md-12">
+                                            <!--<input class="custom-file-input" on-read-file="exibeConteudoTXT($fileContent)" type="file" ngf-select ng-model="fileImport" id="fileImport" name="fileImport" accept="{{ migracaoDados.extensaoMigracao }}" required>-->
+
+                                            <div class='input-wrapper'>
+                                                <label for='fileImport'>
+                                                    <i class="fa fa-file-text"></i>
+                                                    Selecionar um arquivo
+                                                </label>
+                                                <input id='fileImport' type='file' value='' class="custom-file-input" on-read-file="exibeConteudoTXT($fileContent)" ngf-select ng-model="fileImport" onchange="fileChange(event)" name="fileImport" accept="{{ migracaoDados.extensaoMigracao }}" required />
+                                                <span id='file-name'></span>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div ng-show="submitted || (forms.formMigracao.fileImport.$invalid && !forms.formMigracao.fileImport.$pristine)">
+                                    <p class="text-danger form-error alert1" ng-show="forms.formMigracao.fileImport.$error.required">Selecione um arquivo.</p>
+                                </div>
+                                <br>
+                                <div ng-if="content">
+                                    <h2>Conteúdo do arquivo:</h2>
+                                    <pre style="width:100%">{{content}}</pre>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <p>5) Após migrar, caso seja encontrado algum registro que não tenha sido importado, será gerada uma planilha com estes itens para que possam ser corrigidos e feito uma nova importação</p>
+                </div>
+
+                <div class="col-lg-6">
+                    <a ng-if="migracaoDados == null || migracaoDados.migracaoLabel == 'CLIENTE'" href="../app/ImportacaoModels/MigrarCadastroCliente.xls"><img src="../app/images/download_model.png" width="100%"></a>
+                    <a ng-if="migracaoDados.migracaoLabel == 'PRODUTO'" href="../app/ImportacaoModels/MigrarCadastroProduto.xls"><img src="../app/images/download_model.png" width="100%"></a>
+                    <a ng-if="migracaoDados.migracaoLabel == 'FINANÇAS'" href="../app/ImportacaoModels/MigrarCadastroFinaças.xls"><img src="../app/images/download_model.png" width="100%"></a>
+                    <div style="margin-bottom: 30px"></div>
+
+                    <div class="panel-manual" ng-include="'home/views/migracao_dropzone.html'" migracao-type="cliente"></div>
+                </div>
+            </div>
+            <div class="panel-content panel-inner-less" ng-if="logScreen && migracaoDados.telaLiberada && migracaoDados.tipoMigracao != 4">
+                <table class="table-log" style="width: 100%;">
+                    <tr>
+                        <th style="text-align: left;">Data</th>
+                        <th>Alterados</th>
+                        <th>Incluidos</th>
+                        <th>Migrados</th>
+                        <th>Rejeitados</th>
+                    </tr>
+
+                    <tr ng-repeat="log in logFiles" style="line-height: 3em; background-color: {{ ($index % 2 == 0)? '#eee' : '#fff'}}">
+                        <td style="text-align: left;">{{log.data}}</td>
+                        <td>{{log.atzs}}</td>
+                        <td>{{log.cads}}</td>
+                        <td>{{ (log.cads + log.atzs) }}</td>
+                        <td>{{log.errs}}</td>
+                        <td class="link-label last-link" ng-click="baixarOrg(log.fileName)">Arquivo</td>
+                        <td class="link-label last-link" ng-click="baixarLog(log.fileName)">Log</td>
+                    </tr>
+                </table>
+                <span style="float: right; padding: 3px 0px;">Para ver os registros, click sobre os links e baixe as respectivas planilhas.</span>
+            </div>
+
+
+            <div class="panel-content" style="min-height: 825px;" ng-show="migracaoDados.tipoMigracao == 4 && migracaoDados.telaLiberada">
+                <div class="row">
+                    <div class="col-md-3" style="overflow:hidden">
+                        <div class="form-group">
+                            <label for="layoutMigracao">Escolha o layout do arquivo</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8" style="overflow:hidden">
+                        <div class="form-group">
+                            <select id="layoutMigracao" class="form-control" ng-model="migracaoDados.layoutMigracao" ng-change="setExtensaoMigracao(migracaoDados.layoutMigracao)">
+                                <option value="0">-- SELECIONE UM LAYOUT --</option>
+                                <option value="5">Virtux (.xls ou .xlsx)</option>
+                                <option value="1">SEFAZ (.txt)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="col-md-1" ng-if="migracaoDados.linkModelo != '' || migracaoDados.tipoMigracao == 5">
+                        <div class="form-group text-center" style="margin-top: 5px;">
+                            <span tooltip-placement="bottom" tooltip="Baixar modelo de arquivo" style="cursor: pointer;" ng-click="baixarModelo()"><i class="fa fa-download" aria-hidden="true"></i></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row m-t-10">
+                    <div class="col-md-3" style="overflow:hidden">
+                        <div class="form-group">
+                            <label>Selecione o arquivo</label>
+                        </div>
+                    </div>
+
+                    <div class="col-md-9 p-r-10" style="overflow:hidden">
+                        <div class="form-group">
+                            <!-- <input type="file" ngf-select ng-model="fileImport" on-read-file="showFileContent($fileContent)" ng-class="{true : 'form-error'}[submitted && forms.formMigracao.fileImport.$error]" required> -->
+                            <div class="form-upload">
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <!--<input class="custom-file-input" on-read-file="exibeConteudoTXT($fileContent)" type="file" ngf-select ng-model="fileImport" id="fileImport" name="fileImport" accept="{{ migracaoDados.extensaoMigracao }}" required>-->
+
+                                        <div class='input-wrapper'>
+                                            <label for='fileImport'>
+                                                <i class="fa fa-file-text"></i>
+                                                Selecionar um arquivo
+                                            </label>
+                                            <input id='fileImport' type='file' value='' class="custom-file-input" on-read-file="exibeConteudoTXT($fileContent)" ngf-select ng-model="fileImport" onchange="fileChange(event)" name="fileImport" accept="{{ migracaoDados.extensaoMigracao }}" required />
+                                            <span id='file-name'></span>
+                                        </div>
+                                    </div>
+
+                                </div>
+                            </div>
+                            <div ng-show="submitted || (forms.formMigracao.fileImport.$invalid && !forms.formMigracao.fileImport.$pristine)">
+                                <p class="text-danger form-error alert1" ng-show="forms.formMigracao.fileImport.$error.required">Selecione um arquivo.</p>
+                            </div>
+                            <br>
+                            <div ng-if="content">
+                                <h2>Conteúdo do arquivo:</h2>
+                                <pre style="width:100%">{{content}}</pre>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-3" style="overflow:hidden">
+                    <div class="form-group">
+                        <label for="layoutMigracao">Escolha o tipo do arquivo </label>
+                    </div>
+                </div>
+
+                <div class="col-md-9" style="overflow:hidden">
+                    <div class="btn-group">
+                        <label class="btn btn-sm btn-default" ng-model="migracaoDados.tip_arquivo" btn-radio="1">Sped</label>
+                        <label class="btn btn-sm btn-default" ng-model="migracaoDados.tip_arquivo" btn-radio="2">Sintegra</label>
+                    </div>
+                    <span tooltip-placement="right" tooltip="Tipo do arquivo que contém o inventário" style="cursor: pointer;"><i class="fa fa-question-circle" aria-hidden="true"></i></span>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12" style="overflow:hidden">
+                        <button class="btn btn-default pull-right" ladda="salvarEmpresaLoading" ng-click="recalculaEstoque()">
+                            <i class="fa fa-cubes"></i>
+                            Recalcular estoque
+                        </button>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12" style="overflow:hidden">
+                        <h2>Atenção usuário:</h2>
+                        <p>Para migrar o saldo inicial, deverá ser gerado um inventário em seu sistema anterior, seja SPED ou Sintegra, e em seguida fazer a devida migração.</p>
+                        <p>Por se tratar de uma migração de Saldo Inicial, só será permitida ser realizada uma única vez.</p>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="row fadeIn" ng-show="!migracaoDados.telaLiberada" style="margin: 0px; padding-bottom: 100px;">
+                <div class="col-md-12" style="top: 30px;">
+                    <h2>Atenção usuário:</h2>
+                    <p>Caro usuário, essa tela só pode ser utilizada por um de nossos agentes, caso precise utilizá-la ou possua alguma dúvida, por favor, entre em contato com o nosso Suporte Técnico.</p>
+                    <div class="col-md-9">
+                        <input type="password" class="form-control" id="usu_senha_inventario" name="usu_senha_inventario" ng-model="migracaoDados.usu_senha_inventario" placeholder="Informe a senha para liberação da tela" />
+                    </div>
+                    <div class="col-md-3">
+                        <button class="btn btn-default pull-right" ladda="salvarEmpresaLoading" ng-click="liberaTelaInventario()">
+                            <i class="fa fa-key"></i>
+                            Liberar
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>

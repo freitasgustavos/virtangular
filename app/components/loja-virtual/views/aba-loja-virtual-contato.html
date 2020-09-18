@@ -1,0 +1,133 @@
+<div class="col-md-12 p-l-0 p-r-0">
+    <div class="panel">
+        <div class="panel-header">
+            <h3 class="m-t-0 m-b-0">
+                <i class="fa fa-list"></i>
+                <strong>Listagem</strong> de contatos
+            </h3>
+
+            <div class="control-btn" ng-if="contato.cto_tipo_cto_pesquisar == 3">
+                <button type="button" class="btn btn-primary btn-sm clickright" ng-click="exportarNewsLetter()" style="margin-top:-10px;margin-right:2px">
+                    <i class="fa fa-download"></i> &nbsp; Exportar
+                </button>
+            </div>
+        </div>
+
+        <!-- Listagem de páginas. -->
+        <div class="panel-body no-bottom p-t-10">
+            <div class="malihu-list dropdown-menu-list panel-content widget-news" mh-scrollbar mcs-theme="minimal-dark" mcs-scroll-inertia="200">
+
+                <div class="alert alert-info fade in">
+                    <p class="alert-texto font-small">As mensagens enviadas pelo formulário de contato no site estarão registradas nesse módulo.</p>
+                </div>
+
+                <form class="form-inverse space-down" autocomplete="off" role="search">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="append-icon">
+                                <select class="form-control" ng-model="contato.cto_tipo_cto_pesquisar" ng-change="listarContato()" style="width:100%">
+                                    <option value="1">Mensagens pelo site</option>
+                                    <option value="2">Produtos desejados pelos clientes</option>
+                                    <option value="3">Emails newsletter</option>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+
+                <div class="m-t-10">
+                    <div ng-show="!contatos.length && flagMsg">
+                        <div class="alert alert-warning m-t-20 m-b-20 alert-fade" role="alert">
+                            <p class="font-small"><strong>Atenção:</strong> Nenhum registro encontrado!</p>
+                        </div>
+                    </div>
+
+                    <div ng-include="getTemplateContato()"></div>
+
+                    <script type="text/ng-template" id="grid-tipo-cto-1">
+                        <div ng-show="contatos.length">
+                            <table class="table table-hover font-small">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>E-mail</th>
+                                        <th>Telefone</th>
+                                        <th>Título</th>
+                                        <th>Mensagem</th>
+                                        <th>Tipo</th>
+                                        <th>Status</th>
+                                        <th>Data</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                <tr ng-repeat="contato in contatos" style="cursor:pointer" ng-click="getFormContato(contato.cto_cod_cto)">
+                                    <td>{{contato.cto_nome}}</td>
+                                    <td>{{contato.cto_email}}</td>
+                                    <td>{{contato.cto_telefone}}</td>
+                                    <td>{{contato.cto_titulo}}</td>
+                                    <td>{{contato.cto_descricao | strLimit:50}}</td>
+                                    <td>{{contato.cto_tipo_cto}}</td>
+                                    <td>
+                                        <span ng-if="contato.cto_respondido" tooltip-placement="top" tooltip="Respondido" class="label label-success">Respondido</span>
+                                        <span ng-if="!contato.cto_respondido" tooltip-placement="top" tooltip="Em Aberto" class="label label-danger">Em Aberto</span>
+                                    </td>
+                                    <td>{{contato.cto_dat_cadastro | dateFormat}}</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </script>
+
+
+                    <script type="text/ng-template" id="grid-tipo-cto-2">
+                        <div ng-show="contatos.length">
+                            <table class="table table-hover font-small">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>E-mail</th>
+                                        <th>Título</th>
+                                        <th>Status</th>
+                                        <th>Data</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="contato in contatos" style="cursor:pointer" ng-click="getFormContato(contato.cto_cod_cto)">
+                                        <td>{{contato.cto_nome}}</td>
+                                        <td>{{contato.cto_email}}</td>
+                                        <td>Cliente deseja produto {{contato.cto_cod_pro}}</td>
+                                        <td>
+                                            <span ng-if="contato.cto_respondido" tooltip-placement="top" tooltip="Respondido" class="label label-success">Respondido</span>
+                                            <span ng-if="!contato.cto_respondido" tooltip-placement="top" tooltip="Em Aberto" class="label label-danger">Em Aberto</span>
+                                        </td>
+                                        <td>{{contato.cto_dat_cadastro | dateFormat}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </script>
+
+
+                    <script type="text/ng-template" id="grid-tipo-cto-3">
+                        <div ng-show="contatos.length">
+                            <table class="table table-hover font-small">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>E-mail</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="contato in contatos" class="c-pointer">
+                                        <td>{{contato.new_cod_new}}</td>
+                                        <td>{{contato.new_email}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </script>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

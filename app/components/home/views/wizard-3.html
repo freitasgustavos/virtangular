@@ -1,0 +1,51 @@
+
+<div ng-if="objWizard.p1 === false || objWizard.p2 === false">
+    <div class="col-md-12 m-t-20">
+        <div class="panel bg-orange bd-6">
+            <div class="panel-header">
+                <h3 class="title-panel">
+                    <strong>Atenção!</strong>
+                </h3>
+            </div>
+            <div class="panel-content o-h">
+                <div class="alert alert-warning m-b-10">
+                    <i class="fa fa-info-circle fa-2x icon-alert"></i>
+                    <p class="alert-texto p-justify" style="font-size:14px">
+                        Para finalizar este processo é necessário completar todo seu cadastro nas abas anteriores deste <em>wizard</em> <strong>(Empresa e Módulos)</strong>, para isso preencha os formulários contidos em ambas e logo em seguida clique no botão salvar, atente-se para o campos de preenchimento obrigatório.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-if="objWizard.p1 === true && objWizard.p2 === true">
+    <div class="col-md-12 m-t-20">
+        <div class="panel bg-green bd-6">
+            <div class="panel-header">
+                <h3 class="title-panel">
+                    <strong>Conclusão!</strong>
+                </h3>
+            </div>
+            <div class="panel-content o-h">
+                <div class="alert alert-success m-b-10">
+                    <i class="fa fa-info-circle fa-2x icon-alert"></i>
+                    <p class="alert-texto p-justify" style="font-size:14px">
+                        <span>Caro usuário, as informações fornecidas foram salvas com sucesso! Para concluir o processo clique no botão abaixo e aguarde o redirecionamento para página principal do sistema, desde já agradecemos sua atenção e paciência.</span>
+                        <br>
+                        <button type="button" ng-click="concluir()" ladda="concluirEmpresa" class="btn btn-success btn-msg">
+                            <i class="fa fa-power-off"></i> Concluir Cadastro
+                        </button>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--
+<button type="button" class="btn btn-white m-t-10" ladda="concluirLoading" ng-click="concluir()">
+    <i class="fa fa-power-off"></i> &nbsp; Concluir
+</button>
+-->

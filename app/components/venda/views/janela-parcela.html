@@ -1,0 +1,104 @@
+<div class="modal-dialog modal-not-footer">
+    <form id="forms.formParcela" name="forms.formParcela" method="POST" autocomplete="off" role="form">
+        <div class="modal-content">
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('reload')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>Editar</strong> Parcela #{{vlrIndiceParcela}}
+
+                    <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" data-dismiss="modal" ladda="salvarParcelaLoading" ng-click="salvarParcela()">
+                        <i class="fa fa-check"></i> &nbsp; Salvar
+                    </button>
+                </h4>
+            </div>
+
+            <div class="modal-body" style="width:100%">
+                <div class="col-md-12 form-append">
+                    <div class="row">
+                        <div class="form-group form-group-modal">
+                            <label class="col-sm-3 control-label">Forma de Pgto.</label>
+                            <div class="col-sm-9">
+                                <lv-autocomplete
+                                    ng-model="formaPgto.descricao"
+                                    clear-input="false"
+                                    trigger-list="true"
+                                    icon-class="fa fa-dollar"
+                                    search-limit="10"
+                                    on-select="onSelectFormaPagamentoModal"
+                                    add-select-item="addFormaPagamentoModal"
+                                    place-holder="Pesquise por uma forma de pagamento..."
+                                    string-entity="forma de pagamento"
+                                    string-service="formaPgto"
+                                    confirm-add="true"
+                                    display-property="par_c01"
+                                    string-id="autocomplete-forma-pgto">
+                                </lv-autocomplete>
+
+                                <input type="hidden" ng-model="objParcela.tit_6060_forma_pagamento">
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-modal">
+                            <label class="col-sm-3 control-label">Conta Finan.</label>
+                            <div class="col-sm-9">
+                                <lv-autocomplete
+                                    ng-model="contaFinan.descricao"
+                                    clear-input="false"
+                                    trigger-list="true"
+                                    icon-class="fa fa-bank"
+                                    search-limit="10"
+                                    on-select="onSelectContaFinanceiraModal"
+                                    add-select-item="addContaFinanceiraModal"
+                                    place-holder="Pesquise por uma conta financeira..."
+                                    string-entity="conta financeira"
+                                    string-service="contaFinan"
+                                    display-property="par_c01"
+                                    confirm-add="true"
+                                    string-id="autocomplete-conta-finan">
+                                </lv-autocomplete>
+
+                                <input type="hidden" ng-model="objParcela.tit_5010_conta_fin">
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-modal">
+                            <label class="col-sm-3 control-label" for="vlr_liquido_novo">Valor <i class="obrigatorio">*</i></label>
+                            <div class="col-sm-9">
+                                <div class="append-icon">
+                                    <input class="form-control" id="vlr_liquido_novo" name="vlr_liquido_novo" placeholder="Valor total..." type="text" ui-money-mask="mdecimals" onclick="this.select()" ng-model="objParcela.tit_doc_vlr_liquido" required>
+                                    <i class="fa fa-money"></i>
+                                </div>
+                                <div class="alert-small" ng-show="submitted || (forms.formParcela.vlr_liquido_novo.$invalid && !forms.formParcela.vlr_liquido_novo.$pristine)">
+                                    <p class="text-danger form-error alert1" ng-show="(forms.formParcela.vlr_liquido_novo.$error.required)">
+                                        O campo valor é de preenchimento obrigatório.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-group form-group-modal">
+                            <label class="col-sm-3 control-label" for="dt_vct_nova">Vencimento <i class="obrigatorio">*</i></label>
+                            <div class="col-sm-9">
+                                <div class="append-icon">
+                                    <input class="form-control" name="dt_vct_nova" id="dt_vct_nova" maxlength="10" placeholder="Data de Vencimento..." type="text" data-mask="99/99/9999" ng-model="objParcela.tit_dat_vct" datepicker1 required>
+                                    <i class="fa fa-calendar"></i>
+                                </div>
+                                <div class="alert-small" ng-show="submitted || (forms.formParcela.dt_vct_nova.$invalid && !forms.formParcela.dt_vct_nova.$pristine)">
+                                    <p class="text-danger form-error alert1" ng-show="(forms.formParcela.dt_vct_nova.$error.required)">
+                                        O campo data para vencer é de preenchimento obrigatório.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer text-center">
+            </div>
+        </div>
+    </form>
+</div>

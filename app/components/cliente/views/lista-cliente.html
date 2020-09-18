@@ -1,0 +1,34 @@
+
+<div ng-if="arrClientes.length">
+    <a ng-repeat="cliente in arrClientes" href="javascript:void(0)" class="message-item media" ng-click="getCliente(cliente.cad_cod_cad)" ng-class="{'active' : isActive(cliente), 'bg-error' : cliente.cad_eh_inativo == 1 || cliente.cad_eh_inativo == null, 'inactive' : cliente.cad_dat_cancelamento != null}">
+        <div class="media">
+            <div class="media-body">
+                <div class="pull-left p-r-10" style="width:20%">
+                    <div ng-if="cliente.mid_id !== ''">
+                        <img ng-src="{{imageCache}}{{cliente.mid_id}}" alt="{{cliente.cad_nome_razao}}" class="img-circle img-md">
+                    </div>
+                    <div ng-if="cliente.mid_id === ''">
+                        <img ng-src="../assets/global/images/avatars/sem_avatar2.jpg" class="img-circle img-md" alt="{{cliente.cad_nome_razao}}">
+                    </div>
+                </div>
+                <div class="box-contato-cadstro">
+                    <small class="pull-right">{{cliente.cto_fone | tel}}</small>
+                    <h4 class="c-dark">{{cliente.cad_nome_razao}}</h4>
+                    <p class="f-14 c-gray">
+                        <span>{{cliente.cad_apelido_fantasia}}</span> &nbsp;&nbsp; <span style="float:right">{{cliente.cto_email}}</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>
+
+<div class="panel-content panel-loader">
+    <div ng-if="!arrClientes.length && spinnerList.active === false">
+        <div class="alert alert-warning alert-fade font-small" role="alert">
+            <strong>Atenção:</strong> Nenhum registro encontrado!
+        </div>
+    </div>
+</div>
+
+<div ng-if="isClientEmpty" class="panel-manual" ng-include="'home/views/tutorial_cliente.html'"></div>

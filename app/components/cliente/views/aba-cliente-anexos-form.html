@@ -1,0 +1,41 @@
+<div class="modal-dialog">
+    <form method="POST" enctype="multipart/form-data" id="formUpload" name="formUpload" autocomplete="off" novalidate>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>Anexos</strong>
+
+                    <!-- Botão para salvar. -->
+                    <span class="pull-right">
+                        <button ng-click="upload(picFile, $event)" ladda="salvarAnexoLoading" class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" type="button">
+                            <i class="fa fa-check"></i> &nbsp; Salvar
+                        </button>
+                    </span>
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-upload">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input class="custom-file-input" type="file" ngf-select ng-model="picFile" name="file" accept="*" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-upload m-t-10">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <label>Descrição</label>
+                            <input name="mid_descricao" id="mid_descricao" maxlength="255" class="form-control" placeholder="Entre com a descrição do anexo..." ng-model="objAnexo.mid_descricao" type="text">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

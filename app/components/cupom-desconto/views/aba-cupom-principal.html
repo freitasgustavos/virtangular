@@ -1,0 +1,87 @@
+
+<div class="row">
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Descrição do cupom de desconto <i class="obrigatorio">*</i></label>
+            <input name="cup_descricao" id="cup_descricao" maxlength="255" class="form-control" placeholder="Digite a descrição do cupom" ng-model="cupom.cup_descricao" ng-class="{true : 'form-error'}[submitted && forms.formCupom.cup_descricao.$invalid]" required type="text">
+        </div>
+        <div ng-show="submitted || (forms.formCupom.cup_descricao.$invalid && !forms.formCupom.cup_descricao.$pristine)">
+            <p class="text-danger form-error alert1" ng-show="(forms.formCupom.cup_descricao.$error.required)">Digite a descrição.</p>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Código do cupom de desconto <i class="obrigatorio">*</i></label>
+            <input name="cup_codigo_cupom" id="cup_codigo_cupom" maxlength="255" class="form-control" placeholder="Digite o código do cupom" ng-model="cupom.cup_codigo_cupom" ng-class="{true : 'form-error'}[submitted && forms.formCupom.cup_codigo_cupom.$invalid]" required type="text">
+        </div>
+        <div ng-show="submitted || (forms.formCupom.cup_codigo_cupom.$invalid && !forms.formCupom.cup_codigo_cupom.$pristine)">
+            <p class="text-danger form-error alert1" ng-show="(forms.formCupom.cup_codigo_cupom.$error.required)">Digite o código promocional.</p>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group m-b-10">
+            <label class="control-label p-r-0">Desconto (%)</label>
+            <div class="p-r-0 input-group">
+                <input name="cup_perc_desconto" id="cup_perc_desconto" maxlength="255" class="form-control" placeholder="Desc. em %" ui-percentage-mask ng-model="cupom.cup_perc_desconto" ng-class="{true : 'form-error'}[submitted && forms.formCupom.cup_perc_desconto.$invalid]" required type="text" onclick="this.select()">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-3">
+        <div class="form-group m-b-10">
+            <label class="control-label p-r-0">Valor</label>
+            <div class="p-r-0 input-group">
+                <input name="cup_vlr_desconto" id="cup_vlr_desconto" maxlength="255" class="form-control" placeholder="Desc. em R$" ui-money-mask="mdecimals" ng-model="cupom.cup_vlr_desconto" ng-class="{true : 'form-error'}[submitted && forms.formCupom.cup_vlr_desconto.$invalid]" required type="text" onclick="this.select()">
+                <span class="input-group-addon">
+                    <i class="fa fa-money p-0"></i>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Vincular ao cadastro</label>
+            <div class="append-icon append-typeahead">
+                <lv-autocomplete
+                    ng-model="cupom.clienteSelect"
+                    clear-input="false"
+                    trigger-list="true"
+                    icon-class="fa fa-user"
+                    obj-search="objFiltroCliente"
+                    search-limit="10"
+                    on-select="onSelectCliente"
+                    add-select-item="addCliente"
+                    place-holder="Vincular cupom a um cliente..."
+                    string-entity="cliente"
+                    string-service="cliente"
+                    display-property="cad_nome_razao"
+                    display-complement="cad_cpf_cnpj"
+                    confirm-add="true"
+                    string-id="autocomplete-cliente">
+                </lv-autocomplete>
+
+                <input type="hidden" ng-model="cupom.cup_cad_cod_cad">
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Validade</label>
+            <input name="cup_dat_expiracao" id="cup_dat_expiracao" class="form-control" maxlength="10" placeholder="Data de expiração para o cupom" ng-model="cupom.cup_dat_expiracao" ng-class="{true : 'form-error'}[submitted && forms.formCupom.cup_dat_expiracao.$invalid]" required data-mask="99/99/9999" datepicker1 type="text">
+            <div ng-show="submitted || (forms.formCupom.cup_dat_expiracao.$invalid && !forms.formCupom.cup_dat_expiracao.$pristine)">
+                <p class="text-danger form-error alert1" ng-show="(forms.formCupom.cup_dat_expiracao.$error.required)">Informe uma data para expiração.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="form-group">
+            <label>Quantidade disponível</label>
+            <input name="cup_qtd_expiracao" id="cup_qtd_expiracao" maxlength="255" class="form-control" placeholder="Quantos cupons poderão ser utilizados" ng-model="cupom.cup_qtd_expiracao" ng-class="{true : 'form-error'}[submitted && forms.formCupom.cup_qtd_expiracao.$invalid]" type="text">
+        </div>
+    </div>
+</div>

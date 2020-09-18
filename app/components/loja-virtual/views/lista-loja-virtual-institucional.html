@@ -1,0 +1,30 @@
+
+<div ng-show="!lista_nivel_pagina.length && flagMsg">
+    <div class="alert alert-warning m-10 alert-fade" role="alert">
+        <p class="font-small"><strong>Atenção:</strong> Nenhum registro encontrado!</p>
+    </div>
+</div>
+
+<div ng-show="lista_nivel_pagina.length">
+    <table class="table table-hover font-small">
+        <thead>
+            <tr>
+                <th>Página</th>
+                <th>Módulo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr ng-repeat="pagina in lista_nivel_pagina" class="c-pointer" ng-click="getPagina(pagina.con_cod_con)">
+                <td>{{pagina.con_pagina}}</td>
+                <td>
+                    <span ng-repeat="pagina_nivel in lista_nivel_pagina">
+                        <span ng-if="pagina.con_nivel == pagina_nivel.con_cod_con">
+                            {{pagina_nivel.con_pagina}}
+                        </span>
+                    </span>
+                    <span ng-if="pagina.con_tipo_pos_tpl == 2">Boxes Topo</span>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>

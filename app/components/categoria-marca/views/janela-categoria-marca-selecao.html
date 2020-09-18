@@ -1,0 +1,41 @@
+
+<div class="modal-dialog">
+    <div class="modal-content">
+        <form role="form" name="forms.formCategoriaMarcaSelecao" id="forms.formCategoriaMarcaSelecao" class="form-validation" autocomplete="off" novalidate>
+            <div class="modal-header p-b-0">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>Selecionar {{objTela.entity}}</strong>
+
+                    <button class="btn btn-primary btn-embossed bnt-square pull-right m-r-0" type="button" ng-click="openModal()">
+                        <i class="fa fa-plus-circle"></i> &nbsp; Nova
+                    </button>
+                </h4>
+            </div>
+
+            <div class="modal-body modal-body-overflow">
+                <div class="panel-content">
+                    <div class="col-md-12">
+                        <div class="panel-tree m-b-10">
+                            <div
+                                data-angular-treeview="true"
+                                data-tree-id="tree"
+                                data-tree-model="objTree"
+                                data-node-id="id"
+                                data-node-label="label"
+                                data-node-children="children">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-footer text-center">
+                <div class="col-sm-12"></div>
+            </div>
+        </form>
+    </div>
+</div>

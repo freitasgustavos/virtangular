@@ -1,0 +1,44 @@
+<div class="modal-dialog">
+    <form method="POST" enctype="multipart/form-data" id="formFavicon" name="formFavicon" novalidate>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title modal-title-button">
+                    <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('cancel')">
+                        <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                    </button>
+
+                    <strong>FAVICON</strong>
+
+                    <!-- Botão para salvar. -->
+                    <span class="pull-right">
+                        <button ng-click="upload(picFile, $event)" ladda="salvarFaviconLoading" class="btn btn-primary btn-embossed  bnt-square pull-right m-r-0" type="button">
+                            <i class="fa fa-check"></i> &nbsp; Salvar
+                        </button>
+                    </span>
+                </h4>
+            </div>
+
+            <div class="modal-body">
+                <div class="form-upload m-b-10">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <input class="custom-file-input" type="file" ngf-select ng-model="picFile" name="file" accept="*" required>
+                        </div>
+                    </div>
+                </div>
+
+                <div ng-if="favicon != null">
+                    <div class="alert alert-success m-b-0" role="alert">
+                        <strong>Atenção:</strong> Sua loja virtual já possui um favicon, para substituir o mesmo basta escolher um arquivo e logo em seguida clicar no botão salvar.
+                    </div>
+                </div>
+
+                <div ng-if="favicon == null">
+                    <div class="alert alert-warning m-b-0" role="alert">
+                        <strong>Atenção:</strong> Sua loja virtual ainda não possui um favicon, para efetuar o envio do mesmo escolha um arquivo e logo em seguida clique no botão salvar.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>

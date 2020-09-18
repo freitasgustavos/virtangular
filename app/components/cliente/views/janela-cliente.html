@@ -1,0 +1,56 @@
+
+<div class="modal-dialog modal-lg">
+    <div class="modal-content">
+        <div class="modal-header p-b-0">
+            <h4 class="modal-title modal-title-button">
+                <button type="button" class="btn btn-primary btn-embossed bnt-square pull-left" data-dismiss="modal" ng-click="fecharModal('reload')">
+                    <i class="fa fa-arrow-left"></i> &nbsp; Voltar
+                </button>
+
+                <strong>Dados </strong> do {{labelTitular}}
+
+                <button type="submit" class="btn btn-primary btn-embossed bnt-square pull-right" data-dismiss="modal" ladda="salvarClienteLoading" ng-click="salvarCliente()">
+                    <i class="fa fa-check"></i> &nbsp; Salvar
+                </button>
+            </h4>
+        </div>
+
+        <div class="modal-body" style="overflow:inherit!important">
+            <div class="panel-content">
+                <tabset class="tab-fade-in">
+                    <tab>
+                        <tab-heading>Principal</tab-heading>
+                        <div ng-include="'cliente/views/aba-cliente-principal.html'"></div>
+                    </tab>
+
+                    <tab active="isTabActive">
+                        <tab-heading>Endereço</tab-heading>
+                        <div class="portlets" ng-if="cliente.cad_cod_cad != null">
+                            <div ng-include="'cliente/views/aba-cliente-endereco.html'"></div>
+                        </div>
+                        <div class="portlets" ng-if="cliente.cad_cod_cad == null">
+                            <div class="alert alert-info media fade in no-bottom">
+                                <i class="fa fa-info-circle fa-2x"></i>
+                                <span class="alert-texto">
+                                    Salve antes de prosseguir.
+                                </span>
+                            </div>
+                        </div>
+                    </tab>
+
+                    <tab>
+                        <tab-heading>Anotações</tab-heading>
+                        <div class="portlets" ng-if="cliente.cad_cod_cad != null">
+                            <div ng-include="'cliente/views/aba-cliente-anotacoes.html'"></div>
+                        </div>
+                    </tab>
+                </tabset>
+            </div>
+        </div>
+
+        <div class="modal-footer text-center">
+            <input type="hidden" name="end_seq_end" ng-model="endereco.end_seq_end">
+            <input type="hidden" name="end_cad_cod_cad" ng-model="endereco.end_cad_cod_cad">
+        </div>
+    </div>
+</div>

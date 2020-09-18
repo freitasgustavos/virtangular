@@ -1,0 +1,218 @@
+
+<div ng-class="{'animated fadeIn' : objComponentes.search, 'animated fadeOutDown oculto' : !objComponentes.search}">
+    <uib-accordion close-others="true">
+        <div uib-accordion-group class="panel-default" heading="Filtros Adicionais" is-open="true">
+            <div class="row">
+                <div class="col-md-12">
+                    <p>
+                        <strong>Elabore os filtros para a geração do relatório de {{objRelatorio.par_c01}}:</strong>
+                    </p>
+                </div>
+                <div class="col-md-12">
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group m-b-0">
+                                <label>Dt. de lançamento ínicio</label>
+                                <input class="form-control" ng-model="objFiltro.date_001" maxlength="10" placeholder="Dt. cadastro ínicio..." data-mask="99/99/9999" datepicker1 type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group m-b-0">
+                                <label>Dt. de lançamento final</label>
+                                <input class="form-control" ng-model="objFiltro.date_002" maxlength="10" placeholder="Dt. cadastro ínicio..." data-mask="99/99/9999" datepicker1 type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Ordenação</label>
+                                <ui-select class="form-control" ng-model="objFiltro.order_001" theme="select2">
+                                    <ui-select-match placeholder="Selecione por qual campo deseja ordenar o relatório...">
+                                        {{$select.selected.name}}
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="item.id as item in arrOrdenacao.order001 | filter: $select.search">
+                                        <span ng-bind-html="item.name | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group m-b-0">
+                                <label>Núm. de documento ínicio</label>
+                                <input class="form-control" ng-model="objFiltro.code_001" maxlength="10" placeholder="Núm. de documento ínicio..." valid-number type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group m-b-0">
+                                <label>Núm. de documento final</label>
+                                <input class="form-control" ng-model="objFiltro.code_002" maxlength="10" placeholder="Núm. de documento final..." valid-number type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Ação</label>
+                                <ui-select class="form-control" ng-model="objFiltro.code_005" theme="select2">
+                                    <ui-select-match placeholder="Selecione alguma ação...">
+                                        {{$select.selected.name}}
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="acao.id as acao in arrAcoes | filter: $select.search">
+                                        <span ng-bind-html="acao.name | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-3">
+                            <div class="form-group m-b-0">
+                                <label>Cód. produto ínicio</label>
+                                <input class="form-control" ng-model="objFiltro.code_003" maxlength="10" placeholder="Cód. produto ínicio..." valid-number type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <div class="form-group m-b-0">
+                                <label>Cód. produto final</label>
+                                <input class="form-control" ng-model="objFiltro.code_004" maxlength="10" placeholder="Cód. produto final..." valid-number type="text">
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Forma de Pagamento</label>
+                                <ui-select class="form-control" ng-model="objFiltro.code_006" theme="select2">
+                                    <ui-select-match placeholder="Selecione alguma forma de pagamento...">
+                                        {{$select.selected.par_c01}}
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="fp.par_pai as fp in arrFormasPgto | propsFilter: {par_c01: $select.search}">
+                                        <span ng-bind-html="fp.par_c01 | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Fase</label>
+                                <ui-select class="form-control" ng-model="objFiltro.code_007" theme="select2">
+                                    <ui-select-match placeholder="Selecione alguma fase...">
+                                        {{$select.selected.par_c01}}
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="fase.par_pai as fase in arrFases | propsFilter: {par_c01: $select.search}">
+                                        <span ng-bind-html="fase.par_c01 | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Vendedor</label>
+                                <ui-select class="form-control" ng-model="objFiltro.code_008" theme="select2">
+                                    <ui-select-match placeholder="Selecione alguma vendedor...">
+                                        {{$select.selected.par_c01}}
+                                    </ui-select-match>
+                                    <ui-select-choices repeat="vendedor.par_pai as vendedor in arrVendedores | propsFilter: {par_c01: $select.search}">
+                                        <span ng-bind-html="vendedor.par_c01 | highlight: $select.search"></span>
+                                    </ui-select-choices>
+                                </ui-select>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="form-group">
+                                <p><strong>Espécie de documento</strong></p>
+                                <div class="input-group">
+                                    <div class="icheck-inline">
+                                        <label ng-repeat="especie in arrEspecies" for="ed-{{especie.id}}" style="display:inline;margin-right:15px">
+                                            <input class="icheck" id="ed-{{especie.id}}" data-checklist-model="objFiltro.list_001" data-checklist-value="especie.id" icheck type="checkbox">
+                                            <span>{{especie.nome}}</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row m-t-5">
+                        <div class="col-md-12 m-b-0 t-right">
+                            <span class="text-danger cancel-link" ng-click="limparPesquisa()">
+                                <span>Cancelar Filtros</span>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </uib-accordion>
+</div>
+
+<div class="col-md-12">
+    <div class="row">
+        <uib-accordion close-others="true">
+            <div uib-accordion-group class="panel-default panel-grid" heading="Prévia do Relatório" is-open="true">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div ng-if="arrRegistros !== null">
+                            <table class="table table-hover font-mini m-b-0" id="grid-relatorio-lucratividade">
+                                <colgroup>
+                                    <col width="12%">
+                                    <col width="8%">
+                                    <col width="22%">
+                                    <col width="10%">
+                                    <col width="15%">
+                                    <col width="18%">
+                                    <col width="15%">
+                                </colgroup>
+                                <thead>
+                                    <tr>
+                                        <th>Data</th>
+                                        <th>DOC.</th>
+                                        <th>Produto</th>
+                                        <th class="text-right">Qtde.</th>
+                                        <th class="text-right">Custo</th>
+                                        <th class="text-right">Lucro</th>
+                                        <th class="text-right">Venda</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr ng-repeat="item in arrRegistros" class="c-pointer">
+                                        <td>{{item.fin_dat_lan | dateFormat}}</td>
+                                        <td>{{item.fin_doc_nro}}</td>
+                                        <td>{{item.ite_pro_cod_pro}} - {{item.ite_pro_descricao}}</td>
+                                        <td class="text-right">
+                                            <span get-estoque="item" value="{{item.ite_pro_qtd}}"></span>
+                                        </td>
+                                        <td class="text-right">{{item.ite_vlr_uni_customedio | currency}}</td>
+                                        <td class="text-right">
+                                            <span class="text-lucro">{{item.ite_vlr_lucro | customCurrency}}</span>
+                                            <span class="text-small">({{item.ite_perc_rendimento}}%)</span>
+                                        </td>
+                                        <td class="text-right">{{item.ite_vlr_tot_liquido | currency}}</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                        <div ng-if="arrRegistros === null">
+                            <div class="alert alert-warning alert-fade m-b-0">
+                                <i class="fa fa-info-circle fa-2x p-r-10"></i>
+                                <span class="alert-texto">Nenhum registro encontrado!</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </uib-accordion>
+    </div>
+</div>

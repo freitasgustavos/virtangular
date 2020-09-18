@@ -1,0 +1,121 @@
+<div class="row">
+    <div class="panel-body p-0">
+        <!-- Foto do usuário. -->
+        <div class="text-center col-xs-2">
+            <div class="box-upload-foto m-t-20" ng-if="!usuario.usu_cod_usu">
+                <img ng-src="../assets/global/images/avatars/sem_avatar2.jpg" class="img-responsive img-circle c-pointer" ng-click="getFormUpload(usuario.usu_cod_usu)">
+            </div>
+
+            <div class="box-upload-foto m-t-20" ng-if="usuario.usu_cod_usu">
+                <!-- Usuário sem imagem. -->
+                <div ng-if="usuario.imagem_atual == null">
+                    <img ng-src="../assets/global/images/avatars/sem_avatar2.jpg" class="img-responsive img-circle c-pointer" ng-click="getFormUpload(usuario.usu_cod_usu)">
+                    <i class="fa fa-search-plus pull-right"></i>
+                </div>
+
+                <!-- Usuário com imagem. -->
+                <div ng-if="usuario.imagem_atual != null">
+                    <img ng-src="{{imageCache}}{{usuario.imagem_atual.mid_id}}" class="img-responsive img-circle c-pointer" ng-click="getFormUpload(usuario.usu_cod_usu)">
+                    <i class="fa fa-search-plus pull-right"></i>
+                </div>
+            </div>
+        </div>
+
+        <div class="clearfix col-xs-10">
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Nome <i class="obrigatorio">*</i></label>
+                        <input name="usu_nome" id="usu_nome" class="form-control" maxlength="255" placeholder="Digite o nome do usuario" ng-model="usuario.usu_nome" ng-class="{true : 'form-error'}[submitted && forms.formUsuario.usu_nome.$invalid]" required type="text">
+                    </div>
+                    <div ng-show="submitted || (forms.formUsuario.usu_nome.$invalid && !forms.formUsuario.usu_nome.$pristine)">
+                        <p class="text-danger form-error alert1" ng-show="(forms.formUsuario.usu_nome.$error.required)">Digite o nome.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>E-mail <i class="obrigatorio">*</i></label>
+                        <input name="usu_email" id="usu_email" class="form-control" maxlength="255" placeholder="Digite o email do usuario" ng-model="usuario.usu_email" ng-class="{true : 'form-error'}[submitted && forms.formUsuario.usu_email.$invalid]" required type="text">
+                    </div>
+                    <div ng-show="submitted || (forms.formUsuario.usu_email.$invalid && !forms.formUsuario.usu_email.$pristine)">
+                        <p class="text-danger form-error alert1" ng-show="(forms.formUsuario.usu_email.$error.required)">Digite o email.</p>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Perfil</label>
+                        <ui-select class="form-control" ng-model="usuario.usu_tip_usu" name="usu_tip_usu" id="usu_tip_usu" theme="select2">
+                            <ui-select-match placeholder="Selecione um perfil...">{{$select.selected.prf_nome_perfil}}</ui-select-match>
+                            <ui-select-choices repeat="perfil.prf_cod_prf as perfil in perfis | propsFilter : {prf_nome_perfil : $select.search}">
+                                <span ng-bind-html="perfil.prf_nome_perfil | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Vendedor</label>
+                        <ui-select class="form-control" ng-model="usuario.usu_cod_vendedor" name="usu_cod_vendedor" id="usu_cod_vendedor" theme="select2">
+                            <ui-select-match placeholder="Selecione um vendedor...">{{$select.selected.par_c01}}</ui-select-match>
+                            <ui-select-choices repeat="vendedor.par_pai as vendedor in arrVendedor | propsFilter : {par_c01 : $select.search}">
+                                <span ng-bind-html="vendedor.par_c01 | highlight: $select.search"></span>
+                            </ui-select-choices>
+                        </ui-select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!--
+        <div class="col-md-2">
+            <div class="text-center">
+                <label>Wizard</label>
+                <label class="switch">
+                    <input class="switch-input" name="usu_ativo_wizard" id="usu_ativo_wizard" type="checkbox" ng-model="usuario.usu_ativo_wizard">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                </label>
+            </div>
+        </div>
+        -->
+
+        <div class="col-md-2">
+            <div class="text-center">
+                <label>Ativo</label>
+                <label class="switch">
+                    <input class="switch-input" name="usu_status_ativo_aux" id="usu_status_ativo_aux" type="checkbox" ng-model="usuario.usu_status_ativo_aux">
+                    <span class="switch-label" data-on="On" data-off="Off"></span>
+                    <span class="switch-handle"></span>
+                </label>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="form-group">
+                <label>Senha <i class="obrigatorio">*</i></label>
+                <input class="form-control" name="usu_senha" id="usu_senha" maxlength="20" type="password" placeholder="Digite a senha do usuario" ng-model="usuario.usu_senha" ng-class="{true : 'form-error'}[submitted && forms.formUsuario.usu_senha.$invalid]" required>
+            </div>
+            <div ng-show="submitted || (forms.formUsuario.usu_senha.$invalid && !forms.formUsuario.usu_senha.$pristine)">
+                <p class="text-danger form-error alert1" ng-show="(forms.formUsuario.usu_senha.$error.required)">Digite uma senha.</p>
+            </div>
+        </div>
+
+        <div class="col-md-5">
+            <div class="form-group">
+                <label>Confirme sua Senha <i class="obrigatorio">*</i></label>
+                <input class="form-control" name="usu_senha_confirmacao" id="usu_senha_confirmacao" maxlength="20" type="password" placeholder="Confirme a sua senha" compare-to="usuario.usu_senha" ng-model="usuario.usu_senha_confirmacao" ng-class="{true : 'form-error'}[submitted && forms.formUsuario.usu_senha_confirmacao.$invalid]" required>
+            </div>
+            <div ng-show="submitted || (forms.formUsuario.usu_senha_confirmacao.$invalid && !forms.formUsuario.usu_senha_confirmacao.$pristine)">
+                <p class="text-danger form-error alert1">
+                    <span style="display:block" ng-show="forms.formUsuario.usu_senha_confirmacao.$error.required">A confirmação da senha é obrigatória.</span>
+                    <span style="display:block" ng-show="forms.formUsuario.usu_senha_confirmacao.$error.compareTo">A senha não confere.</span>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<input type="hidden" name="usu_cod_usu" ng-model="usuario.usu_cod_usu">

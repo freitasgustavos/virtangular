@@ -1,0 +1,141 @@
+
+<div class="panel-header panel-controls p-l-0">
+    <h3>
+        <i class="fa fa-home"></i> Endereço Principal <strong>(Faturamento)</strong>
+    </h3>
+</div>
+
+<form role="form" name="forms.formClienteEndereco" autocomplete="off" class="form-validation" novalidate>
+    <div class="row">
+        <div class="col-md-3">
+            <div class="form-group">
+                <label class="control-label">CEP</label>
+                <input ng-if="!cliente.endereco.end_eh_exterior" type="text" maxlength="9" class="form-control" placeholder="Digite o CEP" ng-model="cliente.endereco.end_cep" ui-br-cep-mask ng-keyup="getEnderecoPorCep($event)">
+                <input ng-if="cliente.endereco.end_eh_exterior" type="text" maxlength="10" class="form-control" restrict="[^0-9\s]" placeholder="Digite o CEP" ng-model="cliente.endereco.end_cep">
+            </div>
+        </div>
+        <div class="col-md-9">
+            <div class="form-group">
+                <label>País</label>
+                <ui-select class="form-control" required ng-model="cliente.endereco.end_cod_pais" name="end_cod_pais" focus-on="end_cod_pais" theme="select2" ng-change="verificaEhExterior()">
+                    <ui-select-match placeholder="Selecione o país">{{$select.selected.nome_pais}}</ui-select-match>
+                    <ui-select-choices repeat="pais.cod_pais as pais in arrPaises.records | filter: $select.search">
+                        <span ng-bind-html="pais.nome_pais | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-9">
+            <div class="form-group">
+                <label class="control-label" for="end_endereco">Endereço <i class="obrigatorio">*</i></label>
+                <input name="end_endereco" id="end_endereco" maxlength="60" type="text" class="form-control" placeholder="Digite o endereço" ng-model="cliente.endereco.end_endereco" ng-class="{true: 'form-error'}[submitted && forms.formClienteEndereco.end_endereco.$invalid]" required>
+            </div>
+            <div ng-show="submitted || (forms.formClienteEndereco.end_endereco.$invalid && !forms.formClienteEndereco.end_endereco.$pristine) ">
+                <p class="text-danger form-error alert1" ng-show="forms.formClienteEndereco.end_endereco.$error.required">Digite o Endereço.</p>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="form-group">
+                <label class="control-label" for="end_endereco_nro">Número <i class="obrigatorio">*</i></label>
+                <input name="end_endereco_nro" id="end_endereco_nro" type="text" class="form-control" maxlength="20" ng-minlength="2" placeholder="Digite o número" ng-model="cliente.endereco.end_endereco_nro" ng-class="{true : 'form-error'}[submitted && (forms.formClienteEndereco.end_endereco_nro.$invalid)]" allow-pattern="(\d|[a-zçÇ,/-])" required>
+            </div>
+            <div ng-show="submitted || (forms.formClienteEndereco.end_endereco_nro.$invalid && !forms.formClienteEndereco.end_endereco_nro.$pristine) ">
+                <p class="text-danger form-error alert1" ng-show="forms.formClienteEndereco.end_endereco_nro.$error.required">Digite o Número.</p>
+                <p class="text-danger form-error alert1" ng-show="forms.formClienteEndereco.end_endereco_nro.$error.minlength">Tamanho mínimo de 2 caracteres.</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Complemento</label>
+                <input type="text" class="form-control" maxlength="60" placeholder="Digite o complemento" ng-model="cliente.endereco.end_endereco_complemento" allow-pattern="(\d|[ a-zçÇ,/-])">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Bairro</label>
+                <input type="text" class="form-control" maxlength="60" placeholder="Digite o bairro" ng-model="cliente.endereco.end_endereco_bairro" allow-pattern="(\d|[ a-zçÇ,/-])">
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-md-6">
+            <div class="form-group">
+                <label>Estado</label>
+                <ui-select ng-if="!cliente.endereco.end_eh_exterior" class="form-control" required ng-model="cliente.endereco.end_endereco_uf" name="end_endereco_uf" focus-on="end_endereco_uf" theme="select2" ng-change="getCidadePorUf()">
+                    <ui-select-match placeholder="Selecione o estado">{{$select.selected.nome}}</ui-select-match>
+                    <ui-select-choices repeat="uf.id + '#' + uf.uf as uf in listaUf_fat.records | filter: $select.search">
+                        <span ng-bind-html="uf.nome | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+
+                <input ng-if="cliente.endereco.end_eh_exterior" type="text" class="form-control" maxlength="2" restrict="[^a-z\s]" placeholder="Digite a UF..." ng-model="cliente.endereco.end_endereco_uf" style="text-transform:uppercase">
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="form-group">
+                <label class="control-label">Cidade</label>
+                <ui-select ng-if="!cliente.endereco.end_eh_exterior" name="end_endereco_cidade" required class="form-control" ng-model="cliente.endereco.end_endereco_cidade" name="end_endereco_cidade" theme="select2">
+                    <ui-select-match placeholder="Selecione a cidade">{{$select.selected.nome}}</ui-select-match>
+                    <ui-select-choices repeat="cidade.id + '#' + cidade.nome as cidade in listaCidade_fat.records | filter: $select.search">
+                        <span ng-bind-html="cidade.nome | highlight: $select.search"></span>
+                    </ui-select-choices>
+                </ui-select>
+
+                <input ng-if="cliente.endereco.end_eh_exterior" type="text" class="form-control" maxlength="80" placeholder="Digite a cidade..." ng-model="cliente.endereco.end_endereco_cidade">
+            </div>
+        </div>
+    </div>
+</form>
+
+<p>&nbsp;</p>
+
+<div class="panel" ng-if="cliente.cad_tip_cli_for == 1">
+    <div class="control-btn">
+        <button type="button" data-toggle="modal" class="btn btn-primary btn-sm pull-right" ng-click="getFormEndereco()">
+            <i class="fa fa-plus"></i> &nbsp; Novo Endereço de Entrega
+        </button>
+    </div>
+    <div class="panel-header panel-controls">
+        <h3>
+            <i class="fa fa-table"></i> &nbsp;
+            <strong>Lista</strong> de Endereços de Entrega
+        </h3>
+    </div>
+    <div class="panel-content" ng-if="listaEndereco[0].end_endereco != null">
+        <table class="table table-striped" style="font-size:11px">
+            <thead>
+                <tr>
+                    <th>Padrão</th>
+                    <th>Endereço</th>
+                    <th>Bairro</th>
+                    <th>Cidade</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="endereco in listaEndereco" ng-if="endereco.end_endereco != null" ng-click="getFormEndereco(endereco.end_seq_end)" class="pointer">
+                    <td>
+                        <div class="icheck-inline text-center">
+                            <input type="radio" icheck name="gender" ng-model="cliente.cad_end_cod_end_ent_padrao" class="iradio-text" ng-value="endereco.end_seq_end" data-radio="iradio_minimal-blue" ng-change="salvarEnderecoPadrao()">
+                        </div>
+                    </td>
+                    <td>
+                        <span tooltip-placement="top" tooltip="{{endereco.end_endereco}}">{{endereco.end_endereco | strLimit : 15}}</span>
+                    </td>
+                    <td>
+                        <span tooltip-placement="top" tooltip="{{endereco.end_endereco_bairro}}">{{endereco.end_endereco_bairro | strLimit : 15}}</span>
+                    </td>
+                    <td>
+                        <span tooltip-placement="top" tooltip="{{endereco.end_endereco_cidade}}">{{endereco.end_endereco_cidade | strLimit : 15}}</span>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div>

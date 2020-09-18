@@ -1,0 +1,174 @@
+
+<!-- Exemplo de menu do template. -->
+<div class="logopanel">
+    <h1>
+        <a href="#/"></a>
+    </h1>
+</div>
+<div class="sidebar-inner">
+    <div class="sidebar-top">
+        <form action="search-result.html" method="post" class="searchform" id="search-results">
+            <input type="text" class="form-control" name="keyword" placeholder="Search...">
+        </form>
+        <div class="userlogged clearfix">
+            <i class="icon icons-faces-users-01"></i>
+            <div class="user-details">
+                <h4>Mike Mayers</h4>
+                <div class="dropdown user-login">
+                    <button class="btn btn-xs dropdown-toggle btn-rounded" type="button" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" data-delay="300">
+                        <i class="online"></i><span>Available</span><i class="fa fa-angle-down"></i>
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li><a href="#"><i class="busy"></i><span>Busy</span></a></li>
+                        <li><a href="#"><i class="turquoise"></i><span>Invisible</span></a></li>
+                        <li><a href="#"><i class="away"></i><span>Away</span></a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="menu-title">
+        Navigation
+        <div class="pull-right menu-settings">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true" data-delay="300">
+                <i class="icon-settings"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="#" id="reorder-menu" class="reorder-menu">Reorder menu</a></li>
+                <li><a href="#" id="remove-menu" class="remove-menu">Remove elements</a></li>
+                <li><a href="#" id="hide-top-sidebar" class="hide-top-sidebar">Hide user &amp; search</a></li>
+            </ul>
+        </div>
+    </div>
+    <ul class="nav nav-sidebar">
+        <li ng-class="{ active  : isActive('/')}"><a href="#/"><i class="icon-home"></i><span>Dashboard</span></a></li>
+        <li class="nav-parent" >
+            <a href="#"><i class="icon-bulb"></i><span>Mailbox</span> <span class="fa arrow"></span></a>
+            <ul class="children collapse">
+                <li ng-class="{ active  : isActive('mailbox.html')}"><a href="mailbox.html"> Inbox</a></li>
+                <li ng-class="{ active  : isActive('mailbox.html/#send')}"><a href="mailbox.html#/send"> Send Email</a></li>
+                <li ng-class="{ active  : isActive('email-templates')}"><a href="#email-templates"><span class="pull-right badge badge-danger">Hot</span> Email Templates</a></li>
+            </ul>
+        </li>
+        <li class="nav-parent">
+            <a href=""><i class="icon-screen-desktop"></i><span>UI Elements</span><span class="fa arrow"></span></a>
+            <ul class="children collapse">
+                <li ng-class="{ active  : isActive('/ui-buttons')}"><a href="#ui-buttons"> Buttons</a></li>
+                <li ng-class="{ active  : isActive('/ui-components')}"><a href="#ui-components"> Components</a></li>
+                <li ng-class="{ active  : isActive('/ui-tabs')}"><a href="#ui-tabs"> Tabs</a></li>
+                <li ng-class="{ active  : isActive('/ui-animations')}"><a href="#ui-animations"> Animations CSS3</a></li>
+                <li ng-class="{ active  : isActive('/ui-icons')}"><a href="#ui-icons"> Icons</a></li>
+                <li ng-class="{ active  : isActive('/ui-portlets')}"><a href="#ui-portlets"> Portlets</a></li>
+                <li ng-class="{ active  : isActive('/ui-nestableList')}"><a href="#ui-nestableList"> Nestable List</a></li>
+                <li ng-class="{ active  : isActive('/ui-treeView')}"><a href="#ui-treeView"> Tree View</a></li>
+                <li ng-class="{ active  : isActive('/ui-modals')}"><a href="#ui-modals"> Modals</a></li>
+                <li ng-class="{ active  : isActive('/ui-notifications')}"><a href="#ui-notifications"> Notifications</a></li>
+                <li ng-class="{ active  : isActive('/ui-typography')}"><a href="#ui-typography"> Typography</a></li>
+                <li ng-class="{ active  : isActive('/ui-helperClasses')}"><a href="#ui-helperClasses"> Helper Classes</a></li>
+            </ul>
+        </li>
+        <li ng-class="{ active  : isActive('/layout-api')}"><a href="#layout-api"><i class="icon-layers"></i><span>Layouts</span></a></li>
+        <li class="nav-parent">
+            <a href=""><i class="icon-note"></i><span>Forms </span><span class="fa arrow"></span></a>
+            <ul class="children collapse">
+                <li ng-class="{ active  : isActive('/forms-elements')}"><a href="#forms-elements"> Forms Elements</a></li>
+                <li ng-class="{ active  : isActive('/forms-validation')}"><a href="#forms-validation"> Forms Validation</a></li>
+                <li ng-class="{ active  : isActive('/forms-plugins')}"><a href="#forms-plugins"> Advanced Plugins</a></li>
+                <li ng-class="{ active  : isActive('/forms-wizard')}"><a href="#forms-wizard"> <span class="pull-right badge badge-danger">low</span>
+                    <span>Form Wizard</span></a>
+                </li>
+                <li ng-class="{ active  : isActive('/forms-sliders')}"><a href="#forms-sliders"> Sliders</a></li>
+                <li ng-class="{ active  : isActive('/forms-editors')}"><a href="#forms-editors"> Text Editors</a></li>
+                <li ng-class="{ active  : isActive('/forms-input-masks')}"><a href="#forms-input-masks"> Input Masks</a></li>
+            </ul>
+        </li>
+        <li class="nav-parent">
+            <a href=""><i class="fa fa-table"></i><span>Tables</span><span class="fa arrow"></span></a>
+            <ul class="children collapse">
+                <li ng-class="{ active  : isActive('/tables-styling')}"><a href="#tables-styling"> Tables Styling</a></li>
+                <li ng-class="{ active  : isActive('/tables-dynamic')}"><a href="#tables-dynamic"> Tables Dynamic</a></li>
+                <li ng-class="{ active  : isActive('/tables-filter')}"><a href="#tables-filter"> Tables Filter</a></li>
+                <li ng-class="{ active  : isActive('/tables-editable')}"><a href="#tables-editable"> Tables Editable</a></li>
+            </ul>
+        </li>
+        <li class="nav-parent">
+            <a href=""><i class="icon-bar-chart"></i><span>Charts </span><span class="fa arrow"></span></a>
+            <ul class="children collapse">
+                <li ng-class="{ active  : isActive('/charts')}"><a href="#/charts"> Charts</a></li>
+                <li ng-class="{ active  : isActive('/financial-charts')}"><a href="#/financial-charts"> Financial Charts</a></li>
+            </ul>
+        </li>
+        <li class="nav-parent">
+            <a href=""><i class="icon-picture"></i><span>Medias</span><span class="fa arrow"></span></a>
+            <ul class="children collapse">
+                <li ng-class="{ active  : isActive('/medias-croping')}"><a href="#medias-croping"> Images Croping</a></li>
+                <li ng-class="{ active  : isActive('/medias-sortable')}"><a href="#medias-sortable"> Gallery Sortable</a></li>
+                <li ng-class="{ active  : isActive('/medias-hover')}"><a href="#medias-hover"> <span class="pull-right badge badge-primary">12</span> Hover Effects</a></li>
+            </ul>
+        </li>
+        <li class="nav-parent">
+            <a href=""><i class="icon-docs"></i><span>Pages </span><span class="fa arrow"></span></a>
+            <ul class="children collapse">
+                <li ng-class="{ active  : isActive('/pages-timeline')}"><a href="#pages-timeline"> Timeline</a></li>
+                <li ng-class="{ active  : isActive('/pages-blank')}"><a href="#pages-blank"> Blank Page</a></li>
+                <li ng-class="{ active  : isActive('/pages-contact')}"><a href="#pages-contact"> Contact</a></li>
+            </ul>
+        </li>
+        <li class="nav-parent">
+            <a href=""><i class="fa fa-user"></i><span>User </span><span class="fa arrow"></span></a>
+            <ul class="children collapse">
+                <li ng-class="{ active  : isActive('/user-profile')}"><a href="#user-profile"> <span class="pull-right badge badge-danger">Hot</span> Profile</a></li>
+                <li ng-class="{ active  : isActive('/user-sessionTimeout')}"><a href="#user-sessionTimeout"> Session Timeout</a></li>
+            </ul>
+        </li>
+        <li class="nav-parent">
+            <a href=""><i class="icon-basket"></i><span>eCommerce </span><span class="fa arrow"></span></a>
+            <ul class="children collapse">
+                <li ng-class="{ active  : isActive('/ecom-cart')}"><a href="#ecom-cart"> Shopping Cart</a></li>
+                <li ng-class="{ active  : isActive('/ecom-invoice')}"><a href="#ecom-invoice"> Invoice</a></li>
+            </ul>
+        </li>
+        <li class="nav-parent">
+            <a href=""><i class="icon-cup"></i><span>Extra </span><span class="fa arrow"></span></a>
+            <ul class="children collapse">
+                <li ng-class="{ active  : isActive('/extra-fullCalendar')}"><a href="#extra-fullCalendar"><span class="pull-right badge badge-primary">New</span> Fullcalendar</a></li>
+                <li ng-class="{ active  : isActive('/extra-widgets')}"><a href="#extra-widgets"> Widgets</a></li>
+                <li ng-class="{ active  : isActive('/extra-slider')}"><a href="#extra-slider"> Sliders</a></li>
+                <li ng-class="{ active  : isActive('/extra-google')}"><a href="#extra-google"> Google Maps</a></li>
+                <li ng-class="{ active  : isActive('/extra-vector')}"><a href="#extra-vector"> Vector Maps</a></li>
+            </ul>
+        </li>
+    </ul>
+    <!-- SIDEBAR WIDGET FOLDERS -->
+    <div class="sidebar-widgets">
+        <p class="menu-title widget-title">Folders <span class="pull-right"><a href="#" class="new-folder"> <i class="icon-plus"></i></a></span></p>
+        <ul class="folders">
+            <li>
+                <a href="#"><i class="icon-doc c-primary"></i>My documents</a>
+            </li>
+            <li>
+                <a href="#"><i class="icon-picture"></i>My images</a>
+            </li>
+            <li>
+                <a href="#"><i class="icon-lock"></i>Secure data</a>
+            </li>
+            <li class="add-folder">
+                <input type="text" placeholder="Folder's name..." class="form-control input-sm">
+            </li>
+        </ul>
+    </div>
+    <div class="sidebar-footer clearfix">
+        <a class="pull-left footer-settings" data-target="#" data-rel="tooltip" data-placement="top" data-original-title="Settings">
+            <i class="icon-settings"></i>
+        </a>
+        <a class="pull-left toggle_fullscreen" data-target="#" data-rel="tooltip" data-placement="top" data-original-title="Fullscreen">
+            <i class="icon-size-fullscreen"></i>
+        </a>
+        <a class="pull-left" href="../../user-lockscreen.html" data-rel="tooltip" data-placement="top" data-original-title="Lockscreen">
+            <i class="icon-lock"></i>
+        </a>
+        <a class="pull-left btn-effect" href="../../user-login-v1.html" data-modal="modal-1" data-rel="tooltip" data-placement="top" data-original-title="Logout">
+            <i class="icon-power"></i>
+        </a>
+    </div>
+</div>
